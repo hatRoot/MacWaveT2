@@ -73,6 +73,24 @@
             </div>
         </section>
 
+        <section class="section-padded ecosystem-section">
+            <div class="container">
+                <div class="ecosystem-split">
+                    <div class="ecosystem-content">
+                        <h2>Implementa el ecosistema de Apple de tu empresa con nosotros</h2>
+                        <p class="section-description ecosystem-desc">Soluciones completas para gestionar el ciclo de
+                            vida de tus dispositivos Apple, desde la puesta en marcha hasta el soporte. En Mac Wave, te
+                            acompañamos en cada fase con servicios certificados por Apple y una gestión centralizada,
+                            todo diseñado para maximizar tu retorno de inversión y garantizar la continuidad operativa.
+                        </p>
+                    </div>
+                    <div class="ecosystem-image">
+                        <img src="./images/apple-empresa.jpg" alt="Apple Empresa" class="ecosystem-img">
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <section id="soluciones" class="section-padded solution-grid-section">
             <div class="container">
                 <h2>Soluciones Diseñadas para la Excelencia.</h2>
@@ -182,7 +200,7 @@
                     </div>
                 </a>
                 <p class="tagline">La autoridad en soporte tecnológico.</p>
-                <p>contacto@neox.com.mx</p>
+                <p>contacto@macwave.mx</p>
             </div>
             <div class="footer-col">
                 <h4>Navegación</h4>
@@ -213,6 +231,113 @@
             <p>&copy; 2023 Mac Wave T2. Todos los derechos reservados.</p>
         </div>
     </footer>
+
+    <!-- Scheduling Modal -->
+    <div id="scheduling-modal" class="modal-overlay">
+        <div class="modal-container">
+            <button id="close-modal" class="close-modal-btn">&times;</button>
+
+            <div class="modal-left-panel">
+                <div class="modal-profile">
+                    <div class="profile-img-placeholder">JD</div>
+                    <h3>Solicitar una reunión con Ing. Joel Duran</h3>
+                </div>
+
+                <div class="modal-calendar-header">
+                    <button class="calendar-nav-btn">&lt;</button>
+                    <span class="current-month">noviembre 2025</span>
+                    <button class="calendar-nav-btn">&gt;</button>
+                </div>
+
+                <div class="calendar-grid">
+                    <div class="calendar-day-header">LUN.</div>
+                    <div class="calendar-day-header">MAR.</div>
+                    <div class="calendar-day-header">MIÉ.</div>
+                    <div class="calendar-day-header">JUE.</div>
+                    <div class="calendar-day-header">VIE.</div>
+                    <div class="calendar-day-header">SÁB.</div>
+                    <div class="calendar-day-header">DOM.</div>
+
+                    <!-- Empty cells for start of month -->
+                    <div class="calendar-day empty"></div>
+                    <div class="calendar-day empty"></div>
+                    <div class="calendar-day empty"></div>
+                    <div class="calendar-day empty"></div>
+                    <div class="calendar-day empty"></div>
+
+                    <div class="calendar-day disabled">1</div>
+                    <div class="calendar-day disabled">2</div>
+                    <div class="calendar-day">3</div>
+                    <div class="calendar-day">4</div>
+                    <div class="calendar-day">5</div>
+                    <div class="calendar-day">6</div>
+                    <div class="calendar-day">7</div>
+                    <div class="calendar-day disabled">8</div>
+                    <div class="calendar-day disabled">9</div>
+                    <div class="calendar-day">10</div>
+                    <div class="calendar-day">11</div>
+                    <div class="calendar-day">12</div>
+                    <div class="calendar-day">13</div>
+                    <div class="calendar-day">14</div>
+                    <div class="calendar-day disabled">15</div>
+                    <div class="calendar-day disabled">16</div>
+                    <div class="calendar-day">17</div>
+                    <div class="calendar-day">18</div>
+                    <div class="calendar-day">19</div>
+                    <div class="calendar-day">20</div>
+                    <div class="calendar-day">21</div>
+                    <div class="calendar-day disabled">22</div>
+                    <div class="calendar-day disabled">23</div>
+                    <div class="calendar-day">24</div>
+                    <div class="calendar-day">25</div>
+                    <div class="calendar-day">26</div>
+                    <div class="calendar-day">27</div>
+                    <div class="calendar-day">28</div>
+                    <div class="calendar-day disabled">29</div>
+                    <div class="calendar-day disabled">30</div>
+                </div>
+
+                <div class="calendar-alert">
+                    <p><strong>No hay fechas disponibles en noviembre</strong></p>
+                    <a href="#" class="next-month-link">Ver mes siguiente &gt;</a>
+                </div>
+            </div>
+
+            <div class="modal-right-panel">
+                <div class="modal-header-right">
+                    <div class="step-indicator">
+                        <div class="step active">
+                            <span class="step-circle"></span>
+                            <span class="step-label">ELIGE UNA HORA</span>
+                        </div>
+                        <div class="step-line"></div>
+                        <div class="step">
+                            <span class="step-circle"></span>
+                            <span class="step-label">TU INFORMACIÓN</span>
+                        </div>
+                    </div>
+                    <div class="logo-modal">
+                        <span class="logo-brand" style="color: #000;">Mac Wave T2</span>
+                    </div>
+                </div>
+
+                <div class="duration-selector">
+                    <h4>¿Cuánto tiempo necesitas?</h4>
+                    <div class="duration-options">
+                        <button class="duration-btn active" data-duration="15">15 minutos</button>
+                        <button class="duration-btn" data-duration="30">30 minutos</button>
+                        <button class="duration-btn" data-duration="60">1 hora</button>
+                    </div>
+                </div>
+
+                <div class="availability-message">
+                    <h3>No hay horarios disponibles con esta duración con Ing. Joel Duran hoy.</h3>
+                    <p>Todavía puedes solicitar una reunión enviando un correo a</p>
+                    <a href="mailto:contacto@macwave.mx" class="email-link">contacto@macwave.mx ↗</a>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script src="script.js"></script>
 </body>
