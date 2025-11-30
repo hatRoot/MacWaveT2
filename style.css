@@ -943,6 +943,71 @@ h3 {
     margin-bottom: 10px;
 }
 
+/* Compatibility Section */
+.compatibility-section {
+    background-color: var(--primary-bg);
+    /* Igual que la sección 1 (Hero) */
+    border-bottom: 1px solid var(--tertiary-bg);
+}
+
+.compatibility-split {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: center;
+}
+
+.compatibility-content {
+    text-align: left;
+}
+
+.section-subtitle {
+    display: block;
+    color: var(--accent-orange);
+    font-size: 0.9em;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 15px;
+}
+
+.compatibility-content h2 {
+    font-size: 2.5em;
+    margin-bottom: 25px;
+}
+
+.compatibility-content p {
+    color: var(--text-secondary);
+    margin-bottom: 20px;
+    font-size: 1em;
+    /* Fuente mediana/pequeña */
+    line-height: 1.7;
+}
+
+.compatibility-img {
+    width: 100%;
+    height: auto;
+    border-radius: var(--border-radius-lg);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+}
+
+@media (max-width: 992px) {
+    .compatibility-split {
+        grid-template-columns: 1fr;
+    }
+
+    .compatibility-image {
+        order: 1;
+        /* Imagen arriba en móvil */
+        margin-bottom: 30px;
+    }
+
+    .compatibility-content {
+        order: 2;
+        text-align: center;
+    }
+}
+
 .next-month-link {
     color: var(--accent-blue);
     font-weight: bold;
