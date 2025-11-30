@@ -344,7 +344,7 @@ h3 {
 /*Estilos de las líneas individuales (LIMPIEZA DE CONFLICTOS) */
 .cert-line-1,
 .cert-line-2 {
-    /* Propiedades que aplican a ambas, sin la propiedad 'color' */
+    /* Propiedades comunes */
     font-weight: var(--font-weight-light);
     margin: 0;
     padding: 0;
@@ -357,7 +357,6 @@ h3 {
 /* 1. ESTILO DE LA LÍNEA BLANCA (ACSP...) - [La línea que va ABAJO en el HTML] */
 /* ---------------------------------------------------- */
 .cert-line-1 {
-    /* La línea de ACSP se fuerza a blanco/color primario */
     color: var(--text-primary);
 }
 
@@ -365,15 +364,11 @@ h3 {
 /* 2. ESTILO DE LA LÍNEA NARANJA (Apple consulting...) - [La línea que va ARRIBA en el HTML] */
 /* ---------------------------------------------------- */
 .cert-line-2 {
-    /* ESTO APLICA EL COLOR NARANJA SOLAMENTE A ESTA LÍNEA */
+    /* Color naranja */
     color: var(--accent-orange) !important;
-    /* Color naranja solicitado */
-    /* SOLUCIÓN DEFINITIVA: Forzar el color naranja */
-
-    /* Espacio entre letras y desplazamiento */
+    /* Espacio entre letras aumentado */
     letter-spacing: 1.5px;
-
-    /* Combina la inclinación (skew) y el desplazamiento */
+    /* Inclinación y desplazamiento */
     transform: skewX(-10deg) translateX(20px);
     transform-origin: left center;
 }
@@ -1095,12 +1090,6 @@ h3 {
     font-weight: bold;
     text-transform: uppercase;
     margin-bottom: 10px;
-}
-
-/* Definimos un color rosa si no existe, o usamos el naranja */
-:root {
-    --accent-pink: #FF3366;
-    /* Color similar al de la referencia "Seguridad" */
 }
 
 .info-card h3 {
