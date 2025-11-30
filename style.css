@@ -313,7 +313,6 @@ h3 {
     /* Mueve el bloque a la derecha */
 }
 
-.
 
 /*Estilos de las líneas individuales (LIMPIEZA DE CONFLICTOS) */
 .cert-line-1,
@@ -340,7 +339,7 @@ h3 {
 /* ---------------------------------------------------- */
 .cert-line-2 {
     /* ESTO APLICA EL COLOR NARANJA SOLAMENTE A ESTA LÍNEA */
-    color: var(--accent-orange)Apple consulting system engineer !important;
+    color: var(--accent-orange) !important;
     /* SOLUCIÓN DEFINITIVA: Forzar el color naranja */
 
     /* Espacio entre letras y desplazamiento */
@@ -705,8 +704,7 @@ h3 {
     }
 
     .solution-card,
-    \
- .pricing-card {
+    .pricing-card {
         padding: 30px;
     }
 
@@ -728,3 +726,4 @@ h3 {
         flex-direction: column;
         align-items: center;
     }
+}
