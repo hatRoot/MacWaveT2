@@ -1104,6 +1104,124 @@ h3 {
     line-height: 1.6;
 }
 
+
+/* Acquisition Section */
+.acquisition-section {
+    background-color: #FFFFFF;
+    /* Fondo blanco para coincidir con la imagen */
+    text-align: center;
+}
+
+.acquisition-content {
+    max-width: 900px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.acquisition-image-container {
+    margin-bottom: 40px;
+    width: 100%;
+}
+
+.acquisition-img {
+    max-width: 100%;
+    height: auto;
+    max-height: 400px;
+    /* Limitar altura para que no domine demasiado */
+    object-fit: contain;
+}
+
+.acquisition-text h3 {
+    font-size: 2em;
+    /* Título mediano */
+    margin-bottom: 25px;
+    color: #1A1A1C;
+    /* Texto oscuro para fondo blanco */
+}
+
+.acquisition-text p {
+    font-size: 1.05em;
+    color: #3A3A3C;
+    /* Gris oscuro para texto */
+    line-height: 1.8;
+    margin-bottom: 20px;
+    text-align: justify;
+    /* Opcional: justificado para bloques largos de texto */
+    text-align-last: center;
+    /* Centrar la última línea si se justifica */
+}
+
+/* Features Grid */
+.acquisition-features-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+    margin-top: 40px;
+    margin-bottom: 40px;
+    width: 100%;
+}
+
+.feature-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.feature-img {
+    height: 60px;
+    /* Ajustar según el tamaño real de los iconos */
+    width: auto;
+    margin-bottom: 20px;
+    object-fit: contain;
+}
+
+.feature-title {
+    font-weight: var(--font-weight-bold);
+    color: #1A1A1C;
+    margin-bottom: 15px;
+    font-size: 1.1em;
+}
+
+.feature-desc {
+    font-size: 0.9em;
+    color: #3A3A3C;
+    line-height: 1.5;
+}
+
+/* Apple Services Button */
+.apple-services-btn {
+    background-color: var(--accent-orange);
+    color: white;
+    font-weight: bold;
+    margin-top: 20px;
+    display: inline-block;
+    min-width: 200px;
+    text-align: center;
+}
+
+.apple-services-btn:hover {
+    background-color: #e65c00;
+    /* Un poco más oscuro al hover */
+    transform: translateY(-2px);
+}
+
+@media (max-width: 768px) {
+    .acquisition-text p {
+        text-align: left;
+        /* En móvil mejor alineado a la izquierda */
+        text-align-last: left;
+    }
+
+    .acquisition-features-grid {
+        grid-template-columns: 1fr;
+        /* Apilar en móvil */
+        gap: 40px;
+    }
+}
+
 .next-month-link {
     color: var(--accent-blue);
     font-weight: bold;
