@@ -1,0 +1,730 @@
+/* Variables para colores y tipografía estilo Apple/Tesla premium */
+:root {
+    --primary-bg: #1A1A1C;
+    /* FONDOS DEL CUERPO (Gris Oscuro Original) */
+    --secondary-bg: #2C2C2E;
+    /* Fondo para secciones o tarjetas */
+    --tertiary-bg: #3A3A3C;
+    /* Un gris ligeramente más claro para contraste */
+    --text-primary: #FFFFFF;
+    /* Texto principal blanco */
+    --text-secondary: #E0E0E6;
+    /* Texto secundario gris muy claro */
+    --text-muted: #8E8E93;
+    /* Texto para descripciones o info extra */
+
+    /* VARIABLES DE COLOR DE MARCA NARANJA/BRONCE */
+    --accent-orange: #FF6600;
+    /* Naranja fuerte para CTAs y Nav Hover */
+    --accent-bronze: #C87533;
+    --accent-blue: #0A84FF;
+    --accent-green: #30D158;
+    /* Verde para WhatsApp */
+    --accent-red: #FF453A;
+
+    --border-radius-lg: 12px;
+    --border-radius-md: 8px;
+    --border-radius-sm: 6px;
+
+    --font-family-base: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    --font-weight-light: 300;
+    --font-weight-regular: 400;
+    --font-weight-medium: 500;
+    --font-weight-semibold: 600;
+    --font-weight-bold: 700;
+}
+
+/* Base Global */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: var(--font-family-base);
+    background-color: var(--primary-bg);
+    color: var(--text-secondary);
+    line-height: 1.6;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+a {
+    color: var(--text-secondary);
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+h1,
+h2,
+h3 {
+    color: var(--text-primary);
+    font-weight: var(--font-weight-bold);
+    line-height: 1.2;
+}
+
+h1 {
+    font-size: 3.5em;
+    margin-bottom: 0.5em;
+}
+
+h2 {
+    font-size: 2.5em;
+    margin-bottom: 1em;
+    text-align: center;
+}
+
+h3 {
+    font-size: 1.8em;
+    margin-bottom: 0.5em;
+}
+
+.section-padded {
+    padding: 120px 0;
+}
+
+.section-description {
+    text-align: center;
+    max-width: 700px;
+    margin: 0 auto 3em;
+    font-size: 1.1em;
+    color: var(--text-muted);
+}
+
+/* Header */
+.main-header {
+    background-color: #000000;
+    /* NEGRO PURO para la barra de navegación */
+    border-bottom: none;
+    /* Eliminamos el borde */
+    padding: 15px 0;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    transition: box-shadow 0.3s ease;
+}
+
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* ESTILOS DEL LOGO MULTILÍNEA */
+.logo a.logo-link {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+}
+
+.logo-img {
+    height: 40px;
+    /* Altura del circuito (Ajusta la fuente del texto en proporción) */
+    width: auto;
+    margin-right: 10px;
+}
+
+.logo-text-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    line-height: 1.1;
+    /* Espaciado ajustado */
+}
+
+.logo-brand {
+    /* Mac Wave T2 */
+    font-size: 1.6em;
+    /* Tamaño principal, en proporción al logo de 40px */
+    font-weight: var(--font-weight-bold);
+    color: var(--text-primary) !important;
+    white-space: nowrap;
+}
+
+.logo-subtext {
+    /* Reparaciones y piezas Mac + Para tu dispositivo... */
+    font-size: 0.75em;
+    font-weight: var(--font-weight-regular);
+    color: var(--text-secondary);
+    line-height: 1.2;
+    white-space: nowrap;
+}
+
+.logo-subtext.subtext-2 {
+    /* El texto de "fuera de garantía" es más sutil */
+    font-size: 0.65em;
+    color: var(--text-muted);
+}
+
+/* Navegación */
+.main-nav a {
+    margin-left: 30px;
+    font-weight: var(--font-weight-medium);
+    color: var(--text-secondary);
+    position: relative;
+    padding-bottom: 5px;
+}
+
+.nav-link::after {
+    /* LÍNEA NARANJA AL PASAR EL RATÓN */
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    background-color: var(--accent-orange);
+    left: 50%;
+    bottom: -5px;
+    transform: translateX(-50%);
+    transition: width 0.3s ease;
+}
+
+.nav-link:hover::after {
+    width: 100%;
+}
+
+/* Botones CTA */
+.cta-button {
+    padding: 10px 20px;
+    border-radius: var(--border-radius-lg);
+    font-weight: var(--font-weight-semibold);
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: none;
+}
+
+.cta-button.primary {
+    /* BOTÓN PRIMARIO ES NARANJA */
+    background-color: var(--accent-orange);
+    color: var(--primary-bg);
+}
+
+.cta-button.primary:hover {
+    background-color: #FF7B33;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+.cta-button.secondary {
+    background-color: transparent;
+    border: 2px solid var(--text-secondary);
+    color: var(--text-secondary);
+}
+
+.cta-button.secondary:hover {
+    background-color: var(--tertiary-bg);
+    border-color: var(--tertiary-bg);
+}
+
+.header-cta {
+    margin-left: 20px;
+    background-color: var(--accent-green);
+    /* WhatsApp en verde */
+    color: var(--primary-bg);
+}
+
+.header-cta:hover {
+    background-color: #4CAF50;
+    box-shadow: 0 4px 15px rgba(48, 209, 88, 0.4);
+}
+
+.large-cta {
+    padding: 15px 30px;
+    font-size: 1.1em;
+    margin-top: 40px;
+}
+
+/* Hero Section */
+.hero-section-authority {
+    background-color: var(--primary-bg);
+    padding: 120px 0;
+    /* Ajustado el padding para el layout de dos columnas */
+    text-align: left;
+    /* Cambiado a alineación izquierda */
+    border-bottom: 1px solid var(--secondary-bg);
+}
+
+/* ESTILOS DE LA DIVISIÓN DE CONTENIDO */
+.hero-split-content {
+    display: grid;
+    grid-template-columns: 1fr 1.1fr;
+    /* Columna izquierda (imagen) ligeramente más pequeña que la derecha (texto) */
+    gap: 50px;
+    align-items: center;
+    /* Centrado vertical */
+}
+
+.hero-image-container {
+    text-align: center;
+}
+
+.hero-img {
+    max-width: 100%;
+    height: auto;
+    border-radius: var(--border-radius-lg);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+}
+
+.hero-content-text {
+    padding-left: 10px;
+}
+
+/* NUEVOS ESTILOS DE LA AGRUPACIÓN DE CERTIFICACIONES */
+.certification-group {
+    display: flex;
+    /* Para poner el logo y el texto lado a lado */
+    align-items: center;
+    /* CENTRADO VERTICAL: La manzana y el texto se alinean al medio */
+    color: var(--text-primary);
+    /* Blanco para todo el grupo */
+    margin-bottom: 60px;
+    /* Espacio antes del H1 */
+    line-height: 1;
+    /* Para controlar el espaciado vertical general */
+}
+
+.cert-apple-logo {
+    font-size: 3.5em;
+    font-weight: var(--font-weight-bold);
+    margin-right: 30px;
+    /* <--- CAMBIO AQUÍ: Más espacio a la derecha de la manzana */
+    padding-top: 0;
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    transform: translateY(-15px);
+}
+
+.cert-text-lines {
+    /* Contenedor de las dos líneas */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    /* Centrar el texto en su contenedor */
+    font-size: 0.99em;
+    line-height: 0.1;
+    /* MUY JUNTOS */
+    /*margin-left: 10px;
+    /* Mueve el bloque a la derecha */
+}
+
+.
+
+/*Estilos de las líneas individuales (LIMPIEZA DE CONFLICTOS) */
+.cert-line-1,
+.cert-line-2 {
+    /* Propiedades que aplican a ambas, sin la propiedad 'color' */
+    font-weight: var(--font-weight-light);
+    margin: 0;
+    padding: 0;
+    white-space: nowrap;
+    letter-spacing: 0.5px;
+    text-align: left;
+}
+
+/* ---------------------------------------------------- */
+/* 1. ESTILO DE LA LÍNEA BLANCA (ACSP...) - [La línea que va ABAJO en el HTML] */
+/* ---------------------------------------------------- */
+.cert-line-1 {
+    /* La línea de ACSP se fuerza a blanco/color primario */
+    color: var(--text-primary);
+}
+
+/* ---------------------------------------------------- */
+/* 2. ESTILO DE LA LÍNEA NARANJA (Apple consulting...) - [La línea que va ARRIBA en el HTML] */
+/* ---------------------------------------------------- */
+.cert-line-2 {
+    /* ESTO APLICA EL COLOR NARANJA SOLAMENTE A ESTA LÍNEA */
+    color: var(--accent-orange)Apple consulting system engineer !important;
+    /* SOLUCIÓN DEFINITIVA: Forzar el color naranja */
+
+    /* Espacio entre letras y desplazamiento */
+    letter-spacing: 1.5px;
+
+    /* Combina la inclinación (skew) y el desplazamiento */
+    transform: skewX(-10deg) translateX(20px);
+    transform-origin: left center;
+}
+
+/* AJUSTES DE TEXTO DENTRO DE LA NUEVA COLUMNA */
+.hero-content-text h1 {
+    font-size: 3em;
+    /* Título ligeramente más pequeño para el espacio */
+    margin-bottom: 0.3em;
+    max-width: none;
+    margin-left: 0;
+    margin-right: 0;
+    text-align: left;
+}
+
+.hero-content-text p {
+    text-align: left;
+    /* Aseguramos que el párrafo principal esté a la izquierda */
+    max-width: none;
+    margin-left: 0;
+    margin-right: 0;
+    margin-bottom: 30px;
+    color: var(--text-secondary);
+    /* Asegurar color */
+}
+
+.hero-actions {
+    display: flex;
+    justify-content: flex-start;
+    /* Alineamos los botones a la izquierda */
+    gap: 20px;
+    margin-top: 20px;
+}
+
+
+/* Solution Grid Section */
+.solution-grid-section {
+    background-color: var(--secondary-bg);
+}
+
+.grid-3-cols {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 30px;
+    margin-top: 50px;
+}
+
+.solution-card {
+    background-color: var(--primary-bg);
+    padding: 40px;
+    border-radius: var(--border-radius-lg);
+    border: 1px solid var(--tertiary-bg);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.solution-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+}
+
+.card-icon {
+    width: 60px;
+    height: auto;
+    margin-bottom: 20px;
+    opacity: 0.8;
+}
+
+.solution-card h3 {
+    font-weight: var(--font-weight-semibold);
+    margin-bottom: 15px;
+}
+
+.solution-card p {
+    color: var(--text-muted);
+}
+
+/* Pricing Section */
+.pricing-section {
+    background-color: var(--primary-bg);
+}
+
+.pricing-grid {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    margin-top: 50px;
+}
+
+.pricing-card {
+    background-color: var(--secondary-bg);
+    padding: 40px;
+    border-radius: var(--border-radius-lg);
+    width: 330px;
+    text-align: center;
+    border: 1px solid var(--tertiary-bg);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.pricing-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5);
+}
+
+.pricing-card h3 {
+    font-size: 1.6em;
+    color: var(--text-primary);
+}
+
+.price-tag {
+    font-size: 1.1em;
+    color: var(--text-muted);
+    margin-bottom: 30px;
+}
+
+.price-tag span {
+    font-size: 3em;
+    font-weight: var(--font-weight-bold);
+    color: var(--accent-orange);
+    display: block;
+    line-height: 1;
+}
+
+.pricing-card ul {
+    list-style: none;
+    text-align: left;
+    margin-bottom: 30px;
+    padding-left: 0;
+}
+
+.pricing-card li {
+    padding: 10px 0;
+    border-bottom: 1px dashed var(--tertiary-bg);
+    color: var(--text-secondary);
+    font-size: 0.95em;
+}
+
+.pricing-card li:last-child {
+    border-bottom: none;
+}
+
+.pricing-card.featured {
+    background-color: var(--tertiary-bg);
+    border-color: var(--accent-orange);
+    transform: translateY(-20px);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
+}
+
+.pricing-card.featured .price-tag span {
+    color: var(--accent-orange);
+}
+
+.card-cta {
+    width: 100%;
+    margin-top: 20px;
+}
+
+.card-cta.primary {
+    /* Botón destacado */
+    background-color: var(--accent-orange);
+}
+
+/* Contact CTA Section */
+.cta-contact-section {
+    background-color: var(--secondary-bg);
+    border-top: 1px solid var(--tertiary-bg);
+}
+
+/* Footer */
+.main-footer {
+    background-color: var(--primary-bg);
+    color: var(--text-secondary);
+    padding-top: 60px;
+    border-top: 1px solid var(--secondary-bg);
+}
+
+.footer-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 40px;
+    padding-bottom: 40px;
+    border-bottom: 1px solid var(--secondary-bg);
+}
+
+.footer-col h4 {
+    color: var(--text-primary);
+    margin-bottom: 20px;
+    font-weight: var(--font-weight-semibold);
+    font-size: 1.1em;
+}
+
+.footer-col ul {
+    list-style: none;
+    padding: 0;
+}
+
+.footer-col li {
+    margin-bottom: 10px;
+}
+
+.brand-info .tagline {
+    font-style: italic;
+    color: var(--text-muted);
+    margin-top: 5px;
+}
+
+.social-links {
+    display: flex;
+    gap: 15px;
+}
+
+.social-links a {
+    color: var(--text-secondary);
+}
+
+.social-links a:hover {
+    color: var(--accent-orange);
+}
+
+.footer-bottom {
+    text-align: center;
+    padding: 20px 0;
+    font-size: 0.85em;
+    color: var(--text-muted);
+}
+
+/* Media Queries para Responsiveness */
+@media (max-width: 992px) {
+    .main-nav {
+        display: none;
+    }
+
+    .header-content {
+        justify-content: space-between;
+    }
+
+    .hero-section-authority {
+        padding: 100px 0;
+    }
+
+    /* REVERTIMOS EL HERO SPLIT A UNA SOLA COLUMNA EN MÓVIL */
+    .hero-split-content {
+        grid-template-columns: 1fr;
+    }
+
+    .hero-image-container {
+        order: 1;
+        /* Imagen primero en móvil */
+        margin-bottom: 40px;
+    }
+
+    .hero-content-text {
+        order: 2;
+        /* Texto después en móvil */
+        padding-left: 0;
+        text-align: center;
+        /* Centrar todo el texto en móvil */
+    }
+
+    /* CENTRADO DE LA AGRUPACIÓN DE CERTIFICACIONES EN MÓVIL */
+    .certification-group {
+        justify-content: center;
+        /* Centrar el grupo de logo y texto */
+    }
+
+    .cert-apple-logo {
+        font-size: 3em;
+        /* Ajuste para el logo de Apple en tablets */
+    }
+
+    .cert-text-lines {
+        font-size: 1em;
+    }
+
+
+    .hero-content-text h1,
+    .hero-content-text p {
+        text-align: center;
+        /* Centrar H1 y párrafos */
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .hero-actions {
+        justify-content: center;
+        /* Centrar botones */
+        flex-direction: column;
+    }
+
+    .hero-actions a {
+        width: 100%;
+    }
+
+
+    h1 {
+        font-size: 3em;
+    }
+
+    .pricing-grid {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .pricing-card {
+        width: 80%;
+    }
+
+    .footer-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .header-content {
+        flex-wrap: wrap;
+        gap: 15px;
+    }
+
+    .header-cta {
+        order: 3;
+    }
+
+    .logo {
+        order: 1;
+        margin-right: auto;
+    }
+
+    h1 {
+        font-size: 2.5em;
+        /* Reducido un poco más el h1 en móvil */
+    }
+
+    .cert-apple-logo {
+        font-size: 2.5em;
+        /* Ajuste más pequeño para el logo de Apple en móvil */
+    }
+
+    .cert-text-lines {
+        font-size: 0.9em;
+    }
+
+
+    h2 {
+        font-size: 2em;
+    }
+
+    h3 {
+        font-size: 1.5em;
+    }
+
+    .hero-section-authority p {
+        font-size: 1.1em;
+    }
+
+    .section-padded {
+        padding: 80px 0;
+    }
+
+    .solution-card,
+    \
+ .pricing-card {
+        padding: 30px;
+    }
+
+    .pricing-card.featured {
+        transform: translateY(0);
+    }
+
+    .pricing-card.featured:hover {
+        transform: translateY(-5px);
+    }
+
+    .footer-grid {
+        grid-template-columns: 1fr;
+        text-align: center;
+    }
+
+    .footer-col.brand-info {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
