@@ -593,10 +593,11 @@ h3 {
 
 /* Footer */
 .main-footer {
-    background-color: var(--primary-bg);
+    background-color: #000000;
+    /* Negro puro para coincidir con el header */
     color: var(--text-secondary);
     padding-top: 60px;
-    border-top: 1px solid var(--secondary-bg);
+    border-top: 1px solid #333;
 }
 
 .footer-grid {
@@ -1055,6 +1056,26 @@ h3 {
     flex-direction: column;
 }
 
+.security-header {
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+.security-header h2 {
+    color: var(--accent-orange);
+    /* Naranja solicitado */
+    font-size: 3em;
+    margin-bottom: 15px;
+    line-height: 1.1;
+}
+
+.security-header p {
+    color: #FFFFFF;
+    /* Blanco solicitado */
+    font-size: 1.8em;
+    font-weight: 400;
+}
+
 .info-card:hover {
     transform: translateY(-5px);
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
@@ -1219,6 +1240,267 @@ h3 {
         grid-template-columns: 1fr;
         /* Apilar en móvil */
         gap: 40px;
+    }
+}
+
+
+/* Standards Section */
+.standards-section {
+    background-color: #F5F5F7;
+    /* Gris claro Apple */
+    overflow: hidden;
+    /* Para contener imágenes si se salen */
+}
+
+.standards-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: center;
+}
+
+.standards-images {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+    /* Espacio entre imágenes */
+    height: auto;
+    padding: 40px 0;
+}
+
+.std-img {
+    object-fit: contain;
+    transition: transform 0.3s ease;
+}
+
+.img-large {
+    width: 360px;
+    /* Triple del tamaño de la pequeña */
+    height: auto;
+    max-height: 360px;
+}
+
+.img-small {
+    width: 120px;
+    /* Base para la proporción 1:3 */
+    height: auto;
+    max-height: 120px;
+}
+
+.std-img:hover {
+    transform: scale(1.05);
+}
+
+.badge-ios {
+    display: inline-block;
+    background-color: #FF2D55;
+    /* Color rosa/rojo Apple para iOS */
+    color: white;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 0.85em;
+    font-weight: 600;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.standards-content h2 {
+    font-size: 2.5em;
+    color: #1D1D1F;
+    /* Negro suave Apple */
+    margin-bottom: 20px;
+    line-height: 1.1;
+}
+
+.standards-content p {
+    font-size: 1.1em;
+    color: #1D1D1F;
+    /* CORRECCIÓN: Texto más negro/oscuro */
+    line-height: 1.6;
+}
+
+/* Configure Mac Section */
+.configure-mac-section {
+    background-color: #FFFFFF;
+    /* Fondo blanco */
+}
+
+.configure-mac-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: center;
+}
+
+.configure-mac-content h2 {
+    font-size: 2.5em;
+    color: #1D1D1F;
+    /* Negro suave Apple */
+    margin-bottom: 20px;
+    line-height: 1.1;
+}
+
+.configure-mac-content p {
+    font-size: 1em;
+    /* Fuente más pequeñita */
+    color: #000000;
+    /* Negro puro como solicitado */
+    line-height: 1.6;
+}
+
+.configure-mac-image {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.imac-img {
+    max-width: 100%;
+    height: auto;
+    object-fit: contain;
+}
+
+@media (max-width: 900px) {
+    .configure-mac-grid {
+        grid-template-columns: 1fr;
+        text-align: center;
+        gap: 40px;
+    }
+
+    .configure-mac-grid .configure-mac-content {
+        order: 1;
+        /* Texto primero en móvil */
+    }
+
+    .configure-mac-grid .configure-mac-image {
+        order: 2;
+    }
+}
+
+/* Employee Access Section */
+.employee-access-section {
+    background-color: #d6d6d6;
+    /* Gris extraído de la imagen iphone.png */
+}
+
+.employee-access-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: center;
+}
+
+.employee-access-content h2 {
+    font-size: 2.5em;
+    color: #1D1D1F;
+    /* Negro suave Apple */
+    margin-bottom: 20px;
+    line-height: 1.1;
+}
+
+.employee-access-content p {
+    font-size: 1em;
+    /* Fuente pequeña */
+    color: #000000;
+    /* Negro puro */
+    line-height: 1.6;
+}
+
+.employee-access-image {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.iphone-img {
+    max-width: 100%;
+    height: auto;
+    max-height: 800px;
+    /* Aumentado 80% aprox (de 450px) */
+    object-fit: contain;
+    transform: scale(1.2);
+    /* Un extra de zoom para asegurar impacto */
+}
+
+@media (max-width: 900px) {
+    .employee-access-grid {
+        grid-template-columns: 1fr;
+        text-align: center;
+        gap: 40px;
+    }
+}
+
+/* Contact Parallax Section */
+.contact-parallax-section {
+    background-image: url('./images/computadoras.png');
+    background-attachment: fixed;
+    /* Efecto Parallax */
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 400px;
+    /* Altura suficiente para el efecto */
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.parallax-overlay {
+    background-color: rgba(0, 0, 0, 0.5);
+    /* Capa oscura para legibilidad */
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.parallax-content {
+    text-align: center;
+    color: white;
+    padding: 20px;
+}
+
+.parallax-content h2 {
+    font-size: 3em;
+    margin-bottom: 15px;
+    font-weight: bold;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.parallax-content p {
+    font-size: 1.5em;
+    font-weight: 300;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+@media (max-width: 768px) {
+    .contact-parallax-section {
+        background-attachment: scroll;
+        /* Desactivar parallax en móviles por rendimiento/compatibilidad */
+    }
+}
+
+@media (max-width: 900px) {
+    .standards-grid {
+        grid-template-columns: 1fr;
+        text-align: center;
+        gap: 40px;
+    }
+
+    .standards-images {
+        height: 300px;
+    }
+
+    .img-mac {
+        transform: translateX(-10px);
+    }
+
+    .img-ios {
+        transform: translateX(30px) translateY(10px);
     }
 }
 
