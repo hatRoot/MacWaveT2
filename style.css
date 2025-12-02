@@ -1836,6 +1836,15 @@ h3 {
     display: block;
 }
 
+/* Fix for illustration/logo type images */
+.service-image img.contain-img {
+    object-fit: cover;
+    object-position: top;
+    /* Show top content of image */
+    padding: 0;
+    background-color: transparent;
+}
+
 .service-content {
     flex: 1;
     padding: 40px 60px;
