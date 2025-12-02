@@ -1408,6 +1408,149 @@ h3 {
     line-height: 1.6;
 }
 
+/* --- Service Modes Section --- */
+.service-modes-section {
+    padding: 80px 0;
+    background-color: var(--tertiary-bg);
+    /* Alternating sequence */
+}
+
+.modes-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 30px;
+    margin-top: 40px;
+}
+
+.mode-card {
+    background: #1c1c1e;
+    /* Dark Apple Gray */
+    border-radius: 20px;
+    padding: 40px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    /* Darker shadow for depth */
+    transition: transform 0.3s ease;
+    color: #f5f5f7;
+    /* Light text base */
+    border: 1px solid #333;
+    /* Subtle border for definition */
+}
+
+.mode-card:hover {
+    transform: translateY(-5px);
+}
+
+.mode-card h3 {
+    font-size: 1.8rem;
+    margin-bottom: 15px;
+    color: #FFFFFF;
+    /* White text for dark bg */
+    font-weight: 700;
+}
+
+.mode-features {
+    list-style: none;
+    padding: 0;
+    margin: 20px 0 30px 0;
+}
+
+.mode-features li {
+    margin-bottom: 10px;
+    color: #E0E0E0;
+    /* Light gray for readability on dark */
+    font-size: 1.1rem;
+    font-weight: 400;
+}
+
+.mode-features li::marker {
+    color: var(--accent-green);
+    /* Green checkmarks still pop */
+    font-weight: bold;
+}
+
+/* --- Success Stories Section --- */
+.success-stories-section {
+    padding: 80px 0;
+    background-color: var(--secondary-bg);
+    /* Alternating sequence */
+}
+
+.video-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 40px;
+    margin-top: 40px;
+}
+
+.video-card {
+    cursor: pointer;
+}
+
+.video-thumbnail {
+    position: relative;
+    border-radius: 15px;
+    overflow: hidden;
+    margin-bottom: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.video-thumbnail img {
+    width: 100%;
+    display: block;
+    transition: transform 0.3s ease;
+}
+
+.video-thumbnail:hover img {
+    transform: scale(1.05);
+}
+
+.play-button {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 60px;
+    height: 60px;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    color: var(--accent-color);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+}
+
+.video-card:hover .play-button {
+    background: var(--accent-color);
+    color: #fff;
+    transform: translate(-50%, -50%) scale(1.1);
+}
+
+.video-card h4 {
+    font-size: 1.4rem;
+    margin-bottom: 5px;
+    color: var(--text-color);
+}
+
+.video-card p {
+    color: #FFFFFF;
+}
+
+/* Responsive adjustments for new sections */
+@media (max-width: 768px) {
+
+    .modes-grid,
+    .video-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .mode-card {
+        padding: 30px;
+    }
+}
+
 .employee-access-image {
     display: flex;
     justify-content: center;
