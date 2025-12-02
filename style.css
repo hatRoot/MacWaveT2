@@ -1795,3 +1795,108 @@ h3 {
         grid-template-columns: 1fr;
     }
 }
+
+/* --- Stacked Services Section --- */
+.services-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    /* No gap needed as rows have padding/bg */
+    margin-top: 40px;
+}
+
+.service-row {
+    display: flex;
+    align-items: center;
+    background-color: #fff;
+    overflow: hidden;
+    border-radius: 20px;
+    /* Optional: rounded corners for each block */
+    margin-bottom: 30px;
+    /* Space between blocks */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+}
+
+/* Alternating Backgrounds */
+.service-row:nth-child(even) {
+    background-color: #F5F5F7;
+    /* Apple Light Gray */
+}
+
+.service-image {
+    flex: 1;
+    height: 400px;
+    /* Fixed height for consistency */
+}
+
+.service-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.service-content {
+    flex: 1;
+    padding: 40px 60px;
+}
+
+.service-content h3 {
+    font-size: 2.5rem;
+    color: #000000;
+    /* Black titles */
+    margin-bottom: 10px;
+    font-weight: 700;
+}
+
+.service-content h4 {
+    font-size: 1.5rem;
+    color: var(--accent-orange);
+    margin-bottom: 20px;
+    font-weight: 500;
+}
+
+.service-content p {
+    font-size: 1.1rem;
+    color: #666;
+    margin-bottom: 30px;
+    line-height: 1.6;
+}
+
+.service-icons {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.service-icons span {
+    background: rgba(0, 0, 0, 0.05);
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #333;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* Responsive for Stacked Services */
+@media (max-width: 900px) {
+    .service-row {
+        flex-direction: column;
+    }
+
+    .service-image {
+        width: 100%;
+        height: 250px;
+    }
+
+    .service-content {
+        padding: 30px;
+    }
+
+    .service-content h3 {
+        font-size: 2rem;
+    }
+}
