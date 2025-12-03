@@ -1635,15 +1635,26 @@ h3 {
     }
 
     .standards-images {
-        height: 300px;
+        height: auto;
+        /* Allow height to adjust */
+        flex-wrap: wrap;
+        /* Allow wrapping if needed */
+        padding: 20px 0;
     }
 
-    .img-mac {
-        transform: translateX(-10px);
+    .img-large {
+        width: 100%;
+        /* Full width on mobile */
+        max-width: 280px;
+        /* Limit max width */
+        height: auto;
     }
 
-    .img-ios {
-        transform: translateX(30px) translateY(10px);
+    .img-small {
+        width: 30%;
+        /* Proportional width */
+        max-width: 100px;
+        height: auto;
     }
 }
 
