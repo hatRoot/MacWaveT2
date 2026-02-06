@@ -1,4 +1,10 @@
 User-agent: *
 Allow: /
+Disallow: /admin/
+Disallow: /includes/
+Disallow: /tmp/
+
+User-agent: Googlebot
+Allow: /
 
 Sitemap: https://www.macwave.com.mx/sitemap.xml
