@@ -987,14 +987,13 @@ h3 {
 .section-subtitle {
     display: block;
     color: var(--accent-orange);
-    font-size: 2.8em;
-    /* Aumentado masivamente para ser "vistoso" */
-    font-weight: 900;
+    font-size: 1.5rem;
+    /* Reducido a tamaño "mediano vistoso" */
+    font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: -1px;
-    /* Look más moderno Apple */
-    margin-bottom: 30px;
-    line-height: 1;
+    letter-spacing: 1px;
+    margin-bottom: 15px;
+    line-height: 1.2;
 }
 
 .compatibility-content h2 {
@@ -1018,6 +1017,14 @@ h3 {
 }
 
 @media (max-width: 992px) {
+    .section-subtitle {
+        font-size: 1.3rem;
+    }
+
+    .card-subtitle {
+        font-size: 1.1rem;
+    }
+
     .compatibility-split {
         grid-template-columns: 1fr;
     }
@@ -1109,13 +1116,13 @@ h3 {
 .card-subtitle {
     display: block;
     color: var(--accent-orange);
-    font-size: 2.2em;
-    /* Mucho más grande */
-    font-weight: 800;
+    font-size: 1.2rem;
+    /* Tamaño mediano equilibrado */
+    font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: -0.5px;
-    margin-bottom: 15px;
-    line-height: 1;
+    letter-spacing: 0.5px;
+    margin-bottom: 10px;
+    line-height: 1.2;
 }
 
 .info-card h3 {
