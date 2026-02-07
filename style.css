@@ -602,10 +602,9 @@ h3 {
 
 .footer-grid {
     display: grid;
-    grid-template-columns: 2fr 1fr 1fr 1fr;
+    grid-template-columns: 1.5fr 1fr 1fr 1fr; /* Proporción más equilibrada */
     gap: 40px;
-    padding-bottom: 40px;
-    border-bottom: 1px solid var(--secondary-bg);
+    padding-bottom: 60px; /* Más espacio */
 }
 
 .footer-col h4 {
@@ -987,11 +986,11 @@ h3 {
 .section-subtitle {
     display: block;
     color: var(--accent-orange);
-    font-size: 0.9em;
-    font-weight: bold;
+    font-size: 1.25em; /* Aumentado */
+    font-weight: 800; /* Más grueso */
     text-transform: uppercase;
-    letter-spacing: 1px;
-    margin-bottom: 15px;
+    letter-spacing: 2px; /* Más vistoso */
+    margin-bottom: 20px;
 }
 
 .compatibility-content h2 {
@@ -1106,11 +1105,11 @@ h3 {
 .card-subtitle {
     display: block;
     color: var(--accent-orange);
-    /* CORRECCIÓN: Naranja solicitado */
-    font-size: 0.8em;
-    font-weight: bold;
+    font-size: 1.1em; /* Aumentado */
+    font-weight: 700;
     text-transform: uppercase;
-    margin-bottom: 10px;
+    letter-spacing: 1.5px;
+    margin-bottom: 12px;
 }
 
 .info-card h3 {
