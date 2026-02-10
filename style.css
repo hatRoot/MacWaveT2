@@ -351,13 +351,53 @@ h3 {
     letter-spacing: 0.5px;
 }
 
-.hero-banner-promo span {
-    background: white;
-    color: #FF3300;
-    padding: 3px 12px;
-    border-radius: 20px;
-    font-size: 0.75rem;
-    font-weight: 900;
+/* Botones Neón */
+.neon-blue {
+    background-color: #0071e3 !important;
+    color: white !important;
+    box-shadow: 0 0 10px rgba(0, 113, 227, 0.5), 0 0 20px rgba(0, 113, 227, 0.3) !important;
+    border: 1px solid rgba(255, 255, 255, 0.4) !important;
+    text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+    animation: neon-pulse-blue 2s infinite ease-in-out;
+}
+
+.neon-orange {
+    background-color: #FF7B33 !important;
+    color: white !important;
+    box-shadow: 0 0 10px rgba(255, 123, 51, 0.5), 0 0 20px rgba(255, 123, 51, 0.3) !important;
+    border: 1px solid rgba(255, 255, 255, 0.4) !important;
+    text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+    animation: neon-pulse-orange 2s infinite ease-in-out;
+}
+
+@keyframes neon-pulse-blue {
+    0% {
+        box-shadow: 0 0 10px rgba(0, 113, 227, 0.5), 0 0 20px rgba(0, 113, 227, 0.3);
+    }
+
+    50% {
+        box-shadow: 0 0 25px rgba(0, 113, 227, 0.8), 0 0 40px rgba(0, 113, 227, 0.5);
+        transform: scale(1.02);
+    }
+
+    100% {
+        box-shadow: 0 0 10px rgba(0, 113, 227, 0.5), 0 0 20px rgba(0, 113, 227, 0.3);
+    }
+}
+
+@keyframes neon-pulse-orange {
+    0% {
+        box-shadow: 0 0 10px rgba(255, 123, 51, 0.5), 0 0 20px rgba(255, 123, 51, 0.3);
+    }
+
+    50% {
+        box-shadow: 0 0 25px rgba(255, 123, 51, 0.8), 0 0 40px rgba(255, 123, 51, 0.5);
+        transform: scale(1.02);
+    }
+
+    100% {
+        box-shadow: 0 0 10px rgba(255, 123, 51, 0.5), 0 0 20px rgba(255, 123, 51, 0.3);
+    }
 }
 
 /* NUEVOS ESTILOS DE LA AGRUPACIÓN DE CERTIFICACIONES */
