@@ -2354,3 +2354,71 @@ h3 {
         text-align: center;
     }
 }
+
+/* Software Licenses Section */
+.software-section {
+    background-color: #f8f9fa;
+    padding: 80px 0;
+}
+
+.software-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 30px;
+    margin-top: 40px;
+}
+
+.software-card {
+    background: white;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+    border: 1px solid #eee;
+    transition: all 0.3s ease;
+}
+
+.software-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+}
+
+.software-card h3 {
+    font-size: 1.4rem;
+    color: #222;
+    margin-bottom: 25px;
+    padding-bottom: 12px;
+    border-bottom: 3px solid var(--accent-color);
+}
+
+.software-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.software-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.95rem;
+    color: #555;
+}
+
+.software-price {
+    font-weight: 800;
+    color: var(--primary-color);
+    background: rgba(var(--primary-rgb), 0.1);
+    padding: 4px 10px;
+    border-radius: 6px;
+}
+
+.software-badge {
+    background: #FFD700;
+    color: #000;
+    font-size: 0.7rem;
+    font-weight: 700;
+    padding: 2px 6px;
+    border-radius: 4px;
+    margin-left: 5px;
+    text-transform: uppercase;
+}
