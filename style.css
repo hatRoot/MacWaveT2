@@ -1145,6 +1145,23 @@ h3 {
     background-color: #f5f5f7;
     /* Apple Light Gray to contrast with dark/white sections */
     border-bottom: 1px solid var(--tertiary-bg);
+    color: #1d1d1f;
+}
+
+.opencore-section h2 {
+    color: #1d1d1f;
+}
+
+.opencore-section p {
+    color: #333;
+}
+
+.opencore-section .section-subtitle {
+    color: var(--accent-orange);
+}
+
+.opencore-section ul li {
+    color: #333 !important;
 }
 
 
