@@ -2178,3 +2178,58 @@ h3 {
         overflow-y: scroll;
     }
 }
+
+/* =========================================
+   SEO Footer Styles (New Addition)
+   ========================================= */
+.seo-footer-block {
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+.seo-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 40px;
+    padding-bottom: 30px;
+    border-bottom: 1px solid #222;
+}
+
+.seo-column h4 {
+    color: #888;
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+}
+
+.seo-column ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.seo-column ul li {
+    margin-bottom: 12px;
+}
+
+.seo-column ul li a {
+    color: #666;
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+    display: block;
+}
+
+.seo-column ul li a:hover {
+    color: var(--accent-blue);
+    transform: translateX(5px);
+}
+
+@media (max-width: 768px) {
+    .seo-grid {
+        grid-template-columns: 1fr;
+        gap: 30px;
+        text-align: center;
+    }
+}
