@@ -2118,3 +2118,37 @@ h3 {
         padding-right: 20px;
     }
 }
+/* --- Mobile / iPhone Optimization (Urgent) --- */
+@media (max-width: 480px) {
+    /* Larger Touch Targets for iPhone */
+    .cta-button {
+        padding: 16px 32px !important;
+        font-size: 1.1rem !important;
+        width: 100%;
+        display: block;
+        box-sizing: border-box;
+        margin-bottom: 10px;
+    }
+
+    /* Better Spacing */
+    .section-padded {
+        padding: 50px 0 !important;
+    }
+
+    /* Typography Adjustments */
+    .hero-content-text h1 {
+        font-size: 2.2rem !important;
+        line-height: 1.2;
+    }
+
+    .section-description {
+        font-size: 1rem !important;
+        padding: 0 10px;
+    }
+
+    /* Adjust Calendar Modal for Mobile */
+    .modal-container {
+        height: 90vh;
+        overflow-y: scroll;
+    }
+}
