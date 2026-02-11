@@ -2355,70 +2355,139 @@ h3 {
     }
 }
 
-/* Software Licenses Section */
+/* Software Licenses Section - Premium Satin Redesign */
 .software-section {
-    background-color: #f8f9fa;
-    padding: 80px 0;
+    background: linear-gradient(135deg, #f0f2f5 0%, #ffffff 100%);
+    padding: 100px 0;
 }
 
 .software-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 30px;
-    margin-top: 40px;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 40px;
+    margin-top: 60px;
 }
 
 .software-card {
-    background: white;
-    padding: 30px;
-    border-radius: 15px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
-    border: 1px solid #eee;
-    transition: all 0.3s ease;
+    background: #fff;
+    padding: 40px 30px;
+    border-radius: 24px;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    border: none;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+}
+
+.software-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 6px;
+    height: 100%;
 }
 
 .software-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+    transform: translateY(-15px);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
 }
 
+/* Category Colors */
+.software-card.antivirus::before {
+    background: #990000;
+}
+
+/* Rojo Escarlata */
+.software-card.antivirus h3 {
+    color: #990000;
+}
+
+.software-card.office::before {
+    background: #4B0082;
+}
+
+/* Azul Indigo */
+.software-card.office h3 {
+    color: #4B0082;
+}
+
+.software-card.windows::before {
+    background: #FFD700;
+}
+
+/* Amarillo Chingon */
+.software-card.windows h3 {
+    color: #8B7500;
+}
+
+/* Darker yellow for text legibility */
+
+.software-card.others::before {
+    background: #008000;
+}
+
+/* Verde Chido */
+.software-card.others h3 {
+    color: #008000;
+}
+
+/* Satin/Glassy Header Effect */
 .software-card h3 {
-    font-size: 1.4rem;
-    color: #222;
-    margin-bottom: 25px;
-    padding-bottom: 12px;
-    border-bottom: 3px solid var(--accent-color);
+    font-size: 1.6rem;
+    font-weight: 800;
+    margin-bottom: 30px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
 }
 
 .software-list {
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: 20px;
 }
 
 .software-item {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    padding: 15px;
+    background: #fdfdfd;
+    border-radius: 12px;
+    border: 1px solid #f0f0f0;
+    transition: all 0.3s ease;
+}
+
+.software-item:hover {
+    background: #f5f5f5;
+    transform: scale(1.02);
+}
+
+.software-name {
+    font-weight: 600;
+    color: #333;
     font-size: 0.95rem;
-    color: #555;
 }
 
 .software-price {
-    font-weight: 800;
-    color: var(--primary-color);
-    background: rgba(var(--primary-rgb), 0.1);
-    padding: 4px 10px;
-    border-radius: 6px;
+    font-weight: 900;
+    font-size: 1.1rem;
+    color: #222;
+    padding: 5px 12px;
+    border-radius: 8px;
+    background: rgba(0, 0, 0, 0.05);
 }
 
 .software-badge {
-    background: #FFD700;
+    background: linear-gradient(45deg, #FFD700, #FFA500);
     color: #000;
-    font-size: 0.7rem;
-    font-weight: 700;
-    padding: 2px 6px;
-    border-radius: 4px;
-    margin-left: 5px;
+    font-size: 0.65rem;
+    font-weight: 800;
+    padding: 4px 8px;
+    border-radius: 20px;
     text-transform: uppercase;
+    box-shadow: 0 4px 10px rgba(255, 215, 0, 0.3);
 }
