@@ -2356,188 +2356,224 @@ h3 {
 }
 
 
-/* Software Licenses Section - DASHBOARD STYLE */
+/* Software Licenses Section - ULTRA MODERN GLASS & NEON */
 .software-section {
-    background: #0d1117;
+    background: radial-gradient(circle at 50% 0%, #1a1a1e 0%, #0d1117 100%);
     padding: 120px 0;
     color: white;
+    overflow: hidden;
 }
 
 .software-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-    gap: 30px;
-    margin-top: 60px;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 40px;
+    margin-top: 80px;
 }
 
-.dashboard-card {
-    background: #1c1c1e;
-    border-radius: 24px;
-    overflow: hidden;
+.modern-software-card {
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(25px) saturate(180%);
+    -webkit-backdrop-filter: blur(25px) saturate(180%);
+    border-radius: 30px;
+    padding: 0;
     position: relative;
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    transition: transform 0.4s ease, box-shadow 0.4s ease;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+    display: flex;
+    flex-direction: column;
 }
 
-.dashboard-card:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
+.modern-software-card:hover {
+    transform: translateY(-15px) scale(1.02);
+    border-color: rgba(255, 255, 255, 0.3);
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6);
 }
 
-.card-header {
+/* Specific Glow Accents */
+.modern-software-card.antivirus::before {
+    content: "";
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    border-radius: 32px;
+    background: linear-gradient(135deg, rgba(255, 69, 0, 0.4), transparent 40%);
+    z-index: -1;
+    opacity: 0;
+    transition: 0.6s;
+}
+
+.modern-software-card.office::before {
+    content: "";
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    border-radius: 32px;
+    background: linear-gradient(135deg, rgba(106, 90, 205, 0.4), transparent 40%);
+    z-index: -1;
+    opacity: 0;
+    transition: 0.6s;
+}
+
+.modern-software-card.windows::before {
+    content: "";
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    border-radius: 32px;
+    background: linear-gradient(135deg, rgba(255, 215, 0, 0.4), transparent 40%);
+    z-index: -1;
+    opacity: 0;
+    transition: 0.6s;
+}
+
+.modern-software-card.others::before {
+    content: "";
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    border-radius: 32px;
+    background: linear-gradient(135deg, rgba(0, 255, 127, 0.4), transparent 40%);
+    z-index: -1;
+    opacity: 0;
+    transition: 0.6s;
+}
+
+.modern-software-card:hover::before {
+    opacity: 1;
+}
+
+.card-top {
     padding: 40px 30px;
-    position: relative;
-    z-index: 1;
+    text-align: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
 
-.dashboard-card.antivirus .card-header {
-    background: linear-gradient(135deg, #990000 0%, #660000 100%);
+.card-top i {
+    font-size: 3.5rem;
+    margin-bottom: 20px;
+    display: block;
+    background: linear-gradient(135deg, #fff 0%, rgba(255, 255, 255, 0.4) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
-.dashboard-card.office .card-header {
-    background: linear-gradient(135deg, #4B0082 0%, #310062 100%);
-}
-
-.dashboard-card.windows .card-header {
-    background: linear-gradient(135deg, #FFD700 0%, #B8860B 100%);
-}
-
-.dashboard-card.others .card-header {
-    background: linear-gradient(135deg, #008000 0%, #004d00 100%);
-}
-
-.card-icon-bg {
-    position: absolute;
-    right: 20px;
-    top: 30px;
-    font-size: 5rem;
-    opacity: 0.1;
-    z-index: 0;
-    color: white;
-}
-
-.card-badge {
-    position: absolute;
-    top: 25px;
-    right: 25px;
-    padding: 5px 15px;
-    border-radius: 50px;
-    font-size: 0.75rem;
-    font-weight: 800;
-    text-transform: uppercase;
-    background: rgba(0, 0, 0, 0.3);
-    color: #fff;
-    backdrop-filter: blur(5px);
-    z-index: 2;
-}
-
-.dashboard-card h3 {
-    font-size: 2.2rem;
+.modern-software-card h3 {
+    font-size: 2rem;
     font-weight: 800;
     margin-bottom: 5px;
-    color: white;
-    text-transform: none;
-    letter-spacing: normal;
+    letter-spacing: -0.5px;
 }
 
-.card-subtitle {
-    font-size: 1.1rem;
-    opacity: 0.8;
-    color: white;
-}
-
-.card-body {
-    padding: 30px;
-}
-
-.card-actions {
-    display: flex;
-    gap: 15px;
-    margin-bottom: 30px;
-}
-
-.btn-dashboard {
-    flex: 1;
-    padding: 12px;
-    border-radius: 12px;
-    font-weight: 700;
-    text-align: center;
-    text-decoration: none;
-    font-size: 0.95rem;
-    transition: all 0.3s ease;
-}
-
-.btn-gray {
-    background: #3a3a3c;
-    color: white;
-}
-
-.btn-blue {
-    background: #007aff;
-    color: white;
-}
-
-.btn-dashboard:hover {
-    opacity: 0.9;
-    transform: scale(1.02);
-}
-
-.price-container {
-    background: #2c2c2e;
-    border-radius: 16px;
-    padding: 20px;
-}
-
-.price-title {
+.brand-label {
     font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 2px;
     text-transform: uppercase;
-    color: #8e8e93;
-    letter-spacing: 1px;
-    margin-bottom: 15px;
+    color: #FF4500;
+    /* Orange Accents */
+    margin-bottom: 20px;
     display: block;
 }
 
-.price-list {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
+.card-mid {
+    padding: 30px;
+    flex-grow: 1;
 }
 
-.price-item {
+.software-list-modern {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.software-item-modern {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.03);
 }
 
-.price-label {
-    font-size: 1rem;
-    color: #e5e5ea;
+.software-item-modern:last-child {
+    border-bottom: none;
 }
 
-.price-value {
+.soft-name {
+    font-size: 0.95rem;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.soft-price {
     font-weight: 800;
-    color: #fff;
     font-size: 1.1rem;
+    color: #fff;
 }
 
-.price-value.highlight-red {
-    color: #ff3b30;
+.card-bottom {
+    padding: 30px;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 0 0 30px 30px;
+}
+
+.modern-btn {
+    display: block;
+    width: 100%;
+    padding: 16px;
+    border-radius: 12px;
+    text-align: center;
+    text-decoration: none;
+    font-weight: 800;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: all 0.3s;
+}
+
+.modern-btn.primary {
+    background: #FF4500;
+    color: white;
+    box-shadow: 0 10px 20px rgba(255, 69, 0, 0.3);
+}
+
+.modern-btn.secondary {
+    background: rgba(255, 255, 255, 0.05);
+    color: white;
+    margin-bottom: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.modern-btn:hover {
+    transform: translateY(-2px);
+    filter: brightness(1.1);
 }
 
 .price-value.highlight-green {
     color: #34c759;
+    text-shadow: 0 0 10px rgba(52, 199, 89, 0.3);
 }
 
 .price-value.highlight-gold {
     color: #ffd60a;
+    text-shadow: 0 0 10px rgba(255, 214, 10, 0.3);
 }
 
-.section-subtitle.orange {
-    color: #FF4500 !important;
+.price-value.highlight-red {
+    color: #ff3b30;
+    text-shadow: 0 0 10px rgba(255, 59, 48, 0.3);
 }
 
 @media (max-width: 768px) {
     .software-grid {
         grid-template-columns: 1fr;
+        padding: 0 20px;
     }
 }
