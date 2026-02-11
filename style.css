@@ -1610,33 +1610,120 @@ h3 {
     /* Alternating sequence */
 }
 
+.success-stories-container {
+    background: radial-gradient(circle at top right, rgba(255, 123, 51, 0.05), transparent 40%),
+        radial-gradient(circle at bottom left, rgba(0, 113, 227, 0.05), transparent 40%);
+    padding: 60px 40px;
+    border-radius: 30px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
 .video-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 40px;
-    margin-top: 40px;
+    margin-top: 50px;
 }
 
 .video-card {
-    cursor: pointer;
+    position: relative;
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(10px);
+    border-radius: 24px;
+    padding: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow: hidden;
+}
+
+.video-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(255, 102, 0, 0.1), transparent 60%);
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+
+.video-card:hover {
+    transform: translateY(-10px);
+    border-color: rgba(255, 123, 51, 0.3);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 0 0 20px rgba(255, 123, 51, 0.1);
+}
+
+.video-card:hover::before {
+    opacity: 1;
 }
 
 .video-thumbnail {
     position: relative;
-    border-radius: 15px;
+    border-radius: 18px;
     overflow: hidden;
-    margin-bottom: 15px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    aspect-ratio: 16/9;
 }
 
 .video-thumbnail img {
     width: 100%;
+    height: 100%;
+    object-fit: cover;
     display: block;
-    transition: transform 0.3s ease;
+    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.video-thumbnail:hover img {
-    transform: scale(1.05);
+.video-card:hover .video-thumbnail img {
+    transform: scale(1.1);
+}
+
+/* Story Badges */
+.story-badge {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(5px);
+    color: #fff;
+    padding: 6px 12px;
+    border-radius: 100px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    z-index: 10;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.story-badge::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    background: #00ff00;
+    border-radius: 50%;
+    box-shadow: 0 0 10px #00ff00;
+    animation: pulse-dot 1.5s infinite;
+}
+
+@keyframes pulse-dot {
+    0% {
+        transform: scale(0.95);
+        box-shadow: 0 0 0 0 rgba(0, 255, 0, 0.7);
+    }
+
+    70% {
+        transform: scale(1);
+        box-shadow: 0 0 0 6px rgba(0, 255, 0, 0);
+    }
+
+    100% {
+        transform: scale(0.95);
+        box-shadow: 0 0 0 0 rgba(0, 255, 0, 0);
+    }
 }
 
 .play-button {
@@ -1644,33 +1731,38 @@ h3 {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 60px;
-    height: 60px;
-    background: rgba(255, 255, 255, 0.9);
+    width: 70px;
+    height: 70px;
+    background: rgba(255, 102, 0, 0.9);
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 24px;
-    color: var(--accent-color);
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-    transition: all 0.3s ease;
+    font-size: 28px;
+    color: #fff;
+    box-shadow: 0 0 20px rgba(255, 102, 0, 0.4);
+    transition: all 0.4s ease;
+    z-index: 5;
 }
 
 .video-card:hover .play-button {
-    background: var(--accent-color);
-    color: #fff;
-    transform: translate(-50%, -50%) scale(1.1);
+    background: #fff;
+    color: var(--accent-orange);
+    transform: translate(-50%, -50%) scale(1.15);
+    box-shadow: 0 0 30px rgba(255, 255, 255, 0.4);
 }
 
 .video-card h4 {
-    font-size: 1.4rem;
-    margin-bottom: 5px;
-    color: var(--text-color);
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+    color: #fff;
+    font-weight: 700;
 }
 
 .video-card p {
-    color: #FFFFFF;
+    color: rgba(255, 255, 255, 0.6);
+    line-height: 1.6;
+    font-size: 0.95rem;
 }
 
 /* Responsive adjustments for new sections */
