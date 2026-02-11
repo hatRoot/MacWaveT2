@@ -2228,16 +2228,18 @@ h3 {
     text-decoration: none;
     font-size: 0.8rem;
     /* Smaller, cleaner font */
-    transition: all 0.2s ease;
+    transition: color 0.2s ease;
     display: block;
+    cursor: default;
+    /* No hand pointer */
 }
 
 .seo-column ul li a:hover {
-    color: #fff;
-    /* White on hover (Apple style) */
+    color: #888;
+    /* Slight color change on hover only */
+    text-decoration: none;
+    /* No underline */
     transform: none;
-    /* Removed movement for stability */
-    text-decoration: underline;
 }
 
 .disclaimer-text {
