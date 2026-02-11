@@ -1,4 +1,4 @@
-sonoma y sequolla no se que hisiste YO TE PEDI QUE ESTA SECCION SE VE MUY ABURRIDAname: Deploy to HostGator
+name: Deploy to HostGator
 
 on:
   push:
