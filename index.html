@@ -79,7 +79,195 @@
         content="⚡ Expertos en reparación de Mac en CDMX. Rescatamos equipos 'mojados' o que 'no encienden' (Nivel Componente). ¡Diagnóstico GRATIS + Servicio a Domicilio!">
     <meta name="twitter:image" content="https://macwave.com.mx/images/apple.png">
 
-    <link rel="stylesheet" href="style.css?v=3.0.1">
+    <link rel="stylesheet" href="style.css?v=4.0.0">
+    <style>
+        /* INLINED CRITICAL SOFTWARE CSS */
+        .software-section {
+            background: radial-gradient(circle at 50% 0%, #1a1a1e 0%, #0d1117 100%);
+            padding: 120px 0;
+            color: white;
+            overflow: hidden;
+        }
+
+        .software-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 40px;
+            margin-top: 80px;
+        }
+
+        .modern-software-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(25px) saturate(180%);
+            -webkit-backdrop-filter: blur(25px) saturate(180%);
+            border-radius: 30px;
+            padding: 0;
+            position: relative;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .modern-software-card:hover {
+            transform: translateY(-15px) scale(1.02);
+            border-color: rgba(255, 255, 255, 0.3);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6);
+        }
+
+        .modern-software-card::before {
+            content: "";
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            border-radius: 32px;
+            z-index: -1;
+            opacity: 0;
+            transition: 0.6s;
+        }
+
+        .modern-software-card.antivirus::before {
+            background: linear-gradient(135deg, rgba(255, 69, 0, 0.4), transparent 40%);
+        }
+
+        .modern-software-card.office::before {
+            background: linear-gradient(135deg, rgba(106, 90, 205, 0.4), transparent 40%);
+        }
+
+        .modern-software-card.windows::before {
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.4), transparent 40%);
+        }
+
+        .modern-software-card.others::before {
+            background: linear-gradient(135deg, rgba(0, 255, 127, 0.4), transparent 40%);
+        }
+
+        .modern-software-card:hover::before {
+            opacity: 1;
+        }
+
+        .card-top {
+            padding: 40px 30px;
+            text-align: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .card-top i {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            display: block;
+            background: linear-gradient(135deg, #fff 0%, rgba(255, 255, 255, 0.4) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .modern-software-card h3 {
+            font-size: 2rem;
+            font-weight: 800;
+            margin-bottom: 5px;
+            letter-spacing: -0.5px;
+        }
+
+        .brand-label {
+            font-size: 0.8rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: #FF4500;
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        .card-mid {
+            padding: 30px;
+            flex-grow: 1;
+        }
+
+        .software-list-modern {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .software-item-modern {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+        }
+
+        .soft-name {
+            font-size: 0.95rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .soft-price {
+            font-weight: 800;
+            font-size: 1.1rem;
+            color: #fff;
+        }
+
+        .card-bottom {
+            padding: 30px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 0 0 30px 30px;
+        }
+
+        .modern-btn {
+            display: block;
+            width: 100%;
+            padding: 16px;
+            border-radius: 12px;
+            text-align: center;
+            text-decoration: none;
+            font-weight: 800;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s;
+        }
+
+        .modern-btn.primary {
+            background: #FF4500;
+            color: white;
+            box-shadow: 0 10px 20px rgba(255, 69, 0, 0.3);
+        }
+
+        .modern-btn.secondary {
+            background: rgba(255, 255, 255, 0.05);
+            color: white;
+            margin-bottom: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .modern-btn:hover {
+            transform: translateY(-2px);
+            filter: brightness(1.1);
+        }
+
+        .highlight-green {
+            color: #34c759;
+        }
+
+        .highlight-gold {
+            color: #ffd60a;
+        }
+
+        .highlight-red {
+            color: #ff3b30;
+        }
+
+        @media (max-width: 768px) {
+            .software-grid {
+                grid-template-columns: 1fr;
+                padding: 0 20px;
+            }
+        }
+    </style>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preconnect" href="https://www.googletagmanager.com">
