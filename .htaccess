@@ -1,0 +1,9 @@
+# Force HTTPS and remove WWW (Apex Domain)
+RewriteEngine On
+RewriteCond %{HTTPS} off [OR]
+RewriteCond %{HTTP_HOST} ^www\. [NC]
+RewriteRule ^(.*)$ https://macwave.com.mx/$1 [L,R=301]
+
+# Optimization for Indexing
+DirectoryIndex index.html
+ErrorDocument 404 /index.html
