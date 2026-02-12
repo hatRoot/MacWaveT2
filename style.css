@@ -78,6 +78,12 @@ body {
     background-color: var(--primary-bg);
     color: var(--text-secondary);
     line-height: 1.6;
+    overflow-x: hidden;
+    /* EVITAR DESPLAZAMIENTO HORIZONTAL */
+}
+
+html {
+    overflow-x: hidden;
 }
 
 .main-nav {
@@ -423,7 +429,8 @@ h3 {
     color: var(--text-primary);
     display: flex;
     align-items: center;
-    transform: translateY(-15px);
+    transform: translateY(-5px);
+    /* Ajuste sutil */
 }
 
 .cert-text-lines {
@@ -468,8 +475,78 @@ h3 {
     /* Espacio entre letras aumentado */
     letter-spacing: 1.5px;
     /* Inclinación y desplazamiento */
-    transform: skewX(-10deg) translateX(20px);
-    transform-origin: left center;
+    transform: none !important;
+    /* QUITAR INCLINACIÓN EN MÓVIL */
+    text-align: center;
+}
+
+/* NEW GOOGLE PILL STYLES */
+.google-review-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 8px 18px;
+    border-radius: 50px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    margin: 20px 0 30px 0;
+    transition: all 0.3s ease;
+}
+
+.google-review-pill:hover {
+    background: rgba(255, 255, 255, 0.08);
+    transform: translateY(-2px);
+}
+
+.g-logo {
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+}
+
+.rating-info {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #FFFFFF;
+    font-size: 0.95rem;
+    font-weight: 500;
+}
+
+.rating-info .star {
+    color: #FBBC05;
+    font-size: 1.1rem;
+}
+
+.rating-info .score {
+    font-weight: 700;
+    font-size: 1.1rem;
+}
+
+.rating-info .separator {
+    color: rgba(255, 255, 255, 0.3);
+    margin: 0 4px;
+}
+
+.rating-info .reviews {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 0.9rem;
+}
+
+.hero-top-elements {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+@media (max-width: 992px) {
+    .hero-top-elements {
+        align-items: center;
+    }
 }
 
 /* AJUSTES DE TEXTO DENTRO DE LA NUEVA COLUMNA */
@@ -756,11 +833,47 @@ h3 {
     }
 
     .header-content {
-        justify-content: space-between;
+        justify-content: center;
+        /* Centrar todo en móvil */
+        flex-direction: column;
+        gap: 10px;
+        padding: 10px 0;
+    }
+
+    .logo {
+        margin: 0 auto;
+    }
+
+    .logo-brand {
+        font-size: 1.3em;
+        /* Más pequeño para que quepa */
+    }
+
+    .logo-subtext {
+        font-size: 0.65em;
+        white-space: normal;
+        /* Permitir que el texto baje si es necesario */
+        text-align: center;
+    }
+
+    .header-actions {
+        margin-left: 0;
+        justify-content: center;
+        width: 100%;
+    }
+
+    .header-actions .nav-link {
+        display: none !important;
+        /* QUITAR CONTACTO EN MÓVIL */
+    }
+
+    .header-cta {
+        margin-left: 0;
+        width: auto;
     }
 
     .hero-section-authority {
-        padding: 100px 0;
+        padding: 60px 0;
     }
 
     /* REVERTIMOS EL HERO SPLIT A UNA SOLA COLUMNA EN MÓVIL */
@@ -790,7 +903,9 @@ h3 {
 
     .cert-apple-logo {
         font-size: 3em;
-        /* Ajuste para el logo de Apple en tablets */
+        margin-right: 20px;
+        transform: none !important;
+        /* QUITAR DESPLAZAMIENTO */
     }
 
     .cert-text-lines {
