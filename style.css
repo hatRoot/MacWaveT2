@@ -347,33 +347,62 @@ h3 {
     padding-left: 10px;
 }
 
-/* Google Review Pill */
-.google-review-pill-container {
-    margin-top: 25px;
-    display: flex;
-    justify-content: flex-start;
+/* Google Review Pill - CSS Version */
+.google-review-pill {
+    display: inline-flex;
     align-items: center;
-}
-
-.google-review-pill-img {
-    max-width: 280px;
-    height: auto;
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 50px;
-    transition: transform 0.3s ease;
+    padding: 6px 20px;
+    margin-top: 25px;
+    gap: 12px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    text-decoration: none;
 }
 
-.google-review-pill-img:hover {
-    transform: scale(1.03);
+.google-review-pill:hover {
+    background: rgba(255, 255, 255, 0.08);
+    transform: translateY(-2px);
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+.google-g-icon {
+    width: 20px;
+    height: 20px;
+}
+
+.google-star {
+    color: #FBBC04;
+    font-size: 1.1rem;
+}
+
+.google-rating-score {
+    color: #fff;
+    font-weight: 700;
+    font-size: 1rem;
+}
+
+.google-divider {
+    width: 1px;
+    height: 16px;
+    background: rgba(255, 255, 255, 0.2);
+    margin: 0 4px;
+}
+
+.google-reviews-count {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 0.9rem;
+    font-weight: 400;
 }
 
 @media (max-width: 768px) {
-    .google-review-pill-container {
-        justify-content: center;
-        margin-top: 20px;
-    }
-
-    .google-review-pill-img {
-        max-width: 240px;
+    .google-review-pill {
+        margin: 20px auto 0;
+        padding: 5px 15px;
     }
 }
 
