@@ -347,6 +347,36 @@ h3 {
     padding-left: 10px;
 }
 
+/* Google Review Pill */
+.google-review-pill-container {
+    margin-top: 25px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.google-review-pill-img {
+    max-width: 280px;
+    height: auto;
+    border-radius: 50px;
+    transition: transform 0.3s ease;
+}
+
+.google-review-pill-img:hover {
+    transform: scale(1.03);
+}
+
+@media (max-width: 768px) {
+    .google-review-pill-container {
+        justify-content: center;
+        margin-top: 20px;
+    }
+
+    .google-review-pill-img {
+        max-width: 240px;
+    }
+}
+
 /* HIGH-CONTRAST BANNER */
 .hero-banner-promo {
     background: linear-gradient(90deg, #FF6600, #FF3300);
