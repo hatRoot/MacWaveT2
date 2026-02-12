@@ -78,12 +78,18 @@ body {
     background-color: var(--primary-bg);
     color: var(--text-secondary);
     line-height: 1.6;
-    overflow-x: hidden;
-    /* EVITAR DESPLAZAMIENTO HORIZONTAL */
+    overflow-x: hidden !important;
+    width: 100vw;
 }
 
 html {
-    overflow-x: hidden;
+    overflow-x: hidden !important;
+    width: 100vw;
+}
+
+* {
+    max-width: 100vw;
+    box-sizing: border-box;
 }
 
 .main-nav {
@@ -868,12 +874,16 @@ h3 {
 
     .hero-actions {
         justify-content: center;
-        /* Centrar botones */
         flex-direction: column;
+        align-items: center;
+        width: 100%;
+        padding: 0 10px;
     }
 
     .hero-actions a {
         width: 100%;
+        max-width: 320px;
+        margin: 5px 0;
     }
 
 
