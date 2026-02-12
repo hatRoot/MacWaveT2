@@ -476,76 +476,18 @@ h3 {
     letter-spacing: 1.5px;
     /* Inclinación y desplazamiento */
     transform: none !important;
-    /* QUITAR INCLINACIÓN EN MÓVIL */
     text-align: center;
 }
 
-/* NEW GOOGLE PILL STYLES */
-.google-review-pill {
-    display: inline-flex;
-    align-items: center;
-    gap: 12px;
-    background: rgba(255, 255, 255, 0.05);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    padding: 8px 18px;
-    border-radius: 50px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-    margin: 20px 0 30px 0;
-    transition: all 0.3s ease;
-}
-
-.google-review-pill:hover {
-    background: rgba(255, 255, 255, 0.08);
-    transform: translateY(-2px);
-}
-
-.g-logo {
-    width: 24px;
-    height: 24px;
-    display: flex;
-    align-items: center;
-}
-
-.rating-info {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    color: #FFFFFF;
-    font-size: 0.95rem;
-    font-weight: 500;
-}
-
-.rating-info .star {
-    color: #FBBC05;
-    font-size: 1.1rem;
-}
-
-.rating-info .score {
-    font-weight: 700;
-    font-size: 1.1rem;
-}
-
-.rating-info .separator {
-    color: rgba(255, 255, 255, 0.3);
-    margin: 0 4px;
-}
-
-.rating-info .reviews {
-    color: rgba(255, 255, 255, 0.8);
-    font-size: 0.9rem;
-}
-
-.hero-top-elements {
+.hero-content-text {
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
 }
 
 @media (max-width: 992px) {
-    .hero-top-elements {
+    .hero-content-text {
         align-items: center;
+        text-align: center;
     }
 }
 
@@ -860,6 +802,8 @@ h3 {
         margin-left: 0;
         justify-content: center;
         width: 100%;
+        display: flex;
+        /* Asegurar centrado */
     }
 
     .header-actions .nav-link {
@@ -869,7 +813,8 @@ h3 {
 
     .header-cta {
         margin-left: 0;
-        width: auto;
+        width: 80%;
+        max-width: 280px;
     }
 
     .hero-section-authority {
