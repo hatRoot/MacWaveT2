@@ -7,6 +7,5 @@ Disallow: /tmp/
 # Optimización para Googlebot y otros buscadores
 User-agent: Googlebot
 Allow: /
-Crawl-delay: 1
 
 Sitemap: https://macwave.com.mx/sitemap.xml
