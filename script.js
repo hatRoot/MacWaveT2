@@ -140,7 +140,25 @@ document.addEventListener('DOMContentLoaded', () => {
                 dayCell.addEventListener('click', () => {
                     document.querySelectorAll('.calendar-day').forEach(d => d.classList.remove('selected'));
                     dayCell.classList.add('selected');
-                    // Hide alert if a day is selected
+
+                    // Show Confirmation Button
+                    const selectedDateText = document.getElementById('selected-date-text');
+                    const confirmContainer = document.getElementById('booking-confirmation-container');
+                    const noSelectionMsg = document.getElementById('no-selection-message');
+                    const whatsappBtn = document.getElementById('confirm-whatsapp-btn');
+
+                    if (selectedDateText && confirmContainer && noSelectionMsg && whatsappBtn) {
+                        const dateString = `${i} de ${monthNames[month]} ${year}`;
+                        selectedDateText.textContent = dateString;
+                        confirmContainer.style.display = 'block';
+                        noSelectionMsg.style.display = 'none';
+
+                        // Update WhatsApp Link
+                        const message = `Hola, quisiera agendar una cita para el ${dateString}.`;
+                        whatsappBtn.href = `https://wa.me/525535757364?text=${encodeURIComponent(message)}`;
+                    }
+
+                    // Hide calendar alert if present
                     if (calendarAlert) calendarAlert.style.display = 'none';
                 });
             }

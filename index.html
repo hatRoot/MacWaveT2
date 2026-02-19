@@ -290,7 +290,8 @@
             <div class="header-actions">
 
                 <a href="https://wa.me/525535757364" target="_blank" rel="noopener noreferrer"
-                    class="cta-button header-cta neon-green" style="padding: 10px 20px; font-size: 0.9rem;">
+                    class="cta-button header-cta neon-green" style="padding: 10px 20px; font-size: 0.9rem;"
+                    onclick="gtag('event', 'whatsapp_click', { 'event_category': 'contact', 'event_label': 'header' });">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                         class="bi bi-whatsapp" viewBox="0 0 16 16" style="margin-right: 8px;">
                         <path
@@ -1290,10 +1291,23 @@
                     </div>
                 </div>
 
-                <div class="availability-message">
-                    <h3>No hay horarios disponibles con esta duración con Ing. Joel Duran hoy.</h3>
-                    <p>Todavía puedes solicitar una reunión enviando un correo a</p>
-                    <a href="mailto:contacto@macwave.com.mx" class="email-link">contacto@macwave.com.mx ↗</a>
+                <div class="availability-message" style="text-align: center; margin-top: 20px;">
+                    <!-- Placeholder for dynamic content -->
+                    <div id="booking-confirmation-container" style="display: none;">
+                        <h3 style="margin-bottom: 15px; color: #333;">Fecha Seleccionada: <span id="selected-date-text"
+                                style="color: var(--accent-orange);"></span></h3>
+                        <a href="#" id="confirm-whatsapp-btn" class="cta-button primary"
+                            style="width: 100%; display: block; text-align: center; background: #25D366; border-color: #25D366;"
+                            onclick="gtag('event', 'booking_submitted', { 'event_category': 'conversion', 'event_label': 'calendar' });">
+                            CONFIRMAR CITA POR WHATSAPP
+                        </a>
+                        <p style="font-size: 0.8rem; margin-top: 10px; color: #666;">Se abrirá WhatsApp con los detalles
+                            de tu cita.</p>
+                    </div>
+
+                    <div id="no-selection-message">
+                        <p style="color: #666;">Selecciona una fecha en el calendario para continuar.</p>
+                    </div>
                 </div>
             </div>
         </div>
