@@ -90,12 +90,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const nextMonthLink = document.querySelector('.next-month-link');
     const calendarAlert = document.querySelector('.calendar-alert');
 
-    let currentDate = new Date(); // Start with today
-    // Set to November 2025 as requested initially, or just use current date.
-    // Let's use the current date but maybe force it to start at Nov 2025 if that was the specific request context,
-    // but usually "current" implies real current. The user's screenshot showed Nov 2025.
-    // Let's start with Nov 2025 to match the visual, but allow navigation.
-    let displayDate = new Date(2025, 10, 1); // Month is 0-indexed (10 = November)
+    // Let's use the current date to show availability from today
+    let displayDate = new Date();
 
     const monthNames = ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"];
 
@@ -134,10 +130,10 @@ document.addEventListener('DOMContentLoaded', () => {
             dayCell.classList.add('calendar-day');
             dayCell.textContent = i;
 
-            // Simulate availability: Disable weekends or random days
-            // For demo purposes, let's disable weekends (Sat/Sun)
+            // Simulate availability: Disable Sundays (Day 0) only
+            // Saturdays (Day 6) are now OPEN (10:00 - 15:00)
             const dayOfWeek = new Date(year, month, i).getDay();
-            if (dayOfWeek === 0 || dayOfWeek === 6) {
+            if (dayOfWeek === 0) {
                 dayCell.classList.add('disabled');
             } else {
                 // Add click event for available days
