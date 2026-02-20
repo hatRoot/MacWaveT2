@@ -258,6 +258,33 @@ h3 {
     transition: width 0.3s ease;
 }
 
+/* UTILIDADES DE CONTRASTE Y SECCIONES CLARAS */
+.light-section {
+    background-color: #FFFFFF !important;
+    color: #1A1A1C !important;
+}
+
+.light-section h2,
+.light-section h3,
+.light-section h4 {
+    color: #000000 !important;
+}
+
+.light-section p,
+.light-section li {
+    color: #333333 !important;
+}
+
+.text-white {
+    color: #FFFFFF !important;
+}
+
+.text-white h2,
+.text-white h3,
+.text-white p {
+    color: #FFFFFF !important;
+}
+
 .nav-link:hover::after {
     width: 100%;
 }
@@ -2314,6 +2341,11 @@ h3 {
     gap: 8px;
 }
 
+.text-white .service-icons span {
+    background: rgba(255, 255, 255, 0.1);
+    color: #FFFFFF;
+}
+
 /* Responsive for Stacked Services */
 @media (max-width: 900px) {
     .service-row {
@@ -2883,4 +2915,18 @@ details.modern-accordion[open] {
 
 .neon-green svg {
     fill: currentColor;
+}
+
+/* Accordions in light sections */
+.light-section details.modern-accordion {
+    background: rgba(0, 0, 0, 0.03);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.light-section details.modern-accordion summary {
+    color: #000000;
+}
+
+.light-section details.modern-accordion .accordion-content {
+    color: #333333;
 }
