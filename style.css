@@ -553,8 +553,8 @@ h3 {
     justify-content: center;
     /* Centrar el texto en su contenedor */
     font-size: 0.99em;
-    line-height: 0.1;
-    /* MUY JUNTOS */
+    line-height: 1.3;
+    /* NORMALIZADO */
     /*margin-left: 10px;
     /* Mueve el bloque a la derecha */
 }
@@ -597,11 +597,69 @@ h3 {
     flex-direction: column;
 }
 
-@media (max-width: 992px) {
-    .hero-content-text {
-        align-items: center;
-        text-align: center;
+@media (max-width: 900px) {
+    .header-content {
+        flex-direction: column;
+        gap: 10px;
+        padding: 10px;
     }
+
+    .main-nav {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 15px;
+        font-size: 0.85rem;
+    }
+
+    .header-actions {
+        width: 100%;
+        justify-content: center;
+        margin: 5px 0;
+    }
+
+    .header-cta {
+        width: 100%;
+        max-width: 280px;
+        font-size: 0.8rem;
+    }
+
+    .logo-brand {
+        font-size: 1.2rem;
+    }
+
+    .logo-subtext {
+        font-size: 0.7rem;
+    }
+}
+
+@media (max-width: 600px) {
+    .certification-group {
+        flex-direction: column;
+        text-align: center;
+        margin-bottom: 40px;
+    }
+
+    .cert-apple-logo {
+        margin-right: 0;
+        margin-bottom: 10px;
+        font-size: 2.5em;
+    }
+
+    .cert-line-1,
+    .cert-line-2 {
+        text-align: center;
+        white-space: normal;
+        font-size: 0.85rem;
+    }
+
+    h1 {
+        font-size: 2.2rem !important;
+    }
+}
+
+.hero-content-text {
+    align-items: center;
+    text-align: center;
 }
 
 /* AJUSTES DE TEXTO DENTRO DE LA NUEVA COLUMNA */
