@@ -185,7 +185,7 @@ h3 {
 .header-content {
     display: flex;
     align-items: center;
-    gap: 40px;
+    gap: 20px;
 }
 
 /* ESTILOS DEL LOGO MULTILÍNEA */
@@ -236,11 +236,12 @@ h3 {
 
 /* Navegación */
 .main-nav a {
-    margin-left: 30px;
+    margin-left: 20px;
     font-weight: var(--font-weight-medium);
     color: var(--text-secondary);
     position: relative;
     padding-bottom: 5px;
+    white-space: nowrap;
 }
 
 .nav-link::after {
@@ -2889,4 +2890,33 @@ details.modern-accordion[open] {
         width: 32px;
         height: 32px;
     }
+}
+
+/* Futuristic WhatsApp Button for Header */
+.neon-green {
+    background: rgba(37, 211, 102, 0.1) !important;
+    color: #25D366 !important;
+    border: 1px solid #25D366 !important;
+    box-shadow: 0 0 10px rgba(37, 211, 102, 0.4), inset 0 0 5px rgba(37, 211, 102, 0.2) !important;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    font-weight: 700 !important;
+    transition: all 0.3s ease-in-out !important;
+    border-radius: 8px !important;
+    backdrop-filter: blur(4px);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.neon-green:hover {
+    background: rgba(37, 211, 102, 0.25) !important;
+    color: #25D366 !important;
+    box-shadow: 0 0 20px rgba(37, 211, 102, 0.9), inset 0 0 15px rgba(37, 211, 102, 0.5) !important;
+    border-color: #25D366 !important;
+    transform: translateY(-2px) scale(1.03);
+}
+
+.neon-green svg {
+    fill: currentColor;
 }
