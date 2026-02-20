@@ -407,18 +407,29 @@ h3 {
 .hero-banner-promo {
     background: linear-gradient(90deg, #FF6600, #FF3300);
     color: white;
-    padding: 12px 25px;
+    padding: 8px 20px;
     border-radius: 50px;
     display: inline-flex;
     align-items: center;
-    gap: 15px;
-    font-weight: 800;
-    font-size: 1.1rem;
+    justify-content: center;
+    text-align: center;
+    gap: 10px;
+    font-weight: 700;
+    font-size: 0.85rem;
     margin-bottom: 25px;
     box-shadow: 0 4px 15px rgba(255, 102, 0, 0.4);
-    animation: flash 3s infinite;
+    animation: flash 4s infinite;
     text-transform: uppercase;
     letter-spacing: 0.5px;
+    max-width: 100%;
+}
+
+.hero-banner-promo span {
+    font-weight: 900;
+    background: rgba(255, 255, 255, 0.2);
+    padding: 3px 8px;
+    border-radius: 4px;
+    flex-shrink: 0;
 }
 
 /* Botones Neón */
