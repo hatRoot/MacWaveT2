@@ -185,7 +185,8 @@ h3 {
 .header-content {
     display: flex;
     align-items: center;
-    gap: 20px;
+    justify-content: space-between;
+    gap: 15px;
 }
 
 /* ESTILOS DEL LOGO MULTILÍNEA */
