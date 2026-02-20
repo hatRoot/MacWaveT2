@@ -1,32 +1,32 @@
-/* Variables para colores y tipografía estilo Apple/Tesla premium */
 :root {
-    --primary-bg: #1A1A1C;
-    /* FONDOS DEL CUERPO (Gris Oscuro Original) */
-    --secondary-bg: #2C2C2E;
-    /* Fondo para secciones o tarjetas */
-    --tertiary-bg: #3A3A3C;
-    /* Un gris ligeramente más claro para contraste */
-    --text-primary: #FFFFFF;
-    /* Texto principal blanco */
-    --text-secondary: #E0E0E6;
-    /* Texto secundario gris muy claro */
-    --text-muted: #8E8E93;
+    --primary-bg: #FFFFFF;
+    /* FONDOS DEL CUERPO (Blanco Puro Apple) */
+    --secondary-bg: #F5F5F7;
+    /* Fondo para secciones o tarjetas (Gris Claro Apple) */
+    --tertiary-bg: #E5E5EA;
+    /* Un gris ligeramente más oscuro para bordes */
+    --text-primary: #1D1D1F;
+    /* Texto principal negro Apple */
+    --text-secondary: #424245;
+    /* Texto secundario gris oscuro */
+    --text-muted: #86868B;
     /* Texto para descripciones o info extra */
 
-    /* VARIABLES DE COLOR DE MARCA NARANJA/BRONCE */
-    --accent-orange: #FF6600;
-    /* Naranja fuerte para CTAs y Nav Hover */
-    --accent-bronze: #C87533;
-    --accent-blue: #0A84FF;
-    --accent-green: #30D158;
+    /* VARIABLES DE COLOR DE MARCA */
+    --accent-orange: #0071E3;
+    /* Cambiado a Azul Apple pero mantenido nombre por retrocompatibilidad */
+    --accent-bronze: #86868B;
+    --accent-blue: #0071E3;
+    --accent-green: #25D366;
     /* Verde para WhatsApp */
-    --accent-red: #FF453A;
+    --accent-red: #E11D48;
 
-    --border-radius-lg: 12px;
-    --border-radius-md: 8px;
-    --border-radius-sm: 6px;
+    --border-radius-lg: 18px;
+    /* Apple curves are more pronounced */
+    --border-radius-md: 12px;
+    --border-radius-sm: 8px;
 
-    --font-family-base: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    --font-family-base: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     --font-weight-light: 300;
     --font-weight-regular: 400;
     --font-weight-medium: 500;
