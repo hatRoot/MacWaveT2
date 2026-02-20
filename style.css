@@ -578,136 +578,48 @@ h3 {
 }
 
 /* AJUSTES DE TEXTO DENTRO DE LA NUEVA COLUMNA */
-/* Insignia de Autoridad Premium (Inspirada en imagen 1) */
-.luxury-badge-container {
+/* Sticky WhatsApp Button */
+.sticky-whatsapp-btn {
+    position: fixed;
+    bottom: 25px;
+    right: 25px;
+    background-color: #25D366;
+    color: white;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
     display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    margin-bottom: 40px;
-}
-
-.experience-text {
-    font-size: 0.85rem;
-    font-weight: 700;
-    letter-spacing: 2px;
-    color: var(--text-muted);
-    margin-bottom: 12px;
-    text-transform: uppercase;
-}
-
-.luxury-badge {
-    display: inline-flex;
+    justify-content: center;
     align-items: center;
-    background: rgba(255, 255, 255, 0.05);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    padding: 10px 25px;
-    border-radius: 50px;
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
-    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    box-shadow: 0 5px 20px rgba(37, 211, 102, 0.5);
+    z-index: 9999;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    animation: pulse 2s infinite;
 }
 
-.luxury-badge:hover {
-    transform: translateY(-5px) scale(1.02);
-    border-color: var(--accent-orange);
-    background: rgba(255, 255, 255, 0.08);
+.sticky-whatsapp-btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 8px 30px rgba(37, 211, 102, 0.7);
+    color: white;
 }
 
-.badge-apple-icon {
-    font-size: 2.2rem;
-    color: var(--text-primary);
-    margin-right: 18px;
-    line-height: 1;
-}
-
-.badge-text {
-    display: flex;
-    flex-direction: column;
-    line-height: 1.2;
-}
-
-.badge-title {
-    font-size: 1.1rem;
-    font-weight: 800;
-    color: var(--text-primary);
-    letter-spacing: 0.5px;
-}
-
-.badge-desc {
-    font-size: 0.75rem;
-    font-weight: 400;
-    color: var(--text-secondary);
-}
-
-/* Bloque de Cierre de Conversión (Inspirado en imagen 2) */
-.conversion-closure {
-    padding: 100px 0;
-    background: linear-gradient(180deg, var(--primary-bg) 0%, #0a0a0b 100%);
-    text-align: center;
-    border-top: 1px solid rgba(255, 255, 255, 0.05);
-}
-
-.closure-content h2 {
-    font-size: 3.5rem;
-    font-weight: 900;
-    margin-bottom: 20px;
-    letter-spacing: -2px;
-    color: var(--text-primary);
-}
-
-.closure-content p {
-    font-size: 1.2rem;
-    color: var(--text-secondary);
-    max-width: 700px;
-    margin: 0 auto 40px;
-    line-height: 1.6;
-}
-
-.whatsapp-premium {
-    background: #25D366 !important;
-    color: #fff !important;
-    padding: 18px 40px !important;
-    font-size: 1.2rem !important;
-    font-weight: 700 !important;
-    border-radius: 50px !important;
-    border: none !important;
-    display: inline-flex !important;
-    align-items: center;
-    gap: 12px;
-    box-shadow: 0 10px 30px rgba(37, 211, 102, 0.4) !important;
-    transition: all 0.3s ease !important;
-    text-decoration: none;
-}
-
-.whatsapp-premium:hover {
-    transform: translateY(-5px) scale(1.05);
-    box-shadow: 0 15px 40px rgba(37, 211, 102, 0.6) !important;
-}
-
-.whatsapp-premium svg {
-    width: 24px;
-    height: 24px;
+.sticky-whatsapp-btn svg {
+    width: 35px;
+    height: 35px;
     fill: currentColor;
 }
 
 @media (max-width: 768px) {
-    .closure-content h2 {
-        font-size: 2.2rem;
-        letter-spacing: -1px;
+    .sticky-whatsapp-btn {
+        bottom: 15px;
+        right: 15px;
+        width: 55px;
+        height: 55px;
     }
 
-    .closure-content p {
-        font-size: 1rem;
-        padding: 0 20px;
-    }
-
-    .luxury-badge {
-        padding: 8px 18px;
-    }
-
-    .badge-apple-icon {
-        font-size: 1.8rem;
+    .sticky-whatsapp-btn svg {
+        width: 32px;
+        height: 32px;
     }
 }
 
