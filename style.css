@@ -578,25 +578,137 @@ h3 {
 }
 
 /* AJUSTES DE TEXTO DENTRO DE LA NUEVA COLUMNA */
-.hero-content-text h1 {
-    font-size: 3em;
-    /* Título ligeramente más pequeño para el espacio */
-    margin-bottom: 0.3em;
-    max-width: none;
-    margin-left: 0;
-    margin-right: 0;
-    text-align: left;
+/* Insignia de Autoridad Premium (Inspirada en imagen 1) */
+.luxury-badge-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-bottom: 40px;
 }
 
-.hero-content-text p {
-    text-align: left;
-    /* Aseguramos que el párrafo principal esté a la izquierda */
-    max-width: none;
-    margin-left: 0;
-    margin-right: 0;
-    margin-bottom: 30px;
+.experience-text {
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: var(--text-muted);
+    margin-bottom: 12px;
+    text-transform: uppercase;
+}
+
+.luxury-badge {
+    display: inline-flex;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    padding: 10px 25px;
+    border-radius: 50px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.luxury-badge:hover {
+    transform: translateY(-5px) scale(1.02);
+    border-color: var(--accent-orange);
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.badge-apple-icon {
+    font-size: 2.2rem;
+    color: var(--text-primary);
+    margin-right: 18px;
+    line-height: 1;
+}
+
+.badge-text {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.2;
+}
+
+.badge-title {
+    font-size: 1.1rem;
+    font-weight: 800;
+    color: var(--text-primary);
+    letter-spacing: 0.5px;
+}
+
+.badge-desc {
+    font-size: 0.75rem;
+    font-weight: 400;
     color: var(--text-secondary);
-    /* Asegurar color */
+}
+
+/* Bloque de Cierre de Conversión (Inspirado en imagen 2) */
+.conversion-closure {
+    padding: 100px 0;
+    background: linear-gradient(180deg, var(--primary-bg) 0%, #0a0a0b 100%);
+    text-align: center;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.closure-content h2 {
+    font-size: 3.5rem;
+    font-weight: 900;
+    margin-bottom: 20px;
+    letter-spacing: -2px;
+    color: var(--text-primary);
+}
+
+.closure-content p {
+    font-size: 1.2rem;
+    color: var(--text-secondary);
+    max-width: 700px;
+    margin: 0 auto 40px;
+    line-height: 1.6;
+}
+
+.whatsapp-premium {
+    background: #25D366 !important;
+    color: #fff !important;
+    padding: 18px 40px !important;
+    font-size: 1.2rem !important;
+    font-weight: 700 !important;
+    border-radius: 50px !important;
+    border: none !important;
+    display: inline-flex !important;
+    align-items: center;
+    gap: 12px;
+    box-shadow: 0 10px 30px rgba(37, 211, 102, 0.4) !important;
+    transition: all 0.3s ease !important;
+    text-decoration: none;
+}
+
+.whatsapp-premium:hover {
+    transform: translateY(-5px) scale(1.05);
+    box-shadow: 0 15px 40px rgba(37, 211, 102, 0.6) !important;
+}
+
+.whatsapp-premium svg {
+    width: 24px;
+    height: 24px;
+    fill: currentColor;
+}
+
+@media (max-width: 768px) {
+    .closure-content h2 {
+        font-size: 2.2rem;
+        letter-spacing: -1px;
+    }
+
+    .closure-content p {
+        font-size: 1rem;
+        padding: 0 20px;
+    }
+
+    .luxury-badge {
+        padding: 8px 18px;
+    }
+
+    .badge-apple-icon {
+        font-size: 1.8rem;
+    }
 }
 
 .hero-actions {
