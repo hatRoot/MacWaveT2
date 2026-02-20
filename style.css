@@ -2304,7 +2304,7 @@ h3 {
 .service-content h3 {
     font-size: 2.5rem;
     color: #000000;
-    /* Black titles */
+    /* Default dark for white cards */
     margin-bottom: 10px;
     font-weight: 700;
 }
@@ -2318,9 +2318,44 @@ h3 {
 
 .service-content p {
     font-size: 1.1rem;
-    color: #666;
+    color: #444;
+    /* Dark gray for white cards */
     margin-bottom: 30px;
     line-height: 1.6;
+}
+
+/* FORCED WHITE TEXT CONTEXT (for dark cards) */
+.text-white h3,
+.text-white h2,
+.text-white p,
+.text-white li,
+.text-white strong,
+.reparaciones-page .service-content h3,
+.reparaciones-page .service-content p,
+.reparaciones-page .service-content li,
+.reparaciones-page .service-content strong,
+.opencore-section h2,
+.opencore-section h3,
+.opencore-section p,
+.opencore-section li,
+.configure-mac-section h2,
+.configure-mac-section h3,
+.configure-mac-section p,
+.configure-mac-section li,
+.configure-mac-content h2,
+.configure-mac-content h3,
+.configure-mac-content p,
+.configure-mac-content li {
+    color: #FFFFFF !important;
+}
+
+/* Secondary forced light gray for readability */
+.text-white p,
+.reparaciones-page .service-content p,
+.opencore-section p,
+.configure-mac-section p,
+.configure-mac-content p {
+    color: #E0E0E6 !important;
 }
 
 .service-icons {
@@ -2341,7 +2376,10 @@ h3 {
     gap: 8px;
 }
 
-.text-white .service-icons span {
+.text-white .service-icons span,
+.reparaciones-page .service-icons span,
+.opencore-section .service-icons span,
+.configure-mac-section .service-icons span {
     background: rgba(255, 255, 255, 0.1);
     color: #FFFFFF;
 }
