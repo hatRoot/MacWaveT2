@@ -61,6 +61,25 @@
     <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
         as="style">
 
+    <link rel="stylesheet" href="style.css?v=20.0.1">
+
+    <script>
+        // Definición global e inmediata para evitar fallos en iPhone
+        function toggleMobileMenu(e) {
+            if (e) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+            var body = document.body;
+            var btn = document.getElementById('mobile-menu-toggle');
+            var isNowActive = body.classList.toggle('menu-active');
+            if (btn) {
+                if (isNowActive) btn.classList.add('active');
+                else btn.classList.remove('active');
+            }
+        }
+    </script>
+
     <!-- Open Graph Meta Tags -->
     <meta property="og:locale" content="es_MX">
     <meta property="og:type" content="website">
@@ -80,7 +99,6 @@
         content="⚡ Expertos en reparación de Mac en CDMX. Rescatamos equipos 'mojados' o que 'no encienden' (Nivel Componente). ¡Diagnóstico Profesional + Servicio a Domicilio!">
     <meta name="twitter:image" content="https://macwave.com.mx/images/apple.png">
 
-    <link rel="stylesheet" href="style.css?v=11.0.0">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preconnect" href="https://www.googletagmanager.com">
@@ -274,18 +292,6 @@
                 <span></span>
                 <span></span>
             </button>
-            <script>
-                function toggleMobileMenu(e) {
-                    if (e) {
-                        e.preventDefault();
-                        e.stopPropagation();
-                    }
-                    var body = document.body;
-                    var btn = document.getElementById('mobile-menu-toggle');
-                    var isActive = body.classList.toggle('menu-active');
-                    if (btn) btn.classList.toggle('active', isActive);
-                }
-            </script>
             <div class="logo">
                 <a href="index.html" class="logo-link">
                     <img src="./images/circuito_bronce.jpg" alt="Logo Mac Wave T2" class="logo-img">
