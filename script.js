@@ -5,19 +5,27 @@ document.addEventListener('DOMContentLoaded', () => {
     const navLinks = document.querySelectorAll('.nav-link');
 
     if (mobileMenuToggle && mainNav) {
-        mobileMenuToggle.addEventListener('click', () => {
-            mobileMenuToggle.classList.toggle('active');
-            mainNav.classList.toggle('active');
-            document.body.classList.toggle('menu-open');
+        mobileMenuToggle.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const isActive = document.body.classList.toggle('menu-active');
+            mobileMenuToggle.classList.toggle('active', isActive);
+            console.log('Menu Toggled:', isActive); // Debugging
         });
 
         // Close menu when a link is clicked
         navLinks.forEach(link => {
             link.addEventListener('click', () => {
+                document.body.classList.remove('menu-active');
                 mobileMenuToggle.classList.remove('active');
-                mainNav.classList.remove('active');
-                document.body.classList.remove('menu-open');
             });
+        });
+
+        // Close when clicking outside mainNav but inside the overlay
+        mainNav.addEventListener('click', (e) => {
+            if (e.target === mainNav) {
+                document.body.classList.remove('menu-active');
+                mobileMenuToggle.classList.remove('active');
+            }
         });
     }
 
