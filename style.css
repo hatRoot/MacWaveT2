@@ -249,6 +249,19 @@ h3 {
     white-space: nowrap;
 }
 
+.main-nav a.nav-link-small {
+    font-size: 0.75rem;
+    opacity: 0.6;
+    margin-left: 15px;
+    letter-spacing: 0.5px;
+    text-transform: lowercase;
+}
+
+.main-nav a.nav-link-small:hover {
+    opacity: 1;
+    color: var(--accent-orange);
+}
+
 .nav-link::after {
     /* LÍNEA NARANJA AL PASAR EL RATÓN */
     content: '';
