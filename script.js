@@ -1,33 +1,42 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Mobile Menu Toggle
-    const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
-    const mainNav = document.querySelector('.main-nav');
-    const navLinks = document.querySelectorAll('.nav-link');
+    // Mobile Menu Toggle - Enhanced Version
+    function setupMobileMenu() {
+        const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
+        const mainNav = document.querySelector('.main-nav');
+        const navLinks = document.querySelectorAll('.nav-link');
 
-    if (mobileMenuToggle && mainNav) {
-        mobileMenuToggle.addEventListener('click', (e) => {
-            e.stopPropagation();
-            const isActive = document.body.classList.toggle('menu-active');
-            mobileMenuToggle.classList.toggle('active', isActive);
-            console.log('Menu Toggled:', isActive); // Debugging
-        });
+        if (mobileMenuToggle && mainNav) {
+            console.log('Mobile Menu Elements found');
 
-        // Close menu when a link is clicked
-        navLinks.forEach(link => {
-            link.addEventListener('click', () => {
-                document.body.classList.remove('menu-active');
-                mobileMenuToggle.classList.remove('active');
+            // Remove existing listener to avoid duplicates if this is called multiple times
+            mobileMenuToggle.onclick = (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                const isActive = document.body.classList.toggle('menu-active');
+                mobileMenuToggle.classList.toggle('active', isActive);
+                console.log('Menu Toggled via onclick. Active:', isActive);
+
+                // Force layout recalculation for Safari
+                mainNav.style.display = 'none';
+                mainNav.offsetHeight;
+                mainNav.style.display = 'flex';
+            };
+
+            // Close menu when a link is clicked
+            navLinks.forEach(link => {
+                link.onclick = () => {
+                    document.body.classList.remove('menu-active');
+                    mobileMenuToggle.classList.remove('active');
+                    console.log('Menu closed via link click');
+                };
             });
-        });
-
-        // Close when clicking outside mainNav but inside the overlay
-        mainNav.addEventListener('click', (e) => {
-            if (e.target === mainNav) {
-                document.body.classList.remove('menu-active');
-                mobileMenuToggle.classList.remove('active');
-            }
-        });
+        } else {
+            console.error('Mobile Menu Elements NOT found:', { toggle: !!mobileMenuToggle, nav: !!mainNav });
+        }
     }
+
+    // Run setup
+    setupMobileMenu();
 
     // Smooth scroll for all internal links
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
