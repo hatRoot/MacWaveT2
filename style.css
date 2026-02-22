@@ -262,6 +262,23 @@ h3 {
     color: var(--accent-orange);
 }
 
+.status-circle-orange {
+    width: 12px;
+    height: 12px;
+    background-color: var(--accent-orange);
+    border-radius: 50%;
+    display: inline-block;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    box-shadow: 0 0 5px rgba(255, 102, 0, 0.3);
+}
+
+.status-circle-orange:hover {
+    background-color: #FF7B33;
+    box-shadow: 0 0 10px #FF6600, 0 0 20px #FF6600, 0 0 30px #FF6600;
+    transform: scale(1.2);
+}
+
 .nav-link::after {
     /* LÍNEA NARANJA AL PASAR EL RATÓN */
     content: '';
