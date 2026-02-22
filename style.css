@@ -263,20 +263,23 @@ h3 {
 }
 
 .status-circle-orange {
-    width: 12px;
-    height: 12px;
+    width: 14px;
+    height: 14px;
     background-color: var(--accent-orange);
     border-radius: 50%;
     display: inline-block;
     transition: all 0.3s ease;
     cursor: pointer;
-    box-shadow: 0 0 5px rgba(255, 102, 0, 0.3);
+    box-shadow: 0 0 8px rgba(255, 102, 0, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    opacity: 1 !important;
+    /* Ensure visibility */
 }
 
 .status-circle-orange:hover {
     background-color: #FF7B33;
-    box-shadow: 0 0 10px #FF6600, 0 0 20px #FF6600, 0 0 30px #FF6600;
-    transform: scale(1.2);
+    box-shadow: 0 0 15px #FF6600, 0 0 25px #FF6600;
+    transform: scale(1.15);
 }
 
 .nav-link::after {

@@ -192,7 +192,7 @@
         const SUPABASE_URL = 'https://lifxtyhvgnxjjqgbzare.supabase.co';
         const SUPABASE_ANON_KEY = 'sb_publishable_7aBPXbWRwrltSuXtzsyg-g_L1Fu3rTT';
 
-        const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
         const loginForm = document.getElementById('login-form');
         const emailInput = document.getElementById('email');
@@ -212,7 +212,7 @@
             const password = passwordInput.value;
 
             try {
-                const { data, error } = await supabase.auth.signInWithPassword({
+                const { data, error } = await supabaseClient.auth.signInWithPassword({
                     email: email,
                     password: password,
                 });
@@ -224,7 +224,7 @@
                 window.location.href = 'index.html'; // Temporal redirect or dashboard page
             } catch (error) {
                 console.error('Login error:', error.message);
-                errorMessage.textContent = 'Error: Credenciales incorrectas o problema de conexión.';
+                errorMessage.textContent = 'Error: ' + error.message; // More descriptive error
                 errorMessage.style.display = 'block';
             } finally {
                 submitBtn.disabled = false;
