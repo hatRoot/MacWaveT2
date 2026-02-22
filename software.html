@@ -32,7 +32,23 @@
     <link rel="icon" type="image/png" href="https://www.macwave.com.mx/images/favicon1.png">
     <link rel="apple-touch-icon" href="https://www.macwave.com.mx/images/favicon1.png">
 
-    <link rel="stylesheet" href="style.css?v=11.0.0">
+    <link rel="stylesheet" href="style.css?v=20.0.1">
+
+    <script>
+        function toggleMobileMenu(e) {
+            if (e) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+            var body = document.body;
+            var btn = document.getElementById('mobile-menu-toggle');
+            var isNowActive = body.classList.toggle('menu-active');
+            if (btn) {
+                if (isNowActive) btn.classList.add('active');
+                else btn.classList.remove('active');
+            }
+        }
+    </script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -47,18 +63,6 @@
                 <span></span>
                 <span></span>
             </button>
-            <script>
-                function toggleMobileMenu(e) {
-                    if (e) {
-                        e.preventDefault();
-                        e.stopPropagation();
-                    }
-                    var body = document.body;
-                    var btn = document.getElementById('mobile-menu-toggle');
-                    var isActive = body.classList.toggle('menu-active');
-                    if (btn) btn.classList.toggle('active', isActive);
-                }
-            </script>
             <div class="logo">
                 <a href="index.html" class="logo-link">
                     <img src="./images/circuito_bronce.jpg" alt="Logo Mac Wave T2" class="logo-img">

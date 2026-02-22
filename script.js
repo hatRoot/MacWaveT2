@@ -1,22 +1,12 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Mobile Menu Toggle Support
-    function setupMobileMenu() {
-        const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
-        const navLinks = document.querySelectorAll('.nav-link');
-
-        if (mobileMenuToggle) {
-            // Close menu when a link is clicked
-            navLinks.forEach(link => {
-                link.addEventListener('click', () => {
-                    document.body.classList.remove('menu-active');
-                    mobileMenuToggle.classList.remove('active');
-                });
-            });
-        }
-    }
-
-    // Run setup
-    setupMobileMenu();
+    // Mobile Menu Link Handling (Closes menu on click)
+    document.querySelectorAll('.nav-link').forEach(link => {
+        link.addEventListener('click', () => {
+            document.body.classList.remove('menu-active');
+            const btn = document.getElementById('mobile-menu-toggle');
+            if (btn) btn.classList.remove('active');
+        });
+    });
 
     // Smooth scroll for all internal links
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {

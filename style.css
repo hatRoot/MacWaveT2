@@ -917,9 +917,11 @@ h3 {
         /* Extremely high */
         transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease !important;
         transform: translateX(100%);
-        visibility: hidden;
-        opacity: 0;
-        pointer-events: none;
+        visibility: hidden !important;
+        opacity: 0 !important;
+        pointer-events: none !important;
+        -webkit-overflow-scrolling: touch;
+        /* Smooth scrolling for iOS */
     }
 
     body.menu-active .main-nav {
@@ -962,6 +964,8 @@ h3 {
         order: 1 !important;
         margin-right: 15px;
         position: relative;
+        touch-action: manipulation !important;
+        /* Disables double-tap zoom delay */
     }
 
     .mobile-menu-toggle span {
