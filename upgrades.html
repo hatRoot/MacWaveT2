@@ -40,6 +40,24 @@
 <body>
     <header class="main-header">
         <div class="container header-content">
+            <button class="mobile-menu-toggle" id="mobile-menu-toggle" aria-label="Abrir menú"
+                onclick="toggleMobileMenu(event)">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <script>
+                function toggleMobileMenu(e) {
+                    if (e) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                    }
+                    var body = document.body;
+                    var btn = document.getElementById('mobile-menu-toggle');
+                    var isActive = body.classList.toggle('menu-active');
+                    if (btn) btn.classList.toggle('active', isActive);
+                }
+            </script>
             <div class="logo">
                 <a href="index.html" class="logo-link">
                     <img src="./images/circuito_bronce.jpg" alt="Logo Mac Wave T2" class="logo-img">
@@ -57,11 +75,6 @@
                 <a href="upgrades.html" class="nav-link" style="color: var(--text-primary); white-space: nowrap;">Revive
                     tu Mac</a>
             </nav>
-            <button class="mobile-menu-toggle" id="mobile-menu-toggle" aria-label="Abrir menú">
-                <span></span>
-                <span></span>
-                <span></span>
-            </button>
             <div class="header-actions">
                 <a href="https://wa.me/525535757364" target="_blank" rel="noopener noreferrer"
                     class="cta-button header-cta neon-green" style="padding: 10px 20px; font-size: 0.9rem;">

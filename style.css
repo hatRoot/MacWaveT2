@@ -937,10 +937,9 @@ h3 {
         padding: 10px 0;
     }
 
-    /* Diagnostic rule: Body background turns orange when menu is active */
+    /* No diagnostic background anymore */
     body.menu-active {
         overflow: hidden !important;
-        background-color: var(--accent-orange) !important;
     }
 
     .mobile-menu-toggle {
@@ -954,7 +953,9 @@ h3 {
         cursor: pointer;
         z-index: 100001 !important;
         padding: 4px;
-        order: 2;
+        order: 1 !important;
+        /* Ensure it stays on the left */
+        margin-right: 15px;
     }
 
     .mobile-menu-toggle span {
@@ -985,7 +986,11 @@ h3 {
 
     .logo {
         margin: 0 !important;
-        order: 1;
+        order: 2 !important;
+        /* Move logo to the right of the button */
+        flex: 1;
+        display: flex;
+        justify-content: center;
     }
 
     .logo-brand {
