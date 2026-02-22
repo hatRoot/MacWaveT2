@@ -1,6 +1,20 @@
 document.addEventListener('DOMContentLoaded', () => {
+    // Clean Navigation Handler (Prevents URL preview on hover)
+    document.querySelectorAll('[data-link]').forEach(el => {
+        el.style.cursor = 'pointer';
+        el.addEventListener('click', (e) => {
+            e.preventDefault();
+            const url = el.getAttribute('data-link');
+            if (url && url !== '#') {
+                // For a smoother transition feel
+                document.body.style.opacity = '0.7';
+                window.location.href = url;
+            }
+        });
+    });
+
     // Mobile Menu Link Handling (Closes menu on click)
-    document.querySelectorAll('.nav-link').forEach(link => {
+    document.querySelectorAll('.nav-link, [data-link]').forEach(link => {
         link.addEventListener('click', () => {
             document.body.classList.remove('menu-active');
             const btn = document.getElementById('mobile-menu-toggle');
@@ -9,19 +23,20 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Smooth scroll for all internal links
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    document.querySelectorAll('a[href^="#"], [data-scroll]').forEach(anchor => {
         anchor.addEventListener('click', function (e) {
-            e.preventDefault();
+            const targetId = this.getAttribute('href') || this.getAttribute('data-scroll');
+            if (!targetId || targetId === '#' || targetId.startsWith('javascript')) return;
 
-            const targetId = this.getAttribute('href');
+            e.preventDefault();
             const targetElement = document.querySelector(targetId);
 
             if (targetElement) {
                 const header = document.querySelector('.main-header');
-                const headerHeight = header ? header.offsetHeight : 0; // Get header height if it exists
+                const headerHeight = header ? header.offsetHeight : 0;
 
                 window.scrollTo({
-                    top: targetElement.offsetTop - headerHeight - 20, // Adjust for sticky header and add some padding
+                    top: targetElement.offsetTop - headerHeight - 20,
                     behavior: 'smooth'
                 });
             }
@@ -113,6 +128,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Clear existing days (keep headers)
         // We need to keep the first 7 divs (headers)
+        if (!calendarGrid) return;
         const headers = Array.from(calendarGrid.children).slice(0, 7);
         calendarGrid.innerHTML = '';
         headers.forEach(header => calendarGrid.appendChild(header));
@@ -120,8 +136,6 @@ document.addEventListener('DOMContentLoaded', () => {
         // Get first day of month and days in month
         const firstDay = new Date(year, month, 1).getDay(); // 0 = Sunday, 1 = Monday...
         // Adjust for Monday start (Monday=0, Sunday=6)
-        // Standard getDay(): Sun=0, Mon=1, Tue=2...
-        // We want: Mon=0, Tue=1... Sun=6
         const adjustedFirstDay = (firstDay === 0 ? 6 : firstDay - 1);
 
         const daysInMonth = new Date(year, month + 1, 0).getDate();
@@ -139,18 +153,14 @@ document.addEventListener('DOMContentLoaded', () => {
             dayCell.classList.add('calendar-day');
             dayCell.textContent = i;
 
-            // Simulate availability: Disable Sundays (Day 0) only
-            // Saturdays (Day 6) are now OPEN (10:00 - 15:00)
             const dayOfWeek = new Date(year, month, i).getDay();
             if (dayOfWeek === 0) {
                 dayCell.classList.add('disabled');
             } else {
-                // Add click event for available days
                 dayCell.addEventListener('click', () => {
                     document.querySelectorAll('.calendar-day').forEach(d => d.classList.remove('selected'));
                     dayCell.classList.add('selected');
 
-                    // Show Confirmation Button
                     const selectedDateText = document.getElementById('selected-date-text');
                     const confirmContainer = document.getElementById('booking-confirmation-container');
                     const noSelectionMsg = document.getElementById('no-selection-message');
@@ -162,12 +172,10 @@ document.addEventListener('DOMContentLoaded', () => {
                         confirmContainer.style.display = 'block';
                         noSelectionMsg.style.display = 'none';
 
-                        // Update WhatsApp Link
                         const message = `Hola, quisiera agendar una cita para el ${dateString}.`;
                         whatsappBtn.href = `https://wa.me/525535757364?text=${encodeURIComponent(message)}`;
                     }
 
-                    // Hide calendar alert if present
                     if (calendarAlert) calendarAlert.style.display = 'none';
                 });
             }
@@ -175,8 +183,6 @@ document.addEventListener('DOMContentLoaded', () => {
             calendarGrid.appendChild(dayCell);
         }
 
-        // Update Alert Message based on month
-        // Just a simple logic for demo: "No availability" if it's the past, otherwise available
         const today = new Date();
         if (date < new Date(today.getFullYear(), today.getMonth(), 1)) {
             if (calendarAlert) {
@@ -189,15 +195,15 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Initial Render
-    renderCalendar(displayDate);
+    if (calendarGrid) renderCalendar(displayDate);
 
     // Event Listeners
-    prevMonthBtn.addEventListener('click', () => {
+    if (prevMonthBtn) prevMonthBtn.addEventListener('click', () => {
         displayDate.setMonth(displayDate.getMonth() - 1);
         renderCalendar(displayDate);
     });
 
-    nextMonthBtn.addEventListener('click', () => {
+    if (nextMonthBtn) nextMonthBtn.addEventListener('click', () => {
         displayDate.setMonth(displayDate.getMonth() + 1);
         renderCalendar(displayDate);
     });
