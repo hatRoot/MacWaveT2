@@ -791,9 +791,13 @@
                                 <label>Folio ODS</label>
                                 <input type="text" id="quote-number" placeholder="Ej. RPC-9999">
                             </div>
+                            <div class="form-group">
+                                <label>Tiempo de entrega</label>
+                                <input type="text" id="delivery-time" placeholder="Ej. 15 de Marzo de 2026">
+                            </div>
                         </div>
 
-                        <div class="section-title" style="margin-top: 30px;">Conceptos (Máx 5)</div>
+                        <div class="section-title" style="margin-top: 30px;">Conceptos</div>
                         <div class="items-header">
                             <span>Descripción</span>
                             <span style="text-align: right;">Unitario</span>
@@ -1031,23 +1035,20 @@
             }
 
             const initialItems = [
-                { d: 'Display generico iPhone 16 Pro Max', p: 7434.72, q: 1 },
-                { d: 'Servicio Técnico de iPhone', p: 1300, q: 1 },
-                { d: 'Unidad de almacenamiento en flash SSD 240 gb', p: 899, q: 1 },
-                { d: 'Unidad de almacenamiento en flash SSD 480 gb', p: 1908, q: 1 },
-                { d: 'Unidad de almacenamiento en flash SSD 1000 gb', p: 1654, q: 1 }
+                { d: '', p: 0, q: 1 },
+                { d: '', p: 0, q: 1 },
+                { d: '', p: 0, q: 1 },
+                { d: '', p: 0, q: 1 },
+                { d: '', p: 0, q: 1 }
             ];
 
             function createRow(item = { d: '', p: 0, q: 1 }) {
-                const count = document.querySelectorAll('.item-row').length;
-                if (count >= 5) return;
-
                 const div = document.createElement('div');
                 div.className = 'item-row';
                 div.innerHTML = `
                     <input type="text" class="i-desc" value="${item.d}" placeholder="Item...">
                     <input type="number" class="i-price" value="${item.p}" placeholder="0.00" style="text-align: right;">
-                    <input type="number" class="i-qty" value="${item.q}" min="1" style="text-align: center;">
+                    <input type="number" class="i-qty" value="${item.q}" min="0" style="text-align: center;">
                     <button type="button" class="remove-btn">✕</button>
                 `;
                 div.querySelector('.remove-btn').onclick = () => { div.remove(); update(); };
@@ -1070,7 +1071,7 @@
                 let total = 0;
                 let itemsHtml = '';
 
-                const allRows = Array.from(document.querySelectorAll('.item-row')).slice(0, 5);
+                const allRows = Array.from(document.querySelectorAll('.item-row'));
                 allRows.forEach((row, idx) => {
                     const d = row.querySelector('.i-desc').value;
                     const p = parseFloat(row.querySelector('.i-price').value) || 0;
@@ -1086,10 +1087,11 @@
                         </tr>
                     `;
                 });
-                // Always fill up to 5 rows so bottom elements stay fixed
-                const emptyRowsNeeded = 5 - allRows.length;
-                for (let i = 0; i < emptyRowsNeeded; i++) {
-                    itemsHtml += `
+                // Ensure at least 5 rows for layout consistency if fewer are present
+                if (allRows.length < 5) {
+                    const emptyRowsNeeded = 5 - allRows.length;
+                    for (let i = 0; i < emptyRowsNeeded; i++) {
+                        itemsHtml += `
                         <tr>
                             <td style="height: 24px;">&nbsp;</td>
                             <td>&nbsp;</td>
@@ -1097,20 +1099,15 @@
                             <td>&nbsp;</td>
                         </tr>
                     `;
+                    }
                 }
 
-                // Enforce 5 Item Limit on Add Button
+                // Enforce 5 Item Limit removed, but button stays for adding
                 const addItemBtn = document.getElementById('add-item-btn');
                 if (addItemBtn) {
-                    if (allRows.length >= 5) {
-                        addItemBtn.disabled = true;
-                        addItemBtn.style.opacity = '0.5';
-                        addItemBtn.style.cursor = 'not-allowed';
-                    } else {
-                        addItemBtn.disabled = false;
-                        addItemBtn.style.opacity = '1';
-                        addItemBtn.style.cursor = 'pointer';
-                    }
+                    addItemBtn.disabled = false;
+                    addItemBtn.style.opacity = '1';
+                    addItemBtn.style.cursor = 'pointer';
                 }
 
                 previewCanvas.innerHTML = `
@@ -1169,7 +1166,7 @@
                             <p>Vigencia de la cotización : 1 día, expira el día 11 de Octubre de 2025</p>
                             <p>Garantía: 31 días en el servicio técnico, pregunta por tu garantía extendida a 100 días POR UN COSTO ADICIONAL Condiciones : SE REQUIERE</p>
                             <p style="font-size: 9px; font-weight: 900;">PAGO ANTICIPADO DEL 100% PARA EL SERVICIO.</p>
-                            <p>Tiempo de entrega: Noviembre de 2025 ENTREGA TENTATIVA POR PARTE DEL FABRICANTE, modelos sugeridos a disponibilidad del fabricante. ALGUNOS PRODUCTOS IMPORTADOS DE ESTADOS UNIDOS, AMERICAN PARTNER.</p>
+                            <p>Tiempo de entrega: ${document.getElementById('delivery-time').value || 'POR DEFINIR'} ENTREGA TENTATIVA POR PARTE DEL FABRICANTE, modelos sugeridos a disponibilidad del fabricante. ALGUNOS PRODUCTOS IMPORTADOS DE ESTADOS UNIDOS, AMERICAN PARTNER.</p>
                         </div>
 
                         <div class="ps-bank-area">
@@ -1234,9 +1231,12 @@
                 const accountVal = document.getElementById('account-number').value;
                 const cardVal = document.getElementById('card-number').value;
 
+                const deliveryTime = document.getElementById('delivery-time').value || 'POR DEFINIR';
+                const serialNumber = document.getElementById('serial-number').value || 'N/A';
+
                 const items = [];
                 let total = 0;
-                const allRows = Array.from(document.querySelectorAll('.item-row')).slice(0, 5);
+                const allRows = Array.from(document.querySelectorAll('.item-row'));
                 allRows.forEach((row) => {
                     const d = row.querySelector('.i-desc').value;
                     const p = parseFloat(row.querySelector('.i-price').value) || 0;
@@ -1245,9 +1245,11 @@
                     total += sub;
                     items.push([d, `$ ${p.toLocaleString('en-US', { minimumFractionDigits: 2 })}`, q, `$ ${sub.toLocaleString('en-US', { minimumFractionDigits: 2 })}`]);
                 });
-                // Always pad to exactly 5 rows so PDF layout is fixed
-                while (items.length < 5) {
-                    items.push(['', '', '', '']);
+                // Ensure layout consistency in PDF if fewer than 5 rows
+                if (items.length < 5) {
+                    while (items.length < 5) {
+                        items.push(['', '', '', '']);
+                    }
                 }
 
                 // 1. Header (IMPROVED ALIGNMENT & SPACING)
@@ -1269,9 +1271,10 @@
 
                 doc.setTextColor(255, 59, 48);
                 doc.setFont("helvetica", "bolditalic");
-                doc.setFontSize(8); // Reduced size by half
-                // Folio at same line but right aligned
+                doc.setFontSize(8);
                 doc.text(`Cotización N° ${folio}`, 198, 15, { align: "right" });
+                doc.setFont("helvetica", "bold");
+                doc.text(`S/N: ${serialNumber}`, 198, 19, { align: "right" });
 
                 doc.setTextColor(0, 0, 0);
                 doc.setFontSize(10);
@@ -1392,7 +1395,7 @@
                 doc.setFontSize(9);
                 doc.text("PAGO ANTICIPADO DEL 100% PARA EL SERVICIO.", 15, currentY + 11);
                 doc.setFontSize(7.5);
-                doc.text("Tiempo de entrega: Noviembre de 2025 ENTREGA TENTATIVA POR PARTE DEL FABRICANTE, modelos sugeridos a disponibilidad del fabricante.", 15, currentY + 17);
+                doc.text(`Tiempo de entrega: ${deliveryTime} ENTREGA TENTATIVA POR PARTE DEL FABRICANTE, modelos sugeridos a disponibilidad del fabricante.`, 15, currentY + 17);
                 doc.text("ALGUNOS PRODUCTOS IMPORTADOS DE ESTADOS UNIDOS, AMERICAN PARTNER.", 15, currentY + 22);
 
                 // 5. Bank section
