@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Generador de Cotizaciones - MacWave T2</title>
+    <title>Panel de Órdenes de Servicio (ODS) - MacWave T2</title>
     <!-- Dependencies -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -388,7 +388,9 @@
             margin-top: 15px;
             padding-top: 10px;
             border-top: 1px solid #eee;
-            text-align: left;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
         .ps-total-label {
@@ -401,7 +403,6 @@
             color: var(--accent-red);
             font-weight: 700;
             font-size: 16px;
-            margin-left: 8px;
         }
 
         .ps-terms {
@@ -1143,7 +1144,7 @@
                                 <p>Apple Certified Device Support 2025</p>
                             </div>
                             <div class="ps-meta-col">
-                                <div class="ps-quote-folio">Cotización N° ${folio}</div>
+                                <div class="ps-quote-folio">ODS N° ${folio}</div>
                                 <div class="ps-meta-data">
                                     <div class="ps-dot-row">
                                         <span class="ps-dot-label">Fecha:</span>
@@ -1154,11 +1155,6 @@
                                         <span class="ps-dot-label">Técnico:</span>
                                         <span class="ps-dot-dots">..........</span>
                                         <span class="ps-dot-value">${tech}</span>
-                                    </div>
-                                    <div class="ps-dot-row">
-                                        <span class="ps-dot-label">S/N:</span>
-                                        <span class="ps-dot-dots">.............</span>
-                                        <span class="ps-dot-value">${serialNumber}</span>
                                     </div>
                                     <div class="ps-dot-row" style="opacity: 0.8">
                                         <span class="ps-dot-label">Moneda:</span>
@@ -1172,6 +1168,7 @@
                         <div class="ps-client-area">
                             <p><span class="label">Estimado(a) Sr:</span><span class="value">${client}</span></p>
                             <p><span class="label">Oportunidad / Proyecto:</span><span class="value">${project}</span></p>
+                            <p><span class="label">Número de Serie del equipo :</span><span class="value">${serialNumber}</span></p>
                         </div>
 
                         <table class="ps-table">
@@ -1192,10 +1189,11 @@
                         </div>
 
                         <div class="ps-terms">
-                            <p>Vigencia de la cotización : 1 día, expira el día 11 de Octubre de 2025</p>
-                            <p>Garantía: 31 días en el servicio técnico, pregunta por tu garantía extendida a 100 días POR UN COSTO ADICIONAL Condiciones : SE REQUIERE</p>
+                            <p>Vigencia de la ODS : 1 día para aceptación de presupuesto.</p>
+                            <p>Garantía: 31 días en el servicio técnico, pregunta por tu garantía extendida a 100 días POR UN COSTO ADICIONAL.</p>
+                            <p>Condiciones: El cliente acepta los <a href="terminos.html" target="_blank" style="color: inherit; font-weight: bold;">Términos y Condiciones</a> publicados en macwave.com.mx/terminos.html.</p>
                             <p style="font-size: 9px; font-weight: 900;">PAGO ANTICIPADO DEL 100% PARA EL SERVICIO.</p>
-                            <p>Tiempo de entrega: ${deliveryTime} ENTREGA TENTATIVA POR PARTE DEL FABRICANTE, modelos sugeridos a disponibilidad del fabricante. ALGUNOS PRODUCTOS IMPORTADOS DE ESTADOS UNIDOS, AMERICAN PARTNER.</p>
+                            <p>Tiempo de entrega: ${deliveryTime} ENTREGA TENTATIVA SEGÚN DISPONIBILIDAD.</p>
                         </div>
 
                         <div class="ps-bank-area">
@@ -1218,7 +1216,7 @@
                         <div class="ps-disclaimer">
                             <p>***Precios sujetos a cambios sin previo aviso, en variación al dólar americano o disponibilidad en el mercado de Asia</p>
                             <p style="margin-top: 5px; font-weight: normal; font-size: 6px;">*El servicio incluye mantenimiento, resolución de problemas en el sistema, instalación de hardware y sistema operativo, migración o instalación de software con licencia adquirida.</p>
-                            <p style="margin-top: 8px; font-weight: normal; font-size: 5.5px; line-height: 1.1;">AVISO: EQUIPOS EN ABANDONO POR MÁS DE 30 DÍAS NATURALES A PARTIR DEL DÍA QUE SE DEJÓ EL EQUIPO, SERÁN DESTRUIDOS SIN GENERAR NINGÚN TIPO DE RESPONSABILIDAD A RECOVERY PRO Y SU EQUIPO. USTED ACEPTA YA ESTE ACUERDO, LA REVISIÓN GENERA UN COSTO DE $499 POR DIAGNÓSTICO Y USO DEL LABORATORIO, SERÁN TOMADOS EN CUENTA SI DECIDE REPARAR AQUÍ EL EQUIPO HOY. CONSULTA TÉRMINOS Y CONDICIONES EN EL SITIO WEB. ¡EQUIPOS APAGADOS O MOJADOS NO LLEVAN GARANTÍA! EL SOFTWARE COMO OFFICE SE ENVÍA POR URL Y EL USUARIO DEBE INSTALARLO Y NOTIFICAR PARA ACTIVARLO.</p>
+                            <p style="margin-top: 8px; font-weight: normal; font-size: 5.5px; line-height: 1.1;">AVISO: EQUIPOS EN ABANDONO POR MÁS DE 30 DÍAS NATURALES A PARTIR DEL DÍA QUE SE DEJÓ EL EQUIPO, SERÁN DESTRUIDOS SIN GENERAR NINGÚN TIPO DE RESPONSABILIDAD A macWave Y SU EQUIPO. USTED ACEPTA YA ESTE ACUERDO, LA REVISIÓN GENERA UN COSTO DE $499 POR DIAGNÓSTICO Y USO DEL LABORATORIO, SERÁN TOMADOS EN CUENTA SI DECIDE REPARAR AQUÍ EL EQUIPO HOY. CONSULTA TÉRMINOS Y CONDICIONES EN EL SITIO WEB. ¡EQUIPOS APAGADOS O MOJADOS NO LLEVAN GARANTÍA! EL SOFTWARE COMO OFFICE SE ENVÍA POR URL Y EL USUARIO DEBE INSTALARLO Y NOTIFICAR PARA ACTIVARLO.</p>
                         </div>
 
 
@@ -1301,11 +1299,7 @@
                 doc.setTextColor(255, 59, 48);
                 doc.setFont("helvetica", "bolditalic");
                 doc.setFontSize(10); // Slightly larger for clarity
-                doc.text(`Cotización N° ${folio}`, 198, 15, { align: "right" });
-
-                doc.setFontSize(8);
-                doc.setFont("helvetica", "bold");
-                doc.text(`NÚMERO DE SERIE DEL EQUIPO: ${serialNumber}`, 198, 22, { align: "right" }); // Moved down from y=19 to y=22
+                doc.text(`ODS N° ${folio}`, 198, 15, { align: "right" });
 
                 doc.setTextColor(0, 0, 0);
                 doc.setFontSize(10);
@@ -1343,6 +1337,7 @@
                 doc.setFont("helvetica", "normal");
                 doc.setTextColor(134, 134, 139);
                 doc.text(client, 50, 60);
+
                 doc.setTextColor(0, 113, 227);
                 doc.setFont("helvetica", "bold");
                 doc.text("Oportunidad / Proyecto:", 15, 67);
@@ -1350,20 +1345,28 @@
                 doc.setTextColor(134, 134, 139);
                 doc.text(project, 65, 67);
 
+                doc.setTextColor(0, 113, 227);
+                doc.setFont("helvetica", "bold");
+                doc.text("Número de Serie del equipo :", 15, 74);
+                doc.setFont("helvetica", "normal");
+                doc.setTextColor(134, 134, 139);
+                doc.text(serialNumber, 75, 74);
+
                 // 3. Perfect Rounded Table Container
                 // Draw manual rounded background for the ENTIRE table container (60 units height)
+                // Adjusted y position from 75 to 82 to accommodate the new serial number line
                 doc.setDrawColor(240, 240, 240);
                 doc.setLineWidth(0.2);
-                doc.roundedRect(15, 75, 180, 60, 4, 4, 'D');
+                doc.roundedRect(15, 82, 180, 60, 4, 4, 'D');
 
                 // Draw Black Header with perfect rounding (top only)
                 doc.setFillColor(0, 0, 0);
-                doc.roundedRect(15, 75, 180, 10, 4, 4, 'F');
+                doc.roundedRect(15, 82, 180, 10, 4, 4, 'F');
                 // Fill the bottom part of the header rounding to make it flat where it meets the first row
-                doc.rect(15, 80, 180, 5, 'F');
+                doc.rect(15, 87, 180, 5, 'F');
 
                 doc.autoTable({
-                    startY: 75,
+                    startY: 82,
                     head: [['DESCRIPCIÓN DEL SERVICIO O PRODUCTO', 'PRECIO UNITARIO', 'UNIDAD', 'SUB TOTAL']],
                     body: items,
                     theme: 'plain',
@@ -1402,11 +1405,12 @@
                 });
 
                 // Fixed positions to avoid "amontonado"
-                const totalY = 145;
-                const termsY = 158;
-                const bankY = 195;
-                const disclaimerY = 235;
-                const certRowY = 265;
+                // Adjusted positions slightly down (+7 units) due to the new serial number line
+                const totalY = 152;
+                const termsY = 165;
+                const bankY = 202;
+                const disclaimerY = 242;
+                const certRowY = 270;
                 const footerY = 286;
 
                 doc.setFontSize(13);
@@ -1421,12 +1425,13 @@
                 doc.setFontSize(7.5);
                 doc.setTextColor(0, 102, 128);
                 doc.setFont("helvetica", "bold");
-                doc.text(`Vigencia de la cotización : 1 día, expira el día ${new Date(new Date().getTime() + 86400000).toLocaleDateString()}`, 15, currentY);
-                doc.text("Garantía: 31 días en el servicio técnico, pregunta por tu garantía extendida a 100 días POR UN COSTO ADICIONAL Condiciones : SE REQUIERE", 15, currentY + 5);
+                doc.text(`Vigencia de la ODS : 1 día para aceptación de presupuesto.`, 15, currentY);
+                doc.text("Garantía: 31 días en el servicio técnico, pregunta por tu garantía extendida a 100 días POR UN COSTO ADICIONAL.", 15, currentY + 5);
+                doc.text("Condiciones: El cliente acepta los términos y condiciones en macwave.com.mx/terminos.html", 15, currentY + 11);
                 doc.setFontSize(9);
-                doc.text("PAGO ANTICIPADO DEL 100% PARA EL SERVICIO.", 15, currentY + 11);
+                doc.text("PAGO ANTICIPADO DEL 100% PARA EL SERVICIO.", 15, currentY + 17);
                 doc.setFontSize(7.5);
-                doc.text(`Tiempo de entrega: ${deliveryTime} ENTREGA TENTATIVA POR PARTE DEL FABRICANTE, modelos sugeridos a disponibilidad del fabricante.`, 15, currentY + 17);
+                doc.text(`Tiempo de entrega: ${deliveryTime} ENTREGA TENTATIVA SEGÚN DISPONIBILIDAD.`, 15, currentY + 23);
                 doc.text("ALGUNOS PRODUCTOS IMPORTADOS DE ESTADOS UNIDOS, AMERICAN PARTNER.", 15, currentY + 22);
 
                 // 5. Bank section
@@ -1463,7 +1468,7 @@
                 doc.text("***Precios sujetos a cambios sin previo aviso, en variación al dólar americano", 15, currentY);
                 doc.setFontSize(5.5);
                 doc.setFont("helvetica", "normal");
-                const noticeText = "AVISO: EQUIPOS EN ABANDONO POR MÁS DE 30 DÍAS NATURALES A PARTIR DEL DÍA QUE SE DEJÓ EL EQUIPO, SERÁN DESTRUIDOS SIN GENERAR NINGÚN TIPO DE RESPONSABILIDAD A RECOVERY PRO Y SU EQUIPO. USTED ACEPTA YA ESTE ACUERDO, LA REVISIÓN GENERA UN COSTO DE $499 POR DIAGNÓSTICO Y USO DEL LABORATORIO. ¡EQUIPOS APAGADOS O MOJADOS NO LLEVAN GARANTÍA!";
+                const noticeText = "AVISO: EQUIPOS EN ABANDONO POR MÁS DE 30 DÍAS NATURALES A PARTIR DEL DÍA QUE SE DEJÓ EL EQUIPO, SERÁN DESTRUIDOS SIN GENERAR NINGÚN TIPO DE RESPONSABILIDAD A macWave Y SU EQUIPO. USTED ACEPTA YA ESTE ACUERDO, LA REVISIÓN GENERA UN COSTO DE $499 POR DIAGNÓSTICO Y USO DEL LABORATORIO, SERÁN TOMADOS EN CUENTA SI DECIDE REPARAR AQUÍ EL EQUIPO HOY. CONSULTA TÉRMINOS Y CONDICIONES EN EL SITIO WEB. ¡EQUIPOS APAGADOS O MOJADOS NO LLEVAN GARANTÍA! EL SOFTWARE COMO OFFICE SE ENVÍA POR URL Y EL USUARIO DEBE INSTALARLO Y NOTIFICAR PARA ACTIVARLO.";
                 const splitN = doc.splitTextToSize(noticeText, 180);
                 doc.text(splitN, 15, currentY + 5);
 
@@ -1503,18 +1508,20 @@
                 doc.text("ESPECIALISTAS EN TECNOLOGÍA ROLDU SAS. DE C.V", 12, footerY);
                 doc.setFont("helvetica", "normal");
                 // Anchor center text at 110 (slightly right of center) to clear the long company name
-                doc.text("Visítanos en Recovery Pro sucursal Condesa\nSalvador Alvarado 72 oficina 208, Escandón. CDMX", 112, footerY, { align: "center" });
-                doc.text(`sitio web: https://macWave.com.mx\nmail: contabilidad@macWave.com.mx`, 198, footerY, { align: "right" });
+                doc.text("© 2026 Mac Wave T2. Todos los derechos reservados.\nSalvador Alvarado 72 oficina 208, Escandón. CDMX", 112, footerY, { align: "center" });
+                doc.text(`sitio web: https://macwave.com.mx\nDesarrollado e impulsado por InterSite`, 198, footerY, { align: "right" });
 
-                // Increment folio counter after each successful PDF
-                getNextFolio(true);
-                document.getElementById('quote-number').value = getNextFolio();
+                const currentFolio = document.getElementById('quote-number').value;
 
                 window.open(doc.output('bloburl'), '_blank');
 
-                // ── Auto-save ODS to Supabase ────────────────────────
+                // Increment folio counter AFTER capturing it for current PDF/Supabase
+                getNextFolio(true);
+                document.getElementById('quote-number').value = getNextFolio();
+
+                // ── Auto-save ODS to Supabase (Using currentFolio) ────────────────────────
                 const odsData = {
-                    folio: document.getElementById('quote-number').value,
+                    folio: currentFolio,
                     cliente: document.getElementById('client-name').value || '',
                     proyecto: document.getElementById('project-name').value || '',
                     tecnico: document.getElementById('tech-name').value || '',
@@ -1591,17 +1598,40 @@
                 ods.forEach(o => {
                     const sc = STATUS_COLORS[o.status] || STATUS_COLORS['Recibido'];
                     const item = document.createElement('div');
-                    item.style.cssText = 'padding:12px 14px;border-radius:10px;cursor:pointer;margin-bottom:6px;background:#2c2c2e;transition:background 0.2s;';
+                    item.style.cssText = 'padding:12px 14px;border-radius:10px;cursor:pointer;margin-bottom:6px;background:#2c2c2e;transition:background 0.2s;position:relative;';
                     item.innerHTML = `
                         <div style="font-weight:700;font-size:0.85rem;color:#fff;margin-bottom:4px;">${o.folio}</div>
                         <div style="font-size:0.78rem;color:#8e8e93;margin-bottom:6px;">${o.cliente || 'Sin nombre'}</div>
-                        <span style="font-size:0.7rem;font-weight:700;padding:3px 8px;border-radius:20px;background:${sc.bg};color:${sc.text};">${o.status}</span>
+                        <div style="display:flex;justify-content:space-between;align-items:center;">
+                            <span style="font-size:0.7rem;font-weight:700;padding:3px 8px;border-radius:20px;background:${sc.bg};color:${sc.text};">${o.status}</span>
+                            <button class="delete-ods-btn" style="background:none;border:none;color:#ff453a;cursor:pointer;padding:4px;opacity:0.6;transition:opacity 0.2s;">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/></svg>
+                            </button>
+                        </div>
                     `;
-                    item.onmouseenter = () => item.style.background = '#3a3a3c';
-                    item.onmouseleave = () => item.style.background = '#2c2c2e';
+                    item.onmouseenter = () => { item.style.background = '#3a3a3c'; item.querySelector('.delete-ods-btn').style.opacity = '1'; };
+                    item.onmouseleave = () => { item.style.background = '#2c2c2e'; item.querySelector('.delete-ods-btn').style.opacity = '0.6'; };
                     item.onclick = () => renderODSDetail(o);
+                    item.querySelector('.delete-ods-btn').onclick = (e) => {
+                        e.stopPropagation();
+                        deleteODS(o.folio);
+                    };
                     list.appendChild(item);
                 });
+            };
+
+            const deleteODS = async (folio) => {
+                if (!confirm(`¿Estás seguro de eliminar la cotización ${folio}? Esta acción no se puede deshacer.`)) return;
+                try {
+                    const { error } = await window._sbClient.from('ordenes_servicio').delete().eq('folio', folio);
+                    if (error) throw error;
+                    allODS = allODS.filter(o => o.folio !== folio);
+                    renderODSList(allODS);
+                    document.getElementById('ods-detail').innerHTML = '<div style="color:#6e6e73;text-align:center;padding:40px;font-size:0.9rem;">Selecciona una ODS para ver detalles</div>';
+                    console.log('ODS eliminada:', folio);
+                } catch (e) {
+                    alert('Error al eliminar: ' + e.message);
+                }
             };
 
             const renderODSDetail = (o) => {
@@ -1649,6 +1679,9 @@
                                 Guardar
                             </button>
                         </div>
+                    </div>
+                    <div style="margin-top:20px;padding-top:20px;border-top:1px solid #3a3a3c;">
+                        <button onclick="deleteODS('${o.folio}')" style="width:100%;background:rgba(255, 69, 58, 0.1);color:#ff453a;border:1px solid rgba(255, 69, 58, 0.2);padding:10px;border-radius:8px;font-weight:600;cursor:pointer;transition:0.2s;" onmouseenter="this.style.background='rgba(255, 69, 58, 0.2)'" onmouseleave="this.style.background='rgba(255, 69, 58, 0.1)'">Eliminar Cotización</button>
                     </div>
                     <div style="background:#2c2c2e;border-radius:10px;padding:14px;">
                         <div style="font-size:0.65rem;color:#8e8e93;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px;">Notas Internas</div>

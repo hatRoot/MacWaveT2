@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Términos y Condiciones - MacWave T2</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #000000;
+            --card-bg: #1c1c1e;
+            --text-primary: #f5f5f7;
+            --text-secondary: #86868b;
+            --accent: #0071e3;
+            --accent-red: #ff453a;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background-color: var(--bg);
+            color: var(--text-primary);
+            line-height: 1.6;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 20px;
+            text-decoration: none;
+        }
+
+        .logo img {
+            height: 40px;
+            border-radius: 4px;
+        }
+
+        .logo h1 {
+            font-size: 1.5rem;
+            font-weight: 900;
+            color: #fff;
+            letter-spacing: -0.5px;
+        }
+
+        h2 {
+            font-size: 2rem;
+            font-weight: 800;
+            margin-bottom: 10px;
+            letter-spacing: -0.022em;
+        }
+
+        .last-update {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .content {
+            background: var(--card-bg);
+            padding: 40px;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .section {
+            margin-bottom: 30px;
+        }
+
+        .section h3 {
+            color: var(--accent);
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        p {
+            margin-bottom: 15px;
+            color: var(--text-primary);
+            font-size: 0.95rem;
+            opacity: 0.9;
+        }
+
+        .highlight-box {
+            background: rgba(255, 69, 58, 0.1);
+            border-left: 4px solid var(--accent-red);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+        }
+
+        .highlight-box p {
+            color: #ff9f0a;
+            font-weight: 600;
+            margin-bottom: 0;
+        }
+
+        ul {
+            list-style: none;
+            margin-bottom: 20px;
+        }
+
+        ul li {
+            position: relative;
+            padding-left: 20px;
+            margin-bottom: 8px;
+            font-size: 0.95rem;
+            color: var(--text-primary);
+            opacity: 0.9;
+        }
+
+        ul li::before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: var(--accent);
+            font-weight: bold;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 60px;
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+        }
+
+        .btn-back {
+            display: inline-block;
+            margin-top: 20px;
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        @media (max-width: 600px) {
+            .content {
+                padding: 25px;
+            }
+
+            h2 {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <div class="header">
+            <a href="index.html" class="logo">
+                <img src="./images/circuito_bronce.jpg" alt="Logo MacWave">
+                <h1>mac<span>Wave</span> T2</h1>
+            </a>
+            <h2>Términos y Condiciones de Servicio</h2>
+            <p class="last-update">Última actualización: 23 de Febrero de 2026</p>
+        </div>
+
+        <div class="content">
+            <div class="section">
+                <h3>1. CONTRATO DE ADHESIÓN Y ACEPTACIÓN</h3>
+                <p>El presente documento constituye un Contrato de Adhesión que regula la prestación de servicios
+                    técnicos por parte de <strong>MacWave T2</strong>. Al solicitar información, enviar un mensaje de
+                    WhatsApp, dejar un equipo en nuestras instalaciones o realizar cualquier pago parcial o total, el
+                    CLIENTE acepta de manera tácita, total e incondicional estos Términos y Condiciones.</p>
+            </div>
+
+            <div class="section">
+                <h3>2. RESPONSABILIDAD DE DATOS (BACKUP)</h3>
+                <div class="highlight-box">
+                    <p>MacWave T2 NO se hace responsable por la pérdida de información, software, licencias o datos
+                        contenidos en el equipo. Es responsabilidad EXCLUSIVA del usuario realizar respaldos previos.
+                    </p>
+                </div>
+                <p>El cliente reconoce que durante un proceso de diagnóstico o reparación existe riesgo de pérdida de
+                    datos, y deslinda a MacWave T2 de cualquier reclamación legal o indemnización por este concepto.</p>
+            </div>
+
+            <div class="section">
+                <h3>3. EXCLUSIÓN DE GARANTÍA Y RIESGOS</h3>
+                <ul>
+                    <li><strong>Equipos con Garantía de Fábrica:</strong> El cliente acepta que cualquier intervención
+                        por terceros invalida la garantía original del fabricante (Apple).</li>
+                    <li><strong>Equipos Mojados o Apagados:</strong> No cuentan con garantía debido a la naturaleza
+                        impredecible de la corrosión y el daño electrónico.</li>
+                    <li><strong>Hardware Interno:</strong> No nos hacemos responsables por fallas en componentes de
+                        hardware que no fueron objeto de la reparación solicitada.</li>
+                </ul>
+            </div>
+
+            <p>Los equipos que permanezcan en el taller por más de <strong>30 días naturales</strong> a partir de la
+                fecha de recepción (sin ser recogidos o sin respuesta del cliente) se considerarán en estado de
+                ABANDONO. MacWave T2 queda facultado para disponer de los mismos para recuperación de costos o
+                destrucción, sin responsabilidad alguna ante el cliente o autoridades.</p>
+            <div class="highlight-box" style="background: rgba(0, 113, 227, 0.1); border-left-color: var(--accent);">
+                <p style="color: var(--accent);">La revisión genera un costo de <strong>$499 MXN</strong> por
+                    diagnóstico y uso del laboratorio. Este monto será tomado en cuenta únicamente si el cliente decide
+                    proceder con la reparación del equipo en el mismo día.</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <h3>5. LICENCIAS DE SOFTWARE</h3>
+            <p>El software proporcionado (ej. Microsoft Office) se envía exclusivamente vía URL. El usuario es
+                responsable de realizar la instalación de manera independiente. Una vez instalado, deberá notificar a
+                MacWave T2 para proceder con la activación remota.</p>
+        </div>
+
+        <div class="section">
+            <h3>5. ROBO Y SINIESTROS</h3>
+            <p>MacWave T2 cuenta con medidas de seguridad robustas; sin embargo, no se hace responsable por la
+                pérdida de equipos derivada de robo con violencia, desastres naturales, incendios o cualquier evento
+                de fuerza mayor (Siniestros) que escape a nuestro control operativo.</p>
+        </div>
+
+        <div class="section">
+            <h3>6. PROTECCIÓN DE DATOS Y CONFIDENCIALIDAD</h3>
+            <p>En cumplimiento con las normas de confidencialidad, sus datos personales están protegidos. Sin
+                embargo, MacWave T2 se deslinda de cualquier responsabilidad derivada de ataques cibernéticos o
+                vulnerabilidades de software de terceros que pudieran comprometer la integridad de la información.
+            </p>
+        </div>
+
+        <div class="section">
+            <h3>7. BLINDAJE JURÍDICO Y JURISDICCIÓN</h3>
+            <p>Este contrato está diseñado para proteger la integridad operativa de MacWave T2 ante cualquier
+                instancia legal, fiscal o administrativa (PROFECO, SAT, Fiscalías, etc.). El cliente renuncia
+                expresamente a cualquier otra jurisdicción que pudiera corresponderle, sometiéndose a las leyes y
+                tribunales de la Ciudad de México para la resolución de cualquier controversia.</p>
+        </div>
+
+        <a href="index.html" class="btn-back">← Volver al inicio</a>
+    </div>
+
+    <div class="footer">
+        <p>&copy; 2026 Mac Wave T2. Todos los derechos reservados. | Desarrollado por InterSite</p>
+    </div>
+    </div>
+
+</body>
+
+</html>
