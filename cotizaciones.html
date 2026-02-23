@@ -942,6 +942,22 @@
                 quoteDateInput.value = `${day}/${month}/${year} ${hours}:${minutes}`;
             }
 
+            // Auto-fill Technician based on session user
+            const currentUser = sessionStorage.getItem('macwave_user');
+            const techNameInput = document.getElementById('tech-name');
+            if (techNameInput) {
+                if (currentUser === 'joel.duran.mendoza@me.com' || currentUser === 'joel') {
+                    techNameInput.value = 'Joel Duran';
+                } else if (currentUser === 'root') {
+                    techNameInput.value = 'ADMIN';
+                }
+
+                if (techNameInput.value) {
+                    // Trigger update preview
+                    setTimeout(() => techNameInput.dispatchEvent(new Event('input')), 100);
+                }
+            }
+
             // Technician Phone Mapping
             const TECH_PHONES = {
                 'JOEL DURAN': '5535757364',
@@ -1509,7 +1525,7 @@
                 doc.setFont("helvetica", "normal");
                 // Anchor center text at 110 (slightly right of center) to clear the long company name
                 doc.text("© 2026 Mac Wave T2. Todos los derechos reservados.\nSalvador Alvarado 72 oficina 208, Escandón. CDMX", 112, footerY, { align: "center" });
-                doc.text(`sitio web: https://macwave.com.mx\nDesarrollado e impulsado por InterSite`, 198, footerY, { align: "right" });
+                doc.text(`sitio web: https://macwave.com.mx\nDesarrollado e impulsado por InterSite (intersite.netlify.app)`, 198, footerY, { align: "right" });
 
                 const currentFolio = document.getElementById('quote-number').value;
 
