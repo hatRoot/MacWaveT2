@@ -173,7 +173,7 @@
 
             <form id="login-form">
                 <label class="login-label">Tecnico (Email):</label>
-                <input type="email" id="email" class="aqua-input" placeholder="usuario@macwave.com.mx" required>
+                <input type="text" id="email" class="aqua-input" placeholder="usuario@macwave.com.mx" required>
 
                 <label class="login-label">Contraseña:</label>
                 <input type="password" id="password" class="aqua-input" placeholder="••••••••" required>
@@ -208,8 +208,24 @@
             submitBtn.disabled = true;
             submitBtn.textContent = 'Verificando...';
 
-            const email = emailInput.value;
-            const password = passwordInput.value;
+            const email = emailInput.value.trim();
+            const password = passwordInput.value.trim();
+
+            // Root / Admin Bypass
+            if (email === 'root' && password === 'admin') {
+                sessionStorage.setItem('macwave_session', 'authorized');
+                sessionStorage.setItem('macwave_user', 'root');
+                window.location.href = 'cotizaciones.html';
+                return;
+            }
+
+            // Joel Specific Bypass (Manual credentials)
+            if (email === 'joel.duran.mendoza@me.com' && password === 'Joshua1986') {
+                sessionStorage.setItem('macwave_session', 'authorized');
+                sessionStorage.setItem('macwave_user', 'joel');
+                window.location.href = 'cotizaciones.html';
+                return;
+            }
 
             try {
                 const { data, error } = await supabaseClient.auth.signInWithPassword({
@@ -219,12 +235,21 @@
 
                 if (error) throw error;
 
-                // Success! Redirect to dashboard (Change this to your actual dashboard page)
-                console.log('Login successful:', data);
-                window.location.href = 'cotizaciones.html'; // Redirect to the quotations dashboard
+                // Joel Super User Restriction (Email check for Supabase users)
+                const authorizedEmails = ['joel.duran.mendoza@me.com', 'joel@macwave.com.mx', 'contabilidad@macwave.com.mx', 'contacto@macwave.com.mx'];
+
+                if (authorizedEmails.includes(email.toLowerCase())) {
+                    sessionStorage.setItem('macwave_session', 'authorized');
+                    sessionStorage.setItem('macwave_user', email);
+                    window.location.href = 'cotizaciones.html';
+                } else {
+                    await supabaseClient.auth.signOut();
+                    throw new Error('Lo sentimos, solo el administrador tiene acceso a este panel.');
+                }
+
             } catch (error) {
                 console.error('Login error:', error.message);
-                errorMessage.textContent = 'Error: ' + error.message; // More descriptive error
+                errorMessage.textContent = error.message;
                 errorMessage.style.display = 'block';
             } finally {
                 submitBtn.disabled = false;

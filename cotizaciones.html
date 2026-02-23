@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Generador de Cotizaciones - MacWave T2</title>
-    <!-- Dependencies from CDN -->
+    <!-- Dependencies -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
@@ -13,6 +13,8 @@
         rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
     <style>
         :root {
@@ -25,222 +27,717 @@
             --border: rgba(255, 255, 255, 0.1);
             --radius: 12px;
             --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-            --accent: #ff3b30;
+            --accent-red: #ff3b30;
+            --apple-blue: #0071e3;
+            --preview-bg: #ffffff;
+            --terms-teal: #006680;
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Inter', 'Outfit', -apple-system, sans-serif;
+            font-family: 'Inter', -apple-system, sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        h1,
+        h2,
+        h3,
+        .heading {
+            font-family: 'Outfit', sans-serif;
         }
 
         body {
             background-color: var(--bg-dark);
             color: var(--text-main);
-            line-height: 1.4;
-            padding: 20px;
+            line-height: 1.5;
+            padding: 24px;
             min-height: 100vh;
+            background-image: radial-gradient(circle at top right, rgba(0, 113, 227, 0.1), transparent);
         }
 
         .app-container {
-            max-width: 1400px;
+            max-width: 1440px;
             margin: 0 auto;
         }
 
         header {
-            text-align: center;
             margin-bottom: 30px;
-        }
-
-        .logo-area {
             display: flex;
+            justify-content: space-between;
             align-items: center;
-            justify-content: center;
-            gap: 30px;
         }
 
-        .main-logo {
-            width: 120px;
-            height: auto;
-            filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
+        header h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
         }
 
-        .main-content {
+        header p {
+            color: var(--text-dim);
+            font-size: 0.9rem;
+        }
+
+        .dashboard-grid {
             display: grid;
             grid-template-columns: 1fr 1.2fr;
-            gap: 30px;
+            gap: 32px;
+            align-items: start;
         }
 
         .glass-card {
             background: var(--card-bg);
-            backdrop-filter: blur(12px);
+            backdrop-filter: blur(20px);
             border: 1px solid var(--border);
             border-radius: var(--radius);
-            padding: 25px;
+            padding: 24px;
             box-shadow: var(--glass-shadow);
         }
 
-        h2 {
-            font-size: 1.5rem;
+        .section-title {
+            font-size: 1.2rem;
+            font-weight: 600;
             margin-bottom: 20px;
-            border-bottom: 1px solid var(--border);
-            padding-bottom: 10px;
-        }
-
-        h3 {
-            font-size: 1.1rem;
-            margin: 15px 0 10px;
-            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: var(--text-main);
         }
 
         .form-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
         }
 
         .form-group {
             display: flex;
             flex-direction: column;
-            gap: 8px;
+            gap: 6px;
         }
 
         label {
-            font-size: 0.9rem;
+            font-size: 0.75rem;
+            font-weight: 600;
             color: var(--text-dim);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
         }
 
         input,
         select {
-            background: rgba(255, 255, 255, 0.05);
+            background: rgba(255, 255, 255, 0.04);
             border: 1px solid var(--border);
             border-radius: 8px;
             padding: 12px;
-            color: white;
-            transition: all 0.3s;
+            color: #fff;
+            transition: all 0.2s;
+        }
+
+        input::placeholder {
+            color: rgba(255, 255, 255, 0.3);
+            font-size: 0.85rem;
+        }
+
+        .readonly-faint {
+            opacity: 0.4;
+            /* Made it slightly fainter as requested */
+            cursor: default;
         }
 
         input:focus {
             outline: none;
             border-color: var(--primary);
-            box-shadow: 0 0 0 4px rgba(0, 113, 227, 0.1);
+            box-shadow: 0 0 0 3px rgba(0, 113, 227, 0.15);
+        }
+
+        .items-header {
+            display: grid;
+            grid-template-columns: 2fr 100px 70px 48px;
+            gap: 10px;
+            padding: 10px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: var(--text-dim);
+            text-transform: uppercase;
         }
 
         .item-row {
             display: grid;
-            grid-template-columns: 2fr 1fr 60px 50px;
+            grid-template-columns: 2fr 100px 70px 48px;
             gap: 10px;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
         }
 
         .remove-btn {
             background: rgba(255, 59, 48, 0.1);
-            color: #ff3b30;
-            border: 1px solid rgba(255, 59, 48, 0.2);
+            color: var(--accent-red);
+            border: none;
             border-radius: 6px;
             cursor: pointer;
         }
 
-        .primary-btn,
-        .secondary-btn {
-            padding: 14px 24px;
+        .btn {
+            padding: 14px;
             border-radius: 10px;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s;
             border: none;
+            transition: 0.2s;
+        }
+
+        .btn-primary {
+            background: var(--apple-blue);
+            color: #fff;
             width: 100%;
-            margin-top: 10px;
+            margin-top: 24px;
         }
 
-        .primary-btn {
-            background: var(--primary);
-            color: white;
+        .btn-primary:hover {
+            background: var(--primary-hover);
+            transform: translateY(-1px);
         }
 
-        .secondary-btn {
+        .logout-btn {
+            background: rgba(255, 69, 58, 0.1);
+            color: #ff453a;
+            border: 1px solid rgba(255, 69, 58, 0.3);
+            text-transform: uppercase;
+            font-size: 0.7rem;
+            letter-spacing: 0.1em;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 0 10px rgba(255, 69, 58, 0.1);
+        }
+
+        .logout-btn:hover {
+            background: #ff453a;
+            color: #000;
+            box-shadow: 0 0 20px rgba(255, 69, 58, 0.4);
+            transform: scale(1.05);
+        }
+
+        .btn-secondary {
             background: rgba(255, 255, 255, 0.05);
-            color: white;
+            color: #fff;
             border: 1px solid var(--border);
         }
 
-        /* Preview area */
+        /* WYSIWYG PREVIEW - GOLD STANDARD CLONE */
         .preview-canvas {
-            background: white;
+            background: var(--preview-bg);
             width: 100%;
             aspect-ratio: 1 / 1.414;
-            border-radius: 4px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
-            color: #333;
-            padding: 30px;
-            overflow-y: auto;
+            border-radius: 2px;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
+            position: relative;
+            color: #000;
+            padding: 40px;
+            font-family: 'Helvetica', Arial, sans-serif;
+            overflow: hidden;
         }
 
-        /* Mock PDF Styles */
-        .mock-pdf-content {
-            font-size: 10px;
-        }
-
-        .mock-header {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 20px;
-        }
-
-        .mock-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 15px;
-        }
-
-        .mock-table th {
-            background: #000;
-            color: #fff;
-            padding: 8px;
-            font-size: 8px;
-        }
-
-        .mock-table td {
-            padding: 8px;
-            border-bottom: 1px solid #eee;
-        }
-
-        .mock-total {
-            text-align: right;
-            margin-top: 15px;
-            font-weight: bold;
-            color: #ff3b30;
-            font-size: 14px;
-        }
-
-        /* Ticket Modal */
-        .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
+        .ps-content {
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.85);
             display: flex;
-            justify-content: center;
+            flex-direction: column;
+        }
+
+        .ps-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 25px;
+        }
+
+        .ps-logo-col {
+            width: 80px;
+        }
+
+        .ps-title-col {
+            flex: 1;
+            text-align: center;
+        }
+
+        .ps-meta-col {
+            width: 150px;
+            text-align: right;
+        }
+
+        .ps-logo {
+            width: 80px;
+            height: auto;
+        }
+
+        .ps-title-col h1 {
+            font-family: Arial, sans-serif;
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 4px;
+        }
+
+        .ps-title-col p {
+            font-size: 10px;
+            color: #86868b;
+        }
+
+        .ps-quote-folio {
+            color: var(--accent-red);
+            font-weight: 900;
+            font-style: italic;
+            font-size: 8.5px;
+            /* Reduced by half (from 16px) */
+            margin-bottom: 8px;
+        }
+
+        .ps-meta-data {
+            font-size: 10px;
+            line-height: 1.6;
+            color: #333;
+        }
+
+        .ps-dot-row {
+            display: flex;
+            justify-content: flex-end;
+            width: 100%;
+        }
+
+        .ps-dot-label {
+            flex-shrink: 0;
+        }
+
+        .ps-dot-dots {
+            overflow: hidden;
+            white-space: nowrap;
+            margin: 0 4px;
+            color: #888;
+        }
+
+        .ps-dot-value {
+            font-weight: bold;
+            min-width: 35px;
+            /* Reduced to bring values closer to dots */
+            text-align: left;
+        }
+
+        .ps-client-area {
+            margin-bottom: 10px;
+            font-size: 13px;
+        }
+
+        .ps-client-area .label {
+            color: #0071e3;
+            font-weight: bold;
+        }
+
+        .ps-client-area .value {
+            color: #86868b;
+            margin-left: 8px;
+        }
+
+        .ps-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin-top: 25px;
+            overflow: hidden;
+            border-radius: 15px;
+            /* Perfect rounded corners */
+            border: 1px solid #eee;
+        }
+
+        .ps-table th {
+            background: #000;
+            color: #fff;
+            padding: 14px;
+            font-size: 11px;
+            text-transform: uppercase;
+            font-weight: 800;
+            text-align: center;
+            border: none;
+        }
+
+        .ps-table td {
+            padding: 14px;
+            border-bottom: 1px solid #eee;
+            font-size: 11px;
+            font-weight: 800;
+            color: var(--accent-red);
+            text-align: center;
+        }
+
+        .ps-table td:first-child {
+            text-align: left;
+        }
+
+        .ps-table tbody tr:nth-child(even) {
+            background-color: #f5f5f7;
+        }
+
+        .ps-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .ps-total-row {
+            margin-top: 15px;
+            padding-top: 10px;
+            border-top: 1px solid #eee;
+            text-align: left;
+        }
+
+        .ps-total-label {
+            color: #000;
+            font-weight: 500;
+            font-size: 16px;
+        }
+
+        .ps-total-value {
+            color: var(--accent-red);
+            font-weight: 700;
+            font-size: 16px;
+            margin-left: 8px;
+        }
+
+        .ps-terms {
+            color: var(--terms-teal);
+            font-size: 8px;
+            font-weight: 800;
+            line-height: 1.6;
+            margin-top: 20px;
+            text-align: left;
+        }
+
+        .ps-terms p {
+            margin-bottom: 2px;
+        }
+
+        .ps-bank-area {
+            margin-top: 20px;
+            margin-bottom: 20px;
+            border-top: 1px solid #eee;
+            padding-top: 15px;
+        }
+
+        .ps-bank-qr-row {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 12px;
+        }
+
+        .ps-bank-info {
+            flex: 1;
+        }
+
+        .ps-qr-block {
+            display: flex;
+            flex-direction: column;
             align-items: center;
+            gap: 4px;
+        }
+
+        .ps-qr-block canvas,
+        .ps-qr-block img {
+            width: 70px !important;
+            height: 70px !important;
+        }
+
+        .ps-qr-label {
+            font-size: 5.5px;
+            color: #888;
+            text-align: center;
+        }
+
+        .ps-bank-title {
+            color: var(--terms-teal);
+            font-weight: 900;
+            font-size: 11px;
+            margin-bottom: 10px;
+        }
+
+        .ps-bank-main {
+            color: #004d60;
+            font-size: 16px;
+            font-weight: 900;
+            margin-bottom: 8px;
+        }
+
+        .ps-bank-details {
+            font-size: 11px;
+            color: var(--terms-teal);
+            line-height: 1.5;
+            font-weight: 700;
+        }
+
+        .ps-disclaimer {
+            margin-top: 20px;
+            font-size: 7px;
+            color: #000;
+            line-height: 1.2;
+            text-align: left;
+            border-top: 1px solid #eee;
+            padding-top: 15px;
+            font-weight: bold;
+        }
+
+        .ps-cert-row {
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            margin-top: 10px;
+            gap: 15px;
+        }
+
+        .ps-cert-icon {
+            height: 35px;
+            display: flex;
+            align-items: center;
+        }
+
+        .ps-cert-icon img {
+            width: auto;
+            height: auto;
+            max-width: 60px;
+            max-height: 100%;
+            object-fit: contain;
+            display: block;
+        }
+
+        .ps-partner-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 20px;
+            gap: 8px;
+        }
+
+        .ps-partner-icon {
+            flex: 1;
+            height: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .ps-partner-icon img {
+            width: auto;
+            height: auto;
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            display: block;
+        }
+
+        .ps-apple-pro-container {
+            display: flex;
+            justify-content: space-evenly;
+            align-items: center;
+            margin-top: 18px;
+            margin-bottom: 18px;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .ps-apple-pro-icon {
+            height: 39px;
+            display: flex;
+            align-items: center;
+        }
+
+        .ps-apple-pro-icon img {
+            max-height: 100%;
+            width: auto;
+            object-fit: contain;
+        }
+
+        .ps-footer {
+            margin-top: auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            font-size: 7.5px;
+            border-top: 1px solid #eee;
+            padding-top: 15px;
+        }
+
+        .ps-footer-col {
+            font-weight: bold;
+            flex: 1;
+        }
+
+        /* TICKET MODAL STYLES (GOLDEN TOCKET) */
+        .modal {
+            display: none;
+            position: fixed;
             z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(10px);
+            align-items: center;
+            justify-content: center;
         }
 
         .golden-ticket {
-            background: linear-gradient(135deg, #ffd700 0%, #e6ac00 50%, #b8860b 100%);
-            width: 90%;
-            max-width: 400px;
-            padding: 30px;
-            border-radius: 20px;
-            position: relative;
+            background: linear-gradient(135deg, #ffd700 0%, #ffb900 100%);
+            padding: 40px 30px;
+            border-radius: 24px;
+            width: 420px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
             text-align: center;
+            position: relative;
+            font-family: 'Outfit', sans-serif;
             color: #1a1a1a;
         }
 
+        .close-ticket {
+            position: absolute;
+            right: 20px;
+            top: 15px;
+            background: none;
+            border: none;
+            font-size: 28px;
+            cursor: pointer;
+            color: #333;
+            transition: 0.2s;
+        }
+
+        .ticket-stars-header {
+            font-size: 22px;
+            font-weight: 800;
+            letter-spacing: 2px;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .ticket-main-title {
+            font-size: 38px;
+            font-weight: 900;
+            margin-bottom: 5px;
+            letter-spacing: -1px;
+            color: #000;
+        }
+
+        .ticket-instruction {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 30px;
+            color: #333;
+            max-width: 250px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.2;
+        }
+
+        .folio-box {
+            border: 2px dashed rgba(0, 0, 0, 0.2);
+            padding: 25px 15px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+        }
+
+        .folio-label {
+            font-size: 11px;
+            font-weight: 800;
+            color: #444;
+            margin-bottom: 8px;
+            letter-spacing: 0.5px;
+        }
+
+        .folio-number {
+            font-size: 32px;
+            font-weight: 900;
+            letter-spacing: 2px;
+            color: #000;
+        }
+
+        .ticket-form-label {
+            display: block;
+            text-align: left;
+            font-size: 12px;
+            font-weight: 800;
+            margin-bottom: 8px;
+            color: #333;
+        }
+
+        .ticket-input-field {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.4);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            color: #000;
+            padding: 14px;
+            border-radius: 12px;
+            margin-bottom: 15px;
+            font-family: inherit;
+            font-weight: 600;
+            box-sizing: border-box;
+        }
+
+        .ticket-input-field::placeholder {
+            color: rgba(0, 0, 0, 0.4);
+        }
+
+        .whatsapp-gold-btn {
+            background: #25D366;
+            /* WhatsApp Green */
+            color: #fff;
+            width: 100%;
+            padding: 16px;
+            border-radius: 30px;
+            border: none;
+            font-weight: 800;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            cursor: pointer;
+            margin-top: 10px;
+            box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
+            transition: 0.3s;
+        }
+
+        .whatsapp-gold-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(37, 211, 102, 0.4);
+            background: #20ba59;
+        }
+
+        .whatsapp-tech-btn {
+            background: rgba(255, 255, 255, 0.1);
+            color: #000;
+            width: 100%;
+            padding: 12px;
+            border-radius: 30px;
+            border: 2px solid #25D366;
+            font-weight: 800;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: 0.3s;
+        }
+
+        .whatsapp-tech-btn:hover {
+            background: rgba(37, 211, 102, 0.1);
+        }
+
         @media (max-width: 1000px) {
-            .main-content {
+            .dashboard-grid {
                 grid-template-columns: 1fr;
             }
         }
@@ -250,125 +747,246 @@
 <body>
     <div class="app-container">
         <header>
-            <div class="logo-area">
-                <img src="coticaciones/img/RecoveryPro_Header.png" alt="Logo" class="main-logo">
-                <div class="header-text">
-                    <h1>Laboratorio de reparación de computadoras Apple</h1>
-                    <p>Acceso Técnico Autorizado</p>
-                </div>
+            <div>
+                <h1>ORDEN DE SERVICIO</h1>
+                <p>macWave.com.mx &mdash; Sistema de Gestión Técnica</p>
             </div>
+            <button id="logout-btn" class="logout-btn">Cerrar Sesión</button>
         </header>
 
-        <main class="main-content">
-            <section class="form-section">
+        <main class="dashboard-grid">
+            <!-- CONTROLS -->
+            <section class="controls-side">
                 <div class="glass-card">
-                    <h2>Datos de la Cotización</h2>
+                    <div class="section-title">CAPTURA LA INFORMACIÓN DEL CLIENTE</div>
                     <form id="quote-form">
                         <div class="form-grid">
                             <div class="form-group">
                                 <label>Cliente</label>
-                                <input type="text" id="client-name" placeholder="Nombre completo">
+                                <input type="text" id="client-name" placeholder="Ej. Juan Pérez">
                             </div>
                             <div class="form-group">
-                                <label>Proyecto / Equipo</label>
-                                <input type="text" id="project-name" placeholder="Ej. iMac 24' - SSD Upgrade">
+                                <label>Proyecto</label>
+                                <input type="text" id="project-name" placeholder="Ej. Reparación de MacBook Pro">
+                            </div>
+                            <div class="form-group">
+                                <label>Número de Serie del Equipo</label>
+                                <input type="text" id="serial-number" placeholder="Ej. C02ABC123456">
                             </div>
                             <div class="form-group">
                                 <label>Técnico</label>
-                                <input type="text" id="tech-name" value="JOEL DURAN">
+                                <input type="text" id="tech-name" placeholder="Ej. Joel Duran">
                             </div>
                             <div class="form-group">
-                                <label>Fecha</label>
-                                <input type="date" id="quote-date">
+                                <label>Fecha de Emisión</label>
+                                <input type="text" id="quote-date" placeholder="Ej. 22/02/2026">
                             </div>
                             <div class="form-group">
-                                <label>No. Cotización</label>
-                                <input type="text" id="quote-number" readonly>
-                            </div>
-                            <div class="form-group">
-                                <label>Moneda</label>
-                                <select id="currency">
-                                    <option value="MXN">MXN</option>
-                                    <option value="USD">USD</option>
-                                </select>
+                                <label>Folio ODS</label>
+                                <input type="text" id="quote-number" placeholder="Ej. RPC-9999">
                             </div>
                         </div>
 
-                        <h3>Productos y Servicios</h3>
+                        <div class="section-title" style="margin-top: 30px;">Conceptos (Máx 5)</div>
+                        <div class="items-header">
+                            <span>Descripción</span>
+                            <span style="text-align: right;">Unitario</span>
+                            <span style="text-align: center;">Cant</span>
+                            <span></span>
+                        </div>
                         <div id="items-container"></div>
-                        <button type="button" id="add-item-btn" class="secondary-btn">+ Agregar Item</button>
+                        <button type="button" id="add-item-btn" class="btn btn-secondary"
+                            style="width: 100%; font-size: 0.8rem; height: 36px; padding: 0;">+ AGREGAR
+                            POSICIÓN</button>
 
-                        <h3>Datos Bancarios</h3>
+                        <div class="section-title" style="margin-top: 30px;">Configuración Bancaria</div>
                         <div class="form-grid">
-                            <input type="text" id="clabe" placeholder="CLABE" value="012 180015766935846">
-                            <input type="text" id="account-number" placeholder="Cuenta" value="1576693584">
-                            <input type="text" id="card-number" placeholder="Tarjeta" value="4152 3144 2988 0571">
+                            <div class="form-group">
+                                <label>CLABE</label>
+                                <input type="text" id="clabe" placeholder="Ej. 012 180..." value="012 180015766935846"
+                                    readonly class="readonly-faint">
+                            </div>
+                            <div class="form-group">
+                                <label>CUENTA</label>
+                                <input type="text" id="account-number" placeholder="Ej. 1576..." value="1576693584"
+                                    readonly class="readonly-faint">
+                            </div>
+                            <div class="form-group">
+                                <label>TARJETA</label>
+                                <input type="text" id="card-number" placeholder="Ej. 4152..."
+                                    value="4152 3144 2988 0571" readonly class="readonly-faint">
+                            </div>
                         </div>
 
-                        <div style="margin-top: 20px;">
-                            <button type="submit" class="primary-btn">Generar Cotización PDF</button>
-                            <button type="button" id="generate-ticket-btn" class="secondary-btn"
-                                style="background:#ffd700; color:#000; border:none;">Generar Ticket de Visita</button>
-                        </div>
+                        <button type="submit" class="btn btn-primary">GENERAR ORDEN DE SERVICIO PDF</button>
+                        <button type="button" id="generate-ticket-btn" class="btn btn-secondary"
+                            style="width: 100%; margin-top: 12px; border: 1px solid #ffd700; color: #ffd700;">GENERAR
+                            TICKET DE TALLER</button>
                     </form>
                 </div>
             </section>
 
-            <section class="preview-section">
-                <h2>Vista Previa</h2>
-                <div id="pdf-preview-canvas" class="preview-canvas">
-                    <div class="empty-preview">Ingresa datos para ver la previa...</div>
+            <!-- PREVIEW (CLONE) -->
+            <section class="preview-side">
+                <div id="preview-canvas" class="preview-canvas">
+                    <!-- CONTENT REPLICATED BY JS -->
                 </div>
             </section>
         </main>
     </div>
 
-    <!-- Ticket Modal -->
-    <div id="ticket-modal" class="modal-overlay" style="display: none;">
+    <div id="ticket-modal" class="modal">
         <div class="golden-ticket">
-            <button id="close-ticket-modal"
-                style="position:absolute; top:10px; right:15px; background:none; border:none; font-size:24px; cursor:pointer;">&times;</button>
-            <h2 style="color:#000; border:none;">TICKET DE VISITA</h2>
-            <div style="margin: 15px 0; border:1px dashed #000; padding:15px;">
-                <p id="ticket-folio-display" style="font-size:24px; font-weight:bold;">G-000000</p>
+            <button id="close-ticket-modal" class="close-ticket">&times;</button>
+            <div class="ticket-stars-header">
+                <span>★</span> TICKET DE VISITA <span>★</span>
             </div>
-            <div class="form-group">
-                <input type="text" id="ticket-client-name" placeholder="Nombre cliental">
-                <select id="ticket-source" style="margin-top:10px;">
-                    <option value="Google Maps">Google Maps</option>
-                    <option value="Internet">Internet</option>
-                    <option value="Recomendacion">Recomendación</option>
+
+            <h1 class="ticket-main-title">SERVICIO TÉCNICO</h1>
+            <p class="ticket-instruction">manda este ticket o muestralo en taller</p>
+
+            <div class="folio-box">
+                <p class="folio-label">TU CÓDIGO ÚNICO:</p>
+                <p id="ticket-folio-display" class="folio-number">G-000000-000</p>
+            </div>
+
+            <div style="text-align: left;">
+                <label class="ticket-form-label">¿Cómo nos conociste?</label>
+                <select id="ticket-source" class="ticket-input-field">
+                    <option value="INTERNET">INTERNET</option>
+                    <option value="GOOGLE MAPS">GOOGLE MAPS</option>
+                    <option value="RECOMENDACIÓN">RECOMENDACIÓN</option>
                 </select>
-                <button id="send-ticket-whatsapp" class="primary-btn" style="background:#000; margin-top:20px;">ENVIAR
-                    POR WHATSAPP</button>
+
+                <input type="text" id="ticket-client-name" class="ticket-input-field" placeholder="Nombre del cliente">
+                <input type="text" id="ticket-client-phone" class="ticket-input-field"
+                    placeholder="WhatsApp del cliente (10 dígitos)">
             </div>
+
+            <button id="send-ticket-whatsapp" class="whatsapp-gold-btn">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                    <path
+                        d="M12.031 6.172c-2.31 0-4.191 1.881-4.191 4.191 0 .816.234 1.579.638 2.227l-.679 2.477 2.535-.665c.504.28 1.082.443 1.697.443 2.31 0 4.191-1.881 4.191-4.191s-1.881-4.191-4.191-4.191zm2.943 5.483c-.042.12-.24.23-.418.27-.132.028-.306.046-.464.04-.158-.006-.312-.008-.454-.038-.37-.08-.726-.226-1.045-.44l-.193-.133-.193-.138c-.37-.272-.687-.614-.94-.997l-.093-.153c-.11-.18-.19-.378-.236-.583-.046-.205-.05-.418-.008-.621.042-.204.14-.388.275-.536.136-.148.27-.197.438-.197h.236c.07 0 .144.004.21.01.066.006.126.044.17.104l.326.793c.04.098.026.208-.04.296-.067.088-.13.14-.23.18-.1.04-.15.08-.22.15-.07.07-.11.13-.11.23s.04.2.14.34c.1.14.24.26.4.38.16.12.35.21.57.29s.44.13.67.13c.23 0 .42-.04.57-.14s.24-.26.34-.41c.1-.15.15-.24.22-.31.07-.07.13-.1.21-.1h.236c.07 0 .144.02.21.06s.126.11.17.21l.326.793c.04.098.05.208.024.328zM12 2C6.477 2 2 6.477 2 12c0 1.765.456 3.425 1.254 4.872L2 22l5.253-1.378c1.464.848 3.167 1.378 5.179 1.378 5.523 0 10-4.477 10-10S17.523 2 12 2zm0 18c-1.63 0-3.146-.483-4.427-1.31l-.317-.205-2.887.757.77-2.812-.224-.356c-.84-1.334-1.332-2.91-1.332-4.597 0-4.632 3.768-8.4 8.4-8.4s8.4 3.768 8.4 8.4-3.768 8.4-8.4 8.4z">
+                    </path>
+                </svg>
+                ENVIAR AL CLIENTE
+            </button>
         </div>
     </div>
 
     <script src="logo_const.js"></script>
     <script>
+        // Session Security Check
+        if (sessionStorage.getItem('macwave_session') !== 'authorized') {
+            window.location.href = 'tecnicos.html';
+        }
+
         document.addEventListener('DOMContentLoaded', () => {
             const itemsContainer = document.getElementById('items-container');
-            const addItemBtn = document.getElementById('add-item-btn');
-            const previewCanvas = document.getElementById('pdf-preview-canvas');
+            const previewCanvas = document.getElementById('preview-canvas');
             const form = document.getElementById('quote-form');
 
-            // Folio Logic
-            const getNextFolio = (inc = false) => {
-                let last = parseInt(localStorage.getItem('quote_folio_counter') || '9200');
-                if (inc) localStorage.setItem('quote_folio_counter', ++last);
-                return `RPC-${last}`;
-            };
-            document.getElementById('quote-number').value = getNextFolio();
-            document.getElementById('quote-date').valueAsDate = new Date();
+            // Set Current Date and Time
+            const quoteDateInput = document.getElementById('quote-date');
+            if (quoteDateInput) {
+                const now = new Date();
+                const day = String(now.getDate()).padStart(2, '0');
+                const month = String(now.getMonth() + 1).padStart(2, '0');
+                const year = now.getFullYear();
+                const hours = String(now.getHours()).padStart(2, '0');
+                const minutes = String(now.getMinutes()).padStart(2, '0');
+                quoteDateInput.value = `${day}/${month}/${year} ${hours}:${minutes}`;
+            }
 
-            function createRow(item = { desc: '', price: 0, qty: 1 }) {
+            // Technician Phone Mapping
+            const TECH_PHONES = {
+                'JOEL DURAN': '5535757364',
+                // Add more technicians if needed
+            };
+
+            // Ticket Generator Logic
+            const showWorkshopTicket = () => {
+                const modal = document.getElementById('ticket-modal');
+                const folioDisplay = document.getElementById('ticket-folio-display');
+                let counter = parseInt(localStorage.getItem('workshop_ticket_counter') || '239');
+
+                // Increment immediately so each ticket has a unique code
+                localStorage.setItem('workshop_ticket_counter', counter + 1);
+
+                const now = new Date();
+                const yy = now.getFullYear().toString().slice(2);
+                const mm = (now.getMonth() + 1).toString().padStart(2, '0');
+                const dd = now.getDate().toString().padStart(2, '0');
+                const dateStr = yy + mm + dd;
+
+                const folio = `G-${dateStr}-${counter}`;
+                folioDisplay.textContent = folio;
+                modal.style.display = 'flex';
+            };
+
+            document.getElementById('generate-ticket-btn')?.addEventListener('click', showWorkshopTicket);
+            document.getElementById('close-ticket-modal')?.addEventListener('click', () => { document.getElementById('ticket-modal').style.display = 'none'; });
+
+            // Parallel WhatsApp Sending Logic
+            document.getElementById('send-ticket-whatsapp')?.addEventListener('click', () => {
+                const name = document.getElementById('ticket-client-name').value || 'Cliente';
+                const phone = document.getElementById('ticket-client-phone').value;
+                const source = document.getElementById('ticket-source').value;
+                const folio = document.getElementById('ticket-folio-display').textContent;
+                const currentTech = document.getElementById('tech-name').value.toUpperCase();
+                const techPhone = TECH_PHONES[currentTech] || '5530182604';
+
+                if (!phone || phone.length < 10) {
+                    alert("Por favor ingresa un número de WhatsApp de 10 dígitos.");
+                    return;
+                }
+
+                // Optimized Message Template
+                const message = `Hola ${name}, este es tu ticket de visita: ${folio}. Nos conociste por ${source}. Muestra este mensaje en taller.`;
+
+                // 1. Send to Client
+                window.open(`https://wa.me/52${phone}?text=${encodeURIComponent(message)}`, '_blank');
+
+                // 2. Parallel send to Technician (1sec delay to help avoid popup blockers)
+                setTimeout(() => {
+                    const techMessage = `TICKET GENERADO: \nCliente: ${name}\nOrigen: ${source}\nFolio: ${folio}`;
+                    window.open(`https://wa.me/52${techPhone}?text=${encodeURIComponent(techMessage)}`, '_blank');
+                    document.getElementById('ticket-modal').style.display = 'none';
+                }, 1000);
+            });
+
+            // Folio Auto-Increment — Format: MW-YYYYMMDD-NNNN, starting at 9468
+            const getNextFolio = (inc = false) => {
+                let num = parseInt(localStorage.getItem('quote_folio_counter') || '9468');
+                if (inc) { num++; localStorage.setItem('quote_folio_counter', num); }
+                const now = new Date();
+                const yyyy = now.getFullYear();
+                const mm = String(now.getMonth() + 1).padStart(2, '0');
+                const dd = String(now.getDate()).padStart(2, '0');
+                return `MW-${yyyy}${mm}${dd}-${num}`;
+            };
+            if (!document.getElementById('quote-number').value || document.getElementById('quote-number').value === 'RPC-9199') {
+                document.getElementById('quote-number').value = getNextFolio();
+            }
+
+            const initialItems = [
+                { d: 'Display generico iPhone 16 Pro Max', p: 7434.72, q: 1 },
+                { d: 'Servicio Técnico de iPhone', p: 1300, q: 1 },
+                { d: 'Unidad de almacenamiento en flash SSD 240 gb', p: 899, q: 1 },
+                { d: 'Unidad de almacenamiento en flash SSD 480 gb', p: 1908, q: 1 },
+                { d: 'Unidad de almacenamiento en flash SSD 1000 gb', p: 1654, q: 1 }
+            ];
+
+            function createRow(item = { d: '', p: 0, q: 1 }) {
+                const count = document.querySelectorAll('.item-row').length;
+                if (count >= 5) return;
+
                 const div = document.createElement('div');
                 div.className = 'item-row';
                 div.innerHTML = `
-                    <input type="text" class="i-desc" value="${item.desc}" placeholder="Item">
-                    <input type="number" class="i-price" value="${item.price}" placeholder="$">
-                    <input type="number" class="i-qty" value="${item.qty}" min="1">
+                    <input type="text" class="i-desc" value="${item.d}" placeholder="Item...">
+                    <input type="number" class="i-price" value="${item.p}" placeholder="0.00" style="text-align: right;">
+                    <input type="number" class="i-qty" value="${item.q}" min="1" style="text-align: center;">
                     <button type="button" class="remove-btn">✕</button>
                 `;
                 div.querySelector('.remove-btn').onclick = () => { div.remove(); update(); };
@@ -377,36 +995,165 @@
                 update();
             }
 
-            addItemBtn.onclick = () => createRow();
-            createRow({ desc: 'Servicio Técnico Especializado', price: 1500, qty: 1 });
+            document.getElementById('add-item-btn').onclick = () => createRow({ d: '', p: 0, q: 1 });
+            initialItems.forEach(i => createRow(i));
 
             function update() {
-                const client = document.getElementById('client-name').value || 'Cliente';
-                const project = document.getElementById('project-name').value || 'Servicio General';
-                let total = 0;
-                let rowsHtml = '';
+                const client = document.getElementById('client-name').value;
+                const project = document.getElementById('project-name').value;
+                const tech = document.getElementById('tech-name').value;
+                const date = document.getElementById('quote-date').value;
+                const folio = document.getElementById('quote-number').value;
+                const currency = 'MXN';
 
-                document.querySelectorAll('.item-row').forEach(row => {
+                let total = 0;
+                let itemsHtml = '';
+
+                const allRows = Array.from(document.querySelectorAll('.item-row')).slice(0, 5);
+                allRows.forEach((row, idx) => {
                     const d = row.querySelector('.i-desc').value;
                     const p = parseFloat(row.querySelector('.i-price').value) || 0;
                     const q = parseInt(row.querySelector('.i-qty').value) || 0;
-                    total += (p * q);
-                    rowsHtml += `<tr><td>${d}</td><td>$${p.toLocaleString()}</td><td>${q}</td><td>$${(p * q).toLocaleString()}</td></tr>`;
+                    const sub = p * q;
+                    total += sub;
+                    itemsHtml += `
+                        <tr>
+                            <td style="text-align: left; height: 24px;">${d}</td>
+                            <td style="text-align: right;">$ ${p.toLocaleString('en-US', { minimumFractionDigits: 2 })}</td>
+                            <td style="text-align: center;">${q}</td>
+                            <td style="text-align: right;">$ ${sub.toLocaleString('en-US', { minimumFractionDigits: 2 })}</td>
+                        </tr>
+                    `;
                 });
+                // Always fill up to 5 rows so bottom elements stay fixed
+                const emptyRowsNeeded = 5 - allRows.length;
+                for (let i = 0; i < emptyRowsNeeded; i++) {
+                    itemsHtml += `
+                        <tr>
+                            <td style="height: 24px;">&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                        </tr>
+                    `;
+                }
+
+                // Enforce 5 Item Limit on Add Button
+                const addItemBtn = document.getElementById('add-item-btn');
+                if (addItemBtn) {
+                    if (allRows.length >= 5) {
+                        addItemBtn.disabled = true;
+                        addItemBtn.style.opacity = '0.5';
+                        addItemBtn.style.cursor = 'not-allowed';
+                    } else {
+                        addItemBtn.disabled = false;
+                        addItemBtn.style.opacity = '1';
+                        addItemBtn.style.cursor = 'pointer';
+                    }
+                }
 
                 previewCanvas.innerHTML = `
-                    <div class="mock-pdf-content">
-                        <div class="mock-header">
-                            <div><strong>MacWave T2</strong><br>Reparación Apple</div>
-                            <div style="text-align:right">Folio: ${document.getElementById('quote-number').value}</div>
+                    <div class="ps-content">
+                        <div class="ps-header">
+                            <div class="ps-logo-col"><img src="${RECOVERY_PRO_BADGE.data}" class="ps-logo"></div>
+                            <div class="ps-title-col" style="padding-left: 20px;">
+                                <h1 style="font-size: 16px;">Laboratorio de reparación de computadoras Apple</h1>
+                                <p>Apple Certified Device Support 2025</p>
+                            </div>
+                            <div class="ps-meta-col">
+                                <div class="ps-quote-folio">Cotización N° ${folio}</div>
+                                <div class="ps-meta-data">
+                                    <div class="ps-dot-row">
+                                        <span class="ps-dot-label">Fecha:</span>
+                                        <span class="ps-dot-dots">............</span>
+                                        <span class="ps-dot-value">${date}</span>
+                                    </div>
+                                    <div class="ps-dot-row">
+                                        <span class="ps-dot-label">Técnico:</span>
+                                        <span class="ps-dot-dots">..........</span>
+                                        <span class="ps-dot-value">${tech}</span>
+                                    </div>
+                                    <div class="ps-dot-row" style="opacity: 0.8">
+                                        <span class="ps-dot-label">Moneda:</span>
+                                        <span class="ps-dot-dots">.....</span>
+                                        <span class="ps-dot-value" style="font-weight: bold">${currency}</span>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <p>Cliente: ${client}</p>
-                        <p>Proyecto: ${project}</p>
-                        <table class="mock-table">
-                            <thead><tr><th>Descripción</th><th>P.U</th><th>Cant</th><th>Sub</th></tr></thead>
-                            <tbody>${rowsHtml}</tbody>
+
+                        <div class="ps-client-area">
+                            <p><span class="label">Estimado(a) Sr:</span><span class="value">${client}</span></p>
+                            <p><span class="label">Oportunidad / Proyecto:</span><span class="value">${project}</span></p>
+                        </div>
+
+                        <table class="ps-table">
+                            <thead>
+                                <tr>
+                                    <th style="width: 50%">DESCRIPCIÓN DEL SERVICIO O PRODUCTO</th>
+                                    <th style="width: 20%">PRECIO UNITARIO</th>
+                                    <th style="width: 10%">UNIDAD</th>
+                                    <th style="width: 20%">SUB TOTAL</th>
+                                </tr>
+                            </thead>
+                            <tbody>${itemsHtml}</tbody>
                         </table>
-                        <div class="mock-total">Total: $${total.toLocaleString()}</div>
+
+                        <div class="ps-total-row">
+                            <span class="ps-total-label">TOTAL</span>
+                            <span class="ps-total-value">$ ${total.toLocaleString('en-US', { minimumFractionDigits: 2 })}</span>
+                        </div>
+
+                        <div class="ps-terms">
+                            <p>Vigencia de la cotización : 1 día, expira el día 11 de Octubre de 2025</p>
+                            <p>Garantía: 31 días en el servicio técnico, pregunta por tu garantía extendida a 100 días POR UN COSTO ADICIONAL Condiciones : SE REQUIERE</p>
+                            <p style="font-size: 9px; font-weight: 900;">PAGO ANTICIPADO DEL 100% PARA EL SERVICIO.</p>
+                            <p>Tiempo de entrega: Noviembre de 2025 ENTREGA TENTATIVA POR PARTE DEL FABRICANTE, modelos sugeridos a disponibilidad del fabricante. ALGUNOS PRODUCTOS IMPORTADOS DE ESTADOS UNIDOS, AMERICAN PARTNER.</p>
+                        </div>
+
+                        <div class="ps-bank-area">
+                            <div class="ps-bank-qr-row">
+                                <div class="ps-bank-info">
+                                    <div class="ps-bank-title">PAGAR A ESTE BANCO</div>
+                                    <div class="ps-bank-main">BBVA</div>
+                                    <div class="ps-bank-details">
+                                        CUENTA CLABE : ${document.getElementById('clabe').value}<br>
+                                        NUMERO DE CUENTA : ${document.getElementById('account-number').value}<br>
+                                        NUMERO DE TARJETA BBVA : ${document.getElementById('card-number').value}
+                                    </div>
+                                </div>
+                                <div class="ps-qr-block">
+                                    <div id="preview-qr-canvas"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="ps-disclaimer">
+                            <p>***Precios sujetos a cambios sin previo aviso, en variación al dólar americano o disponibilidad en el mercado de Asia</p>
+                            <p style="margin-top: 5px; font-weight: normal; font-size: 6px;">*El servicio incluye mantenimiento, resolución de problemas en el sistema, instalación de hardware y sistema operativo, migración o instalación de software con licencia adquirida.</p>
+                            <p style="margin-top: 8px; font-weight: normal; font-size: 5.5px; line-height: 1.1;">AVISO: EQUIPOS EN ABANDONO POR MÁS DE 30 DÍAS NATURALES A PARTIR DEL DÍA QUE SE DEJÓ EL EQUIPO, SERÁN DESTRUIDOS SIN GENERAR NINGÚN TIPO DE RESPONSABILIDAD A RECOVERY PRO Y SU EQUIPO. USTED ACEPTA YA ESTE ACUERDO, LA REVISIÓN GENERA UN COSTO DE $499 POR DIAGNÓSTICO Y USO DEL LABORATORIO, SERÁN TOMADOS EN CUENTA SI DECIDE REPARAR AQUÍ EL EQUIPO HOY. CONSULTA TÉRMINOS Y CONDICIONES EN EL SITIO WEB. ¡EQUIPOS APAGADOS O MOJADOS NO LLEVAN GARANTÍA! EL SOFTWARE COMO OFFICE SE ENVÍA POR URL Y EL USUARIO DEBE INSTALARLO Y NOTIFICAR PARA ACTIVARLO.</p>
+                        </div>
+
+
+                        <div class="ps-apple-pro-container">
+                            ${BOTTOM_CERT_LOGOS.map(logo => `
+                                <div class="ps-apple-pro-icon">
+                                    <img src="${logo.data}">
+                                </div>
+                            `).join('')}
+                        </div>
+
+                        <div class="ps-footer" style="margin-top: 25px; border-top: 2px solid #000; padding-top: 10px; display: flex; justify-content: space-between; align-items: flex-start; font-size: 7px; color: #000;">
+                            <div style="font-weight: bold; width: 30%;">
+                                ESPECIALISTAS EN TECNOLOGÍA ROLDU SAS. DE C.V
+                            </div>
+                            <div style="text-align: center; width: 40%;">
+                                Visítanos en Recovery Pro sucursal Condesa<br>Salvador Alvarado 72 oficina 208, Escandón. CDMX
+                            </div>
+                            <div style="text-align: right; width: 30%;">
+                                sitio web: https://macWave.com.mx<br>mail: contabilidad@macWave.com.mx
+                            </div>
+                        </div>
                     </div>
                 `;
             }
@@ -414,55 +1161,300 @@
             form.onsubmit = async (e) => {
                 e.preventDefault();
                 const { jsPDF } = window.jspdf;
-                const doc = new jsPDF();
-                const client = document.getElementById('client-name').value || 'Cliente';
+                const doc = new jsPDF('p', 'mm', 'a4');
 
-                doc.setFontSize(20);
-                doc.text("COTIZACIÓN MACWAVE", 15, 20);
-                doc.setFontSize(10);
-                doc.text(`Folio: ${document.getElementById('quote-number').value}`, 160, 20);
-                doc.text(`Cliente: ${client}`, 15, 30);
+                const client = document.getElementById('client-name').value;
+                const project = document.getElementById('project-name').value;
+                const tech = document.getElementById('tech-name').value;
+                const date = document.getElementById('quote-date').value;
+                const folio = document.getElementById('quote-number').value;
+                const currency = 'MXN';
+                const clabeVal = document.getElementById('clabe').value;
+                const accountVal = document.getElementById('account-number').value;
+                const cardVal = document.getElementById('card-number').value;
 
-                const tableData = [];
-                document.querySelectorAll('.item-row').forEach(row => {
-                    tableData.push([
-                        row.querySelector('.i-desc').value,
-                        `$${parseFloat(row.querySelector('.i-price').value).toLocaleString()}`,
-                        row.querySelector('.i-qty').value,
-                        `$${(row.querySelector('.i-price').value * row.querySelector('.i-qty').value).toLocaleString()}`
-                    ]);
+                const items = [];
+                let total = 0;
+                const allRows = Array.from(document.querySelectorAll('.item-row')).slice(0, 5);
+                allRows.forEach((row) => {
+                    const d = row.querySelector('.i-desc').value;
+                    const p = parseFloat(row.querySelector('.i-price').value) || 0;
+                    const q = parseInt(row.querySelector('.i-qty').value) || 0;
+                    const sub = p * q;
+                    total += sub;
+                    items.push([d, `$ ${p.toLocaleString('en-US', { minimumFractionDigits: 2 })}`, q, `$ ${sub.toLocaleString('en-US', { minimumFractionDigits: 2 })}`]);
                 });
+                // Always pad to exactly 5 rows so PDF layout is fixed
+                while (items.length < 5) {
+                    items.push(['', '', '', '']);
+                }
+
+                // 1. Header (IMPROVED ALIGNMENT & SPACING)
+                // Proportional Logo
+                const logoW = 32;
+                const logoH = (RECOVERY_PRO_BADGE.h * logoW) / RECOVERY_PRO_BADGE.w;
+                doc.addImage(RECOVERY_PRO_BADGE.data, 'PNG', 12, 10, logoW, logoH);
+
+                doc.setFont("helvetica", "bold");
+                doc.setFontSize(16);
+                doc.setTextColor(0);
+                // Title at x=50, y=22 to prevent overlap
+                doc.text("Laboratorio de reparación de computadoras Apple", 50, 22);
+
+                doc.setFontSize(9);
+                doc.setFont("helvetica", "normal");
+                doc.setTextColor(134, 134, 139);
+                doc.text("Apple Certified Device Support 2025", 50, 28);
+
+                doc.setTextColor(255, 59, 48);
+                doc.setFont("helvetica", "bolditalic");
+                doc.setFontSize(8); // Reduced size by half
+                // Folio at same line but right aligned
+                doc.text(`Cotización N° ${folio}`, 198, 15, { align: "right" });
+
+                doc.setTextColor(0, 0, 0);
+                doc.setFontSize(10);
+                const mY = 32;
+                const labelX = 150; // Moved left slightly
+                const valueX = 198;
+
+                doc.setFontSize(9);
+                doc.setFont("helvetica", "normal");
+                doc.setTextColor(0, 0, 0);
+
+                // Row 1: Fecha
+                doc.setFont("helvetica", "normal");
+                doc.text("Fecha:....................", labelX, mY); // Reduced dots
+                doc.setFont("helvetica", "bold");
+                doc.text(date, valueX, mY, { align: "right" });
+
+                // Row 2: Técnico
+                doc.setFont("helvetica", "normal");
+                doc.text("Técnico:..................", labelX, mY + 6); // Reduced dots
+                doc.setFont("helvetica", "bold");
+                doc.text(tech, valueX, mY + 6, { align: "right" });
+
+                // Row 3: Moneda
+                doc.setFont("helvetica", "normal");
+                doc.text("Moneda:...........", labelX, mY + 12); // Reduced dots
+                doc.setFont("helvetica", "bold");
+                doc.text(currency, valueX, mY + 12, { align: "right" });
+
+                // 2. Client Info
+                doc.setFontSize(12);
+                doc.setTextColor(0, 113, 227);
+                doc.setFont("helvetica", "bold");
+                doc.text("Estimado(a) Sr:", 15, 60);
+                doc.setFont("helvetica", "normal");
+                doc.setTextColor(134, 134, 139);
+                doc.text(client, 50, 60);
+                doc.setTextColor(0, 113, 227);
+                doc.setFont("helvetica", "bold");
+                doc.text("Oportunidad / Proyecto:", 15, 67);
+                doc.setFont("helvetica", "normal");
+                doc.setTextColor(134, 134, 139);
+                doc.text(project, 65, 67);
+
+                // 3. Perfect Rounded Table Container
+                // Draw manual rounded background for the ENTIRE table container (60 units height)
+                doc.setDrawColor(240, 240, 240);
+                doc.setLineWidth(0.2);
+                doc.roundedRect(15, 75, 180, 60, 4, 4, 'D');
+
+                // Draw Black Header with perfect rounding (top only)
+                doc.setFillColor(0, 0, 0);
+                doc.roundedRect(15, 75, 180, 10, 4, 4, 'F');
+                // Fill the bottom part of the header rounding to make it flat where it meets the first row
+                doc.rect(15, 80, 180, 5, 'F');
 
                 doc.autoTable({
-                    startY: 40,
-                    head: [['Descripción', 'Precio', 'Cant', 'Total']],
-                    body: tableData,
+                    startY: 75,
+                    head: [['DESCRIPCIÓN DEL SERVICIO O PRODUCTO', 'PRECIO UNITARIO', 'UNIDAD', 'SUB TOTAL']],
+                    body: items,
+                    theme: 'plain',
+                    headStyles: {
+                        fillColor: null,
+                        textColor: [255, 255, 255],
+                        halign: 'center',
+                        fontSize: 9,
+                        minCellHeight: 10,
+                        valign: 'middle'
+                    },
+                    bodyStyles: {
+                        textColor: [255, 59, 48],
+                        fontSize: 10,
+                        minCellHeight: 10,
+                        valign: 'middle',
+                        fontStyle: 'bold'
+                    },
+                    alternateRowStyles: { fillColor: [245, 245, 247] }, // macOS Zebra Style
+                    columnStyles: {
+                        0: { cellWidth: 100, halign: 'left' },
+                        1: { halign: 'right' },
+                        2: { halign: 'center' },
+                        3: { halign: 'right' }
+                    },
+                    margin: { left: 15, right: 15 },
+                    didDrawCell: (data) => {
+                        if (data.section === 'body') {
+                            // Draw horizontal line for ALL body rows to perfectly clone preview
+                            // Using darker grey (220) to ensure visibility
+                            doc.setDrawColor(220, 220, 220);
+                            doc.setLineWidth(0.15);
+                            doc.line(data.cell.x, data.cell.y + data.cell.height, data.cell.x + data.cell.width, data.cell.y + data.cell.height);
+                        }
+                    }
                 });
 
-                const finalY = doc.lastAutoTable.finalY + 10;
-                doc.setFontSize(14);
-                doc.text(`TOTAL: $${document.querySelector('.mock-total').innerText.split('$')[1]}`, 140, finalY);
+                // Fixed positions to avoid "amontonado"
+                const totalY = 145;
+                const termsY = 158;
+                const bankY = 195;
+                const disclaimerY = 235;
+                const certRowY = 265;
+                const footerY = 286;
 
-                window.open(doc.output('bloburl'), '_blank');
+                doc.setFontSize(13);
+                doc.setTextColor(0);
+                doc.setFont("helvetica", "bold");
+                doc.text("TOTAL", 150, totalY);
+                doc.setTextColor(255, 59, 48);
+                doc.text(`$ ${total.toLocaleString('en-US', { minimumFractionDigits: 2 })}`, 195, totalY, { align: "right" });
+
+                // 4. Terms
+                let currentY = termsY;
+                doc.setFontSize(7.5);
+                doc.setTextColor(0, 102, 128);
+                doc.setFont("helvetica", "bold");
+                doc.text(`Vigencia de la cotización : 1 día, expira el día ${new Date(new Date().getTime() + 86400000).toLocaleDateString()}`, 15, currentY);
+                doc.text("Garantía: 31 días en el servicio técnico, pregunta por tu garantía extendida a 100 días POR UN COSTO ADICIONAL Condiciones : SE REQUIERE", 15, currentY + 5);
+                doc.setFontSize(9);
+                doc.text("PAGO ANTICIPADO DEL 100% PARA EL SERVICIO.", 15, currentY + 11);
+                doc.setFontSize(7.5);
+                doc.text("Tiempo de entrega: Noviembre de 2025 ENTREGA TENTATIVA POR PARTE DEL FABRICANTE, modelos sugeridos a disponibilidad del fabricante.", 15, currentY + 17);
+                doc.text("ALGUNOS PRODUCTOS IMPORTADOS DE ESTADOS UNIDOS, AMERICAN PARTNER.", 15, currentY + 22);
+
+                // 5. Bank section
+                currentY = bankY;
+                doc.setFontSize(10);
+                doc.setTextColor(0, 102, 128);
+                doc.text("PAGAR A ESTE BANCO", 15, currentY);
+                doc.setFontSize(15);
+                doc.setTextColor(0, 77, 129);
+                doc.text("BBVA", 58, currentY);
+                doc.setTextColor(0, 102, 128);
+                doc.setFontSize(10);
+                doc.setFont("helvetica", "bold");
+                doc.text(`CUENTA CLABE :  ${clabeVal}`, 15, currentY + 7);
+                doc.text(`NUMERO DE CUENTA :  ${accountVal}`, 15, currentY + 14);
+                doc.text(`NUMERO DE TARJETA BBVA :  ${cardVal}`, 15, currentY + 22);
+
+                // --- QR CODE (FIXED) ---
+                try {
+                    const qrCanvas = document.querySelector('#preview-qr-canvas canvas');
+                    if (qrCanvas) {
+                        const qrData = qrCanvas.toDataURL("image/png");
+                        doc.addImage(qrData, 'PNG', 160, currentY - 5, 32, 32);
+                    }
+                } catch (e) {
+                    console.error("Error adding QR to PDF:", e);
+                }
+
+                // 6. Disclaimer
+                currentY = disclaimerY;
+                doc.setFontSize(6.5);
+                doc.setTextColor(0);
+                doc.setFont("helvetica", "bold");
+                doc.text("***Precios sujetos a cambios sin previo aviso, en variación al dólar americano", 15, currentY);
+                doc.setFontSize(5.5);
+                doc.setFont("helvetica", "normal");
+                const noticeText = "AVISO: EQUIPOS EN ABANDONO POR MÁS DE 30 DÍAS NATURALES A PARTIR DEL DÍA QUE SE DEJÓ EL EQUIPO, SERÁN DESTRUIDOS SIN GENERAR NINGÚN TIPO DE RESPONSABILIDAD A RECOVERY PRO Y SU EQUIPO. USTED ACEPTA YA ESTE ACUERDO, LA REVISIÓN GENERA UN COSTO DE $499 POR DIAGNÓSTICO Y USO DEL LABORATORIO. ¡EQUIPOS APAGADOS O MOJADOS NO LLEVAN GARANTÍA!";
+                const splitN = doc.splitTextToSize(noticeText, 180);
+                doc.text(splitN, 15, currentY + 5);
+
+                // 7. Dynamic Bottom Certification Logos
+                const maxCertW = 22.75;
+                const maxCertH = 9.75;
+                const pageWidth = 180;
+                const marginLeft = 15;
+
+                // Pre-calculate each logo's draw dimensions
+                const drawDims = BOTTOM_CERT_LOGOS.map(logo => {
+                    const ratio = logo.w / logo.h;
+                    let dH = maxCertH;
+                    let dW = dH * ratio;
+                    if (dW > maxCertW) {
+                        dW = maxCertW;
+                        dH = dW / ratio;
+                    }
+                    return { dW, dH };
+                });
+
+                // Calculate total logos width and gap for even distribution
+                const totalLogoW = drawDims.reduce((acc, d) => acc + d.dW, 0);
+                const dynamicGap = (pageWidth - totalLogoW) / (BOTTOM_CERT_LOGOS.length + 1);
+
+                let startX = marginLeft + dynamicGap;
+                BOTTOM_CERT_LOGOS.forEach((logo, idx) => {
+                    const { dW, dH } = drawDims[idx];
+                    try {
+                        doc.addImage(logo.data, 'PNG', startX, certRowY + (maxCertH - dH) / 2, dW, dH);
+                    } catch (e) { }
+                    startX += dW + dynamicGap;
+                });
+
+                doc.setFontSize(6.5); // Slightly smaller to prevent overlap
+                doc.setFont("helvetica", "bold");
+                doc.text("ESPECIALISTAS EN TECNOLOGÍA ROLDU SAS. DE C.V", 12, footerY);
+                doc.setFont("helvetica", "normal");
+                // Anchor center text at 110 (slightly right of center) to clear the long company name
+                doc.text("Visítanos en Recovery Pro sucursal Condesa\nSalvador Alvarado 72 oficina 208, Escandón. CDMX", 112, footerY, { align: "center" });
+                doc.text(`sitio web: https://macWave.com.mx\nmail: contabilidad@macWave.com.mx`, 198, footerY, { align: "right" });
+
+                // Increment folio counter after each successful PDF
                 getNextFolio(true);
                 document.getElementById('quote-number').value = getNextFolio();
-                update();
+
+                window.open(doc.output('bloburl'), '_blank');
             };
 
-            // Ticket Logic
-            document.getElementById('generate-ticket-btn').onclick = () => {
-                const now = new Date();
-                const code = `G-${now.getFullYear().toString().slice(-2)}${(now.getMonth() + 1).toString().padStart(2, '0')}${now.getDate().toString().padStart(2, '0')}-${Math.floor(Math.random() * 900) + 100}`;
-                document.getElementById('ticket-folio-display').innerText = code;
-                document.getElementById('ticket-modal').style.display = 'flex';
-            };
-            document.getElementById('close-ticket-modal').onclick = () => document.getElementById('ticket-modal').style.display = 'none';
-            document.getElementById('send-ticket-whatsapp').onclick = () => {
-                const msg = `Hola, mi nombre es ${document.getElementById('ticket-client-name').value || 'Cliente'}. Vi su taller en ${document.getElementById('ticket-source').value}. Mi folio de visita es ${document.getElementById('ticket-folio-display').innerText}.`;
-                window.open(`https://wa.me/525530182604?text=${encodeURIComponent(msg)}`, '_blank');
+            update();
+            // ── QR code generator ──────────────────────────────────
+            const generatePreviewQR = () => {
+                const qrDiv = document.getElementById('preview-qr-canvas');
+                if (!qrDiv || typeof QRCode === 'undefined') return;
+                qrDiv.innerHTML = '';
+                const folio = document.getElementById('quote-number').value || 'ODS';
+                const client = document.getElementById('client-name').value || '';
+                const serial = document.getElementById('serial-number').value || '';
+                const url = `https://macwave.com.mx/status-ods.html?folio=${encodeURIComponent(folio)}&cliente=${encodeURIComponent(client)}&serie=${encodeURIComponent(serial)}`;
+                new QRCode(qrDiv, { text: url, width: 70, height: 70, correctLevel: QRCode.CorrectLevel.M });
             };
 
-            form.querySelectorAll('input, select').forEach(i => i.oninput = update);
+            // Wrapper around update so QR is regenerated on every preview refresh
+            const originalUpdate = update;
+            const updateWithQR = () => { originalUpdate(); setTimeout(generatePreviewQR, 50); };
+
+            // Attach all live-update listeners to regenerate preview and QR
+            document.querySelectorAll('#quote-form input, #quote-form select').forEach(el =>
+                el.addEventListener('input', () => {
+                    update();
+                    generatePreviewQR();
+                })
+            );
+
+            // Initial QR
+            setTimeout(generatePreviewQR, 200);
+
+            // Observer for dynamically added items
+            const qrObserver = new MutationObserver(() => setTimeout(generatePreviewQR, 100));
+            qrObserver.observe(document.getElementById('preview-canvas'), { childList: true, subtree: true });
+
+            // Logout Handler
+            document.getElementById('logout-btn').onclick = () => {
+                sessionStorage.clear();
+                window.location.href = 'tecnicos.html';
+            };
         });
     </script>
 </body>

@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>macWave — Estado de tu Orden de Servicio</title>
+    <meta name="description"
+        content="Consulta el estado actual de tu Orden de Servicio en macWave. Ingresa tu folio, nombre o número de serie.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0a0a0f;
+            --card: #13131a;
+            --border: #1e1e2e;
+            --accent: #0071e3;
+            --accent2: #34aadc;
+            --green: #30d158;
+            --yellow: #ffd60a;
+            --orange: #ff9f0a;
+            --red: #ff453a;
+            --text: #f5f5f7;
+            --muted: #6e6e73;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+        }
+
+        /* ─── HEADER ─── */
+        .header {
+            background: linear-gradient(135deg, #0d0d1a 0%, #0a1628 100%);
+            border-bottom: 1px solid var(--border);
+            padding: 20px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .header-brand {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .header-brand h1 {
+            font-size: 1.3rem;
+            font-weight: 900;
+            letter-spacing: -0.5px;
+        }
+
+        .header-brand h1 span {
+            color: var(--accent);
+        }
+
+        .header-sub {
+            font-size: 0.72rem;
+            color: var(--muted);
+            margin-top: 2px;
+        }
+
+        .header-badge {
+            background: var(--accent);
+            color: #fff;
+            font-size: 0.65rem;
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: 20px;
+            letter-spacing: 0.5px;
+        }
+
+        /* ─── SEARCH ─── */
+        .search-section {
+            max-width: 700px;
+            margin: 48px auto 0;
+            padding: 0 20px;
+        }
+
+        .search-title {
+            font-size: 2.2rem;
+            font-weight: 900;
+            text-align: center;
+            background: linear-gradient(135deg, var(--text), var(--accent2));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 8px;
+        }
+
+        .search-sub {
+            text-align: center;
+            color: var(--muted);
+            font-size: 0.9rem;
+            margin-bottom: 32px;
+        }
+
+        .search-bar {
+            display: flex;
+            gap: 10px;
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 8px 8px 8px 18px;
+            transition: border-color 0.2s;
+        }
+
+        .search-bar:focus-within {
+            border-color: var(--accent);
+        }
+
+        .search-bar input {
+            flex: 1;
+            background: none;
+            border: none;
+            outline: none;
+            color: var(--text);
+            font-size: 0.95rem;
+            font-family: inherit;
+        }
+
+        .search-bar input::placeholder {
+            color: var(--muted);
+        }
+
+        .btn-search {
+            background: var(--accent);
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            padding: 10px 22px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+
+        .btn-search:hover {
+            opacity: 0.8;
+        }
+
+        /* ─── RESULT CARD ─── */
+        .result-section {
+            max-width: 760px;
+            margin: 36px auto 60px;
+            padding: 0 20px;
+        }
+
+        .ods-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        .ods-card-header {
+            background: linear-gradient(135deg, #0d1829, #091120);
+            padding: 20px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .ods-folio {
+            font-size: 1.1rem;
+            font-weight: 900;
+            color: var(--accent2);
+        }
+
+        .ods-client {
+            font-size: 0.8rem;
+            color: var(--muted);
+            margin-top: 4px;
+        }
+
+        .ods-serial {
+            font-size: 0.75rem;
+            color: var(--muted);
+            margin-top: 2px;
+        }
+
+        .status-badge {
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        /* ─── PROGRESS TRACKER ─── */
+        .tracker {
+            padding: 32px 24px;
+        }
+
+        .tracker-title {
+            font-size: 0.75rem;
+            color: var(--muted);
+            margin-bottom: 24px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .steps {
+            display: flex;
+            align-items: flex-start;
+            gap: 0;
+            position: relative;
+        }
+
+        .steps::before {
+            content: '';
+            position: absolute;
+            top: 18px;
+            left: 18px;
+            right: 18px;
+            height: 2px;
+            background: var(--border);
+            z-index: 0;
+        }
+
+        .step {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .step-circle {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            background: var(--border);
+            border: 2px solid var(--border);
+            transition: all 0.4s;
+        }
+
+        .step.done .step-circle {
+            background: var(--green);
+            border-color: var(--green);
+        }
+
+        .step.active .step-circle {
+            background: var(--accent);
+            border-color: var(--accent);
+            box-shadow: 0 0 18px rgba(0, 113, 227, 0.5);
+            animation: pulse 1.5s infinite;
+        }
+
+        .step.pending .step-circle {
+            background: var(--card);
+            border-color: var(--muted);
+            color: var(--muted);
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                box-shadow: 0 0 18px rgba(0, 113, 227, 0.5);
+            }
+
+            50% {
+                box-shadow: 0 0 28px rgba(0, 113, 227, 0.9);
+            }
+        }
+
+        .step-label {
+            font-size: 0.65rem;
+            font-weight: 600;
+            text-align: center;
+            color: var(--muted);
+            line-height: 1.3;
+        }
+
+        .step.done .step-label,
+        .step.active .step-label {
+            color: var(--text);
+        }
+
+        /* ─── TECNICO PANEL ─── */
+        .tecnico-panel {
+            border-top: 1px solid var(--border);
+            padding: 20px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .tecnico-panel label {
+            font-size: 0.72rem;
+            color: var(--muted);
+            font-weight: 600;
+        }
+
+        .tecnico-panel select {
+            background: var(--bg);
+            color: var(--text);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 8px 12px;
+            font-family: inherit;
+            font-size: 0.8rem;
+            cursor: pointer;
+        }
+
+        .btn-save {
+            background: var(--green);
+            color: #000;
+            border: none;
+            border-radius: 8px;
+            padding: 8px 18px;
+            font-weight: 700;
+            font-size: 0.8rem;
+            cursor: pointer;
+        }
+
+        .btn-save:hover {
+            opacity: 0.8;
+        }
+
+        .saved-msg {
+            font-size: 0.75rem;
+            color: var(--green);
+            display: none;
+        }
+
+        /* ─── EMPTY STATE ─── */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--muted);
+        }
+
+        .empty-icon {
+            font-size: 3rem;
+            margin-bottom: 12px;
+        }
+
+        .empty-state h3 {
+            font-size: 1rem;
+            margin-bottom: 6px;
+            color: var(--text);
+        }
+
+        .empty-state p {
+            font-size: 0.82rem;
+        }
+
+        /* responsive steps */
+        @media (max-width: 520px) {
+            .step-label {
+                font-size: 0.55rem;
+            }
+
+            .search-title {
+                font-size: 1.6rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="header">
+        <div class="header-brand">
+            <div>
+                <h1>mac<span>Wave</span></h1>
+                <div class="header-sub">Dashboard de Órdenes de Servicio</div>
+            </div>
+        </div>
+        <div class="header-badge">STATUS ODS</div>
+    </div>
+
+    <div class="search-section">
+        <div class="search-title">¿Cómo está tu equipo?</div>
+        <div class="search-sub">Ingresa tu folio, nombre o número de serie para ver el estado de tu reparación</div>
+        <div class="search-bar">
+            <input type="text" id="search-input" placeholder="Folio ODS, nombre o número de serie...">
+            <button class="btn-search" onclick="doSearch()">Consultar</button>
+        </div>
+    </div>
+
+    <div class="result-section" id="result-section"></div>
+
+    <script>
+        // ── Status definitions ──────────────────────────────────────────────────────
+        const STEPS = [
+            { key: 'recibido', label: 'Recibido', icon: '📥', color: 'var(--accent)' },
+            { key: 'diagnostico', label: 'Diagnóstico', icon: '🔍', color: 'var(--yellow)' },
+            { key: 'reparacion', label: 'En Reparación', icon: '🔧', color: 'var(--orange)' },
+            { key: 'listo', label: 'Listo ✅', icon: '✅', color: 'var(--green)' },
+            { key: 'entregado', label: 'Entregado', icon: '🎉', color: 'var(--muted)' },
+        ];
+
+        const STATUS_COLORS = {
+            recibido: { bg: '#0a1628', text: 'var(--accent2)' },
+            diagnostico: { bg: '#1a1500', text: 'var(--yellow)' },
+            reparacion: { bg: '#1a0e00', text: 'var(--orange)' },
+            listo: { bg: '#001a0a', text: 'var(--green)' },
+            entregado: { bg: '#111', text: 'var(--muted)' },
+        };
+
+        // ── Helpers ────────────────────────────────────────────────────────────────
+        const getODS = (folio) => {
+            const raw = localStorage.getItem(`ods_${folio}`);
+            return raw ? JSON.parse(raw) : null;
+        };
+
+        const saveODS = (data) => {
+            localStorage.setItem(`ods_${data.folio}`, JSON.stringify(data));
+        };
+
+        // ── Parse URL params (from QR scan) ───────────────────────────────────────
+        const params = new URLSearchParams(window.location.search);
+        const pFolio = params.get('folio');
+        const pClient = params.get('cliente');
+        const pSerial = params.get('serie');
+
+        // Auto-register ODS if arriving from QR and not yet recorded
+        if (pFolio) {
+            if (!getODS(pFolio)) {
+                saveODS({ folio: pFolio, cliente: pClient || '', serie: pSerial || '', status: 'recibido', ts: Date.now() });
+            }
+            document.getElementById('search-input').value = pFolio;
+        }
+
+        // ── Render ODS card ────────────────────────────────────────────────────────
+        function renderODS(ods) {
+            const currentIdx = STEPS.findIndex(s => s.key === ods.status);
+            const sc = STATUS_COLORS[ods.status] || STATUS_COLORS.recibido;
+
+            const stepsHtml = STEPS.map((s, i) => {
+                let cls = 'pending';
+                if (i < currentIdx) cls = 'done';
+                if (i === currentIdx) cls = 'active';
+                return `<div class="step ${cls}">
+            <div class="step-circle">${i < currentIdx ? '✓' : s.icon}</div>
+            <div class="step-label">${s.label}</div>
+        </div>`;
+            }).join('');
+
+            const optionsHtml = STEPS.map(s =>
+                `<option value="${s.key}" ${s.key === ods.status ? 'selected' : ''}>${s.icon} ${s.label}</option>`
+            ).join('');
+
+            return `
+    <div class="ods-card">
+        <div class="ods-card-header">
+            <div>
+                <div class="ods-folio">${ods.folio}</div>
+                <div class="ods-client">Cliente: ${ods.cliente || '—'}</div>
+                ${ods.serie ? `<div class="ods-serial">Serie: ${ods.serie}</div>` : ''}
+            </div>
+            <span class="status-badge" style="background:${sc.bg}; color:${sc.text};">
+                ${STEPS.find(s => s.key === ods.status)?.icon || ''} ${ods.status.toUpperCase()}
+            </span>
+        </div>
+        <div class="tracker">
+            <div class="tracker-title">Progreso de tu reparación</div>
+            <div class="steps">${stepsHtml}</div>
+        </div>
+        <div class="tecnico-panel">
+            <div>
+                <div class="tecnico-panel"><label>ACTUALIZAR ESTADO (TÉCNICO)</label></div>
+                <select id="status-select" onchange="">${optionsHtml}</select>
+            </div>
+            <div style="display:flex; gap:10px; align-items:center;">
+                <span class="saved-msg" id="saved-msg">✅ Guardado</span>
+                <button class="btn-save" onclick="updateStatus('${ods.folio}')">Guardar</button>
+            </div>
+        </div>
+    </div>`;
+        }
+
+        // ── Search logic ────────────────────────────────────────────────────────────
+        function doSearch() {
+            const query = document.getElementById('search-input').value.trim().toLowerCase();
+            const rs = document.getElementById('result-section');
+            if (!query) { rs.innerHTML = ''; return; }
+
+            // Retrieve all stored ODS
+            const allODS = [];
+            for (let i = 0; i < localStorage.length; i++) {
+                const key = localStorage.key(i);
+                if (key.startsWith('ods_')) {
+                    try { allODS.push(JSON.parse(localStorage.getItem(key))); } catch (_) { }
+                }
+            }
+
+            const matches = allODS.filter(o =>
+                (o.folio?.toLowerCase().includes(query)) ||
+                (o.cliente?.toLowerCase().includes(query)) ||
+                (o.serie?.toLowerCase().includes(query))
+            );
+
+            if (matches.length === 0) {
+                rs.innerHTML = `<div class="empty-state">
+            <div class="empty-icon">🔎</div>
+            <h3>No encontramos esa ODS</h3>
+            <p>Verifica tu folio, nombre o número de serie.<br>Si es la primera vez, escanea el QR de tu cotización.</p>
+        </div>`;
+                return;
+            }
+
+            rs.innerHTML = matches.map(renderODS).join('<br>');
+        }
+
+        // ── Update status ──────────────────────────────────────────────────────────
+        function updateStatus(folio) {
+            const ods = getODS(folio);
+            if (!ods) return;
+            ods.status = document.getElementById('status-select').value;
+            saveODS(ods);
+            document.getElementById('result-section').innerHTML = renderODS(ods);
+            const msg = document.getElementById('saved-msg');
+            if (msg) { msg.style.display = 'inline'; setTimeout(() => msg.style.display = 'none', 2500); }
+        }
+
+        // ── Init ───────────────────────────────────────────────────────────────────
+        document.getElementById('search-input').addEventListener('keydown', e => {
+            if (e.key === 'Enter') doSearch();
+        });
+
+        if (pFolio) { setTimeout(doSearch, 100); }
+    </script>
+</body>
+
+</html>
