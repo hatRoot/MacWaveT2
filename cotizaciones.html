@@ -1032,12 +1032,13 @@
                 document.getElementById('quote-number').value = getNextFolio();
             }
 
+
             const initialItems = [
-                { d: '', p: '', q: 1 },
-                { d: '', p: '', q: 1 },
-                { d: '', p: '', q: 1 },
-                { d: '', p: '', q: 1 },
-                { d: '', p: '', q: 1 }
+                { d: '', p: 0, q: 0 },
+                { d: '', p: 0, q: 0 },
+                { d: '', p: 0, q: 0 },
+                { d: '', p: 0, q: 0 },
+                { d: '', p: 0, q: 0 }
             ];
 
             function createRow(item = { d: '', p: 0, q: 1 }) {
@@ -1046,7 +1047,7 @@
                 div.innerHTML = `
                     <input type="text" class="i-desc" value="${item.d}" placeholder="Item...">
                     <input type="number" class="i-price" value="${item.p}" placeholder="0.00" style="text-align: right;">
-                    <input type="number" class="i-qty" value="${item.q}" min="0" style="text-align: center;">
+                    <input type="number" class="i-qty" value="${item.q}" min="0" step="1" style="text-align: center;">
                     <button type="button" class="remove-btn">✕</button>
                 `;
                 div.querySelector('.remove-btn').onclick = () => { div.remove(); update(); };
@@ -1057,6 +1058,26 @@
 
             document.getElementById('add-item-btn').onclick = () => createRow({ d: '', p: 0, q: 1 });
             initialItems.forEach(i => createRow(i));
+
+            // --- Reset Customer Fields on Load (Ensures cleanup after init) ---
+            const resetFields = () => {
+                const fieldsToReset = ['client-name', 'project-name', 'serial-number', 'delivery-time'];
+                fieldsToReset.forEach(id => {
+                    const el = document.getElementById(id);
+                    if (el) el.value = '';
+                });
+                // Clear items and recreate initial empty rows
+                if (itemsContainer) {
+                    itemsContainer.innerHTML = '';
+                    // Re-add 5 empty rows
+                    for (let i = 0; i < 5; i++) {
+                        createRow({ d: '', p: 0, q: 0 });
+                    }
+                }
+            };
+
+            // Execute reset on load
+            resetFields();
 
             function update() {
                 const client = document.getElementById('client-name').value;
@@ -1279,10 +1300,12 @@
 
                 doc.setTextColor(255, 59, 48);
                 doc.setFont("helvetica", "bolditalic");
-                doc.setFontSize(8);
+                doc.setFontSize(10); // Slightly larger for clarity
                 doc.text(`Cotización N° ${folio}`, 198, 15, { align: "right" });
+
+                doc.setFontSize(8);
                 doc.setFont("helvetica", "bold");
-                doc.text(`NÚMERO DE SERIE DEL EQUIPO: ${serialNumber}`, 198, 19, { align: "right" });
+                doc.text(`NÚMERO DE SERIE DEL EQUIPO: ${serialNumber}`, 198, 22, { align: "right" }); // Moved down from y=19 to y=22
 
                 doc.setTextColor(0, 0, 0);
                 doc.setFontSize(10);
@@ -1296,19 +1319,19 @@
 
                 // Row 1: Fecha
                 doc.setFont("helvetica", "normal");
-                doc.text("Fecha:....................", labelX, mY); // Reduced dots
+                doc.text("Fecha:", labelX, mY);
                 doc.setFont("helvetica", "bold");
                 doc.text(date, valueX, mY, { align: "right" });
 
                 // Row 2: Técnico
                 doc.setFont("helvetica", "normal");
-                doc.text("Técnico:..................", labelX, mY + 6); // Reduced dots
+                doc.text("Técnico:", labelX, mY + 6);
                 doc.setFont("helvetica", "bold");
                 doc.text(tech, valueX, mY + 6, { align: "right" });
 
                 // Row 3: Moneda
                 doc.setFont("helvetica", "normal");
-                doc.text("Moneda:...........", labelX, mY + 12); // Reduced dots
+                doc.text("Moneda:", labelX, mY + 12);
                 doc.setFont("helvetica", "bold");
                 doc.text(currency, valueX, mY + 12, { align: "right" });
 
