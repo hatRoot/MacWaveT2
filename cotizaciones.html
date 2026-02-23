@@ -813,18 +813,16 @@
                         <div class="form-grid">
                             <div class="form-group">
                                 <label>CLABE</label>
-                                <input type="text" id="clabe" placeholder="Ej. 012 180..." value="012 180015766935846"
-                                    readonly class="readonly-faint">
+                                <input type="text" id="clabe" placeholder="Ej. 012 180..." value="012 180015766935846">
                             </div>
                             <div class="form-group">
                                 <label>CUENTA</label>
-                                <input type="text" id="account-number" placeholder="Ej. 1576..." value="1576693584"
-                                    readonly class="readonly-faint">
+                                <input type="text" id="account-number" placeholder="Ej. 1576..." value="1576693584">
                             </div>
                             <div class="form-group">
                                 <label>TARJETA</label>
                                 <input type="text" id="card-number" placeholder="Ej. 4152..."
-                                    value="4152 3144 2988 0571" readonly class="readonly-faint">
+                                    value="4152 3144 2988 0571">
                             </div>
                         </div>
 
@@ -1035,11 +1033,11 @@
             }
 
             const initialItems = [
-                { d: '', p: 0, q: 1 },
-                { d: '', p: 0, q: 1 },
-                { d: '', p: 0, q: 1 },
-                { d: '', p: 0, q: 1 },
-                { d: '', p: 0, q: 1 }
+                { d: '', p: '', q: 1 },
+                { d: '', p: '', q: 1 },
+                { d: '', p: '', q: 1 },
+                { d: '', p: '', q: 1 },
+                { d: '', p: '', q: 1 }
             ];
 
             function createRow(item = { d: '', p: 0, q: 1 }) {
@@ -1066,6 +1064,11 @@
                 const tech = document.getElementById('tech-name').value;
                 const date = document.getElementById('quote-date').value;
                 const folio = document.getElementById('quote-number').value;
+                const deliveryTime = document.getElementById('delivery-time').value || 'POR DEFINIR';
+                const serialNumber = document.getElementById('serial-number').value || 'N/A';
+                const clabeVal = document.getElementById('clabe').value;
+                const accountVal = document.getElementById('account-number').value;
+                const cardVal = document.getElementById('card-number').value;
                 const currency = 'MXN';
 
                 let total = 0;
@@ -1075,7 +1078,7 @@
                 allRows.forEach((row, idx) => {
                     const d = row.querySelector('.i-desc').value;
                     const p = parseFloat(row.querySelector('.i-price').value) || 0;
-                    const q = parseInt(row.querySelector('.i-qty').value) || 0;
+                    const q = parseFloat(row.querySelector('.i-qty').value) || 0;
                     const sub = p * q;
                     total += sub;
                     itemsHtml += `
@@ -1131,6 +1134,11 @@
                                         <span class="ps-dot-dots">..........</span>
                                         <span class="ps-dot-value">${tech}</span>
                                     </div>
+                                    <div class="ps-dot-row">
+                                        <span class="ps-dot-label">S/N:</span>
+                                        <span class="ps-dot-dots">.............</span>
+                                        <span class="ps-dot-value">${serialNumber}</span>
+                                    </div>
                                     <div class="ps-dot-row" style="opacity: 0.8">
                                         <span class="ps-dot-label">Moneda:</span>
                                         <span class="ps-dot-dots">.....</span>
@@ -1166,7 +1174,7 @@
                             <p>Vigencia de la cotización : 1 día, expira el día 11 de Octubre de 2025</p>
                             <p>Garantía: 31 días en el servicio técnico, pregunta por tu garantía extendida a 100 días POR UN COSTO ADICIONAL Condiciones : SE REQUIERE</p>
                             <p style="font-size: 9px; font-weight: 900;">PAGO ANTICIPADO DEL 100% PARA EL SERVICIO.</p>
-                            <p>Tiempo de entrega: ${document.getElementById('delivery-time').value || 'POR DEFINIR'} ENTREGA TENTATIVA POR PARTE DEL FABRICANTE, modelos sugeridos a disponibilidad del fabricante. ALGUNOS PRODUCTOS IMPORTADOS DE ESTADOS UNIDOS, AMERICAN PARTNER.</p>
+                            <p>Tiempo de entrega: ${deliveryTime} ENTREGA TENTATIVA POR PARTE DEL FABRICANTE, modelos sugeridos a disponibilidad del fabricante. ALGUNOS PRODUCTOS IMPORTADOS DE ESTADOS UNIDOS, AMERICAN PARTNER.</p>
                         </div>
 
                         <div class="ps-bank-area">
@@ -1175,9 +1183,9 @@
                                     <div class="ps-bank-title">PAGAR A ESTE BANCO</div>
                                     <div class="ps-bank-main">BBVA</div>
                                     <div class="ps-bank-details">
-                                        CUENTA CLABE : ${document.getElementById('clabe').value}<br>
-                                        NUMERO DE CUENTA : ${document.getElementById('account-number').value}<br>
-                                        NUMERO DE TARJETA BBVA : ${document.getElementById('card-number').value}
+                                        CUENTA CLABE : ${clabeVal}<br>
+                                        NUMERO DE CUENTA : ${accountVal}<br>
+                                        NUMERO DE TARJETA BBVA : ${cardVal}
                                     </div>
                                 </div>
                                 <div class="ps-qr-block">
@@ -1274,7 +1282,7 @@
                 doc.setFontSize(8);
                 doc.text(`Cotización N° ${folio}`, 198, 15, { align: "right" });
                 doc.setFont("helvetica", "bold");
-                doc.text(`S/N: ${serialNumber}`, 198, 19, { align: "right" });
+                doc.text(`NÚMERO DE SERIE DEL EQUIPO: ${serialNumber}`, 198, 19, { align: "right" });
 
                 doc.setTextColor(0, 0, 0);
                 doc.setFontSize(10);
