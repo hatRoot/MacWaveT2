@@ -33,6 +33,45 @@
     <link rel="apple-touch-icon" href="https://www.macwave.com.mx/images/favicon1.png">
 
     <link rel="stylesheet" href="style.css?v=20.0.2">
+
+    <!-- Structured Data (JSON-LD) for Upgrade Services -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Service",
+      "serviceType": "Instalación de macOS y Upgrades de Hardware",
+      "provider": {
+        "@type": "LocalBusiness",
+        "name": "Mac Wave T2",
+        "url": "https://macwave.com.mx/"
+      },
+      "specialty": "Optimización de macOS y Upgrades de Hardware Apple",
+      "knowsAbout": ["OpenCore Legacy Patcher", "macOS Sonoma en Mac Antigua", "Instalación de SSD NVMe", "Upgrade de RAM iMac"],
+      "description": "Revive tu Mac antigua con instalación de macOS Sonoma/Sequoia vía OpenCore Legacy Patcher y aumentos de SSD y RAM.",
+      "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": "Servicios de Upgrade",
+        "itemListElement": [
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Instalación de macOS Sonoma en Mac Antigua",
+              "description": "Optimización avanzada para correr sistemas modernos en hardware anterior."
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Aumento de Disco Sólido (SSD)",
+              "description": "Sustitución de discos mecánicos por tecnología SSD para máxima velocidad."
+            }
+          }
+        ]
+      }
+    }
+    </script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 

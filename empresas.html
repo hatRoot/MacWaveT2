@@ -33,6 +33,45 @@
     <link rel="apple-touch-icon" href="https://www.macwave.com.mx/images/favicon1.png">
 
     <link rel="stylesheet" href="style.css?v=20.0.2">
+
+    <!-- Structured Data (JSON-LD) for B2B Services -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Service",
+      "serviceType": "Soporte Técnico Apple para Empresas",
+      "provider": {
+        "@type": "LocalBusiness",
+        "name": "Mac Wave T2",
+        "url": "https://macwave.com.mx/"
+      },
+      "specialty": "Soporte Técnico Apple Corporativo y Gestión IT",
+      "knowsAbout": ["Apple Business Manager (ABM)", "Apple School Manager", "Gestión de Flotillas MDM", "Consultoría Apple Business"],
+      "description": "Pólizas de mantenimiento, gestión de Apple Business Manager y soporte técnico especializado para corporativos y escuelas.",
+      "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": "Servicios Empresariales",
+        "itemListElement": [
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Pólizas de Soporte Mac",
+              "description": "Mantenimiento preventivo y correctivo para flotillas Apple."
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Apple Business Manager (ABM)",
+              "description": "Implementación y gestión de MDM para control centralizado."
+            }
+          }
+        ]
+      }
+    }
+    </script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
