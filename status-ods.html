@@ -401,68 +401,133 @@
 
     <div class="result-section" id="result-section"></div>
 
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
-        // ── Status definitions ──────────────────────────────────────────────────────
+        const _sb = supabase.createClient(
+            'https://lifxtyhvgnxjjqgbzare.supabase.co',
+            'sb_publishable_7aBPXbWRwrltSuXtzsyg-g_L1Fu3rTT'
+        );
+
         const STEPS = [
-            { key: 'recibido', label: 'Recibido', icon: '📥', color: 'var(--accent)' },
-            { key: 'diagnostico', label: 'Diagnóstico', icon: '🔍', color: 'var(--yellow)' },
-            { key: 'reparacion', label: 'En Reparación', icon: '🔧', color: 'var(--orange)' },
-            { key: 'listo', label: 'Listo ✅', icon: '✅', color: 'var(--green)' },
-            { key: 'entregado', label: 'Entregado', icon: '🎉', color: 'var(--muted)' },
+            { key: 'Recibido', label: 'Recibido', icon: '📥', color: 'var(--accent)' },
+            { key: 'Diagnóstico', label: 'Diagnóstico', icon: '🔍', color: 'var(--yellow)' },
+            { key: 'Reparando', label: 'En Reparación', icon: '🔧', color: 'var(--orange)' },
+            { key: 'Listo', label: 'Listo ✅', icon: '✅', color: 'var(--green)' },
+            { key: 'Entregado', label: 'Entregado', icon: '🎉', color: 'var(--muted)' },
         ];
 
         const STATUS_COLORS = {
-            recibido: { bg: '#0a1628', text: 'var(--accent2)' },
-            diagnostico: { bg: '#1a1500', text: 'var(--yellow)' },
-            reparacion: { bg: '#1a0e00', text: 'var(--orange)' },
-            listo: { bg: '#001a0a', text: 'var(--green)' },
-            entregado: { bg: '#111', text: 'var(--muted)' },
+            'Recibido': { bg: '#0a1628', text: 'var(--accent2)' },
+            'Diagnóstico': { bg: '#1a1500', text: 'var(--yellow)' },
+            'Reparando': { bg: '#1a0e00', text: 'var(--orange)' },
+            'Listo': { bg: '#001a0a', text: 'var(--green)' },
+            'Entregado': { bg: '#111', text: 'var(--muted)' },
         };
 
-        // ── Helpers ────────────────────────────────────────────────────────────────
-        const getODS = (folio) => {
-            const raw = localStorage.getItem(`ods_${folio}`);
-            return raw ? JSON.parse(raw) : null;
-        };
-
-        const saveODS = (data) => {
-            localStorage.setItem(`ods_${data.folio}`, JSON.stringify(data));
-        };
-
-        // ── Parse URL params (from QR scan) ───────────────────────────────────────
+        // Read URL params
         const params = new URLSearchParams(window.location.search);
-        const pFolio = params.get('folio');
-        const pClient = params.get('cliente');
-        const pSerial = params.get('serie');
+        const pFolio = params.get('folio') || '';
+        if (pFolio) document.getElementById('search-input').value = pFolio;
 
-        // Auto-register ODS if arriving from QR and not yet recorded
-        if (pFolio) {
-            if (!getODS(pFolio)) {
-                saveODS({ folio: pFolio, cliente: pClient || '', serie: pSerial || '', status: 'recibido', ts: Date.now() });
-            }
-            document.getElementById('search-input').value = pFolio;
-        }
-
-        // ── Render ODS card ────────────────────────────────────────────────────────
         function renderODS(ods) {
+            const sc = STATUS_COLORS[ods.status] || STATUS_COLORS['Recibido'];
             const currentIdx = STEPS.findIndex(s => s.key === ods.status);
-            const sc = STATUS_COLORS[ods.status] || STATUS_COLORS.recibido;
 
             const stepsHtml = STEPS.map((s, i) => {
-                let cls = 'pending';
-                if (i < currentIdx) cls = 'done';
-                if (i === currentIdx) cls = 'active';
-                return `<div class="step ${cls}">
-            <div class="step-circle">${i < currentIdx ? '✓' : s.icon}</div>
-            <div class="step-label">${s.label}</div>
-        </div>`;
+                const done = i < currentIdx;
+                const active = i === currentIdx;
+                return `<div class="step ${done ? 'done' : ''} ${active ? 'active' : ''}">
+                    <div class="step-icon">${s.icon}</div>
+                    <div class="step-label">${s.label}</div>
+                </div>`;
             }).join('');
 
-            const optionsHtml = STEPS.map(s =>
-                `<option value="${s.key}" ${s.key === ods.status ? 'selected' : ''}>${s.icon} ${s.label}</option>`
-            ).join('');
-
             return `
+    <div class="ods-card">
+        <div class="ods-card-header">
+            <div>
+                <div class="ods-folio">${ods.folio}</div>
+                <div class="ods-client">Cliente: ${ods.cliente || '—'}</div>
+                ${ods.serie ? `<div class="ods-serial">Serie: ${ods.serie}</div>` : ''}
+            </div>
+            <span class="status-badge" style="background:${sc.bg}; color:${sc.text};">
+                ${STEPS.find(s => s.key === ods.status)?.icon || ''} ${(ods.status || '').toUpperCase()}
+            </span>
+        </div>
+        <div class="tracker">
+            <div class="tracker-title">Progreso de tu reparación</div>
+            <div class="steps">${stepsHtml}</div>
+        </div>
+    </div>`;
+        }
+
+        async function doSearch() {
+            const query = document.getElementById('search-input').value.trim().toLowerCase();
+            const rs = document.getElementById('result-section');
+            if (!query) { rs.innerHTML = ''; return; }
+
+            rs.innerHTML = '<div style="color:#8e8e93;text-align:center;padding:30px;">Buscando...</div>';
+
+            const { data, error } = await _sb
+                .from('ordenes_servicio')
+                .select('folio, cliente, serie, proyecto, status, fecha')
+                .or(`folio.ilike.%${query}%,cliente.ilike.%${query}%,serie.ilike.%${query}%`);
+
+            if (error || !data || data.length === 0) {
+                rs.innerHTML = `<div class="empty-state">
+                    <div class="empty-icon">🔎</div>
+                    <h3>No encontramos esa ODS</h3>
+                    <p>Verifica tu folio, nombre o número de serie.<br>Si es la primera vez, muestra tu QR en taller.</p>
+                </div>`;
+                return;
+            }
+
+            rs.innerHTML = data.map(renderODS).join('<br>');
+        }
+
+        document.getElementById('search-input').addEventListener('keydown', e => {
+            if (e.key === 'Enter') doSearch();
+        });
+
+        if (pFolio) setTimeout(doSearch, 100);
+    </script>
+</body>
+
+</html>
+
+
+// ── Parse URL params (from QR scan) ───────────────────────────────────────
+const params = new URLSearchParams(window.location.search);
+const pFolio = params.get('folio');
+const pClient = params.get('cliente');
+const pSerial = params.get('serie');
+
+// Auto-register ODS if arriving from QR and not yet recorded
+if (pFolio) {
+if (!getODS(pFolio)) {
+saveODS({ folio: pFolio, cliente: pClient || '', serie: pSerial || '', status: 'recibido', ts: Date.now() });
+}
+document.getElementById('search-input').value = pFolio;
+}
+
+// ── Render ODS card ────────────────────────────────────────────────────────
+function renderODS(ods) {
+const currentIdx = STEPS.findIndex(s => s.key === ods.status);
+const sc = STATUS_COLORS[ods.status] || STATUS_COLORS.recibido;
+
+const stepsHtml = STEPS.map((s, i) => {
+let cls = 'pending';
+if (i < currentIdx) cls='done' ; if (i===currentIdx) cls='active' ; return `<div class="step ${cls}">
+    <div class="step-circle">${i < currentIdx ? '✓' : s.icon}</div>
+            <div class="step-label">${s.label}</div>
+    </div>`;
+    }).join('');
+
+    const optionsHtml = STEPS.map(s =>
+    `<option value="${s.key}" ${s.key===ods.status ? 'selected' : '' }>${s.icon} ${s.label}</option>`
+    ).join('');
+
+    return `
     <div class="ods-card">
         <div class="ods-card-header">
             <div>
@@ -489,59 +554,53 @@
             </div>
         </div>
     </div>`;
-        }
+    }
 
-        // ── Search logic ────────────────────────────────────────────────────────────
-        function doSearch() {
-            const query = document.getElementById('search-input').value.trim().toLowerCase();
-            const rs = document.getElementById('result-section');
-            if (!query) { rs.innerHTML = ''; return; }
+    // ── Search logic ────────────────────────────────────────────────────────────
+    function doSearch() {
+    const query = document.getElementById('search-input').value.trim().toLowerCase();
+    const rs = document.getElementById('result-section');
+    if (!query) { rs.innerHTML = ''; return; }
 
-            // Retrieve all stored ODS
-            const allODS = [];
-            for (let i = 0; i < localStorage.length; i++) {
-                const key = localStorage.key(i);
-                if (key.startsWith('ods_')) {
-                    try { allODS.push(JSON.parse(localStorage.getItem(key))); } catch (_) { }
-                }
-            }
+    // Retrieve all stored ODS
+    const allODS = [];
+    for (let i = 0; i < localStorage.length; i++) { const key=localStorage.key(i); if (key.startsWith('ods_')) { try {
+        allODS.push(JSON.parse(localStorage.getItem(key))); } catch (_) { } } } const matches=allODS.filter(o=>
+        (o.folio?.toLowerCase().includes(query)) ||
+        (o.cliente?.toLowerCase().includes(query)) ||
+        (o.serie?.toLowerCase().includes(query))
+        );
 
-            const matches = allODS.filter(o =>
-                (o.folio?.toLowerCase().includes(query)) ||
-                (o.cliente?.toLowerCase().includes(query)) ||
-                (o.serie?.toLowerCase().includes(query))
-            );
-
-            if (matches.length === 0) {
-                rs.innerHTML = `<div class="empty-state">
+        if (matches.length === 0) {
+        rs.innerHTML = `<div class="empty-state">
             <div class="empty-icon">🔎</div>
             <h3>No encontramos esa ODS</h3>
             <p>Verifica tu folio, nombre o número de serie.<br>Si es la primera vez, escanea el QR de tu cotización.</p>
         </div>`;
-                return;
-            }
+        return;
+        }
 
-            rs.innerHTML = matches.map(renderODS).join('<br>');
+        rs.innerHTML = matches.map(renderODS).join('<br>');
         }
 
         // ── Update status ──────────────────────────────────────────────────────────
         function updateStatus(folio) {
-            const ods = getODS(folio);
-            if (!ods) return;
-            ods.status = document.getElementById('status-select').value;
-            saveODS(ods);
-            document.getElementById('result-section').innerHTML = renderODS(ods);
-            const msg = document.getElementById('saved-msg');
-            if (msg) { msg.style.display = 'inline'; setTimeout(() => msg.style.display = 'none', 2500); }
+        const ods = getODS(folio);
+        if (!ods) return;
+        ods.status = document.getElementById('status-select').value;
+        saveODS(ods);
+        document.getElementById('result-section').innerHTML = renderODS(ods);
+        const msg = document.getElementById('saved-msg');
+        if (msg) { msg.style.display = 'inline'; setTimeout(() => msg.style.display = 'none', 2500); }
         }
 
         // ── Init ───────────────────────────────────────────────────────────────────
         document.getElementById('search-input').addEventListener('keydown', e => {
-            if (e.key === 'Enter') doSearch();
+        if (e.key === 'Enter') doSearch();
         });
 
         if (pFolio) { setTimeout(doSearch, 100); }
-    </script>
-</body>
+        </script>
+        </body>
 
-</html>
+        </html>

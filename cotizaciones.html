@@ -237,7 +237,7 @@
             box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
             position: relative;
             color: #000;
-            padding: 40px;
+            padding: 28px 35px 28px 35px;
             font-family: 'Helvetica', Arial, sans-serif;
             overflow: hidden;
         }
@@ -355,8 +355,8 @@
         .ps-table th {
             background: #000;
             color: #fff;
-            padding: 14px;
-            font-size: 11px;
+            padding: 9px 14px;
+            font-size: 10px;
             text-transform: uppercase;
             font-weight: 800;
             text-align: center;
@@ -364,9 +364,9 @@
         }
 
         .ps-table td {
-            padding: 14px;
+            padding: 9px 14px;
             border-bottom: 1px solid #eee;
-            font-size: 11px;
+            font-size: 10px;
             font-weight: 800;
             color: var(--accent-red);
             text-align: center;
@@ -418,10 +418,10 @@
         }
 
         .ps-bank-area {
-            margin-top: 20px;
-            margin-bottom: 20px;
+            margin-top: 10px;
+            margin-bottom: 10px;
             border-top: 1px solid #eee;
-            padding-top: 15px;
+            padding-top: 10px;
         }
 
         .ps-bank-qr-row {
@@ -476,13 +476,13 @@
         }
 
         .ps-disclaimer {
-            margin-top: 20px;
-            font-size: 7px;
+            margin-top: 10px;
+            font-size: 6.5px;
             color: #000;
             line-height: 1.2;
             text-align: left;
             border-top: 1px solid #eee;
-            padding-top: 15px;
+            padding-top: 10px;
             font-weight: bold;
         }
 
@@ -538,10 +538,10 @@
             display: flex;
             justify-content: space-evenly;
             align-items: center;
-            margin-top: 18px;
-            margin-bottom: 18px;
+            margin-top: 8px;
+            margin-bottom: 8px;
             flex-wrap: wrap;
-            gap: 8px;
+            gap: 6px;
         }
 
         .ps-apple-pro-icon {
@@ -561,9 +561,9 @@
             display: flex;
             justify-content: space-between;
             align-items: flex-end;
-            font-size: 7.5px;
+            font-size: 7px;
             border-top: 1px solid #eee;
-            padding-top: 15px;
+            padding-top: 8px;
         }
 
         .ps-footer-col {
@@ -751,7 +751,13 @@
                 <h1>ORDEN DE SERVICIO</h1>
                 <p>macWave.com.mx &mdash; Sistema de Gestión Técnica</p>
             </div>
-            <button id="logout-btn" class="logout-btn">Cerrar Sesión</button>
+            <div style="display:flex;gap:10px;align-items:center;">
+                <button id="ver-ods-btn"
+                    style="background:rgba(0,113,227,0.12);color:#0a84ff;border:1px solid rgba(0,113,227,0.3);text-transform:uppercase;font-size:0.7rem;letter-spacing:0.1em;padding:8px 16px;border-radius:6px;font-weight:700;cursor:pointer;transition:all 0.3s;">
+                    📂 VER TODOS LOS ODS
+                </button>
+                <button id="logout-btn" class="logout-btn">Cerrar Sesión</button>
+            </div>
         </header>
 
         <main class="dashboard-grid">
@@ -835,6 +841,34 @@
         </main>
     </div>
 
+    <!-- ODS Management Panel -->
+    <div id="ods-panel-overlay"
+        style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);backdrop-filter:blur(8px);z-index:3000;display:none;flex-direction:row;">
+        <div id="ods-panel"
+            style="background:#1c1c1e;width:100%;max-width:1000px;margin:auto;border-radius:16px;overflow:hidden;display:flex;height:80vh;box-shadow:0 40px 80px rgba(0,0,0,0.6);">
+            <!-- LEFT: ODS List -->
+            <div style="width:340px;flex-shrink:0;border-right:1px solid #2c2c2e;display:flex;flex-direction:column;">
+                <div
+                    style="padding:20px;border-bottom:1px solid #2c2c2e;display:flex;align-items:center;justify-content:space-between;">
+                    <span style="font-weight:700;font-size:1rem;color:#fff;">ODS Generadas</span>
+                    <button id="close-ods-panel"
+                        style="background:none;border:none;color:#8e8e93;font-size:1.5rem;cursor:pointer;">&times;</button>
+                </div>
+                <input id="ods-search" type="text" placeholder="Buscar folio o cliente..."
+                    style="margin:12px;padding:8px 12px;border-radius:8px;border:1px solid #3a3a3c;background:#2c2c2e;color:#fff;font-size:0.85rem;outline:none;">
+                <div id="ods-list" style="overflow-y:auto;flex:1;padding:0 8px 12px;"></div>
+            </div>
+            <!-- RIGHT: ODS Detail -->
+            <div id="ods-detail"
+                style="flex:1;padding:28px;overflow-y:auto;display:flex;flex-direction:column;gap:14px;">
+                <div style="color:#6e6e73;text-align:center;margin:auto;">
+                    <div style="font-size:2.5rem;margin-bottom:12px;">📋</div>
+                    <div style="font-size:0.9rem;">Selecciona una ODS para ver su detalle</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div id="ticket-modal" class="modal">
         <div class="golden-ticket">
             <button id="close-ticket-modal" class="close-ticket">&times;</button>
@@ -874,12 +908,19 @@
         </div>
     </div>
 
+    <!-- Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="logo_const.js"></script>
     <script>
         // Session Security Check
         if (sessionStorage.getItem('macwave_session') !== 'authorized') {
             window.location.href = 'tecnicos.html';
         }
+
+        // ── Supabase Client ──────────────────────────────────
+        const SUPABASE_URL = 'https://lifxtyhvgnxjjqgbzare.supabase.co';
+        const SUPABASE_ANON_KEY = 'sb_publishable_7aBPXbWRwrltSuXtzsyg-g_L1Fu3rTT';
+        window._sbClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
         document.addEventListener('DOMContentLoaded', () => {
             const itemsContainer = document.getElementById('items-container');
@@ -908,6 +949,7 @@
             const showWorkshopTicket = () => {
                 const modal = document.getElementById('ticket-modal');
                 const folioDisplay = document.getElementById('ticket-folio-display');
+                const source = document.getElementById('ticket-source').value;
                 let counter = parseInt(localStorage.getItem('workshop_ticket_counter') || '239');
 
                 // Increment immediately so each ticket has a unique code
@@ -919,10 +961,29 @@
                 const dd = now.getDate().toString().padStart(2, '0');
                 const dateStr = yy + mm + dd;
 
-                const folio = `G-${dateStr}-${counter}`;
+                // Dynamic Prefix Logic
+                let prefix = 'G'; // Default Google
+                if (source === 'INTERNET') prefix = 'I';
+                if (source === 'RECOMENDACIÓN') prefix = 'R';
+
+                const folio = `${prefix}-${dateStr}-${counter}`;
                 folioDisplay.textContent = folio;
                 modal.style.display = 'flex';
             };
+
+            // Live Folio Update when source changes
+            document.getElementById('ticket-source')?.addEventListener('change', (e) => {
+                const folioDisplay = document.getElementById('ticket-folio-display');
+                const currentFolio = folioDisplay.textContent;
+                const source = e.target.value;
+
+                let prefix = 'G';
+                if (source === 'INTERNET') prefix = 'I';
+                if (source === 'RECOMENDACIÓN') prefix = 'R';
+
+                // Replace the prefix part (everything before the first dash)
+                folioDisplay.textContent = `${prefix}${currentFolio.slice(currentFolio.indexOf('-'))}`;
+            });
 
             document.getElementById('generate-ticket-btn')?.addEventListener('click', showWorkshopTicket);
             document.getElementById('close-ticket-modal')?.addEventListener('click', () => { document.getElementById('ticket-modal').style.display = 'none'; });
@@ -1416,6 +1477,25 @@
                 document.getElementById('quote-number').value = getNextFolio();
 
                 window.open(doc.output('bloburl'), '_blank');
+
+                // ── Auto-save ODS to Supabase ────────────────────────
+                const odsData = {
+                    folio: document.getElementById('quote-number').value,
+                    cliente: document.getElementById('client-name').value || '',
+                    proyecto: document.getElementById('project-name').value || '',
+                    tecnico: document.getElementById('tech-name').value || '',
+                    serie: document.getElementById('serial-number').value || '',
+                    fecha: document.getElementById('quote-date').value || '',
+                    monto: parseFloat(document.getElementById('total-display')?.textContent?.replace(/[^0-9.]/g, '') || '0'),
+                    status: 'Recibido',
+                    notas: ''
+                };
+                try {
+                    await window._sbClient.from('ordenes_servicio').insert([odsData]);
+                    console.log('ODS guardado en Supabase:', odsData.folio);
+                } catch (e) {
+                    console.warn('No se pudo guardar ODS en Supabase:', e.message);
+                }
             };
 
             update();
@@ -1454,6 +1534,147 @@
             document.getElementById('logout-btn').onclick = () => {
                 sessionStorage.clear();
                 window.location.href = 'tecnicos.html';
+            };
+
+            // ── ODS PANEL LOGIC ──────────────────────────────────
+            const STATUS_COLORS = {
+                'Recibido': { bg: '#1a3a5c', text: '#4da3ff' },
+                'Diagnóstico': { bg: '#2a2a00', text: '#ffd60a' },
+                'Reparando': { bg: '#2a1a00', text: '#ff9f0a' },
+                'Listo': { bg: '#0a2a1a', text: '#30d158' },
+                'Entregado': { bg: '#2a1a2a', text: '#bf5af2' }
+            };
+
+            let allODS = [];
+
+            const renderODSList = (ods) => {
+                const list = document.getElementById('ods-list');
+                list.innerHTML = '';
+                if (!ods.length) {
+                    list.innerHTML = '<div style="color:#6e6e73;padding:20px;text-align:center;font-size:0.85rem;">No se encontraron ODS</div>';
+                    return;
+                }
+                ods.forEach(o => {
+                    const sc = STATUS_COLORS[o.status] || STATUS_COLORS['Recibido'];
+                    const item = document.createElement('div');
+                    item.style.cssText = 'padding:12px 14px;border-radius:10px;cursor:pointer;margin-bottom:6px;background:#2c2c2e;transition:background 0.2s;';
+                    item.innerHTML = `
+                        <div style="font-weight:700;font-size:0.85rem;color:#fff;margin-bottom:4px;">${o.folio}</div>
+                        <div style="font-size:0.78rem;color:#8e8e93;margin-bottom:6px;">${o.cliente || 'Sin nombre'}</div>
+                        <span style="font-size:0.7rem;font-weight:700;padding:3px 8px;border-radius:20px;background:${sc.bg};color:${sc.text};">${o.status}</span>
+                    `;
+                    item.onmouseenter = () => item.style.background = '#3a3a3c';
+                    item.onmouseleave = () => item.style.background = '#2c2c2e';
+                    item.onclick = () => renderODSDetail(o);
+                    list.appendChild(item);
+                });
+            };
+
+            const renderODSDetail = (o) => {
+                const sc = STATUS_COLORS[o.status] || STATUS_COLORS['Recibido'];
+                const statusOptions = Object.keys(STATUS_COLORS).map(s =>
+                    `<option value="${s}" ${s === o.status ? 'selected' : ''}>${s}</option>`
+                ).join('');
+                document.getElementById('ods-detail').innerHTML = `
+                    <div style="font-size:1.4rem;font-weight:900;color:#fff;letter-spacing:-0.5px;">${o.folio}</div>
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+                        <div style="background:#2c2c2e;border-radius:10px;padding:14px;">
+                            <div style="font-size:0.65rem;color:#8e8e93;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px;">Cliente</div>
+                            <div style="color:#fff;font-weight:600;">${o.cliente || '—'}</div>
+                        </div>
+                        <div style="background:#2c2c2e;border-radius:10px;padding:14px;">
+                            <div style="font-size:0.65rem;color:#8e8e93;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px;">Proyecto</div>
+                            <div style="color:#fff;font-weight:600;">${o.proyecto || '—'}</div>
+                        </div>
+                        <div style="background:#2c2c2e;border-radius:10px;padding:14px;">
+                            <div style="font-size:0.65rem;color:#8e8e93;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px;">Técnico</div>
+                            <div style="color:#fff;font-weight:600;">${o.tecnico || '—'}</div>
+                        </div>
+                        <div style="background:#2c2c2e;border-radius:10px;padding:14px;">
+                            <div style="font-size:0.65rem;color:#8e8e93;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px;">Serie</div>
+                            <div style="color:#fff;font-weight:600;font-size:0.85rem;">${o.serie || '—'}</div>
+                        </div>
+                        <div style="background:#2c2c2e;border-radius:10px;padding:14px;">
+                            <div style="font-size:0.65rem;color:#8e8e93;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px;">Fecha</div>
+                            <div style="color:#fff;font-weight:600;">${o.fecha || '—'}</div>
+                        </div>
+                        <div style="background:#2c2c2e;border-radius:10px;padding:14px;">
+                            <div style="font-size:0.65rem;color:#8e8e93;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px;">Monto</div>
+                            <div style="color:#ff453a;font-weight:800;">$${(o.monto || 0).toLocaleString('es-MX', { minimumFractionDigits: 2 })}</div>
+                        </div>
+                    </div>
+                    <div style="background:#2c2c2e;border-radius:10px;padding:20px;">
+                        <div style="font-size:0.7rem;color:#8e8e93;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:10px;">Status Actual</div>
+                        <span style="display:inline-block;font-size:0.9rem;font-weight:700;padding:6px 16px;border-radius:20px;background:${sc.bg};color:${sc.text};margin-bottom:16px;">${o.status}</span>
+                        <div style="font-size:0.7rem;color:#8e8e93;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px;">Actualizar Status</div>
+                        <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+                            <select id="ods-status-select" style="flex:1;min-width:160px;padding:8px 12px;border-radius:8px;border:1px solid #3a3a3c;background:#1c1c1e;color:#fff;font-size:0.85rem;">
+                                ${statusOptions}
+                            </select>
+                            <button id="ods-save-status" data-id="${o.id}" style="padding:8px 20px;border-radius:8px;background:#0071e3;color:#fff;border:none;font-weight:700;cursor:pointer;font-size:0.85rem;">
+                                Guardar
+                            </button>
+                        </div>
+                    </div>
+                    <div style="background:#2c2c2e;border-radius:10px;padding:14px;">
+                        <div style="font-size:0.65rem;color:#8e8e93;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px;">Notas Internas</div>
+                        <textarea id="ods-notas" rows="3" style="width:100%;background:#1c1c1e;border:1px solid #3a3a3c;color:#fff;border-radius:8px;padding:8px;font-size:0.82rem;resize:vertical;">${o.notas || ''}</textarea>
+                        <button id="ods-save-notas" data-id="${o.id}" style="margin-top:8px;padding:6px 16px;border-radius:8px;background:#2c2c2e;border:1px solid #3a3a3c;color:#8e8e93;font-size:0.78rem;cursor:pointer;">Guardar Nota</button>
+                    </div>
+                `;
+
+                document.getElementById('ods-save-status').onclick = async () => {
+                    const nuevoStatus = document.getElementById('ods-status-select').value;
+                    const id = document.getElementById('ods-save-status').dataset.id;
+                    const { error } = await window._sbClient.from('ordenes_servicio').update({ status: nuevoStatus }).eq('id', id);
+                    if (!error) {
+                        o.status = nuevoStatus;
+                        const idx = allODS.findIndex(x => x.id === id);
+                        if (idx !== -1) allODS[idx].status = nuevoStatus;
+                        renderODSList(allODS);
+                        renderODSDetail(o);
+                    }
+                };
+
+                document.getElementById('ods-save-notas').onclick = async () => {
+                    const notas = document.getElementById('ods-notas').value;
+                    const id = document.getElementById('ods-save-notas').dataset.id;
+                    await window._sbClient.from('ordenes_servicio').update({ notas }).eq('id', id);
+                    o.notas = notas;
+                };
+            };
+
+            document.getElementById('ver-ods-btn').onclick = async () => {
+                const overlay = document.getElementById('ods-panel-overlay');
+                overlay.style.display = 'flex';
+                document.getElementById('ods-list').innerHTML = '<div style="color:#8e8e93;padding:20px;text-align:center;">Cargando...</div>';
+                const { data, error } = await window._sbClient
+                    .from('ordenes_servicio')
+                    .select('*')
+                    .order('created_at', { ascending: false });
+                if (error) {
+                    document.getElementById('ods-list').innerHTML = '<div style="color:#ff453a;padding:20px;font-size:0.82rem;">Error al cargar ODS: ' + error.message + '</div>';
+                    return;
+                }
+                allODS = data || [];
+                renderODSList(allODS);
+            };
+
+            document.getElementById('close-ods-panel').onclick = () => {
+                document.getElementById('ods-panel-overlay').style.display = 'none';
+            };
+            document.getElementById('ods-panel-overlay').onclick = (e) => {
+                if (e.target === document.getElementById('ods-panel-overlay')) {
+                    document.getElementById('ods-panel-overlay').style.display = 'none';
+                }
+            };
+
+            document.getElementById('ods-search').oninput = (e) => {
+                const q = e.target.value.toLowerCase();
+                renderODSList(allODS.filter(o =>
+                    (o.folio || '').toLowerCase().includes(q) ||
+                    (o.cliente || '').toLowerCase().includes(q)
+                ));
             };
         });
     </script>

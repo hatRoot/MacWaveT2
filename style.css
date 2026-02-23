@@ -10,8 +10,8 @@
     /* Texto principal blanco */
     --text-secondary: #E0E0E6;
     /* Texto secundario gris muy claro */
-    --text-muted: #8E8E93;
-    /* Texto para descripciones o info extra */
+    --text-muted: #B0B0B5;
+    /* Texto para descripciones o info extra - Brightened from #8E8E93 for better contrast */
 
     /* VARIABLES DE COLOR DE MARCA NARANJA/BRONCE */
     --accent-orange: #FF6600;
@@ -351,13 +351,13 @@ h3 {
 
 .cta-button.secondary {
     background-color: transparent;
-    border: 2px solid #333333;
-    color: #333333;
+    border: 2px solid var(--text-muted);
+    color: var(--text-primary);
 }
 
 .cta-button.secondary:hover {
-    background-color: #333333;
-    color: #ffffff;
+    background-color: var(--text-primary);
+    color: var(--primary-bg);
 }
 
 .header-cta {
