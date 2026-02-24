@@ -1541,7 +1541,7 @@
                 doc.text(`Tiempo de entrega: ${deliveryTime} ENTREGA TENTATIVA SEGÚN DISPONIBILIDAD.`, 15, cY + 23);
 
                 // 5. Bank section
-                currentY = bankY;
+                let currentY = bankY;
                 doc.setFontSize(10);
                 doc.setTextColor(0, 102, 128);
                 doc.text("PAGAR A ESTE BANCO", 15, currentY);
