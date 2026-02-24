@@ -15,6 +15,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
 
     <style>
         :root {
@@ -761,6 +762,16 @@
                     style="background:rgba(52,199,89,0.12);color:#34c759;border:1px solid rgba(52,199,89,0.3);text-transform:uppercase;font-size:0.7rem;letter-spacing:0.1em;padding:8px 16px;border-radius:6px;font-weight:700;cursor:pointer;transition:all 0.3s;">
                     ✨ NUEVA ODS
                 </button>
+                <div style="position: relative; overflow: hidden; display: inline-block;">
+                    <button id="import-pdf-btn"
+                        style="background:rgba(255,159,10,0.12);color:#ff9f0a;border:1px solid rgba(255,159,10,0.3);text-transform:uppercase;font-size:0.7rem;letter-spacing:0.1em;padding:8px 16px;border-radius:6px;font-weight:700;cursor:pointer;transition:all 0.3s;display:flex;align-items:center;gap:6px;">
+                        📄 SUBIR PDF PARA LLENAR ODS
+                        <span id="pdf-loading-spinner"
+                            style="display:none;width:12px;height:12px;border:2px solid rgba(255,159,10,0.3);border-top-color:#ff9f0a;border-radius:50%;animation:spin 1s linear infinite;"></span>
+                    </button>
+                    <input type="file" id="pdf-upload-input" accept="application/pdf"
+                        style="position:absolute;top:0;left:0;opacity:0;width:100%;height:100%;cursor:pointer;">
+                </div>
                 <button id="logout-btn" class="logout-btn">Cerrar Sesión</button>
             </div>
         </header>
@@ -1172,6 +1183,137 @@
             form.querySelectorAll('input').forEach(i => i.oninput = update);
             form.querySelectorAll('select').forEach(i => i.onchange = update);
             document.getElementById('ods-notes').oninput = update;
+
+            // --- PDF IMPORT LOGIC ---
+            const pdfInput = document.getElementById('pdf-upload-input');
+            const pdfSpinner = document.getElementById('pdf-loading-spinner');
+
+            pdfInput.addEventListener('change', async (e) => {
+                const file = e.target.files[0];
+                if (!file) return;
+
+                pdfSpinner.style.display = 'inline-block';
+
+                try {
+                    const arrayBuffer = await file.arrayBuffer();
+                    const pdfData = new Uint8Array(arrayBuffer);
+
+                    // Initialize PDF.js
+                    const pdfjsLib = window['pdfjs-dist/build/pdf'];
+                    // Setup worker (using local or cdn depending on environment, setting empty skips worker for small files usually, or use global workerSrc)
+                    pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js';
+
+                    const pdf = await pdfjsLib.getDocument({ data: pdfData }).promise;
+                    const page = await pdf.getPage(1);
+                    const textContent = await page.getTextContent();
+
+                    // Combine all text items into a single string for easier regex/searching
+                    // We join with spaces to keep words separate
+                    const rawText = textContent.items.map(item => item.str).join(' ');
+
+                    console.log("Extracted PDF Text:", rawText);
+
+                    // Helper function to extract text between two strings or using regex
+                    const extractAfter = (text, label) => {
+                        const idx = text.indexOf(label);
+                        if (idx === -1) return '';
+                        const start = idx + label.length;
+                        // Find a reasonable end (like the next known label or a long enough gap, but since it's flattened, we might just grab the next few words)
+                        // It's safer to use regex for specific patterns if the structure is known
+                        return text.substring(start).trim();
+                    };
+
+                    // Extract values using Regex based on the known PDF structure
+
+                    // 1. Folio: "ODS N° RPC-1234"
+                    const folioMatch = rawText.match(/ODS N°\s*([A-Z0-9-]+)/i);
+                    if (folioMatch) document.getElementById('quote-number').value = folioMatch[1].trim();
+
+                    // 2. Client: "Estimado(a) Sr: Juan Perez" -> looks for text after "Sr:" until "Oportunidad"
+                    const clientMatch = rawText.match(/Estimado\(a\) Sr:\s*(.*?)\s*Oportunidad \/ Proyecto:/i);
+                    if (clientMatch) document.getElementById('client-name').value = clientMatch[1].trim();
+
+                    // 3. Project: "Oportunidad / Proyecto: Reparacion..."
+                    const projectMatch = rawText.match(/Oportunidad \/ Proyecto:\s*(.*?)\s*Número de Serie/i);
+                    if (projectMatch) document.getElementById('project-name').value = projectMatch[1].trim();
+
+                    // 4. Serial Number
+                    const serialMatch = rawText.match(/Número de Serie del equipo :\s*(.*?)\s*DESCRIPCIÓN/i);
+                    if (serialMatch) document.getElementById('serial-number').value = serialMatch[1].trim();
+
+                    // 5. Date: "Fecha: ............ 24/02/2026"
+                    // The dots might be present or stripped, pdfjs often reads them as individual characters or spaces
+                    const dateMatch = rawText.match(/Fecha:\s*(?:\.+)?\s*(\d{1,2}\/\d{1,2}\/\d{4})/i);
+                    if (dateMatch) document.getElementById('quote-date').value = dateMatch[1].trim();
+
+                    // 6. Technician
+                    const techMatch = rawText.match(/Técnico:\s*(?:\.+)?\s*([A-Za-z\s]+)\s*Moneda:/i);
+                    if (techMatch) document.getElementById('tech-name').value = techMatch[1].trim();
+
+                    // 7. Delivery Time
+                    const deliveryMatch = rawText.match(/Tiempo de entrega:\s*(.*?)\s*ENTREGA TENTATIVA/i);
+                    if (deliveryMatch) document.getElementById('delivery-time').value = deliveryMatch[1].trim();
+
+                    // Note finding (Observaciones)
+                    const notesMatch = rawText.match(/OBSERVACIONES:\s*(.*?)\s*\*\*\*Precios sujetos/i);
+                    if (notesMatch) {
+                        document.getElementById('ods-notes').value = notesMatch[1].trim();
+                    } else {
+                        document.getElementById('ods-notes').value = '';
+                    }
+
+                    // Extracting Items (This is the most complex part as it's a table)
+                    // We look for everything between "SUB TOTAL" and either "OBSERVACIONES:" or "TOTAL"
+                    let tableSectionMatch = rawText.match(/SUB TOTAL\s+(.*?)\s+(?:OBSERVACIONES:|TOTAL\s+\$)/i);
+                    if (tableSectionMatch) {
+                        let tableText = tableSectionMatch[1].trim();
+                        // Try to find price patterns like "$ 1,500.00 1 $ 1,500.00"
+                        // Since pdf.js flattens text, a row usually looks like: "Descripción $ 100.00 1 $ 100.00"
+                        // This regex looks for: 
+                        // 1. Description (any text)
+                        // 2. Unit Price ($ XX.XX)
+                        // 3. Qty (Number)
+                        // 4. Subtotal ($ XX.XX)
+                        const rowRegex = /(.*?)\s+\$\s*([\d,]+\.\d{2})\s+(\d+)\s+\$\s*([\d,]+\.\d{2})/g;
+                        const items = [];
+                        let match;
+
+                        while ((match = rowRegex.exec(tableText)) !== null) {
+                            items.push({
+                                d: match[1].trim(),
+                                p: parseFloat(match[2].replace(/,/g, '')),
+                                q: parseInt(match[3], 10)
+                            });
+                        }
+
+                        // Populate items
+                        if (items.length > 0) {
+                            itemsContainer.innerHTML = '';
+                            items.forEach(item => {
+                                // Ignore empty padding rows
+                                if (item.d !== "" && item.p > 0) {
+                                    createRow(item);
+                                }
+                            });
+                            // Fill remaining with empty if less than 5
+                            while (document.querySelectorAll('.item-row').length < 5) {
+                                createRow({ d: '', p: 0, q: 0 });
+                            }
+                        }
+                    }
+
+                    // Force update UI
+                    update();
+                    alert("✅ PDF importado con éxito. Por favor revisa que todos los campos se hayan extraído correctamente.");
+
+                } catch (error) {
+                    console.error("Error parsing PDF:", error);
+                    alert("❌ Ocurrió un error al intentar leer el PDF. Asegúrate de que sea un PDF generado por este sistema.");
+                } finally {
+                    pdfSpinner.style.display = 'none';
+                    pdfInput.value = ''; // Reset input so same file can be selected again
+                }
+            });
 
             function update() {
                 const client = document.getElementById('client-name').value;
