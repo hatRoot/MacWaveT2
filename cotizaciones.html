@@ -757,6 +757,10 @@
                     style="background:rgba(0,113,227,0.12);color:#0a84ff;border:1px solid rgba(0,113,227,0.3);text-transform:uppercase;font-size:0.7rem;letter-spacing:0.1em;padding:8px 16px;border-radius:6px;font-weight:700;cursor:pointer;transition:all 0.3s;">
                     📂 VER TODOS LOS ODS
                 </button>
+                <button id="new-ods-btn"
+                    style="background:rgba(52,199,89,0.12);color:#34c759;border:1px solid rgba(52,199,89,0.3);text-transform:uppercase;font-size:0.7rem;letter-spacing:0.1em;padding:8px 16px;border-radius:6px;font-weight:700;cursor:pointer;transition:all 0.3s;">
+                    ✨ NUEVA ODS
+                </button>
                 <button id="logout-btn" class="logout-btn">Cerrar Sesión</button>
             </div>
         </header>
@@ -1049,14 +1053,59 @@
                 document.getElementById('quote-number').value = getNextFolio();
             }
 
+            // --- DATA PERSISTENCE LOGIC ---
+            const saveFormData = () => {
+                const data = {
+                    client: document.getElementById('client-name').value,
+                    project: document.getElementById('project-name').value,
+                    serial: document.getElementById('serial-number').value,
+                    tech: document.getElementById('tech-name').value,
+                    date: document.getElementById('quote-date').value,
+                    folio: document.getElementById('quote-number').value,
+                    delivery: document.getElementById('delivery-time').value,
+                    clabe: document.getElementById('clabe').value,
+                    account: document.getElementById('account-number').value,
+                    card: document.getElementById('card-number').value,
+                    items: Array.from(document.querySelectorAll('.item-row')).map(row => ({
+                        d: row.querySelector('.i-desc').value,
+                        p: row.querySelector('.i-price').value,
+                        q: row.querySelector('.i-qty').value
+                    }))
+                };
+                localStorage.setItem('ods_temp_draft', JSON.stringify(data));
+            };
 
-            const initialItems = [
-                { d: '', p: 0, q: 0 },
-                { d: '', p: 0, q: 0 },
-                { d: '', p: 0, q: 0 },
-                { d: '', p: 0, q: 0 },
-                { d: '', p: 0, q: 0 }
-            ];
+            const loadFormData = () => {
+                const raw = localStorage.getItem('ods_temp_draft');
+                if (!raw) {
+                    if (itemsContainer) {
+                        itemsContainer.innerHTML = '';
+                        for (let i = 0; i < 5; i++) createRow({ d: '', p: 0, q: 0 });
+                    }
+                    return;
+                }
+                try {
+                    const data = JSON.parse(raw);
+                    document.getElementById('client-name').value = data.client || '';
+                    document.getElementById('project-name').value = data.project || '';
+                    document.getElementById('serial-number').value = data.serial || '';
+                    document.getElementById('tech-name').value = data.tech || '';
+                    document.getElementById('quote-date').value = data.date || '';
+                    document.getElementById('quote-number').value = data.folio || getNextFolio();
+                    document.getElementById('delivery-time').value = data.delivery || '';
+                    document.getElementById('clabe').value = data.clabe || '';
+                    document.getElementById('account-number').value = data.account || '';
+                    document.getElementById('card-number').value = data.card || '';
+
+                    if (data.items && data.items.length > 0) {
+                        itemsContainer.innerHTML = '';
+                        data.items.forEach(item => createRow(item));
+                    }
+                    update();
+                } catch (e) {
+                    console.error("Error loading draft:", e);
+                }
+            };
 
             function createRow(item = { d: '', p: 0, q: 1 }) {
                 const div = document.createElement('div');
@@ -1074,7 +1123,6 @@
             }
 
             document.getElementById('add-item-btn').onclick = () => createRow({ d: '', p: 0, q: 1 });
-            initialItems.forEach(i => createRow(i));
 
             // --- Reset Customer Fields on Load (Ensures cleanup after init) ---
             const resetFields = () => {
@@ -1083,6 +1131,10 @@
                     const el = document.getElementById(id);
                     if (el) el.value = '';
                 });
+                // Clear persistence
+                localStorage.removeItem('ods_temp_draft');
+                // New Folio
+                document.getElementById('quote-number').value = getNextFolio(true);
                 // Clear items and recreate initial empty rows
                 if (itemsContainer) {
                     itemsContainer.innerHTML = '';
@@ -1093,8 +1145,20 @@
                 }
             };
 
-            // Execute reset on load
-            resetFields();
+            // Load persistent data if exists, otherwise clean start
+            loadFormData();
+
+            // Hook the "Nueva ODS" button
+            document.getElementById('new-ods-btn').onclick = () => {
+                if (confirm('¿Estás seguro de querer iniciar una Nueva ODS? Se borrará la captura actual.')) {
+                    resetFields();
+                    update();
+                }
+            };
+
+            // Global real-time preview and save
+            form.querySelectorAll('input').forEach(i => i.oninput = update);
+            form.querySelectorAll('select').forEach(i => i.onchange = update);
 
             function update() {
                 const client = document.getElementById('client-name').value;
@@ -1210,6 +1274,7 @@
                             <p>Condiciones: El cliente acepta los <a href="terminos.html" target="_blank" style="color: inherit; font-weight: bold;">Términos y Condiciones</a> publicados en macwave.com.mx/terminos.html.</p>
                             <p style="font-size: 9px; font-weight: 900;">PAGO ANTICIPADO DEL 100% PARA EL SERVICIO.</p>
                             <p>Tiempo de entrega: ${deliveryTime} ENTREGA TENTATIVA SEGÚN DISPONIBILIDAD.</p>
+                            <p>ALGUNOS PRODUCTOS IMPORTADOS DE ESTADOS UNIDOS, AMERICAN PARTNER.</p>
                         </div>
 
                         <div class="ps-bank-area">
@@ -1437,18 +1502,18 @@
                 doc.text(`$ ${total.toLocaleString('en-US', { minimumFractionDigits: 2 })}`, 195, totalY, { align: "right" });
 
                 // 4. Terms
-                let currentY = termsY;
+                let cY = termsY; // 165
                 doc.setFontSize(7.5);
                 doc.setTextColor(0, 102, 128);
                 doc.setFont("helvetica", "bold");
-                doc.text(`Vigencia de la ODS : 1 día para aceptación de presupuesto.`, 15, currentY);
-                doc.text("Garantía: 31 días en el servicio técnico, pregunta por tu garantía extendida a 100 días POR UN COSTO ADICIONAL.", 15, currentY + 5);
-                doc.text("Condiciones: El cliente acepta los términos y condiciones en macwave.com.mx/terminos.html", 15, currentY + 11);
+                doc.text(`Vigencia de la ODS : 1 día para aceptación de presupuesto.`, 15, cY);
+                doc.text("Garantía: 31 días en el servicio técnico, pregunta por tu garantía extendida a 100 días POR UN COSTO ADICIONAL.", 15, cY + 5);
+                doc.text("Condiciones: El cliente acepta los términos y condiciones en macwave.com.mx/terminos.html", 15, cY + 11);
                 doc.setFontSize(9);
-                doc.text("PAGO ANTICIPADO DEL 100% PARA EL SERVICIO.", 15, currentY + 17);
+                doc.text("PAGO ANTICIPADO DEL 100% PARA EL SERVICIO.", 15, cY + 18);
                 doc.setFontSize(7.5);
-                doc.text(`Tiempo de entrega: ${deliveryTime} ENTREGA TENTATIVA SEGÚN DISPONIBILIDAD.`, 15, currentY + 23);
-                doc.text("ALGUNOS PRODUCTOS IMPORTADOS DE ESTADOS UNIDOS, AMERICAN PARTNER.", 15, currentY + 22);
+                doc.text(`Tiempo de entrega: ${deliveryTime} ENTREGA TENTATIVA SEGÚN DISPONIBILIDAD.`, 15, cY + 24);
+                doc.text("ALGUNOS PRODUCTOS IMPORTADOS DE ESTADOS UNIDOS, AMERICAN PARTNER.", 15, cY + 29);
 
                 // 5. Bank section
                 currentY = bankY;
