@@ -810,6 +810,16 @@
                             <span></span>
                         </div>
                         <div id="items-container"></div>
+                        <button type="button" id="add-item-btn" class="btn btn-secondary"
+                            style="width: 100%; font-size: 0.8rem; height: 36px; padding: 0; margin-top: 10px;">+
+                            AGREGAR POSICIÓN</button>
+
+                        <div class="form-group" style="margin-top: 15px;">
+                            <label>Notas / Observaciones*</label>
+                            <textarea id="ods-notes"
+                                placeholder="Escribe aquí cualquier nota, condición especial u observación del equipo..."
+                                style="width: 100%; height: 100px; padding: 12px; border-radius: 8px; background: rgba(255, 255, 255, 0.04); border: 1px solid var(--border); color: #fff; font-size: 0.9rem; resize: vertical;"></textarea>
+                        </div>
 
                         <div class="section-title" style="margin-top: 30px;">Configuración Bancaria</div>
                         <div class="form-grid">
@@ -1063,6 +1073,7 @@
                     clabe: document.getElementById('clabe').value,
                     account: document.getElementById('account-number').value,
                     card: document.getElementById('card-number').value,
+                    notes: document.getElementById('ods-notes').value,
                     items: Array.from(document.querySelectorAll('.item-row')).map(row => ({
                         d: row.querySelector('.i-desc').value,
                         p: row.querySelector('.i-price').value,
@@ -1093,6 +1104,7 @@
                     document.getElementById('clabe').value = data.clabe || '';
                     document.getElementById('account-number').value = data.account || '';
                     document.getElementById('card-number').value = data.card || '';
+                    document.getElementById('ods-notes').value = data.notes || '';
 
                     if (data.items && data.items.length > 0) {
                         itemsContainer.innerHTML = '';
@@ -1105,23 +1117,28 @@
             };
 
             function createRow(item = { d: '', p: 0, q: 1 }) {
+                if (document.querySelectorAll('.item-row').length >= 5) return;
+
                 const div = document.createElement('div');
                 div.className = 'item-row';
                 div.innerHTML = `
                     <input type="text" class="i-desc" value="${item.d}" placeholder="Concepto de Servicio o Producto...">
                     <input type="number" class="i-price" value="${item.p}" placeholder="0.00" style="text-align: right;">
                     <input type="number" class="i-qty" value="${item.q}" min="0" step="1" style="text-align: center;">
+                    <button type="button" class="remove-btn">✕</button>
                 `;
-                div.querySelectorAll('input').forEach(i => i.oninput = update);
+                div.querySelector('.remove-btn').onclick = () => { div.remove(); update(); };
                 div.querySelectorAll('input').forEach(i => i.oninput = update);
                 itemsContainer.appendChild(div);
                 update();
             }
 
+            document.getElementById('add-item-btn').onclick = () => createRow({ d: '', p: 0, q: 1 });
+
 
             // --- Reset Customer Fields on Load (Ensures cleanup after init) ---
             const resetFields = () => {
-                const fieldsToReset = ['client-name', 'project-name', 'serial-number', 'delivery-time'];
+                const fieldsToReset = ['client-name', 'project-name', 'serial-number', 'delivery-time', 'ods-notes'];
                 fieldsToReset.forEach(id => {
                     const el = document.getElementById(id);
                     if (el) el.value = '';
@@ -1154,6 +1171,7 @@
             // Global real-time preview and save
             form.querySelectorAll('input').forEach(i => i.oninput = update);
             form.querySelectorAll('select').forEach(i => i.onchange = update);
+            document.getElementById('ods-notes').oninput = update;
 
             function update() {
                 const client = document.getElementById('client-name').value;
@@ -1166,6 +1184,7 @@
                 const clabeVal = document.getElementById('clabe').value;
                 const accountVal = document.getElementById('account-number').value;
                 const cardVal = document.getElementById('card-number').value;
+                const odsNotes = document.getElementById('ods-notes').value || '';
                 const currency = 'MXN';
 
                 let total = 0;
@@ -1202,12 +1221,18 @@
                     }
                 }
 
-                // Enforce 5 Item Limit removed, but button stays for adding
+                // Enforce 5 Item Limit
                 const addItemBtn = document.getElementById('add-item-btn');
                 if (addItemBtn) {
-                    addItemBtn.disabled = false;
-                    addItemBtn.style.opacity = '1';
-                    addItemBtn.style.cursor = 'pointer';
+                    if (allRows.length >= 5) {
+                        addItemBtn.disabled = true;
+                        addItemBtn.style.opacity = '0.5';
+                        addItemBtn.style.cursor = 'not-allowed';
+                    } else {
+                        addItemBtn.disabled = false;
+                        addItemBtn.style.opacity = '1';
+                        addItemBtn.style.cursor = 'pointer';
+                    }
                 }
 
                 previewCanvas.innerHTML = `
@@ -1257,6 +1282,13 @@
                             </thead>
                             <tbody>${itemsHtml}</tbody>
                         </table>
+
+                        ${odsNotes ? `
+                        <div style="margin-top: 15px; padding: 10px; border: 1px dashed #ccc; border-radius: 8px; font-size: 10px; color: #333; line-height: 1.4; background: #fafafa;">
+                            <strong style="color: #0071e3; display: block; margin-bottom: 4px; text-transform: uppercase; font-size: 8px;">Notas / Observaciones:</strong>
+                            ${odsNotes.replace(/\n/g, '<br>')}
+                        </div>
+                        ` : ''}
 
                         <div class="ps-total-row">
                             <span class="ps-total-label">TOTAL</span>
@@ -1521,14 +1553,27 @@
                 doc.setFont("helvetica", "bold");
                 doc.text(`CUENTA CLABE :  ${clabeVal}`, 15, currentY + 7);
                 doc.text(`NUMERO DE CUENTA :  ${accountVal}`, 15, currentY + 14);
-                doc.text(`NUMERO DE TARJETA BBVA :  ${cardVal}`, 15, currentY + 22);
+                doc.text(`NUMERO DE TARJETA BBVA : ${cardVal}`, 15, currentY + 28);
+
+                // 4.5. Notes (New Section)
+                if (odsNotes) {
+                    doc.setFontSize(6.5);
+                    doc.setTextColor(51, 51, 51);
+                    doc.setFont("helvetica", "bold");
+                    doc.text("OBSERVACIONES:", 15, currentY + 34);
+                    doc.setFont("helvetica", "normal");
+                    const splitNotes = doc.splitTextToSize(odsNotes, 180);
+                    doc.text(splitNotes, 15, currentY + 37);
+                    currentY += (splitNotes.length * 3.5) + 10; // Adjust currentY based on notes height
+                }
 
                 // --- QR CODE (FIXED) ---
                 try {
                     const qrCanvas = document.querySelector('#preview-qr-canvas canvas');
                     if (qrCanvas) {
                         const qrData = qrCanvas.toDataURL("image/png");
-                        doc.addImage(qrData, 'PNG', 160, currentY - 5, 32, 32);
+                        // Fixed QR position near bank section, regardless of notes
+                        doc.addImage(qrData, 'PNG', 160, 202, 32, 32);
                     }
                 } catch (e) {
                     console.error("Error adding QR to PDF:", e);
@@ -1603,7 +1648,7 @@
                     fecha: document.getElementById('quote-date').value || '',
                     monto: parseFloat(document.getElementById('total-display')?.textContent?.replace(/[^0-9.]/g, '') || '0'),
                     status: 'Recibido',
-                    notas: ''
+                    notas: document.getElementById('ods-notes').value || ''
                 };
                 try {
                     await window._sbClient.from('ordenes_servicio').insert([odsData]);
@@ -1688,23 +1733,38 @@
                     item.onclick = () => renderODSDetail(o);
                     item.querySelector('.delete-ods-btn').onclick = (e) => {
                         e.stopPropagation();
-                        deleteODS(o.folio);
+                        deleteODS(o.id, o.folio);
                     };
                     list.appendChild(item);
                 });
             };
 
-            const deleteODS = async (folio) => {
+            const deleteODS = async (id, folio) => {
+                console.log('Intentando eliminar ODS:', { id, folio });
                 if (!confirm(`¿Estás seguro de eliminar la cotización ${folio}? Esta acción no se puede deshacer.`)) return;
                 try {
-                    const { error } = await window._sbClient.from('ordenes_servicio').delete().eq('folio', folio);
-                    if (error) throw error;
-                    allODS = allODS.filter(o => o.folio !== folio);
+                    const { error, count } = await window._sbClient
+                        .from('ordenes_servicio')
+                        .delete({ count: 'exact' })
+                        .eq(id ? 'id' : 'folio', id || folio);
+
+                    if (error) {
+                        console.error('Error de Supabase al borrar:', error);
+                        throw error;
+                    }
+
+                    if (count === 0) {
+                        alert('⚠️ EL SERVIDOR NO PERMITIÓ EL BORRADO.\n\nEsto sucede porque no tienes permisos de "DELETE" activos en tu panel de Supabase.\n\nDebes ir a Supabase -> Authentication -> Policies y habilitar la política de borrado.');
+                        return;
+                    }
+
+                    // Filter locally by ID or folio
+                    allODS = allODS.filter(o => id ? o.id !== id : o.folio !== folio);
                     renderODSList(allODS);
                     document.getElementById('ods-detail').innerHTML = '<div style="color:#6e6e73;text-align:center;padding:40px;font-size:0.9rem;">Selecciona una ODS para ver detalles</div>';
-                    console.log('ODS eliminada:', folio);
+                    console.log('ODS eliminada correctamente de Supabase:', folio);
                 } catch (e) {
-                    alert('Error al eliminar: ' + e.message);
+                    alert('Error al eliminar en Supabase: ' + e.message);
                 }
             };
 
@@ -1755,7 +1815,7 @@
                         </div>
                     </div>
                     <div style="margin-top:20px;padding-top:20px;border-top:1px solid #3a3a3c;">
-                        <button onclick="deleteODS('${o.folio}')" style="width:100%;background:rgba(255, 69, 58, 0.1);color:#ff453a;border:1px solid rgba(255, 69, 58, 0.2);padding:10px;border-radius:8px;font-weight:600;cursor:pointer;transition:0.2s;" onmouseenter="this.style.background='rgba(255, 69, 58, 0.2)'" onmouseleave="this.style.background='rgba(255, 69, 58, 0.1)'">Eliminar Cotización</button>
+                        <button onclick="deleteODS('${o.id}', '${o.folio}')" style="width:100%;background:rgba(255, 69, 58, 0.1);color:#ff453a;border:1px solid rgba(255, 69, 58, 0.2);padding:10px;border-radius:8px;font-weight:600;cursor:pointer;transition:0.2s;" onmouseenter="this.style.background='rgba(255, 69, 58, 0.2)'" onmouseleave="this.style.background='rgba(255, 69, 58, 0.1)'">Eliminar Cotización</button>
                     </div>
                     <div style="background:#2c2c2e;border-radius:10px;padding:14px;">
                         <div style="font-size:0.65rem;color:#8e8e93;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px;">Notas Internas</div>
