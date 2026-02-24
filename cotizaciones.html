@@ -810,9 +810,6 @@
                             <span></span>
                         </div>
                         <div id="items-container"></div>
-                        <button type="button" id="add-item-btn" class="btn btn-secondary"
-                            style="width: 100%; font-size: 0.8rem; height: 36px; padding: 0;">+ AGREGAR
-                            POSICIÓN</button>
 
                         <div class="section-title" style="margin-top: 30px;">Configuración Bancaria</div>
                         <div class="form-grid">
@@ -1099,7 +1096,7 @@
 
                     if (data.items && data.items.length > 0) {
                         itemsContainer.innerHTML = '';
-                        data.items.forEach(item => createRow(item));
+                        data.items.slice(0, 5).forEach(item => createRow(item));
                     }
                     update();
                 } catch (e) {
@@ -1111,18 +1108,16 @@
                 const div = document.createElement('div');
                 div.className = 'item-row';
                 div.innerHTML = `
-                    <input type="text" class="i-desc" value="${item.d}" placeholder="Item...">
+                    <input type="text" class="i-desc" value="${item.d}" placeholder="Concepto de Servicio o Producto...">
                     <input type="number" class="i-price" value="${item.p}" placeholder="0.00" style="text-align: right;">
                     <input type="number" class="i-qty" value="${item.q}" min="0" step="1" style="text-align: center;">
-                    <button type="button" class="remove-btn">✕</button>
                 `;
-                div.querySelector('.remove-btn').onclick = () => { div.remove(); update(); };
+                div.querySelectorAll('input').forEach(i => i.oninput = update);
                 div.querySelectorAll('input').forEach(i => i.oninput = update);
                 itemsContainer.appendChild(div);
                 update();
             }
 
-            document.getElementById('add-item-btn').onclick = () => createRow({ d: '', p: 0, q: 1 });
 
             // --- Reset Customer Fields on Load (Ensures cleanup after init) ---
             const resetFields = () => {
@@ -1274,7 +1269,6 @@
                             <p>Condiciones: El cliente acepta los <a href="terminos.html" target="_blank" style="color: inherit; font-weight: bold;">Términos y Condiciones</a> publicados en macwave.com.mx/terminos.html.</p>
                             <p style="font-size: 9px; font-weight: 900;">PAGO ANTICIPADO DEL 100% PARA EL SERVICIO.</p>
                             <p>Tiempo de entrega: ${deliveryTime} ENTREGA TENTATIVA SEGÚN DISPONIBILIDAD.</p>
-                            <p>ALGUNOS PRODUCTOS IMPORTADOS DE ESTADOS UNIDOS, AMERICAN PARTNER.</p>
                         </div>
 
                         <div class="ps-bank-area">
@@ -1510,10 +1504,9 @@
                 doc.text("Garantía: 31 días en el servicio técnico, pregunta por tu garantía extendida a 100 días POR UN COSTO ADICIONAL.", 15, cY + 5);
                 doc.text("Condiciones: El cliente acepta los términos y condiciones en macwave.com.mx/terminos.html", 15, cY + 11);
                 doc.setFontSize(9);
-                doc.text("PAGO ANTICIPADO DEL 100% PARA EL SERVICIO.", 15, cY + 18);
+                doc.text("PAGO ANTICIPADO DEL 100% PARA EL SERVICIO.", 15, cY + 17);
                 doc.setFontSize(7.5);
-                doc.text(`Tiempo de entrega: ${deliveryTime} ENTREGA TENTATIVA SEGÚN DISPONIBILIDAD.`, 15, cY + 24);
-                doc.text("ALGUNOS PRODUCTOS IMPORTADOS DE ESTADOS UNIDOS, AMERICAN PARTNER.", 15, cY + 29);
+                doc.text(`Tiempo de entrega: ${deliveryTime} ENTREGA TENTATIVA SEGÚN DISPONIBILIDAD.`, 15, cY + 23);
 
                 // 5. Bank section
                 currentY = bankY;
