@@ -1755,7 +1755,7 @@
                     }
 
                     if (count === 0) {
-                        alert('⚠️ EL SERVIDOR NO PERMITIÓ EL BORRADO.\n\nEsto sucede porque no tienes permisos de "DELETE" activos en tu panel de Supabase.\n\nDebes ir a Supabase -> Authentication -> Policies y habilitar la política de borrado.');
+                        alert(`⚠️ EL SERVIDOR NO PERMITIÓ EL BORRADO.\n\nIntentamos borrar el folio: ${folio} (ID: ${id}).\nSupabase dice que existe la tabla, pero bloqueó la eliminación (Rows affected: 0).\n\nESTO ES 100% UNA REGLA DE SEGURIDAD (RLS). \n\nVe a SQL Editor en tu panel de Supabase y corre:\nCREATE POLICY "Allow Delete" ON public.ordenes_servicio FOR DELETE USING (true);`);
                         return;
                     }
 
