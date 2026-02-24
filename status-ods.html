@@ -218,15 +218,25 @@
             position: relative;
         }
 
-        .steps::before {
-            content: '';
+        .steps-progress-bg {
             position: absolute;
             top: 18px;
             left: 5%;
-            right: 5%;
+            width: 90%;
             height: 2px;
             background: var(--border);
             z-index: 0;
+        }
+
+        .steps-progress-fill {
+            position: absolute;
+            top: 18px;
+            left: 5%;
+            height: 2px;
+            background: var(--accent);
+            z-index: 0;
+            transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 0 10px var(--accent);
         }
 
         .step {
@@ -247,35 +257,43 @@
             align-items: center;
             justify-content: center;
             font-size: 1rem;
-            background: var(--card);
-            border: 2px solid var(--border);
-            transition: all 0.4s;
-            color: var(--muted);
+            background: var(--red);
+            /* Pending state background is red */
+            border: 2px solid var(--red);
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            color: #fff;
+            /* Pending text is white */
+            box-shadow: 0 0 10px rgba(255, 69, 58, 0.4);
         }
 
         .step.done .step-circle {
             background: var(--green);
             border-color: var(--green);
             color: #000;
+            box-shadow: 0 0 15px rgba(48, 209, 88, 0.5);
+            transform: scale(1.05);
         }
 
         .step.active .step-circle {
             background: var(--accent);
             border-color: var(--accent);
             color: #fff;
-            box-shadow: 0 0 18px rgba(0, 113, 227, 0.5);
-            animation: pulse 1.5s infinite;
+            box-shadow: 0 0 20px rgba(0, 113, 227, 0.8);
+            animation: futuristic-pulse 2s infinite;
+            transform: scale(1.15);
         }
 
-        @keyframes pulse {
-
-            0%,
-            100% {
-                box-shadow: 0 0 18px rgba(0, 113, 227, 0.5);
+        @keyframes futuristic-pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(0, 113, 227, 0.7);
             }
 
-            50% {
-                box-shadow: 0 0 28px rgba(0, 113, 227, 0.9);
+            70% {
+                box-shadow: 0 0 0 15px rgba(0, 113, 227, 0);
+            }
+
+            100% {
+                box-shadow: 0 0 0 0 rgba(0, 113, 227, 0);
             }
         }
 
@@ -283,13 +301,20 @@
             font-size: 0.65rem;
             font-weight: 600;
             text-align: center;
-            color: var(--muted);
+            color: #fff;
+            /* Always white label text */
             line-height: 1.3;
+            transition: color 0.3s;
         }
 
-        .step.done .step-label,
+        .step.pending .step-label {
+            opacity: 0.7;
+            /* Slightly dim pending labels */
+        }
+
         .step.active .step-label {
-            color: var(--text);
+            color: var(--accent2);
+            text-shadow: 0 0 8px rgba(52, 170, 220, 0.5);
         }
 
         /* ─── EMPTY STATE ─── */
@@ -415,13 +440,26 @@
             const currentIdx = STEPS.findIndex(s => s.key === (ods.status || 'Recibido'));
             const sc = STATUS_COLORS[ods.status] || STATUS_COLORS['Recibido'];
 
+            // Calculate progress bar width based on active step
+            // 4 segments if 5 steps. Width = (currentIdx / (STEPS.length - 1)) * 90 % (since left is 5% and right is 5%)
+            let progressPercent = 0;
+            if (currentIdx > 0) {
+                progressPercent = (currentIdx / (STEPS.length - 1)) * 90;
+            }
+
             const stepsHtml = STEPS.map((s, i) => {
                 const isDone = i < currentIdx;
                 const isActive = i === currentIdx;
                 const cls = isDone ? 'done' : (isActive ? 'active' : 'pending');
+                // The user requested a specific green checkmark for completed items. We use ✅ or just render the checkmark emoji.
+                let displayIcon = s.icon;
+                if (isDone) {
+                    displayIcon = '✅'; // Using a clean check for done states
+                }
+
                 return `
                     <div class="step ${cls}">
-                        <div class="step-circle">${isDone ? '✓' : s.icon}</div>
+                        <div class="step-circle">${displayIcon}</div>
                         <div class="step-label">${s.label}</div>
                     </div>`;
             }).join('');
@@ -440,7 +478,11 @@
                     </div>
                     <div class="tracker">
                         <div class="tracker-title">Estado de tu reparación</div>
-                        <div class="steps">${stepsHtml}</div>
+                        <div class="steps">
+                            <div class="steps-progress-bg"></div>
+                            <div class="steps-progress-fill" style="width: 0%;" id="progress-fill-${ods.folio}"></div>
+                            ${stepsHtml}
+                        </div>
                     </div>
                 </div>`;
         }
@@ -470,6 +512,21 @@
             }
 
             rs.innerHTML = data.map(renderODS).join('');
+
+            // Futuristic progress bar animation
+            setTimeout(() => {
+                data.forEach(ods => {
+                    const currentIdx = STEPS.findIndex(s => s.key === (ods.status || 'Recibido'));
+                    let progressPercent = 0;
+                    if (currentIdx > 0) {
+                        progressPercent = (currentIdx / (STEPS.length - 1)) * 90;
+                    }
+                    const fillEl = document.getElementById(`progress-fill-${ods.folio}`);
+                    if (fillEl) {
+                        fillEl.style.width = `${progressPercent}%`;
+                    }
+                });
+            }, 50);
         }
 
         document.getElementById('search-input').addEventListener('keydown', e => {

@@ -1958,25 +1958,66 @@
                     </div>
                 `;
 
-                document.getElementById('ods-save-status').onclick = async () => {
-                    const nuevoStatus = document.getElementById('ods-status-select').value;
-                    const id = document.getElementById('ods-save-status').dataset.id;
-                    const { error } = await window._sbClient.from('ordenes_servicio').update({ status: nuevoStatus }).eq('id', id);
-                    if (!error) {
-                        o.status = nuevoStatus;
-                        const idx = allODS.findIndex(x => x.id === id);
-                        if (idx !== -1) allODS[idx].status = nuevoStatus;
-                        renderODSList(allODS);
-                        renderODSDetail(o);
-                    }
-                };
+                // The buttons are re-rendered each time, so we must query them directly inside this scope after they are added to the DOM
+                // Wait for the next tick to ensure they exist
+                setTimeout(() => {
+                    const saveStatusBtn = document.getElementById('ods-save-status');
+                    const saveNotasBtn = document.getElementById('ods-save-notas');
 
-                document.getElementById('ods-save-notas').onclick = async () => {
-                    const notas = document.getElementById('ods-notas').value;
-                    const id = document.getElementById('ods-save-notas').dataset.id;
-                    await window._sbClient.from('ordenes_servicio').update({ notas }).eq('id', id);
-                    o.notas = notas;
-                };
+                    if (saveStatusBtn) {
+                        saveStatusBtn.onclick = async () => {
+                            const nuevoStatus = document.getElementById('ods-status-select').value;
+                            const id = saveStatusBtn.dataset.id;
+
+                            try {
+                                const { error, count } = await window._sbClient
+                                    .from('ordenes_servicio')
+                                    .update({ status: nuevoStatus }, { count: 'exact' })
+                                    .eq('id', id);
+
+                                if (error) throw error;
+                                if (count === 0) {
+                                    alert(`⚠️ EL SERVIDOR NO PERMITIÓ LA ACTUALIZACIÓN.\n\nSupabase bloqueó el guardado del status (Rows affected: 0).\n\nVe a SQL Editor en tu panel de Supabase y corre:\nCREATE POLICY "Allow Update" ON public.ordenes_servicio FOR UPDATE USING (true);`);
+                                    return;
+                                }
+
+                                o.status = nuevoStatus;
+                                const idx = allODS.findIndex(x => x.id === id);
+                                if (idx !== -1) allODS[idx].status = nuevoStatus;
+                                renderODSList(allODS);
+                                renderODSDetail(o);
+                                alert("Status guardado correctamente.");
+                            } catch (e) {
+                                alert("Error al guardar status: " + e.message);
+                            }
+                        };
+                    }
+
+                    if (saveNotasBtn) {
+                        saveNotasBtn.onclick = async () => {
+                            const notas = document.getElementById('ods-notas').value;
+                            const id = saveNotasBtn.dataset.id;
+
+                            try {
+                                const { error, count } = await window._sbClient
+                                    .from('ordenes_servicio')
+                                    .update({ notas: notas }, { count: 'exact' })
+                                    .eq('id', id);
+
+                                if (error) throw error;
+                                if (count === 0) {
+                                    alert(`⚠️ EL SERVIDOR NO PERMITIÓ LA ACTUALIZACIÓN.\n\nSupabase bloqueó el guardado de la nota (Rows affected: 0).\n\nVe a SQL Editor en tu panel de Supabase y corre:\nCREATE POLICY "Allow Update" ON public.ordenes_servicio FOR UPDATE USING (true);`);
+                                    return;
+                                }
+
+                                o.notas = notas;
+                                alert("Nota guardada correctamente.");
+                            } catch (e) {
+                                alert("Error al guardar nota: " + e.message);
+                            }
+                        };
+                    }
+                }, 50);
             };
 
             document.getElementById('ver-ods-btn').onclick = async () => {
