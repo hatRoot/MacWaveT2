@@ -1390,7 +1390,7 @@
                 // 1. Header (IMPROVED ALIGNMENT & SPACING)
                 // Proportional Logo
                 const logoW = 32;
-                const logoH = (RECOVERY_PRO_BADGE.h * logoW) / RECOVERY_PRO_BADGE.w;
+                const logoH = (RECOVERY_PRO_BADGE.h && RECOVERY_PRO_BADGE.w) ? ((RECOVERY_PRO_BADGE.h * logoW) / RECOVERY_PRO_BADGE.w) : 10;
                 doc.addImage(RECOVERY_PRO_BADGE.data, 'PNG', 12, 10, logoW, logoH);
 
                 doc.setFont("helvetica", "bold");
@@ -1600,7 +1600,7 @@
 
                 // Pre-calculate each logo's draw dimensions
                 const drawDims = BOTTOM_CERT_LOGOS.map(logo => {
-                    const ratio = logo.w / logo.h;
+                    const ratio = (logo.w && logo.h) ? (logo.w / logo.h) : 1;
                     let dH = maxCertH;
                     let dW = dH * ratio;
                     if (dW > maxCertW) {
