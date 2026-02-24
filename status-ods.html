@@ -92,6 +92,7 @@
             text-align: center;
             background: linear-gradient(135deg, var(--text), var(--accent2));
             -webkit-background-clip: text;
+            background-clip: text;
             -webkit-text-fill-color: transparent;
             margin-bottom: 8px;
         }
@@ -416,7 +417,7 @@
             { key: 'Recibido', label: 'Recibido', icon: '📥' },
             { key: 'Diagnóstico', label: 'Diagnóstico', icon: '🔍' },
             { key: 'Reparando', label: 'Reparando', icon: '🔧' },
-            { key: 'Listo', label: 'Listo ✅', icon: '✅' },
+            { key: 'Listo', label: 'Listo', icon: '🎖️' },
             { key: 'Entregado', label: 'Entregado', icon: '🎉' },
         ];
 
@@ -451,10 +452,10 @@
                 const isDone = i < currentIdx;
                 const isActive = i === currentIdx;
                 const cls = isDone ? 'done' : (isActive ? 'active' : 'pending');
-                // The user requested a specific green checkmark for completed items. We use ✅ or just render the checkmark emoji.
+                // The user requested the original simple checkmark for completed items.
                 let displayIcon = s.icon;
                 if (isDone) {
-                    displayIcon = '✅'; // Using a clean check for done states
+                    displayIcon = '✓'; // Using a clean check for done states
                 }
 
                 return `
