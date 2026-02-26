@@ -445,17 +445,22 @@
 
             document.getElementById('ods-detail').innerHTML = `
                 <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
-                    <div style="font-size:1.4rem;font-weight:900;color:#fff;letter-spacing:-0.5px;">${o.folio}</div>
+                    <div style="display:flex;align-items:center;gap:15px;">
+                        <span style="font-size:1.4rem;font-weight:900;color:#fff;letter-spacing:-0.5px;">${o.folio}</span>
+                        <button id="btn-save-meta" data-id="${o.id}" style="background:rgba(10,132,255,0.15);color:#0a84ff;border:1px solid rgba(10,132,255,0.3);padding:6px 14px;border-radius:6px;font-size:0.7rem;font-weight:800;cursor:pointer;transition:background 0.2s;display:flex;align-items:center;gap:6px;">
+                            💾 GUARDAR INFORMACIÓN
+                        </button>
+                    </div>
                     <span style="font-size:0.75rem;font-weight:700;padding:6px 12px;border-radius:20px;background:${sc.bg};color:${sc.text};">${o.status}</span>
                 </div>
 
                 <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px;">
-                    <div style="background:#2c2c2e;border-radius:10px;padding:14px;"><div style="font-size:0.65rem;color:#8e8e93;text-transform:uppercase;margin-bottom:4px;">Cliente</div><div style="color:#fff;font-weight:600;font-size:0.85rem;">${o.cliente || '—'}</div></div>
-                    <div style="background:#2c2c2e;border-radius:10px;padding:14px;"><div style="font-size:0.65rem;color:#8e8e93;text-transform:uppercase;margin-bottom:4px;">Proyecto</div><div style="color:#fff;font-weight:600;font-size:0.85rem;">${o.proyecto || '—'}</div></div>
-                    <div style="background:#2c2c2e;border-radius:10px;padding:14px;"><div style="font-size:0.65rem;color:#8e8e93;text-transform:uppercase;margin-bottom:4px;">Técnico</div><div style="color:#fff;font-weight:600;font-size:0.85rem;">${o.tecnico || '—'}</div></div>
-                    <div style="background:#2c2c2e;border-radius:10px;padding:14px;"><div style="font-size:0.65rem;color:#8e8e93;text-transform:uppercase;margin-bottom:4px;">Serie</div><div style="color:#fff;font-weight:600;font-size:0.85rem;">${o.serie || '—'}</div></div>
-                    <div style="background:#2c2c2e;border-radius:10px;padding:14px;"><div style="font-size:0.65rem;color:#8e8e93;text-transform:uppercase;margin-bottom:4px;">Fecha</div><div style="color:#fff;font-weight:600;font-size:0.85rem;">${o.fecha || '—'}</div></div>
-                    <div style="background:#2c2c2e;border-radius:10px;padding:14px;"><div style="font-size:0.65rem;color:#8e8e93;text-transform:uppercase;margin-bottom:4px;">Monto</div><div style="color:#ff453a;font-weight:800;font-size:0.9rem;">$${(o.monto || 0).toLocaleString('es-MX', { minimumFractionDigits: 2 })}</div></div>
+                    <div style="background:#2c2c2e;border-radius:10px;padding:10px 14px;"><div style="font-size:0.65rem;color:#8e8e93;text-transform:uppercase;margin-bottom:4px;">Cliente</div><input type="text" id="edit-cliente" value="${o.cliente || ''}" style="width:100%;background:transparent;border:none;color:#fff;font-weight:600;font-size:0.85rem;outline:none;border-bottom:1px solid transparent;" onfocus="this.style.borderBottom='1px solid var(--accent-blue)'" onblur="this.style.borderBottom='1px solid transparent'"></div>
+                    <div style="background:#2c2c2e;border-radius:10px;padding:10px 14px;"><div style="font-size:0.65rem;color:#8e8e93;text-transform:uppercase;margin-bottom:4px;">Proyecto / Equipo</div><input type="text" id="edit-proyecto" value="${o.proyecto || ''}" style="width:100%;background:transparent;border:none;color:#fff;font-weight:600;font-size:0.85rem;outline:none;border-bottom:1px solid transparent;" onfocus="this.style.borderBottom='1px solid var(--accent-blue)'" onblur="this.style.borderBottom='1px solid transparent'"></div>
+                    <div style="background:#2c2c2e;border-radius:10px;padding:10px 14px;"><div style="font-size:0.65rem;color:#8e8e93;text-transform:uppercase;margin-bottom:4px;">Técnico Asignado</div><input type="text" id="edit-tecnico" value="${o.tecnico || ''}" style="width:100%;background:transparent;border:none;color:#fff;font-weight:600;font-size:0.85rem;outline:none;border-bottom:1px solid transparent;" onfocus="this.style.borderBottom='1px solid var(--accent-blue)'" onblur="this.style.borderBottom='1px solid transparent'"></div>
+                    <div style="background:#2c2c2e;border-radius:10px;padding:10px 14px;"><div style="font-size:0.65rem;color:#8e8e93;text-transform:uppercase;margin-bottom:4px;">Número de Serie</div><input type="text" id="edit-serie" value="${o.serie || ''}" style="width:100%;background:transparent;border:none;color:#fff;font-weight:600;font-size:0.85rem;outline:none;border-bottom:1px solid transparent;font-family:monospace;" onfocus="this.style.borderBottom='1px solid var(--accent-blue)'" onblur="this.style.borderBottom='1px solid transparent'"></div>
+                    <div style="background:#2c2c2e;border-radius:10px;padding:10px 14px;"><div style="font-size:0.65rem;color:#8e8e93;text-transform:uppercase;margin-bottom:4px;">Fecha de Entrada</div><input type="text" id="edit-fecha" value="${o.fecha || ''}" style="width:100%;background:transparent;border:none;color:#fff;font-weight:600;font-size:0.85rem;outline:none;border-bottom:1px solid transparent;" onfocus="this.style.borderBottom='1px solid var(--accent-blue)'" onblur="this.style.borderBottom='1px solid transparent'"></div>
+                    <div style="background:#2c2c2e;border-radius:10px;padding:10px 14px;"><div style="font-size:0.65rem;color:#8e8e93;text-transform:uppercase;margin-bottom:4px;">Monto de Cotización</div><div style="display:flex;align-items:center;color:#ff453a;font-weight:800;font-size:0.9rem;">$<input type="number" id="edit-monto" value="${o.monto || '0'}" step="0.01" style="width:100%;background:transparent;border:none;color:#ff453a;font-weight:800;font-size:0.9rem;outline:none;margin-left:4px;border-bottom:1px solid transparent;" onfocus="this.style.borderBottom='1px solid #ff453a'" onblur="this.style.borderBottom='1px solid transparent'"></div></div>
                 </div>
 
                 <div style="background:#1c1c1e;border-radius:10px;padding:16px; margin-bottom:20px; border:2px solid #30d158; box-shadow:0 0 15px rgba(48,209,88,0.1);">
@@ -495,6 +500,58 @@
 
 
             setTimeout(() => {
+                const saveMetaBtn = document.getElementById('btn-save-meta');
+                if (saveMetaBtn) {
+                    saveMetaBtn.onclick = async () => {
+                        saveMetaBtn.innerText = 'GUARDANDO...';
+                        saveMetaBtn.disabled = true;
+                        try {
+                            const newCliente = document.getElementById('edit-cliente').value;
+                            const newProyecto = document.getElementById('edit-proyecto').value;
+                            const newTecnico = document.getElementById('edit-tecnico').value;
+                            const newSerie = document.getElementById('edit-serie').value;
+                            const newFecha = document.getElementById('edit-fecha').value;
+                            const newMonto = parseFloat(document.getElementById('edit-monto').value) || 0;
+
+                            const { error } = await window._sbClient
+                                .from('ordenes_servicio')
+                                .update({
+                                    cliente: newCliente,
+                                    proyecto: newProyecto,
+                                    tecnico: newTecnico,
+                                    serie: newSerie,
+                                    fecha: newFecha,
+                                    monto: newMonto
+                                })
+                                .eq('id', o.id);
+
+                            if (error) throw error;
+
+                            // Actualiza estado local
+                            o.cliente = newCliente;
+                            o.proyecto = newProyecto;
+                            o.tecnico = newTecnico;
+                            o.serie = newSerie;
+                            o.fecha = newFecha;
+                            o.monto = newMonto;
+
+                            // Actualiza la lista para reflejar si cambiaron el cliente
+                            const idx = allODS.findIndex(x => x.id === o.id);
+                            if (idx !== -1) {
+                                allODS[idx] = o;
+                            }
+                            // Re-render
+                            renderODSList(allODS);
+                            alert('✅ Información general actualizada con éxito.');
+                        } catch (e) {
+                            alert('Error al guardar info: ' + e.message);
+                        } finally {
+                            saveMetaBtn.innerText = '💾 GUARDAR INFORMACIÓN';
+                            saveMetaBtn.disabled = false;
+                        }
+                    };
+                }
+
                 const addBtn = document.getElementById('btn-add-evento');
                 if (addBtn) {
                     addBtn.onclick = async () => {
