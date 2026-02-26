@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard ODS - MacWave T2</title>
+    <!-- Dependencies -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@300;400;600;700&display=swap"
+        rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <style>
+        :root {
+            --bg-color: #000000;
+            --panel-bg: #1c1c1e;
+            --border: #2c2c2e;
+            --text-primary: #f5f5f7;
+            --text-secondary: #8e8e93;
+            --accent-blue: #0A84FF;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* HEADER */
+        header {
+            background: #111;
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border);
+        }
+
+        header h1 {
+            margin: 0;
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.5rem;
+            color: #fff;
+            letter-spacing: -0.5px;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .btn-back {
+            background: rgba(255, 255, 255, 0.05);
+            color: #fff;
+            border: 1px solid var(--border);
+            padding: 10px 20px;
+            border-radius: 8px;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background 0.2s;
+        }
+
+        .btn-back:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .logout-btn {
+            background: rgba(255, 69, 58, 0.1);
+            color: #ff453a;
+            border: 1px solid rgba(255, 69, 58, 0.3);
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 0.1em;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .logout-btn:hover {
+            background: #ff453a;
+            color: #000;
+        }
+
+        /* MAIN DASHBOARD LAYOUT */
+        .dashboard-container {
+            flex: 1;
+            display: flex;
+            overflow: hidden;
+            /* Prevent full page scroll, let panels scroll */
+        }
+
+        /* LEFT: LIST */
+        .ods-sidebar {
+            width: 380px;
+            background: var(--panel-bg);
+            border-right: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            flex-shrink: 0;
+        }
+
+        .search-container {
+            padding: 20px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .search-container input {
+            width: 100%;
+            padding: 12px 16px;
+            border-radius: 10px;
+            border: 1px solid #3a3a3c;
+            background: #2c2c2e;
+            color: #fff;
+            font-size: 0.9rem;
+            outline: none;
+            box-sizing: border-box;
+            transition: border-color 0.2s;
+        }
+
+        .search-container input:focus {
+            border-color: var(--accent-blue);
+        }
+
+        .ods-list {
+            flex: 1;
+            overflow-y: auto;
+            padding: 12px;
+        }
+
+        .ods-item {
+            padding: 12px 14px;
+            border-radius: 10px;
+            cursor: pointer;
+            margin-bottom: 6px;
+            background: #2c2c2e;
+            transition: all 0.2s;
+            position: relative;
+            border: 1px solid transparent;
+        }
+
+        .ods-item:hover {
+            background: #3a3a3c;
+            border-color: #4a4a4c;
+        }
+
+        .ods-item.active {
+            background: rgba(10, 132, 255, 0.1);
+            border-color: rgba(10, 132, 255, 0.3);
+        }
+
+        .ods-item-title {
+            font-weight: 700;
+            font-size: 0.95rem;
+            color: #fff;
+            margin-bottom: 6px;
+        }
+
+        .ods-item-client {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            margin-bottom: 10px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .ods-item-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .status-badge {
+            font-size: 0.7rem;
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: 20px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .delete-ods-btn {
+            background: none;
+            border: none;
+            color: #ff453a;
+            cursor: pointer;
+            padding: 6px;
+            opacity: 0.5;
+            transition: opacity 0.2s;
+            border-radius: 6px;
+        }
+
+        .delete-ods-btn:hover {
+            opacity: 1;
+            background: rgba(255, 69, 58, 0.1);
+        }
+
+        /* RIGHT: DETAIL */
+        .ods-detail-area {
+            flex: 1;
+            background: var(--bg-color);
+            overflow-y: auto;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            /* Center the detail card horizontally */
+        }
+
+        .ods-detail-content {
+            width: 100%;
+            max-width: 900px;
+            /* Max width for readability */
+        }
+
+        .empty-state {
+            color: #6e6e73;
+            text-align: center;
+            margin: auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+        }
+
+        .empty-state-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            opacity: 0.5;
+        }
+
+        .empty-state-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 10px;
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #3a3a3c;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #4a4a4c;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Auth Check -->
+    <script>
+        if (sessionStorage.getItem('tech_logged') !== 'true') {
+            window.location.href = 'tecnicos.html';
+        }
+    </script>
+
+    <header>
+        <div>
+            <h1>Dashboard ODS</h1>
+            <div style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 4px;">Gestión de Órdenes de
+                Servicio</div>
+        </div>
+        <div class="header-actions">
+            <a href="cotizaciones.html" class="btn-back">⬅ Volver a Cotizaciones</a>
+            <button class="logout-btn" id="logout-btn">Cerrar Sesión</button>
+        </div>
+    </header>
+
+    <div class="dashboard-container">
+        <!-- LEFT: ODS List -->
+        <aside class="ods-sidebar">
+            <div class="search-container">
+                <input id="ods-search" type="text" placeholder="Buscar folio, cliente o serie...">
+            </div>
+            <div id="ods-list" class="ods-list">
+                <!-- List populated by JS -->
+                <div class="empty-state" style="font-size: 0.9rem;">Cargando órdenes...</div>
+            </div>
+        </aside>
+
+        <!-- RIGHT: ODS Detail -->
+        <main class="ods-detail-area">
+            <div id="ods-detail" class="ods-detail-content">
+                <div class="empty-state">
+                    <div class="empty-state-icon">🖥️</div>
+                    <div class="empty-state-title">Selecciona una ODS</div>
+                    <div>Elige una orden de la lista para ver o editar sus detalles</div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Supabase Init
+        const _sbUrl = 'https://lifxtyhvgnxjjqgbzare.supabase.co';
+        const _sbKey = 'sb_publishable_7aBPXbWRwrltSuXtzsyg-g_L1Fu3rTT';
+        window._sbClient = supabase.createClient(_sbUrl, _sbKey);
+
+        // Logout
+        document.getElementById('logout-btn').onclick = () => {
+            sessionStorage.clear();
+            window.location.href = 'tecnicos.html';
+        };
+
+        // ── ODS LOGIC ──────────────────────────────────
+        const STATUS_COLORS = {
+            'Recibido': { bg: '#0a1628', text: '#4da3ff' },
+            'Diagnóstico': { bg: '#1a1500', text: '#ffd60a' },
+            'Espera de aprobación y pago': { bg: '#2a1a00', text: '#ffaa00' },
+            'Espera de piezas': { bg: '#1a1a1a', text: '#aaaaaa' },
+            'Reparación': { bg: '#3a1a00', text: '#ff9f0a' },
+            'Equipo reparado': { bg: '#001a0a', text: '#30d158' },
+            'Equipo entregado': { bg: '#1a0a2a', text: '#bf5af2' },
+            'Equipo sin reparar': { bg: '#2a0000', text: '#ff453a' },
+            'Nota General': { bg: '#111111', text: '#8e8e93' }
+        };
+
+        let allODS = [];
+        let currentSelectedId = null;
+
+        const renderODSList = (ods) => {
+            const list = document.getElementById('ods-list');
+            list.innerHTML = '';
+            if (!ods.length) {
+                list.innerHTML = '<div class="empty-state" style="font-size: 0.9rem; margin-top: 40px;">No se encontraron ODS</div>';
+                return;
+            }
+            ods.forEach(o => {
+                const sc = STATUS_COLORS[o.status] || STATUS_COLORS['Recibido'];
+                const item = document.createElement('div');
+                item.className = `ods-item ${o.id === currentSelectedId ? 'active' : ''}`;
+                item.innerHTML = `
+                    <div class="ods-item-title">${o.folio}</div>
+                    <div class="ods-item-client">${o.cliente || 'Sin nombre'}</div>
+                    <div class="ods-item-footer">
+                        <span class="status-badge" style="background:${sc.bg};color:${sc.text};">${o.status}</span>
+                        <button class="delete-ods-btn" title="Eliminar ODS">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/></svg>
+                        </button>
+                    </div>
+                `;
+                item.onclick = () => {
+                    currentSelectedId = o.id;
+                    renderODSList(currentSelectedId ? allODS.filter(x => {
+                        const q = document.getElementById('ods-search').value.toLowerCase();
+                        return (x.folio || '').toLowerCase().includes(q) || (x.cliente || '').toLowerCase().includes(q) || (x.serie || '').toLowerCase().includes(q);
+                    }) : allODS); // Re-render to highlight active
+                    renderODSDetail(o);
+                };
+                item.querySelector('.delete-ods-btn').onclick = (e) => {
+                    e.stopPropagation();
+                    deleteODS(o.id, o.folio);
+                };
+                list.appendChild(item);
+            });
+        };
+
+        const deleteODS = async (id, folio) => {
+            if (!confirm(`¿Estás seguro de eliminar la cotización ${folio}? Esta acción no se puede deshacer.`)) return;
+            try {
+                const { error, count } = await window._sbClient
+                    .from('ordenes_servicio')
+                    .delete({ count: 'exact' })
+                    .eq(id ? 'id' : 'folio', id || folio);
+
+                if (error) throw error;
+
+                if (count === 0) {
+                    alert(`⚠️ EL SERVIDOR NO PERMITIÓ EL BORRADO.\nRevisa las políticas RLS en Supabase.`);
+                    return;
+                }
+
+                allODS = allODS.filter(o => id ? o.id !== id : o.folio !== folio);
+                if (currentSelectedId === id) {
+                    currentSelectedId = null;
+                    document.getElementById('ods-detail').innerHTML = `
+                        <div class="empty-state">
+                            <div class="empty-state-icon">🗑️</div>
+                            <div class="empty-state-title">ODS Eliminada</div>
+                        </div>`;
+                }
+
+                // Trigger search to re-render
+                const event = new Event('input');
+                document.getElementById('ods-search').dispatchEvent(event);
+            } catch (e) {
+                alert('Error al eliminar en Supabase: ' + e.message);
+            }
+        };
+
+        const renderODSDetail = (o) => {
+            const sc = STATUS_COLORS[o.status] || STATUS_COLORS['Recibido'];
+
+            // Generar dropdown options para status
+            const statusOptions = Object.keys(STATUS_COLORS).filter(s => s !== 'Nota General').map(s =>
+                `<option value="${s}" ${s === o.status ? 'selected' : ''}>${s}</option>`
+            ).join('');
+
+            // Parsear Historial
+            let historial = [];
+            try {
+                historial = JSON.parse(o.notas || '[]');
+                if (!Array.isArray(historial)) throw new Error('Not array');
+            } catch (e) {
+                if (o.notas) historial = [{ date: o.fecha || '', status: 'Nota General', text: o.notas, img: null }];
+            }
+
+            // Render Timeline Visual
+            const renderTimeline = () => historial.slice().reverse().map(ev => `
+                <div style="background:#1c1c1e; border:1px solid #3a3a3c; border-radius:12px; padding:20px; margin-bottom:16px;">
+                    <div style="display:flex; justify-content:space-between; margin-bottom:8px; align-items:center;">
+                        <span style="font-size:0.8rem; font-weight:800; color:${STATUS_COLORS[ev.status] ? STATUS_COLORS[ev.status].text : '#fff'}; border:1px solid ${STATUS_COLORS[ev.status] ? STATUS_COLORS[ev.status].text : '#fff'}; padding:4px 10px; border-radius:6px; text-transform:uppercase;">${ev.status}</span>
+                        <span style="font-size:0.8rem; color:#8e8e93;">${ev.date}</span>
+                    </div>
+                    ${ev.text ? `<div style="font-size:0.95rem; color:#E0E0E6; margin-top:12px; line-height:1.5;">${ev.text.replace(/\\n/g, '<br>')}</div>` : ''}
+                    ${ev.img ? `<div style="margin-top:16px;"><img src="${ev.img}" style="max-width:100%; border-radius:8px; border:1px solid #3a3a3c;"></div>` : ''}
+                </div>
+            `).join('') || '<div style="font-size:0.9rem; color:#8e8e93; text-align:center; padding:20px;">Aún no se agregan avances ni fotos.</div>';
+
+            document.getElementById('ods-detail').innerHTML = `
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+                    <div style="font-size:1.4rem;font-weight:900;color:#fff;letter-spacing:-0.5px;">${o.folio}</div>
+                    <span style="font-size:0.75rem;font-weight:700;padding:6px 12px;border-radius:20px;background:${sc.bg};color:${sc.text};">${o.status}</span>
+                </div>
+
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px;">
+                    <div style="background:#2c2c2e;border-radius:10px;padding:14px;"><div style="font-size:0.65rem;color:#8e8e93;text-transform:uppercase;margin-bottom:4px;">Cliente</div><div style="color:#fff;font-weight:600;font-size:0.85rem;">${o.cliente || '—'}</div></div>
+                    <div style="background:#2c2c2e;border-radius:10px;padding:14px;"><div style="font-size:0.65rem;color:#8e8e93;text-transform:uppercase;margin-bottom:4px;">Proyecto</div><div style="color:#fff;font-weight:600;font-size:0.85rem;">${o.proyecto || '—'}</div></div>
+                    <div style="background:#2c2c2e;border-radius:10px;padding:14px;"><div style="font-size:0.65rem;color:#8e8e93;text-transform:uppercase;margin-bottom:4px;">Técnico</div><div style="color:#fff;font-weight:600;font-size:0.85rem;">${o.tecnico || '—'}</div></div>
+                    <div style="background:#2c2c2e;border-radius:10px;padding:14px;"><div style="font-size:0.65rem;color:#8e8e93;text-transform:uppercase;margin-bottom:4px;">Serie</div><div style="color:#fff;font-weight:600;font-size:0.85rem;">${o.serie || '—'}</div></div>
+                    <div style="background:#2c2c2e;border-radius:10px;padding:14px;"><div style="font-size:0.65rem;color:#8e8e93;text-transform:uppercase;margin-bottom:4px;">Fecha</div><div style="color:#fff;font-weight:600;font-size:0.85rem;">${o.fecha || '—'}</div></div>
+                    <div style="background:#2c2c2e;border-radius:10px;padding:14px;"><div style="font-size:0.65rem;color:#8e8e93;text-transform:uppercase;margin-bottom:4px;">Monto</div><div style="color:#ff453a;font-weight:800;font-size:0.9rem;">$${(o.monto || 0).toLocaleString('es-MX', { minimumFractionDigits: 2 })}</div></div>
+                </div>
+
+                <div style="background:#1c1c1e;border-radius:10px;padding:16px; margin-bottom:20px; border:2px solid #30d158; box-shadow:0 0 15px rgba(48,209,88,0.1);">
+                    <div style="font-size:0.8rem;font-weight:800;color:#30d158;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:12px; display:flex; align-items:center; gap:8px;">
+                        <span>➕</span> AGREGAR AVANCE O CAMBIO DE ESTATUS
+                    </div>
+                    
+                    <label style="font-size:0.75rem;color:#ccc; display:block; margin-bottom:6px; font-weight:600; text-transform:uppercase;">Estatus del Proceso</label>
+                    <select id="new-ev-status" style="width:100%;padding:10px;border-radius:6px;border:1px solid #3a3a3c;background:#1c1c1e;color:#fff;font-size:0.85rem;margin-bottom:12px;cursor:pointer;">
+                        ${statusOptions}
+                    </select>
+                    
+                    <label style="font-size:0.75rem;color:#ccc; display:block; margin-bottom:6px; font-weight:600; text-transform:uppercase;">Anotaciones para el Cliente</label>
+                    <textarea id="new-ev-text" rows="3" style="width:100%;padding:10px;border-radius:6px;border:1px solid #3a3a3c;background:#1c1c1e;color:#fff;font-size:0.85rem;margin-bottom:12px;resize:vertical;" placeholder="Describe la reparación, refacciones faltantes..."></textarea>
+                    
+                    <label style="font-size:0.75rem;color:#ccc; display:block; margin-bottom:6px; font-weight:600; text-transform:uppercase;">Evidencia Fotográfica (Opcional)</label>
+                    <input type="file" id="new-ev-img" accept="image/*" style="width:100%;font-size:0.75rem;color:#8e8e93;margin-bottom:16px;background:#1c1c1e;padding:8px;border-radius:6px;border:1px dotted #3a3a3c;">
+                    <canvas id="ev-canvas" style="display:none;"></canvas>
+
+                    <button id="btn-add-evento" data-id="${o.id}" style="width:100%;padding:12px;border-radius:8px;background:#30d158;color:#000;border:none;font-weight:800;font-size:0.85rem;text-transform:uppercase;cursor:pointer;transition:background 0.2s;" onmouseover="this.style.background='#28a745';" onmouseout="this.style.background='#30d158';">
+                        Actualizar Historial
+                    </button>
+                </div>
+
+                <div style="background:#2c2c2e;border-radius:10px;padding:20px;margin-bottom:20px;">
+                    <div style="font-size:0.75rem;font-weight:800;color:#fff;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:16px; border-bottom:1px solid #3a3a3c; padding-bottom:10px;">Historial de Reparación</div>
+                    <div id="ods-timeline-items">
+                        ${renderTimeline()}
+                    </div>
+                </div>
+
+                <!-- Botón de eliminar -->
+                <div style="margin-top:20px;padding-top:20px;border-top:1px solid #3a3a3c;">
+                    <button onclick="deleteODS('${o.id}', '${o.folio}')" style="width:100%;background:rgba(255, 69, 58, 0.1);color:#ff453a;border:1px solid rgba(255, 69, 58, 0.2);padding:10px;border-radius:8px;font-weight:600;cursor:pointer;transition:0.2s;" onmouseenter="this.style.background='rgba(255, 69, 58, 0.2)'" onmouseleave="this.style.background='rgba(255, 69, 58, 0.1)'">Eliminar Cotización del Servidor</button>
+                </div>
+            `;
+
+
+            setTimeout(() => {
+                const addBtn = document.getElementById('btn-add-evento');
+                if (addBtn) {
+                    addBtn.onclick = async () => {
+                        const newStatus = document.getElementById('new-ev-status').value;
+                        const text = document.getElementById('new-ev-text').value;
+                        const fileInput = document.getElementById('new-ev-img');
+                        const file = fileInput.files[0];
+
+                        if (!newStatus) return alert("Selecciona un estatus válido");
+
+                        addBtn.innerText = "PROCESANDO IMAGEN Y GUARDANDO...";
+                        addBtn.style.opacity = "0.7";
+                        addBtn.disabled = true;
+
+                        try {
+                            let base64Img = null;
+                            if (file) {
+                                base64Img = await new Promise((resolve, reject) => {
+                                    const reader = new FileReader();
+                                    reader.onload = (e) => {
+                                        const img = new Image();
+                                        img.onload = () => {
+                                            const canvas = document.getElementById('ev-canvas');
+                                            const ctx = canvas.getContext('2d');
+                                            const MAX_WIDTH = 800; // Increased resolution slightly for dedicated view
+                                            const MAX_HEIGHT = 800;
+                                            let width = img.width;
+                                            let height = img.height;
+
+                                            if (width > height) {
+                                                if (width > MAX_WIDTH) { height *= MAX_WIDTH / width; width = MAX_WIDTH; }
+                                            } else {
+                                                if (height > MAX_HEIGHT) { width *= MAX_HEIGHT / height; height = MAX_HEIGHT; }
+                                            }
+                                            canvas.width = width;
+                                            canvas.height = height;
+                                            ctx.drawImage(img, 0, 0, width, height);
+                                            resolve(canvas.toDataURL('image/jpeg', 0.65));
+                                        };
+                                        img.onerror = () => reject(new Error('Formato de imagen inválido.'));
+                                        img.src = e.target.result;
+                                    };
+                                    reader.onerror = () => reject(new Error('Error al leer el archivo.'));
+                                    reader.readAsDataURL(file);
+                                });
+                            }
+
+                            const now = new Date();
+                            const dateStr = now.toLocaleDateString('es-MX', { day: '2-digit', month: '2-digit', year: 'numeric' }) + ' ' + now.toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit' });
+
+                            const newEvent = {
+                                date: dateStr,
+                                status: newStatus,
+                                text: text,
+                                img: base64Img
+                            };
+
+                            historial.push(newEvent);
+                            const newNotasString = JSON.stringify(historial);
+
+                            const { error, count } = await window._sbClient
+                                .from('ordenes_servicio')
+                                .update({ status: newStatus, notas: newNotasString }, { count: 'exact' })
+                                .eq('id', o.id);
+
+                            if (error) throw error;
+
+                            o.status = newStatus;
+                            o.notas = newNotasString;
+
+                            const idx = allODS.findIndex(x => x.id === o.id);
+                            if (idx !== -1) {
+                                allODS[idx].status = newStatus;
+                                allODS[idx].notas = newNotasString;
+                            }
+
+                            // Trigger search to re-render list
+                            const event = new Event('input');
+                            document.getElementById('ods-search').dispatchEvent(event);
+
+                            renderODSDetail(o);
+
+                        } catch (err) {
+                            alert("Error al guardar el avance: " + err.message);
+                        } finally {
+                            addBtn.innerText = "Actualizar Historial";
+                            addBtn.style.opacity = "1";
+                            addBtn.disabled = false;
+                        }
+                    };
+                }
+            }, 50);
+        };
+
+        // Load Initial Data
+        const loadDocs = async () => {
+            document.getElementById('ods-list').innerHTML = '<div class="empty-state" style="font-size:0.9rem; margin-top:20px;">Cargando órdenes de la base de datos...</div>';
+            const { data, error } = await window._sbClient
+                .from('ordenes_servicio')
+                .select('*')
+                .order('created_at', { ascending: false });
+
+            if (error) {
+                document.getElementById('ods-list').innerHTML = '<div style="color:#ff453a;padding:20px;font-size:0.85rem;text-align:center;">Error al cargar ODS: ' + error.message + '</div>';
+                return;
+            }
+            allODS = data || [];
+            renderODSList(allODS);
+        };
+
+        // Search Logic
+        document.getElementById('ods-search').oninput = (e) => {
+            const q = e.target.value.toLowerCase();
+            renderODSList(allODS.filter(o =>
+                (o.folio || '').toLowerCase().includes(q) ||
+                (o.cliente || '').toLowerCase().includes(q) ||
+                (o.serie || '').toLowerCase().includes(q)
+            ));
+        };
+
+        // Initialize
+        loadDocs();
+    </script>
+</body>
+
+</html>
