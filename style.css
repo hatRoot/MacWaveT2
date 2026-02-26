@@ -255,6 +255,13 @@ h3 {
     white-space: nowrap;
 }
 
+/* Ocultar "Inicio" y su icono de casa en el modo escritorio para evitar que se amontone */
+@media (min-width: 1025px) {
+    .main-nav a[data-link="index.html"] {
+        display: none !important;
+    }
+}
+
 .main-nav a.nav-link-small {
     font-size: 0.75rem;
     opacity: 0.6;
@@ -941,7 +948,7 @@ h3 {
     }
 
     /* ============================================= */
-    /* MOBILE MENU — App-style Full-screen Overlay    */
+    /* MOBILE MENU — Premium iOS/Apple Inspired UI    */
     /* ============================================= */
     .main-nav {
         position: fixed !important;
@@ -949,98 +956,197 @@ h3 {
         left: 0 !important;
         width: 100vw !important;
         height: 100vh !important;
-        background: rgba(18, 18, 20, 0.98) !important;
-        -webkit-backdrop-filter: blur(40px) saturate(180%) !important;
-        backdrop-filter: blur(40px) saturate(180%) !important;
+        background: #000000 !important;
+        /* iOS dark mode pitch black */
         display: flex !important;
         flex-direction: column !important;
-        justify-content: center !important;
+        justify-content: flex-start !important;
         align-items: stretch !important;
         gap: 0 !important;
         z-index: 999999 !important;
-        transition: opacity 0.3s ease !important;
+        transition: transform 0.4s cubic-bezier(0.85, 0, 0.15, 1), opacity 0.4s ease !important;
         visibility: hidden !important;
         opacity: 0 !important;
+        transform: translateY(10px) scale(0.98) !important;
+        /* Subtle fade zoom */
         pointer-events: none !important;
+        overflow-y: auto !important;
+        overflow-x: hidden !important;
         -webkit-overflow-scrolling: touch;
-        padding: 100px 32px 120px !important;
+        padding: 85px 20px 40px !important;
     }
 
     body.menu-active .main-nav {
         visibility: visible !important;
         opacity: 1 !important;
+        transform: translateY(0) scale(1) !important;
         pointer-events: auto !important;
     }
 
-    /* Nav links — app-style rows */
-    .main-nav>a.nav-link {
-        margin: 0 !important;
-        font-size: 1.25rem !important;
-        font-weight: 500 !important;
-        color: #ffffff !important;
-        text-decoration: none !important;
-        display: flex !important;
-        align-items: center !important;
-        justify-content: space-between !important;
-        width: 100% !important;
-        padding: 16px 4px !important;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.07) !important;
-        letter-spacing: 0.2px;
-        transition: background 0.15s ease !important;
-        -webkit-tap-highlight-color: transparent;
-    }
-
-    .main-nav>a.nav-link::after {
-        content: '›' !important;
-        font-size: 1.4rem !important;
-        color: rgba(255, 255, 255, 0.3) !important;
-        font-weight: 300 !important;
-    }
-
-    .main-nav>a.nav-link:first-of-type {
-        border-top: 1px solid rgba(255, 255, 255, 0.07) !important;
-    }
-
-    .main-nav>a.nav-link:active {
-        background: rgba(255, 255, 255, 0.05) !important;
+    /* The glowing top title inside the menu */
+    .main-nav::before {
+        content: '¿Cuál es tu objetivo?';
+        display: block !important;
+        font-size: 2.2rem !important;
+        font-weight: 800 !important;
+        margin-bottom: 30px !important;
+        text-align: center !important;
+        background: linear-gradient(135deg, #E0E0E6 0%, #FFFFFF 100%) !important;
+        -webkit-background-clip: text !important;
+        background-clip: text !important;
+        -webkit-text-fill-color: transparent !important;
+        line-height: 1.1 !important;
+        letter-spacing: -0.5px !important;
     }
 
     body.menu-active {
         overflow: hidden !important;
     }
 
-    /* Close button — inside the overlay */
+    /* Close button — minimalist 'X' on top-left */
     .mobile-nav-close {
         display: flex !important;
         position: absolute !important;
-        top: 55px !important;
-        right: 25px !important;
-        width: 36px !important;
-        height: 36px !important;
+        top: 25px !important;
+        left: 20px !important;
+        width: 32px !important;
+        height: 32px !important;
         align-items: center !important;
         justify-content: center !important;
-        background: rgba(255, 255, 255, 0.1) !important;
+        background: transparent !important;
         border: none !important;
-        border-radius: 50% !important;
         color: #fff !important;
-        font-size: 18px !important;
+        font-size: 40px !important;
+        font-weight: 100 !important;
+        line-height: 0.5 !important;
         cursor: pointer !important;
         z-index: 10 !important;
         -webkit-tap-highlight-color: transparent;
         touch-action: manipulation !important;
+        transition: opacity 0.2s ease !important;
     }
 
     .mobile-nav-close:active {
-        background: rgba(255, 255, 255, 0.2) !important;
+        opacity: 0.5 !important;
+    }
+
+    /* Nav links — iOS Grouped Inset Style */
+    .main-nav>a.nav-link {
+        margin: 0 !important;
+        font-size: 1.15rem !important;
+        font-weight: 600 !important;
+        color: #ffffff !important;
+        text-decoration: none !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: flex-start !important;
+        position: relative !important;
+        width: 100% !important;
+        padding: 20px 20px 20px 58px !important;
+        background: #1C1C1E !important;
+        border: none !important;
+        border-bottom: 0.5px solid rgba(255, 255, 255, 0.08) !important;
+        border-radius: 0 !important;
+        letter-spacing: -0.3px;
+        transition: background 0.1s ease !important;
+        -webkit-tap-highlight-color: transparent;
+    }
+
+    .main-nav>a.nav-link:active {
+        background: #2C2C2E !important;
+    }
+
+    /* First and Last items get the rounded box look */
+    .main-nav>a.nav-link:nth-of-type(1) {
+        border-top-left-radius: 18px !important;
+        border-top-right-radius: 18px !important;
+    }
+
+    .main-nav>a.nav-link:nth-last-of-type(1) {
+        border-bottom-left-radius: 18px !important;
+        border-bottom-right-radius: 18px !important;
+        border-bottom: none !important;
+        margin-bottom: 30px !important;
+    }
+
+    /* The right arrow `>` iOS style */
+    .main-nav>a.nav-link::after {
+        content: '' !important;
+        display: block !important;
+        width: 7px !important;
+        height: 12px !important;
+        border-right: 2.5px solid rgba(255, 255, 255, 0.3) !important;
+        border-top: 2.5px solid rgba(255, 255, 255, 0.3) !important;
+        transform: rotate(45deg) !important;
+        position: absolute !important;
+        right: 22px !important;
+        top: calc(50% - 6px) !important;
+    }
+
+    /* Icons Positioning */
+    .main-nav>a.nav-link>svg {
+        position: absolute !important;
+        left: 20px !important;
+        top: 50% !important;
+        transform: translateY(-50%) !important;
+        margin: 0 !important;
+        color: #0A84FF !important;
+        width: 22px !important;
+        height: 22px !important;
+    }
+
+    /* Assigning Emojis via ::before for elements without SVGs */
+    .main-nav>a.nav-link[data-link="reparaciones.html"]::before,
+    .main-nav>a.nav-link[data-link="empresas.html"]::before,
+    .main-nav>a.nav-link[data-link="software.html"]::before,
+    .main-nav>a.nav-link[data-link="upgrades.html"]::before,
+    .main-nav>a.nav-link.nav-link-small::before {
+        position: absolute !important;
+        left: 18px !important;
+        top: 50% !important;
+        transform: translateY(-50%) !important;
+        margin: 0 !important;
+        font-size: 1.3rem !important;
+    }
+
+    .main-nav>a.nav-link[data-link="reparaciones.html"]::before {
+        content: '🔧' !important;
+    }
+
+    .main-nav>a.nav-link[data-link="empresas.html"]::before {
+        content: '🚀' !important;
+    }
+
+    /* Aumentar productividad icon */
+    .main-nav>a.nav-link[data-link="software.html"]::before {
+        content: '💿' !important;
+    }
+
+    .main-nav>a.nav-link[data-link="upgrades.html"]::before {
+        content: '🔋' !important;
+    }
+
+    /* Aumentar energía icon */
+    .main-nav>a.nav-link.nav-link-small::before {
+        content: '🧑‍💻' !important;
+    }
+
+    /* Hide the tech-link text effectively if needed, or adjust it */
+    .main-nav>a.nav-link-small {
+        font-size: 0.9rem !important;
+        /* Fix tiny size on mobile */
+        color: #8E8E93 !important;
+        /* grey looking text */
+        display: none !important;
+        /* Probably not needed in main mobile nav to keep it clean */
     }
 
     /* Action buttons — bottom of overlay */
     .mobile-nav-actions {
         display: flex !important;
         flex-direction: column !important;
-        gap: 10px !important;
+        gap: 16px !important;
         margin-top: auto !important;
-        padding-top: 30px !important;
         width: 100% !important;
     }
 
@@ -1048,44 +1154,54 @@ h3 {
         display: flex !important;
         align-items: center !important;
         justify-content: center !important;
-        gap: 10px !important;
+        gap: 12px !important;
         width: 100% !important;
-        padding: 15px 20px !important;
-        font-size: 0.95rem !important;
+        padding: 18px 20px !important;
+        font-size: 1.1rem !important;
         font-weight: 600 !important;
-        background: rgba(255, 204, 0, 0.12) !important;
-        color: #ffcc00 !important;
-        border: 1px solid rgba(255, 204, 0, 0.3) !important;
-        border-radius: 14px !important;
+        background: #1C1C1E !important;
+        /* Neutral dark grey */
+        color: #ffffff !important;
+        border: none !important;
+        border-radius: 20px !important;
         text-decoration: none !important;
-        text-transform: uppercase !important;
-        letter-spacing: 0.5px !important;
         -webkit-tap-highlight-color: transparent;
+        transition: transform 0.2s ease !important;
+    }
+
+    .mobile-nav-status svg {
+        color: #ffcc00 !important;
+        /* yellow icon */
     }
 
     .mobile-nav-status:active {
-        background: rgba(255, 204, 0, 0.2) !important;
+        transform: scale(0.96) !important;
     }
 
     .mobile-nav-wa {
         display: flex !important;
         align-items: center !important;
         justify-content: center !important;
-        gap: 10px !important;
+        gap: 12px !important;
         width: 100% !important;
-        padding: 15px 20px !important;
-        font-size: 0.95rem !important;
-        font-weight: 600 !important;
-        background: rgba(48, 209, 88, 0.12) !important;
-        color: #30D158 !important;
-        border: 1px solid rgba(48, 209, 88, 0.3) !important;
-        border-radius: 14px !important;
+        padding: 20px 20px !important;
+        font-size: 1.15rem !important;
+        font-weight: 700 !important;
+        background: linear-gradient(135deg, #5E5CE6 0%, #0A84FF 100%) !important;
+        /* Vibrant Blurple gradient */
+        color: #ffffff !important;
+        border: none !important;
+        border-radius: 30px !important;
+        /* Full rounded pill like Screenshot 3 */
         text-decoration: none !important;
         -webkit-tap-highlight-color: transparent;
+        box-shadow: 0 8px 20px rgba(94, 92, 230, 0.4) !important;
+        transition: transform 0.2s ease, box-shadow 0.2s ease !important;
     }
 
     .mobile-nav-wa:active {
-        background: rgba(48, 209, 88, 0.2) !important;
+        transform: scale(0.96) !important;
+        box-shadow: 0 4px 10px rgba(94, 92, 230, 0.4) !important;
     }
 
     /* Hamburger Button */
@@ -1107,6 +1223,15 @@ h3 {
         position: relative;
         touch-action: manipulation !important;
         -webkit-tap-highlight-color: transparent;
+        transition: opacity 0.3s ease, visibility 0.3s ease !important;
+    }
+
+    /* Ocultar la hamburguesa cuando el menú modal IOS está abierto 
+       (el modal tiene su propio botón X nativo) */
+    body.menu-active .mobile-menu-toggle {
+        opacity: 0 !important;
+        visibility: hidden !important;
+        pointer-events: none !important;
     }
 
     .mobile-menu-toggle span {
@@ -1115,19 +1240,6 @@ h3 {
         height: 2px;
         background-color: #ffffff !important;
         border-radius: 2px;
-        transition: all 0.3s ease;
-    }
-
-    .mobile-menu-toggle.active span:nth-child(1) {
-        transform: translateY(7px) rotate(45deg);
-    }
-
-    .mobile-menu-toggle.active span:nth-child(2) {
-        opacity: 0;
-    }
-
-    .mobile-menu-toggle.active span:nth-child(3) {
-        transform: translateY(-7px) rotate(-45deg);
     }
 
     /* Header actions — keep hidden on mobile (we use in-nav buttons instead) */

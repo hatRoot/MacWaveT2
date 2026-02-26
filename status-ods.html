@@ -542,11 +542,15 @@
         ];
 
         const STATUS_COLORS = {
-            'Recibido': { bg: '#0a1628', text: 'var(--accent2)' },
-            'Diagnóstico': { bg: '#1a1500', text: 'var(--yellow)' },
-            'Reparando': { bg: '#1a0e00', text: 'var(--orange)' },
-            'Listo': { bg: '#001a0a', text: 'var(--green)' },
-            'Entregado': { bg: '#111', text: 'var(--muted)' },
+            'Recibido': { bg: '#0a1628', text: '#4da3ff' },
+            'Diagnóstico': { bg: '#1a1500', text: '#ffd60a' },
+            'Espera de aprobación y pago': { bg: '#2a1a00', text: '#ffaa00' },
+            'Espera de piezas': { bg: '#1a1a1a', text: '#aaaaaa' },
+            'Reparación': { bg: '#3a1a00', text: '#ff9f0a' },
+            'Equipo reparado': { bg: '#001a0a', text: '#30d158' },
+            'Equipo entregado': { bg: '#1a0a2a', text: '#bf5af2' },
+            'Equipo sin reparar': { bg: '#2a0000', text: '#ff453a' },
+            'Nota General': { bg: '#111111', text: '#8e8e93' }
         };
 
         // Read URL params (from QR scan)
@@ -558,31 +562,64 @@
         }
 
         function renderODS(ods) {
-            const currentIdx = STEPS.findIndex(s => s.key === (ods.status || 'Recibido'));
             const sc = STATUS_COLORS[ods.status] || STATUS_COLORS['Recibido'];
 
-            // Calculate progress bar width based on active step
-            // 4 segments if 5 steps. Width = (currentIdx / (STEPS.length - 1)) * 90 % (since left is 5% and right is 5%)
-            let progressPercent = 0;
-            if (currentIdx > 0) {
-                progressPercent = (currentIdx / (STEPS.length - 1)) * 90;
+            // Historial (Timeline) logic
+            let historial = [];
+            try {
+                // Si 'notas' es un JSON string (nuevo formato)
+                historial = JSON.parse(ods.notas || '[]');
+                if (!Array.isArray(historial)) throw new Error('Not an array');
+            } catch (e) {
+                // Formato legacy (texto plano)
+                if (ods.notas) {
+                    historial = [{
+                        date: ods.fecha || 'Fecha de ingreso',
+                        status: 'Nota General',
+                        text: ods.notas,
+                        img: null
+                    }];
+                } else {
+                    historial = [{
+                        date: ods.fecha || '',
+                        status: 'Recibido',
+                        text: 'Equipo recibido e ingresado al sistema.',
+                        img: null
+                    }];
+                }
             }
 
-            const stepsHtml = STEPS.map((s, i) => {
-                const isDone = i < currentIdx;
-                const isActive = i === currentIdx;
-                const cls = isDone ? 'done' : (isActive ? 'active' : 'pending');
-                // The user requested the original simple checkmark for completed items.
-                let displayIcon = s.icon;
-                if (isDone) {
-                    displayIcon = '✓'; // Using a clean check for done states
-                }
+            // Reverse to show newest on top
+            historial.reverse();
+
+            const timelineHtml = historial.map((ev, i) => {
+                const isLatest = i === 0;
+                const evColor = STATUS_COLORS[ev.status] ? STATUS_COLORS[ev.status].text : 'var(--muted)';
+                const evBg = STATUS_COLORS[ev.status] ? STATUS_COLORS[ev.status].bg : 'var(--border)';
 
                 return `
-                    <div class="step ${cls}">
-                        <div class="step-circle">${displayIcon}</div>
-                        <div class="step-label">${s.label}</div>
-                    </div>`;
+                    <div class="tl-item" style="display: flex; gap: 16px; margin-bottom: 24px; position: relative;">
+                        <!-- Línea conectora -->
+                        ${i !== historial.length - 1 ? '<div style="position: absolute; left: 15px; top: 32px; bottom: -24px; width: 2px; background: var(--border);"></div>' : ''}
+                        
+                        <!-- Punto -->
+                        <div style="width: 32px; height: 32px; border-radius: 50%; background: ${evBg}; border: 2px solid ${evColor}; display: flex; align-items: center; justify-content: center; flex-shrink: 0; z-index: 1; margin-top: 2px;">
+                             <div style="width: 8px; height: 8px; border-radius: 50%; background: ${evColor}; ${isLatest ? 'box-shadow: 0 0 10px ' + evColor : ''};"></div>
+                        </div>
+
+                        <!-- Contenido -->
+                        <div style="flex: 1; background: #1c1c1e; border: 1px solid var(--border); border-radius: 14px; padding: 16px;">
+                            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px;">
+                                <div>
+                                    <span style="display: inline-block; font-size: 0.75rem; font-weight: 700; color: ${evColor}; text-transform: uppercase; letter-spacing: 0.5px; border-radius: 4px; border: 1px solid ${evColor}; padding: 2px 6px; margin-bottom: 6px;">${ev.status}</span>
+                                    <div style="color: var(--muted); font-size: 0.75rem;">${ev.date}</div>
+                                </div>
+                            </div>
+                            ${ev.text ? `<div style="font-size: 0.88rem; color: #E0E0E6; line-height: 1.5;">${ev.text.replace(/\\n/g, '<br>')}</div>` : ''}
+                            ${ev.img ? `<div style="margin-top: 12px;"><img src="${ev.img}" style="max-width: 100%; border-radius: 8px; border: 1px solid var(--border);" alt="Evidencia Técnica"></div>` : ''}
+                        </div>
+                    </div>
+                `;
             }).join('');
 
             return `
@@ -597,12 +634,10 @@
                             ${(ods.status || 'RECIBIDO').toUpperCase()}
                         </span>
                     </div>
-                    <div class="tracker">
-                        <div class="tracker-title">Estado de tu reparación</div>
-                        <div class="steps">
-                            <div class="steps-progress-bg"></div>
-                            <div class="steps-progress-fill" style="width: 0%;" id="progress-fill-${ods.folio}"></div>
-                            ${stepsHtml}
+                    <div class="tracker" style="padding: 32px 24px;">
+                        <div class="tracker-title">Historial y Evidencias de Reparación</div>
+                        <div class="timeline" style="margin-top: 20px;">
+                            ${timelineHtml}
                         </div>
                     </div>
                 </div>`;
