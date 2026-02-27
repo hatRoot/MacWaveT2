@@ -703,24 +703,35 @@
             document.body.style.overflow = 'hidden';
 
             qrScanner = new Html5Qrcode('qr-reader');
+
+            const config = {
+                fps: 10,
+                qrbox: { width: 250, height: 250 }
+            };
+
             qrScanner.start(
                 { facingMode: 'environment' },
-                {
-                    fps: 10,
-                    qrbox: { width: 250, height: 250 },
-                    aspectRatio: 1.0
-                },
+                config,
                 (decodedText) => {
-                    // QR scanned successfully
                     handleQRResult(decodedText);
                 },
                 (errorMessage) => {
-                    // Scan in progress, ignore frame errors
+                    // Start ignorando errores de frame
                 }
             ).catch((err) => {
-                console.error('Camera error:', err);
-                alert('No se pudo acceder a la cámara. Verifica los permisos de tu navegador.');
-                closeQRScanner();
+                console.warn('Fallo cámara trasera, intentando fallback...', err);
+                qrScanner.start(
+                    { facingMode: 'user' },
+                    config,
+                    (decodedText) => {
+                        handleQRResult(decodedText);
+                    },
+                    (errorMessage) => { }
+                ).catch((fallbackErr) => {
+                    console.error('Error total cámara:', fallbackErr);
+                    alert('No se pudo acceder a la cámara. Revisa los permisos de Safari (Ajustes > Safari > Cámara).');
+                    closeQRScanner();
+                });
             });
         }
 
@@ -760,6 +771,11 @@
             setTimeout(doSearch, 200);
         }
     </script>
+    <div
+        style="text-align: center; margin-top: 40px; padding-bottom: 20px; font-size: 1.5rem; opacity: 0.1; user-select: none;">
+        <span ondblclick="window.location.href='dashboard-ods.html'" style="cursor:pointer;"
+            title="Acceso a Dashboard">⚙️</span>
+    </div>
 </body>
 
 </html>
