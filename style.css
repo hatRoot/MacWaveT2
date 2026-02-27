@@ -3225,3 +3225,9 @@ details.modern-accordion[open] {
 .light-section details.modern-accordion .accordion-content {
     color: #333333;
 }
+
+@media (min-width: 769px) {
+    .mobile-only-gear {
+        display: none !important;
+    }
+}
