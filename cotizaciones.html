@@ -6,11 +6,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Panel de Órdenes de Servicio (ODS) - MacWave T2</title>
 
-    <meta name="description" content="Mac Wave T2 - Especialistas en reparación de MacBook Pro, Air y equipos fuera de garantía. Actualizaciones, servicios empresariales y recuperación de datos en CDMX y EdoMex.">
-    <meta name="keywords" content="reparación mac, soporte tecnico apple, reparacion macbook, logic board, recuperar datos macbook, apple repair, cdmx, macbook mojada">
+    <meta name="description"
+        content="Mac Wave T2 - Especialistas en reparación de MacBook Pro, Air y equipos fuera de garantía. Actualizaciones, servicios empresariales y recuperación de datos en CDMX y EdoMex.">
+    <meta name="keywords"
+        content="reparación mac, soporte tecnico apple, reparacion macbook, logic board, recuperar datos macbook, apple repair, cdmx, macbook mojada">
     <meta name="author" content="Mac Wave T2">
     <meta property="og:title" content="Mac Wave T2 | Soporte Técnico Especializado Apple">
-    <meta property="og:description" content="Centro de servicio especializado en reparación de equipos Mac. Diagnóstico preciso, cambio de display, reparación de tarjeta lógica en CDMX.">
+    <meta property="og:description"
+        content="Centro de servicio especializado en reparación de equipos Mac. Diagnóstico preciso, cambio de display, reparación de tarjeta lógica en CDMX.">
     <meta property="og:type" content="website">
 
     <!-- Dependencies -->
@@ -1552,8 +1555,8 @@
                 doc.setFont("helvetica", "bold");
                 doc.text(currency, valueX, mY + 12, { align: "right" });
 
-                // 2. Client Info
-                doc.setFontSize(12);
+                // 2. Client Info (Dynamic Wrapping)
+                doc.setFontSize(11);
                 doc.setTextColor(0, 113, 227);
                 doc.setFont("helvetica", "bold");
                 doc.text("Estimado(a) Sr:", 15, 60);
@@ -1566,35 +1569,35 @@
                 doc.text("Oportunidad / Proyecto:", 15, 67);
                 doc.setFont("helvetica", "normal");
                 doc.setTextColor(134, 134, 139);
-                doc.text(project, 65, 67);
+
+                // Wrap project text
+                const splitProject = doc.splitTextToSize(project, 125);
+                doc.text(splitProject, 65, 67);
+
+                // Calculate next Y based on project height (approx 4.5mm per line at size 11)
+                const projectHeight = (splitProject.length - 1) * 4.5;
+                let currentY = 74 + projectHeight;
 
                 doc.setTextColor(0, 113, 227);
                 doc.setFont("helvetica", "bold");
-                doc.text("Número de Serie del equipo :", 15, 74);
+                doc.text("Número de Serie del equipo :", 15, currentY);
                 doc.setFont("helvetica", "normal");
                 doc.setTextColor(134, 134, 139);
-                doc.text(serialNumber, 75, 74);
+                doc.text(serialNumber, 75, currentY);
 
-                // 3. Perfect Rounded Table Container
-                // Draw manual rounded background for the ENTIRE table container (60 units height)
-                // Adjusted y position from 75 to 82 to accommodate the new serial number line
-                doc.setDrawColor(240, 240, 240);
-                doc.setLineWidth(0.2);
-                doc.roundedRect(15, 82, 180, 60, 4, 4, 'D');
+                // 3. Dynamic Table Positioning
+                let tableStartY = currentY + 7;
 
-                // Draw Black Header with perfect rounding (top only)
-                doc.setFillColor(0, 0, 0);
-                doc.roundedRect(15, 82, 180, 10, 4, 4, 'F');
-                // Fill the bottom part of the header rounding to make it flat where it meets the first row
-                doc.rect(15, 87, 180, 5, 'F');
+                // Estimate table height to draw the box correctly (or just don't draw fixed box)
+                // We'll replace the fixed box logic with a dynamic one after autoTable
 
                 doc.autoTable({
-                    startY: 82,
+                    startY: tableStartY,
                     head: [['DESCRIPCIÓN DEL SERVICIO O PRODUCTO', 'PRECIO UNITARIO', 'UNIDAD', 'SUB TOTAL']],
                     body: items,
                     theme: 'plain',
                     headStyles: {
-                        fillColor: null,
+                        fillColor: [0, 0, 0],
                         textColor: [255, 255, 255],
                         halign: 'center',
                         fontSize: 9,
@@ -1603,12 +1606,12 @@
                     },
                     bodyStyles: {
                         textColor: [255, 59, 48],
-                        fontSize: 10,
+                        fontSize: 9,
                         minCellHeight: 10,
                         valign: 'middle',
                         fontStyle: 'bold'
                     },
-                    alternateRowStyles: { fillColor: [245, 245, 247] }, // macOS Zebra Style
+                    alternateRowStyles: { fillColor: [245, 245, 247] },
                     columnStyles: {
                         0: { cellWidth: 100, halign: 'left' },
                         1: { halign: 'right' },
@@ -1618,23 +1621,27 @@
                     margin: { left: 15, right: 15 },
                     didDrawCell: (data) => {
                         if (data.section === 'body') {
-                            // Draw horizontal line for ALL body rows to perfectly clone preview
-                            // Using darker grey (220) to ensure visibility
                             doc.setDrawColor(220, 220, 220);
                             doc.setLineWidth(0.15);
                             doc.line(data.cell.x, data.cell.y + data.cell.height, data.cell.x + data.cell.width, data.cell.y + data.cell.height);
                         }
+                    },
+                    didDrawPage: (data) => {
+                        // Optional: draw borders for the entire table area if needed
                     }
                 });
 
-                // Fixed positions to avoid "amontonado"
-                // Adjusted positions slightly down (+7 units) due to the new serial number line
-                const totalY = 152;
-                const termsY = 165;
-                const bankY = 202;
-                const disclaimerY = 242;
-                const certRowY = 270;
-                const footerY = 286;
+                // Get the final Y after table
+                let finalTableY = doc.lastAutoTable.finalY;
+
+                // Draw rounded container around the table area dynamically
+                doc.setDrawColor(240, 240, 240);
+                doc.setLineWidth(0.2);
+                doc.roundedRect(15, tableStartY, 180, finalTableY - tableStartY, 4, 4, 'D');
+
+                // Dynamic positions relative to finalTableY
+                const totalY = finalTableY + 10;
+                const termsY = totalY + 13;
 
                 doc.setFontSize(13);
                 doc.setTextColor(0);
@@ -1644,7 +1651,7 @@
                 doc.text(`$ ${total.toLocaleString('en-US', { minimumFractionDigits: 2 })}`, 195, totalY, { align: "right" });
 
                 // 4. Terms
-                let cY = termsY; // 165
+                let cY = termsY;
                 doc.setFontSize(7.5);
                 doc.setTextColor(0, 102, 128);
                 doc.setFont("helvetica", "bold");
@@ -1656,31 +1663,32 @@
                 doc.setFontSize(7.5);
                 doc.text(`Tiempo de entrega: ${deliveryTime} ENTREGA TENTATIVA SEGÚN DISPONIBILIDAD.`, 15, cY + 23);
 
-                // 5. Bank section
-                let currentY = bankY;
+                // 5. Bank section (Relative position)
+                let bankSectionY = cY + 35;
                 doc.setFontSize(10);
                 doc.setTextColor(0, 102, 128);
-                doc.text("PAGAR A ESTE BANCO", 15, currentY);
+                doc.text("PAGAR A ESTE BANCO", 15, bankSectionY);
                 doc.setFontSize(15);
                 doc.setTextColor(0, 77, 129);
-                doc.text("BBVA", 58, currentY);
+                doc.text("BBVA", 58, bankSectionY);
                 doc.setTextColor(0, 102, 128);
                 doc.setFontSize(10);
                 doc.setFont("helvetica", "bold");
-                doc.text(`CUENTA CLABE :  ${clabeVal}`, 15, currentY + 7);
-                doc.text(`NUMERO DE CUENTA :  ${accountVal}`, 15, currentY + 14);
-                doc.text(`NUMERO DE TARJETA BBVA : ${cardVal}`, 15, currentY + 28);
+                doc.text(`CUENTA CLABE :  ${clabeVal}`, 15, bankSectionY + 7);
+                doc.text(`NUMERO DE CUENTA :  ${accountVal}`, 15, bankSectionY + 14);
+                doc.text(`NUMERO DE TARJETA BBVA : ${cardVal}`, 15, bankSectionY + 28);
 
                 // 4.5. Notes (New Section)
+                let notesY = bankSectionY + 34;
                 if (odsNotes) {
                     doc.setFontSize(6.5);
                     doc.setTextColor(51, 51, 51);
                     doc.setFont("helvetica", "bold");
-                    doc.text("OBSERVACIONES:", 15, currentY + 34);
+                    doc.text("OBSERVACIONES:", 15, notesY);
                     doc.setFont("helvetica", "normal");
                     const splitNotes = doc.splitTextToSize(odsNotes, 180);
-                    doc.text(splitNotes, 15, currentY + 37);
-                    currentY += (splitNotes.length * 3.5) + 10; // Adjust currentY based on notes height
+                    doc.text(splitNotes, 15, notesY + 3);
+                    notesY += (splitNotes.length * 3.5) + 10;
                 }
 
                 // --- QR CODE (FIXED) ---
@@ -1688,32 +1696,35 @@
                     const qrCanvas = document.querySelector('#preview-qr-canvas canvas');
                     if (qrCanvas) {
                         const qrData = qrCanvas.toDataURL("image/png");
-                        // Fixed QR position near bank section, regardless of notes
-                        doc.addImage(qrData, 'PNG', 160, 202, 32, 32);
+                        // Position QR relative to bank section
+                        doc.addImage(qrData, 'PNG', 160, bankSectionY, 32, 32);
                     }
                 } catch (e) {
                     console.error("Error adding QR to PDF:", e);
                 }
 
-                // 6. Disclaimer
-                currentY = disclaimerY;
+                // 6. Disclaimer (Bottom fixed area or relative)
+                let disclaimerYStart = 242; // Fallback if notes too high
+                if (notesY > 235) disclaimerYStart = notesY + 5;
+
                 doc.setFontSize(6.5);
                 doc.setTextColor(0);
                 doc.setFont("helvetica", "bold");
-                doc.text("***Precios sujetos a cambios sin previo aviso, en variación al dólar americano", 15, currentY);
+                doc.text("***Precios sujetos a cambios sin previo aviso, en variación al dólar americano", 15, disclaimerYStart);
                 doc.setFontSize(5.5);
                 doc.setFont("helvetica", "normal");
                 const noticeText = "AVISO: EQUIPOS EN ABANDONO POR MÁS DE 30 DÍAS NATURALES A PARTIR DEL DÍA QUE SE DEJÓ EL EQUIPO, SERÁN DESTRUIDOS SIN GENERAR NINGÚN TIPO DE RESPONSABILIDAD A macWave Y SU EQUIPO. USTED ACEPTA YA ESTE ACUERDO, LA REVISIÓN GENERA UN COSTO DE $499 POR DIAGNÓSTICO Y USO DEL LABORATORIO, SERÁN TOMADOS EN CUENTA SI DECIDE REPARAR AQUÍ EL EQUIPO HOY. CONSULTA TÉRMINOS Y CONDICIONES EN EL SITIO WEB. ¡EQUIPOS APAGADOS O MOJADOS NO LLEVAN GARANTÍA! EL SOFTWARE COMO OFFICE SE ENVÍA POR URL Y EL USUARIO DEBE INSTALARLO Y NOTIFICAR PARA ACTIVARLO.";
                 const splitN = doc.splitTextToSize(noticeText, 180);
-                doc.text(splitN, 15, currentY + 5);
+                doc.text(splitN, 15, disclaimerYStart + 5);
 
                 // 7. Dynamic Bottom Certification Logos
+                const certRowY = 270;
+                const footerY = 286;
                 const maxCertW = 22.75;
                 const maxCertH = 9.75;
                 const pageWidth = 180;
                 const marginLeft = 15;
 
-                // Pre-calculate each logo's draw dimensions
                 const drawDims = BOTTOM_CERT_LOGOS.map(logo => {
                     const ratio = (logo.w && logo.h) ? (logo.w / logo.h) : 1;
                     let dH = maxCertH;
@@ -1725,7 +1736,6 @@
                     return { dW, dH };
                 });
 
-                // Calculate total logos width and gap for even distribution
                 const totalLogoW = drawDims.reduce((acc, d) => acc + d.dW, 0);
                 const dynamicGap = (pageWidth - totalLogoW) / (BOTTOM_CERT_LOGOS.length + 1);
 
@@ -1738,11 +1748,10 @@
                     startX += dW + dynamicGap;
                 });
 
-                doc.setFontSize(6.5); // Slightly smaller to prevent overlap
+                doc.setFontSize(6.5);
                 doc.setFont("helvetica", "bold");
                 doc.text("ESPECIALISTAS EN TECNOLOGÍA ROLDU SAS. DE C.V", 12, footerY);
                 doc.setFont("helvetica", "normal");
-                // Anchor center text to center the address
                 doc.text("Visítanos en Recovery Pro sucursal Condesa\nSalvador Alvarado 72 oficina 208, Escandón. CDMX", 105, footerY, { align: "center" });
                 doc.text(`sitio web: https://macwave.com.mx\nmail: contabilidad@macwave.com.mx`, 198, footerY, { align: "right" });
 
@@ -1812,7 +1821,7 @@
                 window.location.href = 'tecnicos.html';
             };
 
-            
+
         });
     </script>
 </body>
