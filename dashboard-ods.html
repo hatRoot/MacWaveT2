@@ -83,7 +83,7 @@
             background: var(--mac-card);
             border: 1px solid var(--mac-border);
             color: var(--mac-text);
-            padding: 6px 12px;
+            padding: 6px 14px;
             border-radius: 6px;
             font-size: 12px;
             font-weight: 500;
@@ -93,10 +93,17 @@
             align-items: center;
             justify-content: center;
             transition: all 0.2s;
+            gap: 6px;
         }
 
         .btn:hover {
             background: var(--mac-card-hover);
+        }
+
+        .btn.active {
+            background: var(--mac-blue);
+            border-color: var(--mac-blue);
+            color: white;
         }
 
         .btn-primary {
@@ -111,6 +118,33 @@
 
         .btn-danger {
             color: var(--mac-red);
+        }
+
+        /* Views Toggle */
+        .view-toggle {
+            display: flex;
+            background: #1c1c1e;
+            padding: 3px;
+            border-radius: 8px;
+            border: 1px solid var(--mac-border);
+            margin-right: 12px;
+        }
+
+        .view-btn {
+            padding: 4px 12px;
+            border-radius: 6px;
+            border: none;
+            background: transparent;
+            color: var(--mac-text-muted);
+            font-size: 11px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .view-btn.active {
+            background: #38383a;
+            color: #fff;
         }
 
         /* Main Workspace */
@@ -492,6 +526,162 @@
                 padding: 20px;
             }
         }
+
+        /* Kanban Styles */
+        .kanban-view {
+            display: none;
+            flex: 1;
+            background: #000;
+            overflow-x: auto;
+            overflow-y: hidden;
+            padding: 20px;
+        }
+
+        .kanban-board {
+            display: flex;
+            gap: 16px;
+            height: 100%;
+            min-width: max-content;
+        }
+
+        .kanban-column {
+            width: 300px;
+            background: #1c1c1e;
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            max-height: 100%;
+            border: 1px solid #38383a;
+        }
+
+        .column-header {
+            padding: 12px 16px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #8e8e93;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .column-count {
+            background: #2c2c2e;
+            padding: 2px 6px;
+            border-radius: 10px;
+            color: #fff;
+        }
+
+        .kanban-cards {
+            flex: 1;
+            overflow-y: auto;
+            padding: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .kanban-card {
+            background: #2c2c2e;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            padding: 12px;
+            cursor: grab;
+            transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
+            user-select: none;
+        }
+
+        .kanban-card:hover {
+            background: #3a3a3c;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+        }
+
+        .kanban-card:active {
+            cursor: grabbing;
+        }
+
+        .k-card-folio {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--mac-blue);
+            margin-bottom: 4px;
+        }
+
+        .k-card-client {
+            font-size: 12px;
+            font-weight: 500;
+            margin-bottom: 6px;
+            color: #fff;
+        }
+
+        .k-card-info {
+            font-size: 10px;
+            color: #8e8e93;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .dragging {
+            opacity: 0.5;
+            background: #1c1c1e !important;
+            border: 1px dashed var(--mac-blue) !important;
+        }
+
+        .column-highlight {
+            background: rgba(10, 132, 255, 0.05);
+            border: 1px dashed rgba(10, 132, 255, 0.5) !important;
+        }
+
+        .add-card-btn {
+            padding: 10px;
+            margin: 8px 12px 12px;
+            background: transparent;
+            border: 1px dashed var(--mac-border);
+            border-radius: 8px;
+            color: var(--mac-text-muted);
+            font-size: 11px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            transition: 0.2s;
+        }
+
+        .add-card-btn:hover {
+            background: rgba(255, 255, 255, 0.05);
+            color: #fff;
+            border-color: var(--mac-blue);
+        }
+
+        /* Modal Overlay Styles */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            z-index: 20000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal-card {
+            background: #1c1c1e;
+            width: 450px;
+            border-radius: 16px;
+            border: 1px solid var(--mac-border);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
+            padding: 24px;
+        }
     </style>
 </head>
 
@@ -512,12 +702,17 @@
             MacWave Service <span class="badge">GSX Portal</span>
         </div>
         <div class="header-actions">
+            <!-- View Toggle -->
+            <div class="view-toggle">
+                <button class="view-btn active" onclick="switchView('list')">Lista</button>
+                <button class="view-btn" onclick="switchView('kanban')">Trello Mode</button>
+            </div>
             <a href="cotizaciones.html" class="btn">Volver a Cotizaciones</a>
             <button class="btn btn-danger" id="logout-btn">Cerrar Sesión</button>
         </div>
     </header>
 
-    <div class="workspace">
+    <div class="workspace" id="list-view-container">
         <aside class="sidebar">
             <div class="sidebar-header">
                 <div class="search-wrapper">
@@ -546,6 +741,40 @@
         </main>
     </div>
 
+    <!-- Kanban View Container -->
+    <div class="kanban-view" id="kanban-view-container">
+        <div class="kanban-board" id="kanban-board">
+            <!-- Columns populated by JS -->
+        </div>
+    </div>
+
+    <!-- Quick Create Modal -->
+    <div class="modal-overlay" id="quick-create-modal">
+        <div class="modal-card">
+            <h3 style="margin-bottom: 20px; font-size: 18px;">Nueva Orden de Servicio</h3>
+            <div class="form-group" style="margin-bottom: 15px;">
+                <label>Folio (Automático si se deja vacío)</label>
+                <input type="text" id="new-ods-folio" class="form-control" placeholder="Ej. MW-1234">
+            </div>
+            <div class="form-group" style="margin-bottom: 15px;">
+                <label>Cliente</label>
+                <input type="text" id="new-ods-cliente" class="form-control" placeholder="Nombre completo">
+            </div>
+            <div class="form-group" style="margin-bottom: 15px;">
+                <label>Equipo / Modelo</label>
+                <input type="text" id="new-ods-proyecto" class="form-control" placeholder="Ej. MacBook Pro A2141">
+            </div>
+            <div class="form-group" style="margin-bottom: 20px;">
+                <label>Número de Serie</label>
+                <input type="text" id="new-ods-serie" class="form-control" placeholder="C02...">
+            </div>
+            <div style="display: flex; gap: 10px; justify-content: flex-end;">
+                <button class="btn" onclick="closeQuickCreate()">Cancelar</button>
+                <button class="btn btn-primary" id="btn-save-quick-ods" onclick="saveQuickODS()">Crear Orden</button>
+            </div>
+        </div>
+    </div>
+
     <script>
         // Supabase Init
         const _sbUrl = 'https://lifxtyhvgnxjjqgbzare.supabase.co';
@@ -571,6 +800,7 @@
 
         let allODS = [];
         let currentSelectedId = null;
+        let currentView = 'list'; // 'list' or 'kanban'
 
         function getStatusColor(status) {
             return STATUS_CONFIG[status] ? STATUS_CONFIG[status].color : '#8E8E93';
@@ -587,7 +817,220 @@
                 return;
             }
             allODS = data || [];
-            renderSidebar();
+            if (currentView === 'list') {
+                renderSidebar();
+            } else {
+                renderKanban();
+            }
+        }
+
+        function switchView(view) {
+            currentView = view;
+            const listCont = document.getElementById('list-view-container');
+            const kanbanCont = document.getElementById('kanban-view-container');
+            const buttons = document.querySelectorAll('.view-btn');
+
+            buttons.forEach(btn => btn.classList.remove('active'));
+            if (view === 'list') {
+                listCont.style.display = 'flex';
+                kanbanCont.style.display = 'none';
+                buttons[0].classList.add('active');
+                renderSidebar();
+            } else {
+                listCont.style.display = 'none';
+                kanbanCont.style.display = 'flex';
+                buttons[1].classList.add('active');
+                renderKanban();
+            }
+        }
+
+        function renderKanban() {
+            const board = document.getElementById('kanban-board');
+            board.innerHTML = '';
+
+            // Get unique statuses in order from CONFIG, excluding 'Nota General'
+            const statuses = Object.keys(STATUS_CONFIG).filter(s => s !== 'Nota General');
+
+            statuses.forEach(status => {
+                const columnODS = allODS.filter(o => (o.status || 'Recibido') === status);
+                const col = document.createElement('div');
+                col.className = 'kanban-column';
+                col.dataset.status = status;
+
+                col.innerHTML = `
+                    <div class="column-header">
+                        ${status}
+                        <span class="column-count">${columnODS.length}</span>
+                    </div>
+                    <div class="kanban-cards" ondragover="handleDragOver(event)" ondrop="handleDrop(event, '${status}')" ondragleave="handleDragLeave(event)">
+                        ${columnODS.map(o => `
+                            <div class="kanban-card" draggable="true" ondragstart="handleDragStart(event, '${o.id}')" onclick="openODSFromKanban('${o.id}')">
+                                <div class="k-card-folio">${o.folio}</div>
+                                <div class="k-card-client">${o.cliente || 'Sin cliente'}</div>
+                                <div class="k-card-info">
+                                    <span>${(o.fecha || '').split(' ')[0]}</span>
+                                    <span style="color: ${getStatusColor(status)}">●</span>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                    <button class="add-card-btn" onclick="openQuickCreate('${status}')">
+                        <span>+</span> Añadir Orden
+                    </button>
+                `;
+                board.appendChild(col);
+            });
+        }
+
+        // Modal Functions
+        let targetInitialStatus = 'Recibido';
+
+        function openQuickCreate(status = 'Recibido') {
+            targetInitialStatus = status;
+            document.getElementById('quick-create-modal').classList.add('active');
+            // Suggest a folio
+            const lastFolio = allODS.length > 0 ? allODS[0].folio : 'MW-1000';
+            const num = parseInt(lastFolio.replace(/\D/g, '')) || 1000;
+            document.getElementById('new-ods-folio').value = `MW-${num + 1}`;
+        }
+
+        function closeQuickCreate() {
+            document.getElementById('quick-create-modal').classList.remove('active');
+        }
+
+        async function saveQuickODS() {
+            const btn = document.getElementById('btn-save-quick-ods');
+            const folio = document.getElementById('new-ods-folio').value;
+            const cliente = document.getElementById('new-ods-cliente').value;
+            const proyecto = document.getElementById('new-ods-proyecto').value;
+            const serie = document.getElementById('new-ods-serie').value;
+
+            if (!cliente) return alert("El nombre del cliente es obligatorio");
+
+            btn.disabled = true;
+            btn.innerText = "Creando...";
+
+            const now = new Date();
+            const dateStr = now.toLocaleDateString('es-MX', { day: '2-digit', month: '2-digit', year: 'numeric' }) + ' ' + now.toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit' });
+
+            const newODS = {
+                folio,
+                cliente,
+                proyecto,
+                serie,
+                status: targetInitialStatus,
+                fecha: dateStr,
+                tecnico: 'Asignado vía Trello',
+                notas: JSON.stringify([{
+                    date: dateStr,
+                    status: targetInitialStatus,
+                    text: 'Orden creada directamente desde el Tablero Kanban.',
+                    img: null
+                }])
+            };
+
+            try {
+                const { data, error } = await supabaseClient
+                    .from('ordenes_servicio')
+                    .insert([newODS])
+                    .select();
+
+                if (error) throw error;
+
+                allODS.unshift(data[0]);
+                closeQuickCreate();
+                if (currentView === 'kanban') renderKanban();
+                else renderSidebar();
+
+                // Reset form
+                document.getElementById('new-ods-cliente').value = '';
+                document.getElementById('new-ods-proyecto').value = '';
+                document.getElementById('new-ods-serie').value = '';
+
+            } catch (err) {
+                alert("Error: " + err.message);
+            } finally {
+                btn.disabled = false;
+                btn.innerText = "Crear Orden";
+            }
+        }
+
+        // Drag & Drop Handlers
+        let draggedODSId = null;
+
+        function handleDragStart(e, id) {
+            draggedODSId = id;
+            e.target.classList.add('dragging');
+            e.dataTransfer.setData('text/plain', id);
+        }
+
+        function handleDragOver(e) {
+            e.preventDefault();
+            const container = e.target.closest('.kanban-cards');
+            if (container) container.classList.add('column-highlight');
+        }
+
+        function handleDragLeave(e) {
+            const container = e.target.closest('.kanban-cards');
+            if (container) container.classList.remove('column-highlight');
+        }
+
+        async function handleDrop(e, newStatus) {
+            e.preventDefault();
+            const container = e.target.closest('.kanban-cards');
+            if (container) container.classList.remove('column-highlight');
+
+            document.querySelectorAll('.kanban-card').forEach(c => c.classList.remove('dragging'));
+
+            if (!draggedODSId) return;
+
+            const ods = allODS.find(o => o.id === draggedODSId);
+            if (!ods || ods.status === newStatus) return;
+
+            // Optimistic UI
+            const oldStatus = ods.status;
+            ods.status = newStatus;
+
+            // Add automated note for status change
+            let historial = [];
+            try {
+                historial = JSON.parse(ods.notas || '[]');
+            } catch (err) {
+                if (ods.notas) historial = [{ date: ods.fecha || '', status: 'Nota General', text: ods.notas, img: null }];
+            }
+
+            const now = new Date();
+            const dateStr = now.toLocaleDateString('es-MX', { day: '2-digit', month: '2-digit', year: 'numeric' }) + ' ' + now.toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit' });
+
+            historial.push({
+                date: dateStr,
+                status: newStatus,
+                text: `Cambio de estatus vía Tablero: ${oldStatus} -> ${newStatus}`,
+                img: null
+            });
+
+            const newNotasString = JSON.stringify(historial);
+            ods.notas = newNotasString;
+
+            renderKanban();
+
+            // Persist to Supabase
+            const { error } = await supabaseClient
+                .from('ordenes_servicio')
+                .update({ status: newStatus, notas: newNotasString })
+                .eq('id', draggedODSId);
+
+            if (error) {
+                alert('Error al actualizar: ' + error.message);
+                loadData(); // REVERT
+            }
+        }
+
+        function openODSFromKanban(id) {
+            currentSelectedId = id;
+            const ods = allODS.find(o => o.id === id);
+            switchView('list');
+            renderDetail(ods);
         }
 
         function renderSidebar(query = '') {
