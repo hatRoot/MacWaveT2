@@ -43,6 +43,19 @@
             --apple-blue: #0071e3;
             --preview-bg: #ffffff;
             --terms-teal: #006680;
+
+            /* MacWave GSX Theme */
+            --mac-bg: #000000;
+            --mac-sidebar: #1C1C1E;
+            --mac-card: #1C1C1E;
+            --mac-card-hover: #2C2C2E;
+            --mac-border: #38383A;
+            --mac-text: #F5F5F7;
+            --mac-text-muted: #8E8E93;
+            --mac-blue: #0A84FF;
+            --mac-green: #30D158;
+            --mac-red: #FF453A;
+            --mac-input-bg: #2C2C2E;
         }
 
         * {
@@ -61,12 +74,107 @@
         }
 
         body {
-            background-color: var(--bg-dark);
-            color: var(--text-main);
-            line-height: 1.5;
-            padding: 24px;
-            min-height: 100vh;
-            background-image: radial-gradient(circle at top right, rgba(0, 113, 227, 0.1), transparent);
+            background-color: var(--mac-bg);
+            color: var(--mac-text);
+            height: 100vh;
+            display: flex;
+            flex-direction: row;
+            overflow: hidden;
+            background-image: radial-gradient(circle at top right, rgba(0, 113, 227, 0.05), transparent);
+        }
+
+        /* Sidebar Navigation (iTunes Style) */
+        .app-sidebar {
+            width: 280px;
+            background: var(--mac-sidebar);
+            border-right: 1px solid var(--mac-border);
+            display: flex;
+            flex-direction: column;
+            padding: 24px 12px;
+            flex-shrink: 0;
+            z-index: 100;
+        }
+
+        .sidebar-brand {
+            padding: 0 12px 32px 12px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .brand-logo {
+            width: 32px;
+            height: 32px;
+            background: var(--mac-blue);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            color: white;
+            font-size: 18px;
+        }
+
+        .brand-text {
+            font-size: 16px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .nav-group {
+            margin-bottom: 24px;
+        }
+
+        .nav-label {
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--mac-text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            padding: 0 12px 8px 12px;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            border-radius: 10px;
+            color: var(--mac-text);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-bottom: 4px;
+            border: none;
+            background: transparent;
+            width: 100%;
+            text-align: left;
+        }
+
+        .nav-item:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .nav-item.active {
+            background: var(--mac-blue);
+            color: #fff;
+        }
+
+        .nav-item svg {
+            width: 20px;
+            height: 20px;
+            opacity: 0.8;
+        }
+
+        .app-main {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+            position: relative;
+            padding: 40px;
         }
 
         .app-container {
@@ -758,32 +866,65 @@
 </head>
 
 <body>
-    <div class="app-container">
-        <header>
-            <div>
-                <h1>ORDEN DE SERVICIO</h1>
-                <p>macWave.com.mx &mdash; Sistema de Gestión Técnica</p>
+    <!-- Apple Sidebar Navigation -->
+    <aside class="app-sidebar">
+        <div class="sidebar-brand">
+            <div class="brand-logo">MW</div>
+            <div class="brand-text">MacWave <span style="opacity:0.5; font-weight:400;">GSX</span></div>
+        </div>
+
+        <nav class="nav-group">
+            <div class="nav-label">Opciones de ODS</div>
+            <a href="dashboard-ods.html" class="nav-item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01" />
+                </svg>
+                Regresar al Dashboard
+            </a>
+
+            <button class="nav-item active" onclick="location.reload()">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" />
+                    <polyline points="14 2 14 8 20 8" />
+                    <line x1="12" y1="18" x2="12" y2="12" />
+                    <line x1="9" y1="15" x2="15" y2="15" />
+                </svg>
+                Nueva Cotización (ODS)
+            </button>
+
+            <div style="padding: 12px; position: relative;">
+                <button id="import-pdf-btn-side" class="nav-item"
+                    style="background: rgba(255,159,10,0.1); color: #ff9f0a; border: 1px solid rgba(255,159,10,0.2);">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3" />
+                    </svg>
+                    Importar desde PDF
+                    <span id="pdf-loading-spinner-side"
+                        style="display:none;width:12px;height:12px;border:2px solid rgba(255,159,10,0.3);border-top-color:#ff9f0a;border-radius:50%;animation:spin 1s linear infinite; margin-left:8px;"></span>
+                </button>
+                <input type="file" id="pdf-upload-input" accept="application/pdf"
+                    style="position:absolute;top:12px;left:12px;opacity:0;width:calc(100% - 24px);height:44px;cursor:pointer;">
             </div>
-            <div style="display:flex;gap:10px;align-items:center;">
-                <a href="dashboard-ods.html" id="ver-ods-btn"
-                    style="background:rgba(0,113,227,0.12);color:#0a84ff;border:1px solid rgba(0,113,227,0.3);text-transform:uppercase;font-size:0.7rem;letter-spacing:0.1em;padding:8px 16px;border-radius:6px;font-weight:700;cursor:pointer;transition:all 0.3s;text-decoration:none;display:flex;align-items:center;">
-                    📂 DASHBOARD ODS
-                </a>
-                <div style="position: relative; overflow: hidden; display: inline-block;">
-                    <button id="import-pdf-btn"
-                        style="background:rgba(255,159,10,0.12);color:#ff9f0a;border:1px solid rgba(255,159,10,0.3);text-transform:uppercase;font-size:0.7rem;letter-spacing:0.1em;padding:8px 16px;border-radius:6px;font-weight:700;cursor:pointer;transition:all 0.3s;display:flex;align-items:center;gap:6px;">
-                        📄 SUBIR PDF PARA LLENAR ODS
-                        <span id="pdf-loading-spinner"
-                            style="display:none;width:12px;height:12px;border:2px solid rgba(255,159,10,0.3);border-top-color:#ff9f0a;border-radius:50%;animation:spin 1s linear infinite;"></span>
-                    </button>
-                    <input type="file" id="pdf-upload-input" accept="application/pdf"
-                        style="position:absolute;top:0;left:0;opacity:0;width:100%;height:100%;cursor:pointer;">
-                </div>
-                <button id="logout-btn" class="logout-btn">Cerrar Sesión</button>
-            </div>
+        </nav>
+
+        <nav class="nav-group" style="margin-top:auto;">
+            <button class="nav-item" style="color: var(--mac-red);" id="logout-btn-side">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9" />
+                </svg>
+                Cerrar Sesión
+            </button>
+        </nav>
+    </aside>
+
+    <main class="app-main">
+        <header style="margin-bottom: 40px; display: block;">
+            <h1 style="font-size: 2.5rem; letter-spacing: -1px; margin-bottom: 4px;">ORDEN DE SERVICIO</h1>
+            <p style="color: var(--mac-text-muted); font-size: 14px;">macWave.com.mx &mdash; Sistema de Gestión
+                Técnica</p>
         </header>
 
-        <main class="dashboard-grid">
+        <div class="dashboard-grid">
             <!-- CONTROLS -->
             <section class="controls-side">
                 <div class="glass-card">
@@ -870,8 +1011,9 @@
                     <!-- CONTENT REPLICATED BY JS -->
                 </div>
             </section>
-        </main>
-    </div>
+        </div>
+    </main>
+
 
     <!-- ODS Management Panel removed, moved to dashboard-ods.html -->
 
@@ -1162,7 +1304,7 @@
 
             // --- PDF IMPORT LOGIC ---
             const pdfInput = document.getElementById('pdf-upload-input');
-            const pdfSpinner = document.getElementById('pdf-loading-spinner');
+            const pdfSpinner = document.getElementById('pdf-loading-spinner-side');
 
             pdfInput.addEventListener('change', async (e) => {
                 const file = e.target.files[0];
@@ -1816,10 +1958,13 @@
             qrObserver.observe(document.getElementById('preview-canvas'), { childList: true, subtree: true });
 
             // Logout Handler
-            document.getElementById('logout-btn').onclick = () => {
-                sessionStorage.clear();
-                window.location.href = 'tecnicos.html';
-            };
+            const finalLogoutBtn = document.getElementById('logout-btn-side');
+            if (finalLogoutBtn) {
+                finalLogoutBtn.onclick = () => {
+                    sessionStorage.clear();
+                    window.location.href = 'tecnicos.html';
+                };
+            }
 
 
         });
