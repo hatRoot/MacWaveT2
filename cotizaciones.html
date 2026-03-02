@@ -138,16 +138,16 @@
             display: flex;
             align-items: center;
             gap: 12px;
-            padding: 12px 16px;
-            border-radius: 10px;
+            padding: 10px 16px;
+            border-radius: 8px;
             color: var(--mac-text);
             text-decoration: none;
-            font-size: 14px;
+            font-size: 13.5px;
             font-weight: 500;
             cursor: pointer;
-            transition: all 0.2s;
-            margin-bottom: 4px;
-            border: none;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            margin-bottom: 2px;
+            border: 1px solid transparent;
             background: transparent;
             width: 100%;
             text-align: left;
@@ -155,17 +155,23 @@
 
         .nav-item:hover {
             background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(255, 255, 255, 0.05);
         }
 
         .nav-item.active {
             background: var(--mac-blue);
             color: #fff;
+            box-shadow: 0 4px 12px rgba(0, 113, 227, 0.3);
         }
 
         .nav-item svg {
-            width: 20px;
-            height: 20px;
-            opacity: 0.8;
+            width: 18px;
+            height: 18px;
+            opacity: 0.7;
+        }
+
+        .nav-item.active svg {
+            opacity: 1;
         }
 
         .app-main {
@@ -913,9 +919,8 @@
                 Nueva Cotización (ODS)
             </button>
 
-            <div style="padding: 12px; position: relative;">
-                <button id="import-pdf-btn-side" class="nav-item"
-                    style="background: rgba(255,159,10,0.1); color: #ff9f0a; border: 1px solid rgba(255,159,10,0.2);">
+            <div style="position: relative;">
+                <button class="nav-item">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3" />
                     </svg>
@@ -923,8 +928,8 @@
                     <span id="pdf-loading-spinner-side"
                         style="display:none;width:12px;height:12px;border:2px solid rgba(255,159,10,0.3);border-top-color:#ff9f0a;border-radius:50%;animation:spin 1s linear infinite; margin-left:8px;"></span>
                 </button>
-                <input type="file" id="pdf-upload-input" accept="application/pdf"
-                    style="position:absolute;top:12px;left:12px;opacity:0;width:calc(100% - 24px);height:44px;cursor:pointer;">
+                <input type="file" class="pdf-file-input" accept="application/pdf"
+                    style="position:absolute;top:0;left:0;opacity:0;width:100%;height:100%;cursor:pointer;">
             </div>
 
             <button class="nav-item" id="nav-ticket-btn">
@@ -1025,10 +1030,23 @@
                             </div>
                         </div>
 
-                        <button type="submit" class="btn btn-primary">GENERAR ORDEN DE SERVICIO PDF</button>
-                        <button type="button" id="generate-ticket-btn" class="btn btn-secondary"
-                            style="width: 100%; margin-top: 12px; border: 1px solid #ffd700; color: #ffd700;">GENERAR
-                            TICKET DE TALLER</button>
+                        <button type="submit" class="btn btn-primary"
+                            style="margin-top: 30px; height: 50px; font-weight: 600; letter-spacing: 0.5px;">GENERAR
+                            ORDEN DE
+                            SERVICIO PDF</button>
+
+                        <div style="position: relative; width: 100%;">
+                            <button type="button" class="btn btn-secondary"
+                                style="width: 100%; margin-top: 12px; height: 50px; border: 1px solid rgba(255, 159, 10, 0.4); color: #ff9f0a; background: rgba(255, 159, 10, 0.05); font-weight: 600;">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2" style="margin-right: 10px; vertical-align: middle;">
+                                    <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3" />
+                                </svg>
+                                IMPORTAR DESDE PDF
+                            </button>
+                            <input type="file" class="pdf-file-input" accept="application/pdf"
+                                style="position: absolute; top: 12px; left: 0; width: 100%; height: 50px; opacity: 0; cursor: pointer;">
+                        </div>
                     </form>
                 </div>
             </section>
@@ -1331,10 +1349,10 @@
             document.getElementById('ods-notes').oninput = update;
 
             // --- PDF IMPORT LOGIC ---
-            const pdfInput = document.getElementById('pdf-upload-input');
+            const pdfInputs = document.querySelectorAll('.pdf-file-input');
             const pdfSpinner = document.getElementById('pdf-loading-spinner-side');
 
-            pdfInput.addEventListener('change', async (e) => {
+            const handlePDFUpload = async (e) => {
                 const file = e.target.files[0];
                 if (!file) return;
 
@@ -1457,9 +1475,11 @@
                     alert("❌ Ocurrió un error al intentar leer el PDF. Asegúrate de que sea un PDF generado por este sistema.");
                 } finally {
                     pdfSpinner.style.display = 'none';
-                    pdfInput.value = ''; // Reset input so same file can be selected again
+                    update();
                 }
-            });
+            };
+
+            pdfInputs.forEach(input => input.addEventListener('change', handlePDFUpload));
 
             function update() {
                 const client = document.getElementById('client-name').value;
