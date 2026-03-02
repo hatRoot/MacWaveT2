@@ -800,7 +800,18 @@
 
     <div class="workspace" id="finance-view-container"
         style="display: none; padding: 40px; overflow-y: auto; flex-direction: column;">
-        <h1 class="folio-title" style="margin-bottom: 30px;">Balance de Resultados Financieros</h1>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
+            <h1 class="folio-title">Balances Financieros</h1>
+            <button class="btn" style="border-color: var(--mac-blue); color: var(--mac-blue);"
+                onclick="openFinanceConfig()">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 15a3 3 0 100-6 3 3 0 000 6z" />
+                    <path
+                        d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-2 2 2 2 0 01-2-2v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 01-2-2 2 2 0 012-2h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 012-2 2 2 0 012 2v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 012 2 2 2 0 01-2 2h-.09a1.65 1.65 0 00-1.51 1z" />
+                </svg>
+                Configuración
+            </button>
+        </div>
         <div id="finance-metrics"
             style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;">
             <!-- Metrics cards will be injected here -->
@@ -991,26 +1002,30 @@
 
             metricsCont.innerHTML = `
                 <div class="card" style="border-top: 3px solid var(--mac-blue);">
-                    <div style="font-size: 11px; color: var(--mac-text-muted); text-transform: uppercase;">Esta Semana</div>
+                    <div style="font-size: 11px; color: var(--mac-text-muted); text-transform: uppercase;">Utilidad Servicios (Semana)</div>
                     <div style="font-size: 24px; font-weight: 900; margin: 8px 0;">$ ${stats.week.u.toLocaleString()}</div>
-                    <div style="font-size: 11px;">Ventas: $ ${stats.week.v.toLocaleString()}</div>
+                    <div style="font-size: 11px; opacity: 0.7;">Venta Bruta: $ ${stats.week.v.toLocaleString()}</div>
                 </div>
                 <div class="card" style="border-top: 3px solid var(--mac-green);">
-                    <div style="font-size: 11px; color: var(--mac-text-muted); text-transform: uppercase;">Este Mes</div>
+                    <div style="font-size: 11px; color: var(--mac-text-muted); text-transform: uppercase;">Utilidad Servicios (Mes)</div>
                     <div style="font-size: 24px; font-weight: 900; margin: 8px 0;">$ ${stats.month.u.toLocaleString()}</div>
-                    <div style="font-size: 11px;">Ventas: $ ${stats.month.v.toLocaleString()}</div>
+                    <div style="font-size: 11px; opacity: 0.7;">Venta Bruta: $ ${stats.month.v.toLocaleString()}</div>
                 </div>
                 <div class="card" style="border-top: 3px solid #5E5CE6;">
-                    <div style="font-size: 11px; color: var(--mac-text-muted); text-transform: uppercase;">Este Año</div>
+                    <div style="font-size: 11px; color: var(--mac-text-muted); text-transform: uppercase;">Utilidad Servicios (Año)</div>
                     <div style="font-size: 24px; font-weight: 900; margin: 8px 0;">$ ${stats.year.u.toLocaleString()}</div>
-                    <div style="font-size: 11px;">Ventas: $ ${stats.year.v.toLocaleString()}</div>
+                    <div style="font-size: 11px; opacity: 0.7;">Venta Bruta: $ ${stats.year.v.toLocaleString()}</div>
                 </div>
                 <div class="card" style="background: linear-gradient(135deg, #1c1c1e 0%, #2c2c2e 100%);">
-                    <div style="font-size: 11px; color: var(--mac-text-muted); text-transform: uppercase;">Utilidad Histórica</div>
+                    <div style="font-size: 11px; color: var(--mac-text-muted); text-transform: uppercase;">Utilidad Neta (Total)</div>
                     <div style="font-size: 24px; font-weight: 900; color: var(--mac-green); margin: 8px 0;">$ ${stats.total.u.toLocaleString()}</div>
-                    <div style="font-size: 11px;">Ventas Totales: $ ${stats.total.v.toLocaleString()}</div>
+                    <div style="font-size: 11px; opacity: 0.7;">Ventas Totales: $ ${stats.total.v.toLocaleString()}</div>
                 </div>
             `;
+        }
+
+        function openFinanceConfig() {
+            alert("Módulo de Configuración:\\n\\nAquí podrás definir costos base por tipo de servicio (ej. Mantenimiento = $400) para pre-llenar los balances automáticamente. \\n\\nPróximamente funcional.");
         }
 
         function renderKanban() {
@@ -1348,24 +1363,20 @@
                             </div>
                             <div class="form-grid">
                                 <div class="form-group">
-                                    <label>Costo de Piezas / Hardware</label>
-                                    <input type="number" id="inp-cost-hardware" class="form-control" value="${o.cost_pieces || '0'}" step="0.01">
+                                    <label>Venta Hardware (Refacción)</label>
+                                    <input type="number" id="inp-venta-hw" class="form-control" value="${o.venta_hw || '0'}" step="0.01" oninput="window.calculateBalance()">
                                 </div>
                                 <div class="form-group">
-                                    <label>Insumos / Otros Gastos</label>
-                                    <input type="number" id="inp-cost-other" class="form-control" value="${o.cost_supplies || '0'}" step="0.01">
+                                    <label>Costo Hardware (Prov)</label>
+                                    <input type="number" id="inp-cost-hardware" class="form-control" value="${o.cost_pieces || '0'}" step="0.01" oninput="window.calculateBalance()">
                                 </div>
-                                <div class="form-group" style="grid-column: span 2;">
-                                    <div style="background: rgba(255,255,255,0.03); padding: 15px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; border: 1px solid rgba(255,255,255,0.05);">
-                                        <div>
-                                            <div style="font-size: 10px; color: var(--mac-text-muted); text-transform: uppercase;">Utilidad Proyectada</div>
-                                            <div id="projected-utility" style="font-size: 20px; font-weight: 800; color: var(--mac-green);">$ ${(o.monto - (parseFloat(o.cost_pieces || 0) + parseFloat(o.cost_supplies || 0))).toLocaleString('es-MX')}</div>
-                                        </div>
-                                        <div style="text-align: right;">
-                                            <div style="font-size: 10px; color: var(--mac-text-muted); text-transform: uppercase;">Margen</div>
-                                            <div style="font-size: 20px; font-weight: 800; color: var(--mac-blue);">${o.monto > 0 ? (((o.monto - (parseFloat(o.cost_pieces || 0) + parseFloat(o.cost_supplies || 0))) / o.monto) * 100).toFixed(1) : 0}%</div>
-                                        </div>
-                                    </div>
+                                <div class="form-group">
+                                    <label>Costo Insumos (Otros)</label>
+                                    <input type="number" id="inp-cost-other" class="form-control" value="${o.cost_supplies || '0'}" step="0.01" oninput="window.calculateBalance()">
+                                </div>
+                                <div class="form-group">
+                                    <label style="color: var(--mac-green);">Utilidad Servicio (Mano de Obra)</label>
+                                    <div id="service-utility-badge" style="background: #30D15822; color: var(--mac-green); padding: 8px; border-radius: 6px; font-weight: bold; font-size: 16px;">$ 0</div>
                                 </div>
                             </div>
                         </div>
@@ -1373,7 +1384,6 @@
 
                         ${galleryHtml}
 
-                        <!-- Update Form -->
                         <div class="card" style="border-color: var(--mac-green);">
                             <div class="card-title" style="color: var(--mac-green);">Registrar Avance</div>
                             <div class="form-group" style="margin-bottom: 12px;">
@@ -1389,13 +1399,11 @@
                             <div class="form-group" style="margin-bottom: 16px;">
                                 <label>Evidencia Fotográfica (Opcional)</label>
                                 <input type="file" id="inp-new-img" accept="image/*" class="form-control" style="padding: 6px;">
-                                <canvas id="ev-canvas" style="display:none;"></canvas>
                             </div>
                             <button class="btn btn-primary" id="btn-add-event" style="width: 100%; justify-content: center; background: var(--mac-green); border-color: var(--mac-green);">Actualizar Historial</button>
                         </div>
                     </div>
 
-                    <!-- Right: Timeline -->
                     <div class="action-section">
                         <div class="card" style="background: transparent; border: none; padding: 0;">
                             <div class="card-title">Secuencia de Reparación</div>
@@ -1407,6 +1415,7 @@
                 </div>
             `;
 
+            if (isJoel) setTimeout(() => window.calculateBalance(), 100);
             // Bind Event Listeners
             document.getElementById('btn-save-meta').onclick = async function () {
                 const btn = this;
@@ -1427,6 +1436,7 @@
                     if (isJoel) {
                         meta.cost_pieces = parseFloat(document.getElementById('inp-cost-hardware').value) || 0;
                         meta.cost_supplies = parseFloat(document.getElementById('inp-cost-other').value) || 0;
+                        meta.venta_hw = parseFloat(document.getElementById('inp-venta-hw').value) || 0;
                     }
 
                     const { error } = await supabaseClient.from('ordenes_servicio').update(meta).eq('id', o.id);
@@ -1457,7 +1467,7 @@
                     allODS = allODS.filter(x => x.id !== o.id);
                     currentSelectedId = null;
                     renderSidebar(document.getElementById('search-input').value);
-                    document.getElementById('detail-view').innerHTML = '<div class="empty-selection"><h3>Orden Eliminada</h3></div>';
+                    document.getElementById('detail-view').innerHTML = `<div class="empty-selection"><h3>Orden Eliminada</h3></div>`;
                 } catch (e) {
                     alert('Error: ' + e.message);
                 }
@@ -1510,12 +1520,16 @@
                     }
 
                     const now = new Date();
-                    const dateStr = now.toLocaleDateString('es-MX', { day: '2-digit', month: '2-digit', year: 'numeric' }) + ' ' + now.toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit' });
+                    const dateStr = now.toLocaleDateString('es-MX', { day: '2-digit', month: '2-digit', year: 'numeric' }) + ' ' +
+                        now.toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit' });
 
-                    historial.push({ date: dateStr, status: newStatus, text: text, img: base64Img });
-                    const newNotasString = JSON.stringify(historial);
+                    const newHistorial = JSON.parse(o.notas || '[]');
+                    newHistorial.push({ date: dateStr, status: newStatus, text: text, img: base64Img });
+                    const newNotasString = JSON.stringify(newHistorial);
 
-                    const { error } = await supabaseClient.from('ordenes_servicio').update({ status: newStatus, notas: newNotasString }).eq('id', o.id);
+                    const { error } = await supabaseClient.from('ordenes_servicio').update({
+                        status: newStatus, notas: newNotasString
+                    }).eq('id', o.id);
                     if (error) throw error;
 
                     o.status = newStatus;
@@ -1533,6 +1547,17 @@
                 }
             };
         }
+
+        window.calculateBalance = function () {
+            const montoTotal = parseFloat(document.getElementById('inp-monto')?.value) || 0;
+            const costHW = parseFloat(document.getElementById('inp-cost-hardware')?.value) || 0;
+            const costInsumos = parseFloat(document.getElementById('inp-cost-other')?.value) || 0;
+            const badge = document.getElementById('service-utility-badge');
+            if (badge) {
+                const utilidadReal = montoTotal - (costHW + costInsumos);
+                badge.innerText = '$ ' + utilidadReal.toLocaleString('es-MX');
+            }
+        };
 
         // Run
         loadData();
