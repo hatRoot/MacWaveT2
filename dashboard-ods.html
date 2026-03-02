@@ -1338,6 +1338,7 @@
         });
 
         function renderDetail(o) {
+            const isJoel = sessionStorage.getItem('macwave_user') === 'joel.duran.mendoza@me.com' || sessionStorage.getItem('macwave_user') === 'joel';
             const detailView = document.getElementById('detail-view');
             const statusColor = getStatusColor(o.status);
 
