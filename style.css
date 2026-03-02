@@ -179,18 +179,17 @@ h3 {
 
 /* Header */
 .main-header {
-    background-color: rgba(0, 0, 0, 0.85); /* Black with slight transparency */
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    padding: 16px 0; /* More air */
+    background-color: #000000;
+    /* NEGRO PURO */
+    padding: 10px 0;
     position: sticky !important;
     top: 0;
     left: 0;
     right: 0;
     width: 100%;
     z-index: 10000 !important;
-    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    /* MÁXIMA PRIORIDAD */
+    transition: all 0.3s ease;
 }
 
 .header-content {
@@ -207,34 +206,37 @@ h3 {
     text-decoration: none;
 }
 
-/* Logo Styles */
 .logo-img {
-    height: 38px;
+    height: 40px;
+    /* Altura del circuito (Ajusta la fuente del texto en proporción) */
     width: auto;
-    margin-right: 14px;
-    transition: transform 0.3s ease;
+    margin-right: 10px;
 }
 
-.logo-link:hover .logo-img {
-    transform: scale(1.05);
+.logo-text-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    line-height: 1.1;
+    /* Espaciado ajustado */
 }
 
 .logo-brand {
-    font-size: 1.4rem;
-    font-weight: 700;
+    /* Mac Wave T2 */
+    font-size: 1.6em;
+    /* Tamaño principal, en proporción al logo de 40px */
+    font-weight: var(--font-weight-bold);
     color: var(--text-primary) !important;
     white-space: nowrap;
-    letter-spacing: -0.02em;
 }
 
 .logo-subtext {
-    font-size: 0.65rem;
-    font-weight: 400;
-    color: rgba(255, 255, 255, 0.5);
-    line-height: 1.4;
+    /* Reparaciones y piezas Mac + Para tu dispositivo... */
+    font-size: 0.75em;
+    font-weight: var(--font-weight-regular);
+    color: var(--text-secondary);
+    line-height: 1.2;
     white-space: nowrap;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
 }
 
 .logo-subtext.subtext-2 {
@@ -243,24 +245,14 @@ h3 {
     color: var(--text-muted);
 }
 
-/* Navigation */
-.main-nav {
-    display: flex;
-    gap: 24px;
-    align-items: center;
-    margin: 0 auto; /* Center navigation between logo and actions */
-}
-
+/* Navegación */
 .main-nav a {
-    font-weight: 500;
-    color: rgba(255, 255, 255, 0.7);
-    font-size: 0.88rem;
-    transition: all 0.3s ease;
+    margin-left: 20px;
+    font-weight: var(--font-weight-medium);
+    color: var(--text-secondary);
+    position: relative;
+    padding-bottom: 5px;
     white-space: nowrap;
-}
-
-.main-nav a:hover {
-    color: #fff;
 }
 
 /* Ocultar "Inicio" y su icono de casa en el modo escritorio para evitar que se amontone */
@@ -3191,51 +3183,33 @@ details.modern-accordion[open] {
 
 
 
-/* Futuristic Buttons for Header */
+/* Futuristic WhatsApp Button for Header */
 .neon-green {
-    background: rgba(48, 209, 88, 0.1) !important;
-    color: #30D158 !important;
-    border: 1px solid rgba(48, 209, 88, 0.3) !important;
-    box-shadow: 0 4px 12px rgba(48, 209, 88, 0.1) !important;
+    background: rgba(37, 211, 102, 0.1) !important;
+    color: #25D366 !important;
+    border: 1px solid #25D366 !important;
+    box-shadow: 0 0 10px rgba(37, 211, 102, 0.4), inset 0 0 5px rgba(37, 211, 102, 0.2) !important;
     text-transform: uppercase;
-    letter-spacing: 1px;
-    font-weight: 600 !important;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
-    border-radius: 50px !important;
-    padding: 10px 18px !important;
-    font-size: 0.75rem !important;
+    letter-spacing: 1.5px;
+    font-weight: 700 !important;
+    transition: all 0.3s ease-in-out !important;
+    border-radius: 8px !important;
+    backdrop-filter: blur(4px);
     display: inline-flex;
     align-items: center;
     justify-content: center;
 }
 
 .neon-green:hover {
-    background: rgba(48, 209, 88, 0.2) !important;
-    box-shadow: 0 0 15px rgba(48, 209, 88, 0.3) !important;
-    transform: translateY(-1px);
+    background: rgba(37, 211, 102, 0.25) !important;
+    color: #25D366 !important;
+    box-shadow: 0 0 20px rgba(37, 211, 102, 0.9), inset 0 0 15px rgba(37, 211, 102, 0.5) !important;
+    border-color: #25D366 !important;
+    transform: translateY(-2px) scale(1.03);
 }
 
-.neon-yellow {
-    background: rgba(255, 204, 0, 0.1) !important;
-    color: #FFCC00 !important;
-    border: 1px solid rgba(255, 204, 0, 0.3) !important;
-    box-shadow: 0 4px 12px rgba(255, 204, 0, 0.1) !important;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    font-weight: 600 !important;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
-    border-radius: 50px !important;
-    padding: 10px 18px !important;
-    font-size: 0.75rem !important;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.neon-yellow:hover {
-    background: rgba(255, 204, 0, 0.2) !important;
-    box-shadow: 0 0 15px rgba(255, 204, 0, 0.3) !important;
-    transform: translateY(-1px);
+.neon-green svg {
+    fill: currentColor;
 }
 
 /* Accordions in light sections */
