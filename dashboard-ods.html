@@ -137,28 +137,65 @@
             display: flex;
             flex-direction: column;
             overflow: hidden;
-            background: var(--mac-bg);
+            background: #000;
             position: relative;
+        }
+
+        .btn {
+            background: #2C2C2E;
+            border: 1px solid var(--mac-border);
+            color: var(--mac-text);
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            user-select: none;
+        }
+
+        .btn:hover {
+            background: #3A3A3C;
+            border-color: #48484A;
+            transform: translateY(-1px);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+            background: #2C2C2E;
         }
 
         .btn.active {
             background: var(--mac-blue);
             border-color: var(--mac-blue);
             color: white;
+            box-shadow: 0 4px 12px rgba(10, 132, 255, 0.3);
         }
 
         .btn-primary {
             background: var(--mac-blue);
             color: #fff;
             border-color: var(--mac-blue);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
         }
 
         .btn-primary:hover {
             background: #0071E3;
+            box-shadow: 0 4px 12px rgba(10, 132, 255, 0.4);
         }
 
         .btn-danger {
             color: var(--mac-red);
+            border-color: rgba(255, 69, 58, 0.3);
+        }
+
+        .btn-danger:hover {
+            background: rgba(255, 69, 58, 0.1);
+            border-color: var(--mac-red);
         }
 
         /* Views Toggle */
@@ -298,7 +335,9 @@
             width: 8px;
             height: 8px;
             border-radius: 50%;
-            background: var(--mac-border);
+            background: #8E8E93;
+            flex-shrink: 0;
+            transition: all 0.3s ease;
         }
 
         /* Detail View */
@@ -599,29 +638,29 @@
         }
 
         .column-header {
-            padding: 20px 20px;
-            font-size: 12px;
-            font-weight: 800;
+            padding: 16px 20px;
+            font-size: 11px;
+            font-weight: 700;
             text-transform: uppercase;
-            letter-spacing: 1.5px;
-            color: #ffffff;
+            letter-spacing: 1px;
+            color: #8E8E93;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: linear-gradient(180deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0) 100%);
-            border-bottom: 2px solid rgba(255, 255, 255, 0.05);
+            background: rgba(255, 255, 255, 0.03);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
             border-top-left-radius: 12px;
             border-top-right-radius: 12px;
         }
 
         .column-count {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(4px);
-            padding: 4px 10px;
-            border-radius: 20px;
-            color: #ffffff;
-            font-size: 11px;
-            font-weight: 700;
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(8px);
+            padding: 2px 8px;
+            border-radius: 10px;
+            color: #fff;
+            font-size: 10px;
+            font-weight: 600;
             border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
@@ -883,9 +922,10 @@
             style="display: none; height: 100%; padding: 40px; overflow-y: auto; flex-direction: column;">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
                 <h1 class="folio-title">Balances Financieros</h1>
-                <button class="btn" style="border-color: var(--mac-blue); color: var(--mac-blue);"
+                <button class="btn"
+                    style="background: rgba(255, 255, 255, 0.05); border-color: rgba(255, 255, 255, 0.1); color: #fff;"
                     onclick="openFinanceConfig()">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <path d="M12 15a3 3 0 100-6 3 3 0 000 6z" />
                         <path
                             d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-2 2 2 2 0 01-2-2v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 01-2-2 2 2 0 012-2h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 012-2 2 2 0 012 2v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 012 2 2 2 0 01-2 2h-.09a1.65 1.65 0 00-1.51 1z" />
@@ -956,8 +996,8 @@
         const STATUS_CONFIG = {
             'Recibido': { color: '#FFD60A' }, // Yellow
             'Diagnóstico': { color: '#FFD60A' }, // Yellow
-            'Espera de aprobación y pago': { color: '#FF453A' }, // Red
-            'Espera de piezas': { color: '#FF453A' }, // Red
+            'Espera de aprobación y pago': { color: '#FF9F0A' }, // Orange
+            'Espera de piezas': { color: '#FF9F0A' }, // Orange
             'Reparación': { color: '#FFD60A' }, // Yellow
             'Equipo reparado': { color: '#30D158' }, // Green
             'Equipo entregado': { color: '#30D158' }, // Green
@@ -1075,25 +1115,25 @@
             });
 
             metricsCont.innerHTML = `
-                <div class="card" style="border-top: 3px solid var(--mac-blue);">
-                    <div style="font-size: 11px; color: var(--mac-text-muted); text-transform: uppercase;">Utilidad Servicios (Semana)</div>
-                    <div style="font-size: 24px; font-weight: 900; margin: 8px 0;">$ ${stats.week.u.toLocaleString()}</div>
-                    <div style="font-size: 11px; opacity: 0.7;">Venta Bruta: $ ${stats.week.v.toLocaleString()}</div>
+                <div class="card" style="background: linear-gradient(180deg, rgba(10, 132, 255, 0.1) 0%, rgba(10, 132, 255, 0.05) 100%); border-color: rgba(10, 132, 255, 0.2);">
+                    <div style="font-size: 11px; color: var(--mac-blue); font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">Utilidad Servicios (Semana)</div>
+                    <div style="font-size: 24px; font-weight: 800; margin: 12px 0; color: #fff;">$ ${stats.week.u.toLocaleString()}</div>
+                    <div style="font-size: 11px; color: var(--mac-text-muted);">Venta Bruta: $ ${stats.week.v.toLocaleString()}</div>
                 </div>
-                <div class="card" style="border-top: 3px solid var(--mac-green);">
-                    <div style="font-size: 11px; color: var(--mac-text-muted); text-transform: uppercase;">Utilidad Servicios (Mes)</div>
-                    <div style="font-size: 24px; font-weight: 900; margin: 8px 0;">$ ${stats.month.u.toLocaleString()}</div>
-                    <div style="font-size: 11px; opacity: 0.7;">Venta Bruta: $ ${stats.month.v.toLocaleString()}</div>
+                <div class="card" style="background: linear-gradient(180deg, rgba(48, 209, 88, 0.1) 0%, rgba(48, 209, 88, 0.05) 100%); border-color: rgba(48, 209, 88, 0.2);">
+                    <div style="font-size: 11px; color: var(--mac-green); font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">Utilidad Servicios (Mes)</div>
+                    <div style="font-size: 24px; font-weight: 800; margin: 12px 0; color: #fff;">$ ${stats.month.u.toLocaleString()}</div>
+                    <div style="font-size: 11px; color: var(--mac-text-muted);">Venta Bruta: $ ${stats.month.v.toLocaleString()}</div>
                 </div>
-                <div class="card" style="border-top: 3px solid #5E5CE6;">
-                    <div style="font-size: 11px; color: var(--mac-text-muted); text-transform: uppercase;">Utilidad Servicios (Año)</div>
-                    <div style="font-size: 24px; font-weight: 900; margin: 8px 0;">$ ${stats.year.u.toLocaleString()}</div>
-                    <div style="font-size: 11px; opacity: 0.7;">Venta Bruta: $ ${stats.year.v.toLocaleString()}</div>
+                <div class="card" style="background: linear-gradient(180deg, rgba(94, 92, 230, 0.1) 0%, rgba(94, 92, 230, 0.05) 100%); border-color: rgba(94, 92, 230, 0.2);">
+                    <div style="font-size: 11px; color: #5E5CE6; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">Utilidad Servicios (Año)</div>
+                    <div style="font-size: 24px; font-weight: 800; margin: 12px 0; color: #fff;">$ ${stats.year.u.toLocaleString()}</div>
+                    <div style="font-size: 11px; color: var(--mac-text-muted);">Venta Bruta: $ ${stats.year.v.toLocaleString()}</div>
                 </div>
-                <div class="card" style="background: linear-gradient(135deg, #1c1c1e 0%, #2c2c2e 100%);">
-                    <div style="font-size: 11px; color: var(--mac-text-muted); text-transform: uppercase;">Utilidad Neta (Total)</div>
-                    <div style="font-size: 24px; font-weight: 900; color: var(--mac-green); margin: 8px 0;">$ ${stats.total.u.toLocaleString()}</div>
-                    <div style="font-size: 11px; opacity: 0.7;">Ventas Totales: $ ${stats.total.v.toLocaleString()}</div>
+                <div class="card" style="background: linear-gradient(180deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.02) 100%); border-color: rgba(255, 255, 255, 0.1);">
+                    <div style="font-size: 11px; color: #fff; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">Utilidad Neta (Total)</div>
+                    <div style="font-size: 28px; font-weight: 900; color: var(--mac-green); margin: 12px 0; text-shadow: 0 0 15px rgba(48, 209, 88, 0.3);">$ ${stats.total.u.toLocaleString()}</div>
+                    <div style="font-size: 11px; color: var(--mac-text-muted);">Ventas Totales: $ ${stats.total.v.toLocaleString()}</div>
                 </div>
             `;
         }
@@ -1128,7 +1168,7 @@
                                 <div class="k-card-client">${o.cliente || 'Sin cliente'}</div>
                                 <div class="k-card-info">
                                     <span>${(o.fecha || '').split(' ')[0]}</span>
-                                    <span style="color: ${getStatusColor(status)}">●</span>
+                                    <span style="color: ${getStatusColor(status)}; text-shadow: 0 0 5px ${getStatusColor(status)}80;">●</span>
                                 </div>
                             </div>
                         `).join('')}
@@ -1320,7 +1360,7 @@
                     </div>
                     <div class="item-subtitle">${o.cliente || 'Sin cliente'}</div>
                     <div class="status-dot-text">
-                        <div class="status-dot" style="background: ${color}; ${o.id === currentSelectedId ? 'border-color: #fff;' : ''}"></div>
+                        <div class="status-dot" style="background: ${color}; box-shadow: 0 0 6px ${color}80; ${o.id === currentSelectedId ? 'border: 1px solid #fff;' : ''}"></div>
                         ${o.status || 'Recibido'}
                     </div>
                 `;
