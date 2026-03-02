@@ -534,23 +534,23 @@
         );
 
         const STEPS = [
-            { key: 'Recibido', label: 'Recibido', icon: '📥' },
+            { key: 'Recibido', label: 'Recibido', icon: '📩' },
             { key: 'Diagnóstico', label: 'Diagnóstico', icon: '🔍' },
-            { key: 'Reparando', label: 'Reparando', icon: '🔧' },
-            { key: 'Listo', label: 'Listo', icon: '🎖️' },
-            { key: 'Entregado', label: 'Entregado', icon: '🎉' },
+            { key: 'Reparación', label: 'Reparación', icon: '🔧' },
+            { key: 'Equipo reparado', label: 'Listo', icon: '✅' },
+            { key: 'Equipo entregado', label: 'Entregado', icon: '📦' },
         ];
 
         const STATUS_COLORS = {
-            'Recibido': { bg: '#0a1628', text: '#4da3ff' },
-            'Diagnóstico': { bg: '#1a1500', text: '#ffd60a' },
-            'Espera de aprobación y pago': { bg: '#2a1a00', text: '#ffaa00' },
-            'Espera de piezas': { bg: '#1a1a1a', text: '#aaaaaa' },
-            'Reparación': { bg: '#3a1a00', text: '#ff9f0a' },
-            'Equipo reparado': { bg: '#001a0a', text: '#30d158' },
-            'Equipo entregado': { bg: '#1a0a2a', text: '#bf5af2' },
-            'Equipo sin reparar': { bg: '#2a0000', text: '#ff453a' },
-            'Nota General': { bg: '#111111', text: '#8e8e93' }
+            'Recibido': { bg: '#1a1800', text: '#FFD60A' }, // Yellow
+            'Diagnóstico': { bg: '#1a1800', text: '#FFD60A' }, // Yellow
+            'Espera de aprobación y pago': { bg: '#1a0000', text: '#FF453A' }, // Red
+            'Espera de piezas': { bg: '#1a0000', text: '#FF453A' }, // Red
+            'Reparación': { bg: '#1a1800', text: '#FFD60A' }, // Yellow
+            'Equipo reparado': { bg: '#001a0a', text: '#30D158' }, // Green
+            'Equipo entregado': { bg: '#001a0a', text: '#30D158' }, // Green
+            'Equipo sin reparar': { bg: '#1a0000', text: '#FF453A' }, // Red
+            'Nota General': { bg: '#111111', text: '#8E8E93' } // Gray
         };
 
         // Read URL params (from QR scan)
