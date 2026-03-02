@@ -861,15 +861,22 @@
 
         <nav class="nav-group">
             <div class="nav-label">Herramientas</div>
-            <a href="cotizaciones.html" class="nav-item" style="text-decoration:none;">
+            <a href="cotizaciones.html" class="nav-item">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" />
                     <polyline points="14 2 14 8 20 8" />
-                    <line x1="12" y1="18" x2="12" y2="12" />
-                    <line x1="9" y1="15" x2="15" y2="15" />
                 </svg>
                 Nueva Cotización (ODS)
             </a>
+            <a href="cotizaciones.html?ticket=true" class="nav-item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M15 5l-1.41 1.41L15.17 8H4v2h11.17l-1.58 1.59L15 13l4-4-4-4z" />
+                </svg>
+                Ticket para Taller
+            </a>
+        </nav>
+
+        <nav class="nav-group" style="margin-top:auto;">
             <button class="nav-item" style="color: var(--mac-red);" id="logout-btn-side">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9" />
@@ -877,10 +884,6 @@
                 Cerrar Sesión
             </button>
         </nav>
-
-        <div style="margin-top:auto; padding: 12px; font-size: 10px; color: var(--mac-text-muted); text-align: center;">
-            MODO EXPERTO ACTIVO
-        </div>
     </aside>
 
     <main class="app-main">
@@ -1028,8 +1031,10 @@
             allODS = data || [];
             if (currentView === 'list') {
                 renderSidebar();
-            } else {
+            } else if (currentView === 'kanban') {
                 renderKanban();
+            } else if (currentView === 'finance') {
+                renderFinance();
             }
         }
 
@@ -1678,7 +1683,30 @@
         };
 
         // Run
-        loadData();
+        document.addEventListener('DOMContentLoaded', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const viewParam = urlParams.get('view');
+            const idParam = urlParams.get('id');
+
+            loadData().then(() => {
+                if (viewParam) {
+                    switchView(viewParam);
+                    if (idParam) {
+                        const target = allODS.find(o => o.folio === idParam || o.id === idParam);
+                        if (target) renderDetail(target);
+                    }
+                }
+            });
+
+            // Logout Handler
+            const lBtn = document.getElementById('logout-btn-side');
+            if (lBtn) {
+                lBtn.onclick = () => {
+                    sessionStorage.clear();
+                    window.location.href = 'tecnicos.html';
+                };
+            }
+        });
     </script>
 </body>
 
