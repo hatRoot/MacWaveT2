@@ -1763,7 +1763,7 @@
                 getNextFolio(true);
                 document.getElementById('quote-number').value = getNextFolio();
 
-                // ── Auto-save ODS to Supabase (Using currentFolio) ────────────────────────
+                // ── Auto-save ODS to Supabase ────────────────────────
                 const odsData = {
                     folio: currentFolio,
                     cliente: document.getElementById('client-name').value || '',
@@ -1771,7 +1771,7 @@
                     tecnico: document.getElementById('tech-name').value || '',
                     serie: document.getElementById('serial-number').value || '',
                     fecha: document.getElementById('quote-date').value || '',
-                    monto: parseFloat(document.getElementById('total-display')?.textContent?.replace(/[^0-9.]/g, '') || '0'),
+                    monto: total, // Use the total calculated in the submit handler
                     status: 'Recibido',
                     notas: document.getElementById('ods-notes').value || ''
                 };

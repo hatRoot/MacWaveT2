@@ -754,6 +754,11 @@
             <div class="view-toggle">
                 <button class="view-btn active" onclick="switchView('list')">Lista</button>
                 <button class="view-btn" onclick="switchView('kanban')">Trello Mode</button>
+                <script>
+                    if (sessionStorage.getItem('macwave_user') === 'joel.duran.mendoza@me.com' || sessionStorage.getItem('macwave_user') === 'joel') {
+                        document.write('<button class="view-btn" onclick="switchView(\'finance\')">Finanzas</button>');
+                    }
+                </script>
             </div>
             <a href="cotizaciones.html" class="btn">Volver a Cotizaciones</a>
             <button class="btn btn-danger" id="logout-btn">Cerrar Sesión</button>
@@ -784,9 +789,40 @@
                 </svg>
                 <h3>Ninguna ODS Seleccionada</h3>
                 <p style="margin-top: 8px; font-size: 13px;">Selecciona una orden de servicio en la lista de la
-                    izquierda.</p>
+                    izquierda o cambia al modo Trello.</p>
             </div>
         </main>
+    </div>
+
+    <div class="workspace" id="kanban-view-container" style="display: none;">
+        <div class="kanban-board" id="kanban-board"></div>
+    </div>
+
+    <div class="workspace" id="finance-view-container"
+        style="display: none; padding: 40px; overflow-y: auto; flex-direction: column;">
+        <h1 class="folio-title" style="margin-bottom: 30px;">Balance de Resultados Financieros</h1>
+        <div id="finance-metrics"
+            style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;">
+            <!-- Metrics cards will be injected here -->
+        </div>
+        <div class="card" style="margin-top: 30px; padding: 0; overflow: hidden;">
+            <div class="column-header">Desglose de Utilidad por Orden</div>
+            <div style="overflow-x: auto;">
+                <table id="finance-table" style="width: 100%; border-collapse: collapse; font-size: 13px;">
+                    <thead style="background: rgba(255,255,255,0.05);">
+                        <tr style="text-align: left;">
+                            <th style="padding: 12px; color: var(--mac-text-muted);">Folio</th>
+                            <th style="padding: 12px; color: var(--mac-text-muted);">Fecha</th>
+                            <th style="padding: 12px; color: var(--mac-text-muted);">Venta</th>
+                            <th style="padding: 12px; color: var(--mac-text-muted);">Costo</th>
+                            <th style="padding: 12px; color: var(--mac-primary);">Utilidad</th>
+                            <th style="padding: 12px; color: var(--mac-text-muted);">Margen</th>
+                        </tr>
+                    </thead>
+                    <tbody id="finance-table-body"></tbody>
+                </table>
+            </div>
+        </div>
     </div>
 
     <!-- Kanban View Container -->
@@ -876,20 +912,105 @@
             currentView = view;
             const listCont = document.getElementById('list-view-container');
             const kanbanCont = document.getElementById('kanban-view-container');
+            const financeCont = document.getElementById('finance-view-container');
             const buttons = document.querySelectorAll('.view-btn');
 
             buttons.forEach(btn => btn.classList.remove('active'));
             if (view === 'list') {
                 listCont.style.display = 'flex';
                 kanbanCont.style.display = 'none';
+                financeCont.style.display = 'none';
                 buttons[0].classList.add('active');
                 renderSidebar();
-            } else {
+            } else if (view === 'kanban') {
                 listCont.style.display = 'none';
                 kanbanCont.style.display = 'flex';
+                financeCont.style.display = 'none';
                 buttons[1].classList.add('active');
                 renderKanban();
+            } else if (view === 'finance') {
+                listCont.style.display = 'none';
+                kanbanCont.style.display = 'none';
+                financeCont.style.display = 'flex';
+                if (buttons[2]) buttons[2].classList.add('active');
+                renderFinance();
             }
+        }
+
+        function renderFinance() {
+            const metricsCont = document.getElementById('finance-metrics');
+            const tableBody = document.getElementById('finance-table-body');
+
+            const now = new Date();
+            const oneWeek = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+            const oneMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+            const oneYear = new Date(now.getFullYear(), 0, 1);
+
+            const parseDate = (dStr) => {
+                if (!dStr) return new Date(0);
+                const [d, t] = dStr.split(' ');
+                const [day, month, year] = d.split('/');
+                return new Date(year, month - 1, day);
+            };
+
+            const stats = {
+                week: { v: 0, u: 0 },
+                month: { v: 0, u: 0 },
+                year: { v: 0, u: 0 },
+                total: { v: 0, c: 0, u: 0 }
+            };
+
+            const finished = allODS.filter(o => o.monto > 0);
+            tableBody.innerHTML = '';
+
+            finished.forEach(o => {
+                const oDate = parseDate(o.fecha);
+                const cost = parseFloat(o.cost_pieces || 0) + parseFloat(o.cost_supplies || 0);
+                const utility = parseFloat(o.monto || 0) - cost;
+
+                stats.total.v += parseFloat(o.monto);
+                stats.total.c += cost;
+                stats.total.u += utility;
+
+                if (oDate >= oneWeek) { stats.week.v += parseFloat(o.monto); stats.week.u += utility; }
+                if (oDate >= oneMonth) { stats.month.v += parseFloat(o.monto); stats.month.u += utility; }
+                if (oDate >= oneYear) { stats.year.v += parseFloat(o.monto); stats.year.u += utility; }
+
+                const row = document.createElement('tr');
+                row.style.borderBottom = '1px solid rgba(255,255,255,0.05)';
+                row.innerHTML = `
+                    <td style="padding: 12px; font-weight: 700;">${o.folio}</td>
+                    <td style="padding: 12px; opacity: 0.7;">${(o.fecha || '').split(' ')[0]}</td>
+                    <td style="padding: 12px;">$ ${parseFloat(o.monto).toLocaleString()}</td>
+                    <td style="padding: 12px; color: var(--mac-red);">$ ${cost.toLocaleString()}</td>
+                    <td style="padding: 12px; color: var(--mac-green); font-weight: 700;">$ ${utility.toLocaleString()}</td>
+                    <td style="padding: 12px; opacity: 0.7;">${o.monto > 0 ? ((utility / o.monto) * 100).toFixed(0) : 0}%</td>
+                `;
+                tableBody.appendChild(row);
+            });
+
+            metricsCont.innerHTML = `
+                <div class="card" style="border-top: 3px solid var(--mac-blue);">
+                    <div style="font-size: 11px; color: var(--mac-text-muted); text-transform: uppercase;">Esta Semana</div>
+                    <div style="font-size: 24px; font-weight: 900; margin: 8px 0;">$ ${stats.week.u.toLocaleString()}</div>
+                    <div style="font-size: 11px;">Ventas: $ ${stats.week.v.toLocaleString()}</div>
+                </div>
+                <div class="card" style="border-top: 3px solid var(--mac-green);">
+                    <div style="font-size: 11px; color: var(--mac-text-muted); text-transform: uppercase;">Este Mes</div>
+                    <div style="font-size: 24px; font-weight: 900; margin: 8px 0;">$ ${stats.month.u.toLocaleString()}</div>
+                    <div style="font-size: 11px;">Ventas: $ ${stats.month.v.toLocaleString()}</div>
+                </div>
+                <div class="card" style="border-top: 3px solid #5E5CE6;">
+                    <div style="font-size: 11px; color: var(--mac-text-muted); text-transform: uppercase;">Este Año</div>
+                    <div style="font-size: 24px; font-weight: 900; margin: 8px 0;">$ ${stats.year.u.toLocaleString()}</div>
+                    <div style="font-size: 11px;">Ventas: $ ${stats.year.v.toLocaleString()}</div>
+                </div>
+                <div class="card" style="background: linear-gradient(135deg, #1c1c1e 0%, #2c2c2e 100%);">
+                    <div style="font-size: 11px; color: var(--mac-text-muted); text-transform: uppercase;">Utilidad Histórica</div>
+                    <div style="font-size: 24px; font-weight: 900; color: var(--mac-green); margin: 8px 0;">$ ${stats.total.u.toLocaleString()}</div>
+                    <div style="font-size: 11px;">Ventas Totales: $ ${stats.total.v.toLocaleString()}</div>
+                </div>
+            `;
         }
 
         function renderKanban() {
@@ -1082,6 +1203,7 @@
         }
 
         function renderSidebar(query = '') {
+            const isJoel = sessionStorage.getItem('macwave_user') === 'joel.duran.mendoza@me.com' || sessionStorage.getItem('macwave_user') === 'joel';
             const listContainer = document.getElementById('ods-list');
             listContainer.innerHTML = '';
 
@@ -1218,6 +1340,37 @@
                             </div>
                         </div>
 
+                        ${isJoel ? `
+                        <div class="card" style="border-color: #5E5CE6;">
+                            <div class="card-title" style="color: #5E5CE6;">
+                                GESTIÓN FINANCIERA (PRIVADO)
+                                <div style="font-size: 10px; background: #5E5CE622; padding: 2px 6px; border-radius: 4px;">SOLO JOEL</div>
+                            </div>
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label>Costo de Piezas / Hardware</label>
+                                    <input type="number" id="inp-cost-hardware" class="form-control" value="${o.cost_pieces || '0'}" step="0.01">
+                                </div>
+                                <div class="form-group">
+                                    <label>Insumos / Otros Gastos</label>
+                                    <input type="number" id="inp-cost-other" class="form-control" value="${o.cost_supplies || '0'}" step="0.01">
+                                </div>
+                                <div class="form-group" style="grid-column: span 2;">
+                                    <div style="background: rgba(255,255,255,0.03); padding: 15px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; border: 1px solid rgba(255,255,255,0.05);">
+                                        <div>
+                                            <div style="font-size: 10px; color: var(--mac-text-muted); text-transform: uppercase;">Utilidad Proyectada</div>
+                                            <div id="projected-utility" style="font-size: 20px; font-weight: 800; color: var(--mac-green);">$ ${(o.monto - (parseFloat(o.cost_pieces || 0) + parseFloat(o.cost_supplies || 0))).toLocaleString('es-MX')}</div>
+                                        </div>
+                                        <div style="text-align: right;">
+                                            <div style="font-size: 10px; color: var(--mac-text-muted); text-transform: uppercase;">Margen</div>
+                                            <div style="font-size: 20px; font-weight: 800; color: var(--mac-blue);">${o.monto > 0 ? (((o.monto - (parseFloat(o.cost_pieces || 0) + parseFloat(o.cost_supplies || 0))) / o.monto) * 100).toFixed(1) : 0}%</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        ` : ''}
+
                         ${galleryHtml}
 
                         <!-- Update Form -->
@@ -1261,24 +1414,31 @@
                 btn.disabled = true;
 
                 try {
-                    const updates = {
+                    const monto = parseFloat(document.getElementById('inp-monto').value) || 0;
+                    const meta = {
                         cliente: document.getElementById('inp-cliente').value,
                         proyecto: document.getElementById('inp-proyecto').value,
-                        serie: document.getElementById('inp-serie').value,
                         tecnico: document.getElementById('inp-tecnico').value,
+                        serie: document.getElementById('inp-serie').value,
                         fecha: document.getElementById('inp-fecha').value,
-                        monto: parseFloat(document.getElementById('inp-monto').value) || 0
+                        monto: monto
                     };
 
-                    const { error } = await supabaseClient.from('ordenes_servicio').update(updates).eq('id', o.id);
+                    if (isJoel) {
+                        meta.cost_pieces = parseFloat(document.getElementById('inp-cost-hardware').value) || 0;
+                        meta.cost_supplies = parseFloat(document.getElementById('inp-cost-other').value) || 0;
+                    }
+
+                    const { error } = await supabaseClient.from('ordenes_servicio').update(meta).eq('id', o.id);
                     if (error) throw error;
 
-                    Object.assign(o, updates);
+                    Object.assign(o, meta);
                     const idx = allODS.findIndex(x => x.id === o.id);
                     if (idx > -1) allODS[idx] = o;
 
                     renderSidebar(document.getElementById('search-input').value);
                     alert('Información guardada correctamente.');
+                    renderDetail(o); // Re-render detail to update projected utility if Joel
                 } catch (e) {
                     alert('Error: ' + e.message);
                 } finally {
