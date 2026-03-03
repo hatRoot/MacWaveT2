@@ -14,7 +14,7 @@
     /* Texto para descripciones o info extra - Brightened from #8E8E93 for better contrast */
 
     /* VARIABLES DE COLOR DE MARCA NARANJA/BRONCE */
-    --accent-orange: #FF6600;
+    --accent-orange: #FF4500;
     /* Naranja fuerte para CTAs y Nav Hover */
     --accent-bronze: #C87533;
     --accent-blue: #0A84FF;
@@ -278,13 +278,13 @@ h3 {
 .status-circle-yellow {
     width: 10px;
     height: 10px;
-    background-color: #FF6600;
-    /* Naranja Fanta / Halloween */
+    background-color: var(--accent-orange);
+    /* Color exacto de las letras naranja */
     border-radius: 50%;
     display: inline-block;
     transition: all 0.3s ease;
     cursor: pointer;
-    box-shadow: 0 0 10px rgba(255, 102, 0, 0.7);
+    box-shadow: 0 0 10px rgba(255, 69, 0, 0.7);
     border: none;
     opacity: 1 !important;
 }
@@ -296,23 +296,23 @@ h3 {
 @keyframes pulse-orange-dot {
     0% {
         transform: scale(0.95);
-        box-shadow: 0 0 0 0 rgba(255, 102, 0, 0.7);
+        box-shadow: 0 0 0 0 rgba(255, 69, 0, 0.7);
     }
 
     70% {
         transform: scale(1);
-        box-shadow: 0 0 0 10px rgba(255, 102, 0, 0);
+        box-shadow: 0 0 0 10px rgba(255, 69, 0, 0);
     }
 
     100% {
         transform: scale(0.95);
-        box-shadow: 0 0 0 0 rgba(255, 102, 0, 0);
+        box-shadow: 0 0 0 0 rgba(255, 69, 0, 0);
     }
 }
 
 .status-circle-yellow:hover {
-    background-color: #FF6600;
-    box-shadow: 0 0 15px #FF6600, 0 0 25px rgba(255, 102, 0, 0.5);
+    background-color: var(--accent-orange);
+    box-shadow: 0 0 15px var(--accent-orange), 0 0 25px rgba(255, 69, 0, 0.5);
     transform: scale(1.15);
 }
 
