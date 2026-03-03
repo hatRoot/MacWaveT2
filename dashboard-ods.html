@@ -961,6 +961,7 @@
                     </table>
                 </div>
             </div>
+        </div><!-- /finance-view-container -->
     </main>
 
     <!-- Quick Create Modal -->
@@ -995,11 +996,6 @@
         const _sbUrl = 'https://lifxtyhvgnxjjqgbzare.supabase.co';
         const _sbKey = 'sb_publishable_7aBPXbWRwrltSuXtzsyg-g_L1Fu3rTT';
         const supabaseClient = window.supabase.createClient(_sbUrl, _sbKey);
-
-        document.getElementById('logout-btn-side').onclick = () => {
-            sessionStorage.clear();
-            window.location.href = 'tecnicos.html';
-        };
 
         const STATUS_CONFIG = {
             'Recibido': { color: '#FFD60A' }, // Yellow
