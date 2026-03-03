@@ -1997,8 +1997,7 @@
                 doc.text(`sitio web: https://macwave.com.mx\nmail: soporte@macwave.com.mx`, 198, footerY, { align: "right" });
 
                 const currentFolio = document.getElementById('quote-number').value;
-
-                window.open(doc.output('bloburl'), '_blank');
+                doc.save(`ODS_${currentFolio}.pdf`);
 
                 // Increment folio counter AFTER capturing it for current PDF/Supabase
                 getNextFolio(true);
