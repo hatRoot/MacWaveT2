@@ -1100,8 +1100,9 @@
 
             finished.forEach(o => {
                 const oDate = parseDate(o.fecha);
-                const cost = parseFloat(o.cost_pieces || 0) + parseFloat(o.cost_supplies || 0);
-                const utility = parseFloat(o.monto || 0) - cost;
+                // Since cost columns don't exist in Supabase, we default to 0 to avoid errors
+                const cost = 0;
+                const utility = parseFloat(o.monto || 0);
 
                 stats.total.v += parseFloat(o.monto);
                 stats.total.c += cost;
@@ -1559,11 +1560,7 @@
                         monto: monto
                     };
 
-                    if (isJoel) {
-                        meta.cost_pieces = parseFloat(document.getElementById('inp-cost-hardware').value) || 0;
-                        meta.cost_supplies = parseFloat(document.getElementById('inp-cost-other').value) || 0;
-                        meta.venta_hw = parseFloat(document.getElementById('inp-venta-hw').value) || 0;
-                    }
+                    // Finance columns (cost_pieces, cost_supplies, venta_hw) removed as they don't exist in Supabase schema
 
                     const { error } = await supabaseClient.from('ordenes_servicio').update(meta).eq('id', o.id);
                     if (error) throw error;
