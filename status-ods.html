@@ -594,8 +594,35 @@
 
             const timelineHtml = historial.map((ev, i) => {
                 const isLatest = i === 0;
-                const evColor = STATUS_COLORS[ev.status] ? STATUS_COLORS[ev.status].text : 'var(--muted)';
-                const evBg = STATUS_COLORS[ev.status] ? STATUS_COLORS[ev.status].bg : 'var(--border)';
+                let evColor, evBg;
+
+                const isEntregado = ods.status === 'Equipo entregado' || ods.status === 'Equipo reparado';
+
+                if (isEntregado) {
+                    evColor = '#30D158';
+                    evBg = '#001a0a';
+                } else {
+                    if (i === 0) {
+                        if (historial.length === 1) {
+                            evColor = '#30D158';
+                            evBg = '#001a0a';
+                        } else {
+                            evColor = '#FF453A';
+                            evBg = '#1a0000';
+                        }
+                    } else if (i === 1) {
+                        if (historial.length === 2) {
+                            evColor = '#30D158';
+                            evBg = '#001a0a';
+                        } else {
+                            evColor = '#FFD60A';
+                            evBg = '#1a1800';
+                        }
+                    } else {
+                        evColor = '#30D158';
+                        evBg = '#001a0a';
+                    }
+                }
 
                 return `
                     <div class="tl-item" style="display: flex; gap: 16px; margin-bottom: 24px; position: relative;">
