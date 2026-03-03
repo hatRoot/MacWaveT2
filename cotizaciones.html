@@ -1226,19 +1226,69 @@
                 }, 1000);
             });
 
-            // Folio Auto-Increment — Format: MW-YYYYMMDD-NNNN, starting at 9468
+            // Folio Auto-Increment — Format: MW-YYYYMMDD-NNNN
             const getNextFolio = (inc = false) => {
-                let num = parseInt(localStorage.getItem('quote_folio_counter') || '9468');
-                if (inc) { num++; localStorage.setItem('quote_folio_counter', num); }
+                let num = parseInt(localStorage.getItem('quote_folio_counter') || '9471');
+                if (inc) {
+                    num++;
+                    localStorage.setItem('quote_folio_counter', num);
+                }
                 const now = new Date();
                 const yyyy = now.getFullYear();
                 const mm = String(now.getMonth() + 1).padStart(2, '0');
                 const dd = String(now.getDate()).padStart(2, '0');
                 return `MW-${yyyy}${mm}${dd}-${num}`;
             };
-            if (!document.getElementById('quote-number').value || document.getElementById('quote-number').value === 'RPC-9199') {
-                document.getElementById('quote-number').value = getNextFolio();
-            }
+
+            const syncFolioFromSupabase = async () => {
+                try {
+                    const { data, error } = await window._sbClient
+                        .from('ordenes_servicio')
+                        .select('folio')
+                        .order('created_at', { ascending: false })
+                        .limit(20); // Check recent ones in case of deletions or manual edits
+
+                    if (data && data.length > 0) {
+                        let maxNum = 9470; // Start higher based on user feedback
+                        data.forEach(item => {
+                            if (item.folio && item.folio.includes('-')) {
+                                const parts = item.folio.split('-');
+                                const numPart = parseInt(parts[parts.length - 1]);
+                                if (!isNaN(numPart) && numPart > maxNum) {
+                                    maxNum = numPart;
+                                }
+                            }
+                        });
+
+                        // Increment to the NEXT available number
+                        const nextNum = maxNum + 1;
+                        localStorage.setItem('quote_folio_counter', nextNum);
+
+                        // Force update the input ONLY if the currently displayed number is lower than or equal to maxNum
+                        const quoteInput = document.getElementById('quote-number');
+                        if (quoteInput) {
+                            const currentVal = quoteInput.value;
+                            if (currentVal.includes('-')) {
+                                const currentParts = currentVal.split('-');
+                                const currentNum = parseInt(currentParts[currentParts.length - 1]);
+                                if (!isNaN(currentNum) && currentNum <= maxNum) {
+                                    quoteInput.value = getNextFolio();
+                                    update();
+                                }
+                            } else if (!currentVal || currentVal.includes('RPC')) {
+                                // Reset old RPC style
+                                quoteInput.value = getNextFolio();
+                                update();
+                            }
+                        }
+                    }
+                } catch (e) {
+                    console.error("Folio Sync Error:", e);
+                }
+            };
+
+            // Call sync immediately
+            syncFolioFromSupabase();
 
             // --- DATA PERSISTENCE LOGIC ---
             const saveFormData = () => {
