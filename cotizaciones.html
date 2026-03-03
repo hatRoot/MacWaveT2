@@ -1198,6 +1198,11 @@
             document.getElementById('generate-ticket-btn')?.addEventListener('click', showWorkshopTicket);
             document.getElementById('close-ticket-modal')?.addEventListener('click', () => { document.getElementById('ticket-modal').style.display = 'none'; });
 
+            // Auto-open ticket modal if coming from dashboard with ?ticket=true
+            if (new URLSearchParams(window.location.search).get('ticket') === 'true') {
+                showWorkshopTicket();
+            }
+
             // Parallel WhatsApp Sending Logic
             document.getElementById('send-ticket-whatsapp')?.addEventListener('click', () => {
                 const name = document.getElementById('ticket-client-name').value || 'Cliente';
