@@ -14,7 +14,7 @@
     /* Texto para descripciones o info extra - Brightened from #8E8E93 for better contrast */
 
     /* VARIABLES DE COLOR DE MARCA NARANJA/BRONCE */
-    --accent-orange: #FF4500;
+    --accent-orange: #FF6600;
     /* Naranja fuerte para CTAs y Nav Hover */
     --accent-bronze: #C87533;
     --accent-blue: #0A84FF;
@@ -278,8 +278,8 @@ h3 {
 .status-circle-yellow {
     width: 10px;
     height: 10px;
-    background-color: var(--accent-orange);
-    /* Color exacto de las letras naranja */
+    background-color: #FF4500;
+    /* Color exacto de las letras naranja del logo Apple Engineer */
     border-radius: 50%;
     display: inline-block;
     transition: all 0.3s ease;
@@ -311,8 +311,8 @@ h3 {
 }
 
 .status-circle-yellow:hover {
-    background-color: var(--accent-orange);
-    box-shadow: 0 0 15px var(--accent-orange), 0 0 25px rgba(255, 69, 0, 0.5);
+    background-color: #FF4500;
+    box-shadow: 0 0 15px #FF4500, 0 0 25px rgba(255, 69, 0, 0.5);
     transform: scale(1.15);
 }
 
@@ -689,8 +689,8 @@ h3 {
 /* 2. ESTILO DE LA LÍNEA NARANJA (Apple consulting...) - [La línea que va ARRIBA en el HTML] */
 /* ---------------------------------------------------- */
 .cert-line-2 {
-    /* Color naranja */
-    color: var(--accent-orange) !important;
+    /* Color naranja específico del logo Apple Engineer */
+    color: #FF4500 !important;
     /* Espacio entre letras aumentado */
     letter-spacing: 1.5px;
     /* Inclinación y desplazamiento */
