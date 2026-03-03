@@ -375,14 +375,49 @@ h3 {
 
 .header-cta {
     margin-left: 20px;
-    background-color: var(--accent-green);
-    /* WhatsApp en verde */
-    color: var(--primary-bg);
+    border-radius: 30px;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    padding: 10px 20px;
 }
 
-.header-cta:hover {
-    background-color: #4CAF50;
-    box-shadow: 0 4px 15px rgba(48, 209, 88, 0.4);
+.header-cta.neon-green {
+    background: rgba(48, 209, 88, 0.15);
+    color: #30D158;
+    border: 1px solid rgba(48, 209, 88, 0.4);
+    box-shadow: 0 0 10px rgba(48, 209, 88, 0.2);
+}
+
+.header-cta.neon-green:hover {
+    background: #30D158;
+    color: #000;
+    box-shadow: 0 0 20px rgba(48, 209, 88, 0.6);
+}
+
+.header-cta.neon-yellow {
+    background: rgba(255, 204, 0, 0.15);
+    color: #ffcc00;
+    border: 1px solid rgba(255, 204, 0, 0.4);
+    box-shadow: 0 0 10px rgba(255, 204, 0, 0.2);
+}
+
+.header-cta.neon-yellow:hover {
+    background: #ffcc00;
+    color: #000;
+    box-shadow: 0 0 20px rgba(255, 204, 0, 0.6);
+}
+
+.header-cta.neon-orange {
+    background: rgba(255, 102, 0, 0.15);
+    color: #ff6600;
+    border: 1px solid rgba(255, 102, 0, 0.4);
+    box-shadow: 0 0 10px rgba(255, 102, 0, 0.2);
+}
+
+.header-cta.neon-orange:hover {
+    background: #ff6600;
+    color: #fff;
+    box-shadow: 0 0 20px rgba(255, 102, 0, 0.6);
 }
 
 .large-cta {
