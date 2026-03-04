@@ -83,6 +83,15 @@
             background-image: radial-gradient(circle at top right, rgba(0, 113, 227, 0.05), transparent);
         }
 
+        /* Embedded Mode */
+        body.embedded .app-sidebar {
+            display: none !important;
+        }
+
+        body.embedded .app-main {
+            padding: 20px !important;
+        }
+
         /* Sidebar Navigation (iTunes Style) */
         .app-sidebar {
             width: 280px;
@@ -1106,6 +1115,11 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="logo_const.js"></script>
     <script>
+        // Detect if embedded
+        if (window.self !== window.top || new URLSearchParams(window.location.search).get('embed') === 'true') {
+            document.body.classList.add('embedded');
+        }
+
         // Session Security Check
         if (sessionStorage.getItem('macwave_session') !== 'authorized') {
             window.location.href = 'tecnicos.html';
@@ -1232,7 +1246,7 @@
                     const { error } = await window._sbClient
                         .from('tickets_taller')
                         .insert([ticketData]);
-                    
+
                     if (error) {
                         console.error("Error saving ticket to Supabase:", error);
                         // We proceed anyway to send WhatsApp

@@ -18,7 +18,8 @@
             --mac-border: #38383A;
             --mac-text: #F5F5F7;
             --mac-text-muted: #8E8E93;
-            --mac-blue: #0A84FF;
+            --mac-blue: #FF6600;
+            /* MacWave Orange */
             --mac-green: #30D158;
             --mac-red: #FF453A;
             --mac-input-bg: #2C2C2E;
@@ -118,9 +119,15 @@
         }
 
         .nav-item.active {
-            background: var(--mac-blue);
+            background: linear-gradient(135deg, #FF6600 0%, #FF8800 100%);
             color: #fff;
-            box-shadow: 0 4px 12px rgba(0, 113, 227, 0.3);
+            box-shadow: 0 4px 12px rgba(255, 102, 0, 0.25);
+            font-weight: 600;
+        }
+
+        .nav-item.active svg {
+            color: #fff;
+            opacity: 1;
         }
 
         .nav-item svg {
@@ -905,22 +912,15 @@
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01" />
                 </svg>
-                ODS
+                Reparaciones
             </button>
-            <a href="cotizaciones.html" class="nav-item" style="text-decoration:none;">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <line x1="12" y1="5" x2="12" y2="19"></line>
-                    <line x1="5" y1="12" x2="19" y2="12"></line>
-                </svg>
-                Crear ODS
-            </a>
             <button class="nav-item" onclick="switchView('kanban')" id="nav-kanban">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
                     <line x1="9" y1="3" x2="9" y2="21" />
                     <line x1="15" y1="3" x2="15" y2="21" />
                 </svg>
-                Reparaciones
+                Tablero Trello
             </button>
             <script>
                 if (sessionStorage.getItem('macwave_user') === 'joel.duran.mendoza@me.com' || sessionStorage.getItem('macwave_user') === 'joel') {
@@ -936,12 +936,27 @@
 
         <nav class="nav-group">
             <div class="nav-label">Herramientas</div>
+            <button class="nav-item" onclick="switchView('quote')" id="nav-quote">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"></path>
+                    <polyline points="14 2 14 8 20 8"></polyline>
+                </svg>
+                Nueva Cotización (ODS)
+            </button>
+
+            <button class="nav-item" onclick="switchView('quote')">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3" />
+                </svg>
+                Importar desde PDF
+            </button>
+
             <button class="nav-item" onclick="switchView('tickets'); setTimeout(showWorkshopTicket, 100);"
                 id="nav-item-ticket-sidebar">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M20 12v7a1 1 0 01-1 1H5a1 1 0 01-1-1v-7M16 8l-4-4-4 4M12 4v12" />
+                    <path d="M15 5l-1.41 1.41L15.17 8H4v2h11.17l-1.58 1.59L15 13l4-4-4-4z" />
                 </svg>
-                Ticket de Visita
+                Ticket para Taller
             </button>
             <button class="nav-item" onclick="switchView('tickets')" id="nav-tickets">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -951,7 +966,7 @@
                     <line x1="16" y1="17" x2="8" y2="17"></line>
                     <polyline points="10 9 9 9 8 9"></polyline>
                 </svg>
-                Ver Tickets
+                Ver Historial Tickets
             </button>
         </nav>
 
@@ -1040,6 +1055,12 @@
                     </table>
                 </div>
             </div>
+        </div>
+
+        <!-- Quote View (Iframe) -->
+        <div class="workspace" id="quote-view-container"
+            style="display: none; height: 100%; border: none; background: #000; overflow: hidden;">
+            <iframe src="cotizaciones.html?embed=true" style="width: 100%; height: 100%; border: none;"></iframe>
         </div>
     </main>
 
@@ -1272,6 +1293,7 @@
             const kanbanCont = document.getElementById('kanban-view-container');
             const financeCont = document.getElementById('finance-view-container');
             const ticketsCont = document.getElementById('tickets-view-container');
+            const quoteCont = document.getElementById('quote-view-container');
             const navItems = document.querySelectorAll('.nav-item');
 
             navItems.forEach(item => item.classList.remove('active'));
@@ -1281,6 +1303,7 @@
                 kanbanCont.style.display = 'none';
                 financeCont.style.display = 'none';
                 ticketsCont.style.display = 'none';
+                quoteCont.style.display = 'none';
                 document.getElementById('nav-list').classList.add('active');
                 renderSidebar();
             } else if (view === 'kanban') {
@@ -1288,6 +1311,7 @@
                 kanbanCont.style.display = 'flex';
                 financeCont.style.display = 'none';
                 ticketsCont.style.display = 'none';
+                quoteCont.style.display = 'none';
                 document.getElementById('nav-kanban').classList.add('active');
                 renderKanban();
             } else if (view === 'finance') {
@@ -1295,6 +1319,7 @@
                 kanbanCont.style.display = 'none';
                 financeCont.style.display = 'flex';
                 ticketsCont.style.display = 'none';
+                quoteCont.style.display = 'none';
                 const fNav = document.getElementById('nav-finance');
                 if (fNav) fNav.classList.add('active');
                 renderFinance();
@@ -1303,9 +1328,18 @@
                 kanbanCont.style.display = 'none';
                 financeCont.style.display = 'none';
                 ticketsCont.style.display = 'flex';
+                quoteCont.style.display = 'none';
                 const tNav = document.getElementById('nav-tickets');
                 if (tNav) tNav.classList.add('active');
                 renderTicketsList();
+            } else if (view === 'quote') {
+                listCont.style.display = 'none';
+                kanbanCont.style.display = 'none';
+                financeCont.style.display = 'none';
+                ticketsCont.style.display = 'none';
+                quoteCont.style.display = 'flex';
+                const qNav = document.getElementById('nav-quote');
+                if (qNav) qNav.classList.add('active');
             }
         }
 
