@@ -1205,17 +1205,40 @@
             }
 
             // Parallel WhatsApp Sending Logic
-            document.getElementById('send-ticket-whatsapp')?.addEventListener('click', () => {
+            document.getElementById('send-ticket-whatsapp')?.addEventListener('click', async () => {
                 const name = document.getElementById('ticket-client-name').value || 'Cliente';
                 const phone = document.getElementById('ticket-client-phone').value;
                 const source = document.getElementById('ticket-source').value;
                 const folio = document.getElementById('ticket-folio-display').textContent;
-                const currentTech = document.getElementById('tech-name').value.toUpperCase();
-                const techPhone = TECH_PHONES[currentTech] || '5530182604';
+                const currentTech = (document.getElementById('tech-name').value || 'JOEL DURAN').toUpperCase();
+                const techPhone = '5535757364'; // Fixed as per user request (Joel's WhatsApp)
 
                 if (!phone || phone.length < 10) {
                     alert("Por favor ingresa un número de WhatsApp de 10 dígitos.");
                     return;
+                }
+
+                // --- 0. Save to Supabase ---
+                const ticketData = {
+                    folio: folio,
+                    cliente: name,
+                    telefono: phone,
+                    origen: source,
+                    tecnico: currentTech,
+                    created_at: new Date().toISOString()
+                };
+
+                try {
+                    const { error } = await window._sbClient
+                        .from('tickets_taller')
+                        .insert([ticketData]);
+                    
+                    if (error) {
+                        console.error("Error saving ticket to Supabase:", error);
+                        // We proceed anyway to send WhatsApp
+                    }
+                } catch (err) {
+                    console.error("Supabase Exception:", err);
                 }
 
                 // Optimized Message Template
@@ -1226,7 +1249,7 @@
 
                 // 2. Parallel send to Technician (1sec delay to help avoid popup blockers)
                 setTimeout(() => {
-                    const techMessage = `TICKET GENERADO: \nCliente: ${name}\nOrigen: ${source}\nFolio: ${folio}`;
+                    const techMessage = `🚀 TICKET GENERADO: \nCliente: ${name}\nOrigen: ${source}\nFolio: ${folio}\nWhatsApp: ${phone}`;
                     window.open(`https://wa.me/52${techPhone}?text=${encodeURIComponent(techMessage)}`, '_blank');
                     document.getElementById('ticket-modal').style.display = 'none';
                 }, 1000);
