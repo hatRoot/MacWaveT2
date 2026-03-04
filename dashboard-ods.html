@@ -195,9 +195,75 @@
             border-color: rgba(255, 69, 58, 0.3);
         }
 
-        .btn-danger:hover {
-            background: rgba(255, 69, 58, 0.1);
-            border-color: var(--mac-red);
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(8px);
+            z-index: 1000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .ticket-modal-content {
+            background: #1C1C1E;
+            width: 90%;
+            max-width: 450px;
+            border-radius: 20px;
+            border: 1px solid var(--mac-border);
+            overflow: hidden;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
+        }
+
+        .ticket-modal-header {
+            padding: 20px 24px;
+            border-bottom: 1px solid var(--mac-border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .ticket-modal-body {
+            padding: 24px;
+        }
+
+        .ticket-modal-footer {
+            padding: 16px 24px;
+            border-top: 1px solid var(--mac-border);
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .form-control {
+            width: 100%;
+            background: var(--mac-input-bg);
+            border: 1px solid var(--mac-border);
+            color: white;
+            padding: 12px 16px;
+            border-radius: 10px;
+            font-size: 14px;
+            margin-bottom: 4px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 12px;
+            color: var(--mac-text-muted);
+            margin-bottom: 6px;
+            margin-top: 12px;
+        }
+
+        .btn-close {
+            background: transparent;
+            border: none;
+            color: var(--mac-text-muted);
+            cursor: pointer;
         }
 
         /* Views Toggle */
@@ -870,12 +936,13 @@
 
         <nav class="nav-group">
             <div class="nav-label">Herramientas</div>
-            <a href="cotizaciones.html?ticket=true" class="nav-item" style="text-decoration:none;">
+            <button class="nav-item" onclick="switchView('tickets'); setTimeout(showWorkshopTicket, 100);"
+                id="nav-item-ticket-sidebar">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path d="M20 12v7a1 1 0 01-1 1H5a1 1 0 01-1-1v-7M16 8l-4-4-4 4M12 4v12" />
                 </svg>
-                Ticket para Taller
-            </a>
+                Ticket de Visita
+            </button>
             <button class="nav-item" onclick="switchView('tickets')" id="nav-tickets">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"></path>
@@ -944,8 +1011,8 @@
                 <div style="display: flex; gap: 10px;">
                     <input type="text" id="tickets-search" class="search-box" placeholder="Buscar ticket..."
                         style="width: 250px;" oninput="renderTicketsList()">
-                    <button class="btn btn-primary" onclick="window.location.href='cotizaciones.html?ticket=true'">
-                        Nuevo Ticket
+                    <button class="btn btn-primary" onclick="showWorkshopTicket()">
+                        Generar Nuevo Ticket
                     </button>
                 </div>
             </div>
@@ -999,6 +1066,51 @@
             <div style="display: flex; gap: 10px; justify-content: flex-end;">
                 <button class="btn" onclick="closeQuickCreate()">Cancelar</button>
                 <button class="btn btn-primary" id="btn-save-quick-ods" onclick="saveQuickODS()">Crear Orden</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Ticket Modal -->
+    <div class="modal-overlay" id="ticket-modal">
+        <div class="ticket-modal-content">
+            <div class="ticket-modal-header">
+                <h3>Generar Ticket de Visita</h3>
+                <button class="btn-close" id="close-ticket-modal">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+            <div class="ticket-modal-body">
+                <div class="form-group">
+                    <label>Folio del Ticket</label>
+                    <div class="form-control" style="background: rgba(255,255,255,0.05); font-weight: 600;"
+                        id="ticket-folio-display"></div>
+                </div>
+                <div class="form-group">
+                    <label>Nombre del Cliente</label>
+                    <input type="text" id="ticket-client-name" class="form-control" placeholder="Nombre completo">
+                </div>
+                <div class="form-group">
+                    <label>WhatsApp (10 dígitos)</label>
+                    <input type="tel" id="ticket-client-phone" class="form-control" placeholder="Ej. 5512345678"
+                        maxlength="10">
+                </div>
+                <div class="form-group">
+                    <label>¿Cómo nos conociste?</label>
+                    <select id="ticket-source" class="form-control">
+                        <option value="GOOGLE">Google</option>
+                        <option value="RECOMENDACIÓN">Recomendación</option>
+                        <option value="INTERNET">Internet (Otro)</option>
+                        <option value="TIENDA">Tienda Física</option>
+                    </select>
+                </div>
+            </div>
+            <div class="ticket-modal-footer">
+                <button class="btn" id="cancel-ticket-modal"
+                    onclick="document.getElementById('ticket-modal').style.display = 'none';">Cancelar</button>
+                <button class="btn btn-primary" id="send-ticket-whatsapp">Generar y Enviar WhatsApp</button>
             </div>
         </div>
     </div>
@@ -1064,6 +1176,95 @@
                 renderTicketsList();
             }
         }
+
+        // --- Ticket Generator Functions ---
+        const showWorkshopTicket = () => {
+            const modal = document.getElementById('ticket-modal');
+            const folioDisplay = document.getElementById('ticket-folio-display');
+            const source = document.getElementById('ticket-source').value;
+            let counter = parseInt(localStorage.getItem('workshop_ticket_counter') || '239');
+
+            localStorage.setItem('workshop_ticket_counter', counter + 1);
+
+            const now = new Date();
+            const yy = now.getFullYear().toString().slice(2);
+            const mm = (now.getMonth() + 1).toString().padStart(2, '0');
+            const dd = now.getDate().toString().padStart(2, '0');
+            const dateStr = yy + mm + dd;
+
+            let prefix = 'G';
+            if (source === 'INTERNET') prefix = 'I';
+            if (source === 'RECOMENDACIÓN') prefix = 'R';
+
+            const folio = `${prefix}-${dateStr}-${counter}`;
+            folioDisplay.textContent = folio;
+            modal.style.display = 'flex';
+        };
+
+        // Initialize Ticket Listeners once DOM is ready
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('ticket-source')?.addEventListener('change', (e) => {
+                const folioDisplay = document.getElementById('ticket-folio-display');
+                const currentFolio = folioDisplay.textContent;
+                const source = e.target.value;
+
+                let prefix = 'G';
+                if (source === 'INTERNET') prefix = 'I';
+                if (source === 'RECOMENDACIÓN') prefix = 'R';
+
+                if (currentFolio.includes('-')) {
+                    folioDisplay.textContent = `${prefix}${currentFolio.slice(currentFolio.indexOf('-'))}`;
+                }
+            });
+
+            document.getElementById('close-ticket-modal')?.addEventListener('click', () => {
+                document.getElementById('ticket-modal').style.display = 'none';
+            });
+
+            document.getElementById('send-ticket-whatsapp')?.addEventListener('click', async () => {
+                const nameInput = document.getElementById('ticket-client-name');
+                const phoneInput = document.getElementById('ticket-client-phone');
+                const name = nameInput.value || 'Cliente';
+                const phone = phoneInput.value;
+                const source = document.getElementById('ticket-source').value;
+                const folio = document.getElementById('ticket-folio-display').textContent;
+                const currentTech = 'JOEL DURAN';
+                const techPhone = '5535757364';
+
+                if (!phone || phone.length < 10) {
+                    alert("Por favor ingresa un número de WhatsApp de 10 dígitos.");
+                    return;
+                }
+
+                const ticketData = {
+                    folio: folio,
+                    cliente: name,
+                    telefono: phone,
+                    origen: source,
+                    tecnico: currentTech,
+                    created_at: new Date().toISOString()
+                };
+
+                try {
+                    await supabaseClient.from('tickets_taller').insert([ticketData]);
+                    allTickets.unshift(ticketData);
+                    renderTicketsList();
+                } catch (err) {
+                    console.error("Supabase Save Error:", err);
+                }
+
+                const message = `Hola ${name}, este es tu ticket de visita: ${folio}. Nos conociste por ${source}. Muestra este mensaje en taller.`;
+                window.open(`https://wa.me/52${phone}?text=${encodeURIComponent(message)}`, '_blank');
+
+                setTimeout(() => {
+                    const techMessage = `🚀 TICKET GENERADO: \nCliente: ${name}\nOrigen: ${source}\nFolio: ${folio}\nWhatsApp: ${phone}`;
+                    window.open(`https://wa.me/52${techPhone}?text=${encodeURIComponent(techMessage)}`, '_blank');
+                    document.getElementById('ticket-modal').style.display = 'none';
+                    nameInput.value = '';
+                    phoneInput.value = '';
+                }, 1000);
+            });
+        });
 
         function switchView(view) {
             currentView = view;
