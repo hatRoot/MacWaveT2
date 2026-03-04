@@ -967,13 +967,6 @@
                 Nueva Cotización (ODS)
             </button>
 
-            <button class="nav-item" onclick="switchView('quote')" id="nav-pdf">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3" />
-                </svg>
-                Importar desde PDF
-            </button>
-
             <button class="nav-item" onclick="switchView('tickets'); setTimeout(showWorkshopTicket, 100);"
                 id="nav-item-ticket-sidebar">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -1311,10 +1304,10 @@
         });
 
         function switchView(view) {
-            console.log("Switching to view:", view);
+            console.log("Navigating to view:", view);
             currentView = view;
 
-            const containers = {
+            const views = {
                 'list': 'list-view-container',
                 'kanban': 'kanban-view-container',
                 'finance': 'finance-view-container',
@@ -1322,50 +1315,37 @@
                 'quote': 'quote-view-container'
             };
 
-            const navIds = {
-                'list': 'nav-list',
-                'kanban': 'nav-kanban',
-                'finance': 'nav-finance',
-                'tickets': 'nav-tickets',
-                'quote': 'nav-quote'
-            };
+            // 1. Clear all active states
+            document.querySelectorAll('.nav-item').forEach(btn => btn.classList.remove('active'));
 
-            // Hide all containers
-            Object.values(containers).forEach(id => {
+            // 2. Hide all containers
+            Object.values(views).forEach(id => {
                 const el = document.getElementById(id);
                 if (el) el.style.display = 'none';
             });
 
-            // Remove active from all nav items
-            document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
-
-            // Show target container
-            const targetId = containers[view];
-            const targetEl = document.getElementById(targetId);
-            if (targetEl) {
-                targetEl.style.display = view === 'list' || view === 'quote' ? 'flex' : 'flex';
-                // Note: some views might need specific display types like 'grid' or 'flex'
-                if (view === 'kanban') targetEl.style.display = 'flex';
-                if (view === 'list') targetEl.style.display = 'flex';
+            // 3. Show target container
+            const containerId = views[view];
+            const target = document.getElementById(containerId);
+            if (target) {
+                target.style.display = 'flex';
             }
 
-            // Set active nav item
-            // Check both specific ID and potential duplicates
-            const navId = navIds[view];
-            let navEl = document.getElementById(navId);
+            // 4. Set active button(s)
+            if (view === 'list') document.getElementById('nav-list')?.classList.add('active');
+            if (view === 'kanban') document.getElementById('nav-kanban')?.classList.add('active');
+            if (view === 'finance') document.getElementById('nav-finance')?.classList.add('active');
+            if (view === 'quote') document.getElementById('nav-quote')?.classList.add('active');
 
-            // Special case for 'tickets' which has two buttons
+            // Special: If view is tickets, we can mark both the generator and the history as active if needed, 
+            // but let's just mark the one clicked for better UX
             if (view === 'tickets') {
+                // If the click came from a specific button, that one gets handled by the browser event 
+                // but since we call it manually, let's be smart:
                 document.getElementById('nav-tickets')?.classList.add('active');
-                document.getElementById('nav-item-ticket-sidebar')?.classList.add('active');
-            } else if (navEl) {
-                navEl.classList.add('active');
-            } else if (view === 'quote') {
-                document.getElementById('nav-quote')?.classList.add('active');
-                document.getElementById('nav-pdf')?.classList.add('active');
             }
 
-            // Trigger specific renders
+            // 5. Trigger Data Loads/Renders
             if (view === 'list') renderSidebar();
             if (view === 'kanban') renderKanban();
             if (view === 'finance') renderFinance();
