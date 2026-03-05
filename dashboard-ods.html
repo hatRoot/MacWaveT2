@@ -7,6 +7,7 @@
     <title>DASHBOARD</title>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
     <style>
         :root {
@@ -270,40 +271,25 @@
         }
 
         .btn-whatsapp {
-            background: linear-gradient(180deg,
-                    rgba(255, 255, 255, 0.2) 0%,
-                    rgba(255, 255, 255, 0.1) 50%,
-                    rgba(0, 80, 40, 0.8) 50.1%,
-                    rgba(0, 60, 30, 0.6) 100%) !important;
-            color: #fff !important;
+            background: #25D366 !important;
+            color: #ffffff !important;
             width: 100% !important;
             padding: 16px !important;
             border-radius: 8px !important;
-            /* Rectangular as requested */
-            border: 1px solid rgba(37, 211, 102, 0.5) !important;
+            border: 1px solid #1da851 !important;
             font-weight: 800 !important;
             text-transform: uppercase;
             letter-spacing: 1px;
-            box-shadow:
-                0 4px 15px rgba(0, 0, 0, 0.5),
-                inset 0 1px 0 rgba(255, 255, 255, 0.3),
-                0 0 10px rgba(37, 211, 102, 0.2) !important;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3) !important;
             cursor: pointer;
             transition: all 0.25s ease !important;
         }
 
         .btn-whatsapp:hover {
-            filter: brightness(1.2) !important;
+            filter: brightness(1.05) !important;
             transform: translateY(-2px) !important;
-            border-color: #25D366 !important;
-            box-shadow:
-                0 0 25px rgba(37, 211, 102, 0.6),
-                inset 0 1px 0 rgba(255, 255, 255, 0.4) !important;
-            background: linear-gradient(180deg,
-                    rgba(255, 255, 255, 0.3) 0%,
-                    rgba(255, 255, 255, 0.15) 50%,
-                    rgba(20, 150, 60, 0.9) 50.1%,
-                    rgba(37, 211, 102, 1) 100%) !important;
+            background: #1da851 !important;
+            box-shadow: 0 6px 14px rgba(37, 211, 102, 0.4) !important;
         }
 
         .btn-primary:hover {
@@ -1438,17 +1424,74 @@
 
                 // Refresh folio preview for the next one
                 updateFolioPreview();
+
+                const btnSend = document.getElementById('btn-send-unified-ticket');
+                const originalText = btnSend.innerText;
+                btnSend.innerText = "GENERANDO TICKET...";
+                btnSend.style.opacity = '0.5';
+
+                // Temporarily hide form inputs so they aren't in the ticket image
+                const formDiv = document.querySelector('.golden-ticket div[style*="text-align: left;"]');
+                if (formDiv) formDiv.style.display = 'none';
+                btnSend.style.display = 'none';
+
+                const ticketEl = document.querySelector('.golden-ticket');
+                const canvas = await html2canvas(ticketEl, {
+                    scale: 2,
+                    backgroundColor: null
+                });
+
+                // Restore UI
+                if (formDiv) formDiv.style.display = 'block';
+                btnSend.style.display = 'inline-block';
+                btnSend.innerText = originalText;
+                btnSend.style.opacity = '1';
+
                 renderTicketsList();
 
-                // WhatsApp
-                const msg = `Hola ${name}, este es tu ticket de visita: ${folio}. Muestralo en taller.`;
-                window.open(`https://wa.me/52${phone}?text=${encodeURIComponent(msg)}`, '_blank');
+                canvas.toBlob(async (blob) => {
+                    const file = new File([blob], `Ticket_${folio}.png`, { type: 'image/png' });
+                    const msg = `Hola ${name}, este es tu ticket de visita: ${folio}. Muestralo en taller.`;
 
-                setTimeout(() => {
-                    const techMsg = `🚀 TICKET: ${folio}\nCliente: ${name}\nOrigen: ${source}\nWA: ${phone}`;
-                    window.open(`https://wa.me/52${techPhone}?text=${encodeURIComponent(techMsg)}`, '_blank');
-                    showTicketUnifiedView(); // Refresh UI
-                }, 800);
+                    if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
+                        try {
+                            await navigator.share({
+                                files: [file],
+                                title: 'Ticket de Visita',
+                                text: msg
+                            });
+                            // Admin notification
+                            setTimeout(() => {
+                                const techMsg = `🚀 TICKET: ${folio}\nCliente: ${name}\nOrigen: ${source}\nWA: ${phone}`;
+                                window.open(`https://wa.me/52${techPhone}?text=${encodeURIComponent(techMsg)}`, '_blank');
+                                showTicketUnifiedView();
+                            }, 1000);
+                            return;
+                        } catch (e) { console.log('Share canceled or failed'); }
+                    }
+
+                    // Fallback for Desktop (Copy to clipboard/Download)
+                    try {
+                        const item = new ClipboardItem({ 'image/png': blob });
+                        await navigator.clipboard.write([item]);
+                        alert("¡Imagen del ticket copiada al portapapeles! Abre WhatsApp y pega (Ctrl+V) la imagen en el chat del cliente.");
+                    } catch (e) {
+                        const link = document.createElement('a');
+                        link.download = `Ticket_${folio}.png`;
+                        link.href = canvas.toDataURL();
+                        link.click();
+                        alert("Ticket descargado como imagen. Adjúntalo o arrástralo en el chat de WhatsApp.");
+                    }
+
+                    window.open(`https://wa.me/52${phone}?text=${encodeURIComponent(msg)}`, '_blank');
+
+                    setTimeout(() => {
+                        const techMsg = `🚀 TICKET: ${folio}\nCliente: ${name}\nOrigen: ${source}\nWA: ${phone}`;
+                        window.open(`https://wa.me/52${techPhone}?text=${encodeURIComponent(techMsg)}`, '_blank');
+                        showTicketUnifiedView();
+                    }, 1000);
+
+                }, 'image/png');
 
             } catch (err) {
                 console.error("Save Error:", err);
