@@ -10,48 +10,54 @@
 
     <style>
         :root {
-            /* Apple GSX / macOS Dark Mode Palette */
+            /* Apple GSX / macOS Dark Mode Palette Base */
             --mac-bg: #000000;
-            --mac-sidebar: #1C1C1E;
-            --mac-card: #1C1C1E;
-            --mac-card-hover: #2C2C2E;
-            --mac-border: #38383A;
+            --mac-sidebar: rgba(28, 28, 30, 0.7);
+            --mac-card: rgba(28, 28, 30, 0.8);
+            --mac-border: rgba(255, 255, 255, 0.1);
             --mac-text: #F5F5F7;
             --mac-text-muted: #8E8E93;
-            --mac-blue: #FF6600;
-            /* MacWave Orange */
+            --mac-blue: #007AFF;
             --mac-green: #30D158;
             --mac-red: #FF453A;
-            --mac-input-bg: #2C2C2E;
+
+            /* --- WINDOWS VISTA AERO ENGINE --- */
+            --aero-glass: blur(20px) saturate(180%);
+            --vista-blue: #00a2ff;
+            --vista-glow: 0 0 20px rgba(0, 162, 255, 0.6);
+            --vista-active: linear-gradient(180deg,
+                    rgba(255, 255, 255, 0.5) 0%,
+                    rgba(0, 162, 255, 0.8) 50%,
+                    rgba(0, 90, 200, 0.9) 51%,
+                    rgba(0, 150, 255, 0.8) 100%);
         }
 
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            -webkit-font-smoothing: antialiased;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
         }
 
         body {
             background-color: var(--mac-bg);
+            background-image: radial-gradient(circle at top right, #1a2a3a, #000);
             color: var(--mac-text);
             height: 100vh;
             display: flex;
-            flex-direction: row;
-            /* Horizontal for Sidebar */
             overflow: hidden;
         }
 
-        /* Sidebar Navigation (iTunes Style) */
+        /* Sidebar Navigation VISTA AERO */
         .app-sidebar {
             width: 260px;
             background: var(--mac-sidebar);
+            backdrop-filter: var(--aero-glass);
+            -webkit-backdrop-filter: var(--aero-glass);
             border-right: 1px solid var(--mac-border);
             display: flex;
             flex-direction: column;
             padding: 24px 12px;
-            flex-shrink: 0;
             z-index: 100;
         }
 
@@ -62,78 +68,63 @@
             gap: 12px;
         }
 
-        .brand-logo {
-            width: 32px;
-            height: 32px;
-            background: var(--mac-blue);
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 800;
-            color: white;
-            font-size: 18px;
-        }
-
-        .brand-text {
-            font-size: 16px;
-            font-weight: 700;
-            letter-spacing: -0.5px;
-        }
-
-        .nav-group {
-            margin-bottom: 24px;
-        }
-
-        .nav-label {
-            font-size: 11px;
-            font-weight: 600;
-            color: var(--mac-text-muted);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            padding: 0 12px 8px 12px;
-        }
-
         .nav-item {
             display: flex;
             align-items: center;
             gap: 12px;
-            padding: 10px 16px;
-            border-radius: 8px;
+            padding: 12px 16px;
+            border-radius: 10px;
             color: var(--mac-text);
             text-decoration: none;
-            font-size: 13.5px;
+            font-size: 14px;
             font-weight: 500;
             cursor: pointer;
-            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-            margin-bottom: 2px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            margin-bottom: 4px;
             border: 1px solid transparent;
             background: transparent;
+            position: relative;
+            overflow: hidden;
             width: 100%;
             text-align: left;
         }
 
-        .nav-item:hover {
-            background: rgba(255, 255, 255, 0.05);
-            border-color: rgba(255, 255, 255, 0.05);
+        /* VISTA HOVER GLOW */
+        .nav-item::before {
+            content: '';
+            position: absolute;
+            top: var(--y, 50%);
+            left: var(--x, 50%);
+            width: 150px;
+            height: 150px;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.15) 0%, transparent 70%);
+            transform: translate(-50%, -50%);
+            opacity: 0;
+            transition: opacity 0.3s;
+            pointer-events: none;
         }
 
+        .nav-item:hover::before {
+            opacity: 1;
+        }
+
+        .nav-item:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(255, 255, 255, 0.1);
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.05);
+            transform: scale(1.02);
+        }
+
+        /* VISTA ACTIVE LIGHT-UP */
         .nav-item.active {
-            background: linear-gradient(180deg,
-                    rgba(255, 255, 255, 0.4) 0%,
-                    rgba(0, 162, 255, 0.8) 50%,
-                    rgba(0, 90, 200, 0.9) 51%,
-                    rgba(0, 150, 255, 0.8) 100%);
+            background: var(--vista-active);
             color: #fff;
             box-shadow:
-                0 0 15px rgba(0, 162, 255, 0.5),
-                inset 0 1px 1px rgba(255, 255, 255, 0.8),
-                inset 0 -1px 2px rgba(0, 0, 0, 0.3);
-            font-weight: 700;
+                0 0 25px rgba(0, 162, 255, 0.7),
+                inset 0 1px 2px rgba(255, 255, 255, 0.6);
             border: 1px solid rgba(255, 255, 255, 0.4);
-            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
-            position: relative;
-            overflow: hidden;
+            font-weight: 700;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
         }
 
         .nav-item.active::after {
@@ -143,34 +134,76 @@
             left: 0;
             right: 0;
             height: 50%;
-            background: linear-gradient(180deg, rgba(255, 255, 255, 0.3) 0%, transparent 100%);
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.4) 0%, transparent 100%);
             pointer-events: none;
         }
 
-        .nav-item.active svg {
-            color: #fff;
-            opacity: 1;
-            filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.5));
+        /* --- PREMIUM TICKET STYLE --- */
+        .golden-ticket {
+            background: linear-gradient(135deg, #ffd700 0%, #ffb900 45%, #e6a800 50%, #ffb900 55%, #ffd700 100%);
+            padding: 40px;
+            border-radius: 24px;
+            box-shadow: 0 25px 70px rgba(0, 0, 0, 0.8), 0 0 1px 3px rgba(184, 134, 11, 0.5);
+            text-align: center;
+            border: 4px double #b8860b;
+            position: relative;
+            color: #1a1a1a;
+            max-width: 440px;
+            margin: 0 auto;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        .golden-ticket .folio-box {
+            background: rgba(0, 0, 0, 0.05);
+            padding: 20px;
+            border: 2px dashed #b8860b;
+            border-radius: 15px;
+            margin: 25px 0;
+        }
+
+        .golden-ticket .folio-number {
+            font-size: 36px;
+            font-weight: 900;
+            letter-spacing: 2px;
         }
 
         .nav-item svg {
-            width: 18px;
-            height: 18px;
-            opacity: 0.7;
+            width: 20px;
+            height: 20px;
+            opacity: 0.8;
+            transition: all 0.3s;
         }
 
+        .nav-item:hover svg,
         .nav-item.active svg {
             opacity: 1;
+            filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.5));
         }
 
-        /* Main Content wrapper */
+        /* Main Content VISTA Glass */
         .app-main {
             flex-grow: 1;
             display: flex;
             flex-direction: column;
             overflow: hidden;
-            background: #000;
+            background: transparent;
             position: relative;
+        }
+
+        .content-area {
+            padding: 32px;
+            overflow-y: auto;
+            flex-grow: 1;
+        }
+
+        .glass-card {
+            background: var(--mac-card);
+            backdrop-filter: var(--aero-glass);
+            -webkit-backdrop-filter: var(--aero-glass);
+            border: 1px solid var(--mac-border);
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
         }
 
         .btn {
@@ -920,14 +953,13 @@
         }
     </script>
 
-    <!-- Apple Sidebar Navigation -->
+    <!-- Windows Vista Aero Sidebar Navigation -->
     <aside class="app-sidebar">
-        <a href="dashboard-ods.html" class="sidebar-brand"
-            style="text-decoration: none; display: flex; align-items: center; gap: 12px; margin-bottom: 32px;">
+        <div class="sidebar-brand" style="margin-bottom: 32px; display: flex; align-items: center; gap: 12px;">
             <img src="./images/circuito_bronce.jpg"
-                style="width: 40px; height: 40px; border-radius: 8px; object-fit: cover; mix-blend-mode: lighten;">
-            <div class="brand-text" style="font-size: 16px; font-weight: 700; color: #fff;">Dashboard</div>
-        </a>
+                style="width: 40px; border-radius: 8px; filter: drop-shadow(0 0 5px rgba(255,255,255,0.2));">
+            <div style="font-size: 16px; font-weight: 800; color: #fff; letter-spacing: -0.5px;">MACWAVE GSX</div>
+        </div>
 
         <nav class="nav-group">
             <div class="nav-label">Gestión</div>
@@ -935,7 +967,7 @@
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01" />
                 </svg>
-                Reparaciones
+                Reparaciones (ODS)
             </button>
             <button class="nav-item" onclick="switchView('kanban')" id="nav-kanban">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -959,30 +991,17 @@
 
         <nav class="nav-group">
             <div class="nav-label">Herramientas</div>
-            <button class="nav-item" onclick="switchView('quote')" id="nav-quote">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"></path>
-                    <polyline points="14 2 14 8 20 8"></polyline>
-                </svg>
-                Nueva Cotización (ODS)
-            </button>
-
-            <button class="nav-item" onclick="switchView('tickets'); setTimeout(showWorkshopTicket, 100);"
-                id="nav-item-ticket-sidebar">
+            <button class="nav-item" onclick="showTicketUnifiedView()" id="nav-tickets-unified">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path d="M15 5l-1.41 1.41L15.17 8H4v2h11.17l-1.58 1.59L15 13l4-4-4-4z" />
                 </svg>
-                Ticket para Taller
+                Generar Ticket & Historial
             </button>
-            <button class="nav-item" onclick="switchView('tickets')" id="nav-tickets">
+            <button class="nav-item" onclick="window.location.href='cotizaciones.html'" id="nav-quote">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"></path>
-                    <polyline points="14 2 14 8 20 8"></polyline>
-                    <line x1="16" y1="13" x2="8" y2="13"></line>
-                    <line x1="16" y1="17" x2="8" y2="17"></line>
-                    <polyline points="10 9 9 9 8 9"></polyline>
+                    <path d="M12 5v14M5 12h14" />
                 </svg>
-                Ver Historial Tickets
+                Nueva Cotización (PDF)
             </button>
         </nav>
 
@@ -1037,38 +1056,83 @@
         <!-- Tickets View -->
         <div class="workspace" id="tickets-view-container"
             style="display: none; height: 100%; padding: 40px; overflow-y: auto; flex-direction: column;">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
-                <h1 class="folio-title">Tickets de Visita</h1>
-                <div style="display: flex; gap: 10px;">
-                    <input type="text" id="tickets-search" class="search-box" placeholder="Buscar ticket..."
-                        style="width: 250px;" oninput="renderTicketsList()">
-                    <button class="btn btn-primary" onclick="showWorkshopTicket()">
-                        Generar Nuevo Ticket
+
+            <div style="display: flex; gap: 40px; align-items: flex-start;">
+                <!-- LEFT: THE GOLDEN TICKET GENERATOR -->
+                <div class="golden-ticket" style="flex-shrink: 0;">
+                    <div class="ticket-stars-header"
+                        style="font-size: 20px; font-weight: 800; letter-spacing: 5px; margin-bottom: 20px;">
+                        ★ TICKET DE VISITA ★
+                    </div>
+                    <h1 class="ticket-main-title" style="font-size: 38px; font-weight: 900; margin-bottom: 5px;">
+                        SERVICIO TÉCNICO</h1>
+                    <p class="ticket-instruction"
+                        style="font-size: 13px; font-weight: 600; margin-bottom: 25px; color: #333;">manda este ticket o
+                        muestralo en taller</p>
+
+                    <div class="folio-box">
+                        <p class="folio-label"
+                            style="font-size: 11px; font-weight: 800; color: #444; margin-bottom: 8px;">TU CÓDIGO ÚNICO:
+                        </p>
+                        <p id="t-unified-folio" class="folio-number">G-000000-000</p>
+                    </div>
+
+                    <div style="text-align: left;">
+                        <label
+                            style="display:block; font-size:12px; font-weight:800; margin-bottom:8px; color:#333;">¿Cómo
+                            nos conociste?</label>
+                        <select id="t-unified-source" class="btn"
+                            style="width:100%; text-align:left; background:rgba(255,255,255,0.4); border:1px solid #000; color:#000; margin-bottom:15px; font-weight:700;">
+                            <option value="INTERNET">INTERNET</option>
+                            <option value="GOOGLE MAPS">GOOGLE MAPS</option>
+                            <option value="RECOMENDACIÓN">RECOMENDACIÓN</option>
+                        </select>
+                        <input type="text" id="t-unified-name" class="btn"
+                            style="width:100%; text-align:left; background:rgba(255,255,255,0.4); border:1px solid #000; color:#000; margin-bottom:15px;"
+                            placeholder="Nombre del cliente">
+                        <input type="text" id="t-unified-phone" class="btn"
+                            style="width:100%; text-align:left; background:rgba(255,255,255,0.4); border:1px solid #000; color:#000; margin-bottom:20px;"
+                            placeholder="WhatsApp (10 dígitos)">
+                    </div>
+
+                    <button id="btn-send-unified-ticket" class="btn"
+                        style="background:#25D366; color:#fff; width:100%; padding:18px; border-radius:30px; border:none; font-weight:900; cursor:pointer; font-size:14px; box-shadow:0 5px 15px rgba(37,211,102,0.4);">
+                        ENVIAR POR WHATSAPP
                     </button>
+                    <script>
+                        document.getElementById('btn-send-unified-ticket')?.addEventListener('click', () => {
+                            // Logic to be added in the main script block
+                            if (window.sendTicketAction) window.sendTicketAction();
+                        });
+                    </script>
                 </div>
-            </div>
-            <div class="card" style="padding: 0; overflow: hidden;">
-                <div class="column-header">Historial de Tickets Generados</div>
-                <div style="overflow-x: auto;">
-                    <table style="width: 100%; border-collapse: collapse; font-size: 13px;">
-                        <thead style="background: rgba(255,255,255,0.05);">
-                            <tr style="text-align: left;">
-                                <th style="padding: 12px; color: var(--mac-text-muted);">Folio</th>
-                                <th style="padding: 12px; color: var(--mac-text-muted);">Fecha</th>
-                                <th style="padding: 12px; color: var(--mac-text-muted);">Cliente</th>
-                                <th style="padding: 12px; color: var(--mac-text-muted);">WhatsApp</th>
-                                <th style="padding: 12px; color: var(--mac-text-muted);">Origen</th>
-                                <th style="padding: 12px; color: var(--mac-text-muted);">Técnico</th>
-                            </tr>
-                        </thead>
-                        <tbody id="tickets-table-body">
-                            <tr>
-                                <td colspan="6"
-                                    style="padding: 40px; text-align: center; color: var(--mac-text-muted);">Cargando
-                                    tickets...</td>
-                            </tr>
-                        </tbody>
-                    </table>
+
+                <!-- RIGHT: THE HISTORY TABLE -->
+                <div style="flex-grow: 1;">
+                    <div
+                        style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                        <h1 class="folio-title">Historial de Tickets</h1>
+                        <input type="text" id="tickets-search" class="search-box" placeholder="Buscar ticket..."
+                            style="width: 250px;" oninput="renderTicketsList()">
+                    </div>
+                    <div class="card"
+                        style="padding: 0; overflow: hidden; background: rgba(28,28,30,0.4); backdrop-filter: blur(10px);">
+                        <div style="overflow-x: auto;">
+                            <table style="width: 100%; border-collapse: collapse; font-size: 13px;">
+                                <thead style="background: rgba(255,255,255,0.05);">
+                                    <tr style="text-align: left;">
+                                        <th style="padding: 12px; color: var(--mac-text-muted);">Folio</th>
+                                        <th style="padding: 12px; color: var(--mac-text-muted);">Fecha</th>
+                                        <th style="padding: 12px; color: var(--mac-text-muted);">Cliente</th>
+                                        <th style="padding: 12px; color: var(--mac-text-muted);">Origen</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tickets-table-body">
+                                    <!-- Dynamic rows -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -1214,138 +1278,124 @@
             }
         }
 
-        // --- Ticket Generator Functions ---
-        const showWorkshopTicket = () => {
-            const modal = document.getElementById('ticket-modal');
-            const folioDisplay = document.getElementById('ticket-folio-display');
-            const source = document.getElementById('ticket-source').value;
+        // --- Windows Vista Aero Glow Engine ---
+        function initVistaGlow() {
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.addEventListener('mousemove', e => {
+                    const rect = item.getBoundingClientRect();
+                    item.style.setProperty('--x', (e.clientX - rect.left) + 'px');
+                    item.style.setProperty('--y', (e.clientY - rect.top) + 'px');
+                });
+            });
+        }
+
+        // --- Unified Ticket & History Logic ---
+        window.showTicketUnifiedView = async function () {
+            switchView('tickets');
+            // Re-select active button correctly
+            document.querySelectorAll('.nav-item').forEach(btn => btn.classList.remove('active'));
+            document.getElementById('nav-tickets-unified')?.classList.add('active');
+
+            // Generate Initial Folio
             let counter = parseInt(localStorage.getItem('workshop_ticket_counter') || '239');
-
-            localStorage.setItem('workshop_ticket_counter', counter + 1);
-
             const now = new Date();
             const yy = now.getFullYear().toString().slice(2);
             const mm = (now.getMonth() + 1).toString().padStart(2, '0');
             const dd = now.getDate().toString().padStart(2, '0');
             const dateStr = yy + mm + dd;
 
-            let prefix = 'G';
-            if (source === 'INTERNET') prefix = 'I';
-            if (source === 'RECOMENDACIÓN') prefix = 'R';
+            const folioDisplay = document.getElementById('t-unified-folio');
+            if (folioDisplay) folioDisplay.innerText = `G-${dateStr}-${counter}`;
 
-            const folio = `${prefix}-${dateStr}-${counter}`;
-            folioDisplay.textContent = folio;
-            modal.style.display = 'flex';
+            renderTicketsList();
         };
 
-        // Initialize Ticket Listeners once DOM is ready
-        document.addEventListener('DOMContentLoaded', () => {
-            document.getElementById('ticket-source')?.addEventListener('change', (e) => {
-                const folioDisplay = document.getElementById('ticket-folio-display');
-                const currentFolio = folioDisplay.textContent;
-                const source = e.target.value;
+        window.sendTicketAction = async function () {
+            const nameInput = document.getElementById('t-unified-name');
+            const phoneInput = document.getElementById('t-unified-phone');
+            const sourceInput = document.getElementById('t-unified-source');
+            const folioDisplay = document.getElementById('t-unified-folio');
 
-                let prefix = 'G';
-                if (source === 'INTERNET') prefix = 'I';
-                if (source === 'RECOMENDACIÓN') prefix = 'R';
+            const name = nameInput.value || 'Cliente';
+            const phone = phoneInput.value;
+            const source = sourceInput.value;
+            const folio = folioDisplay.innerText;
+            const techPhone = '5535757364';
 
-                if (currentFolio.includes('-')) {
-                    folioDisplay.textContent = `${prefix}${currentFolio.slice(currentFolio.indexOf('-'))}`;
-                }
-            });
+            if (!phone || phone.length < 10) {
+                alert("Ingresa un número de WhatsApp de 10 dígitos.");
+                return;
+            }
 
-            document.getElementById('close-ticket-modal')?.addEventListener('click', () => {
-                document.getElementById('ticket-modal').style.display = 'none';
-            });
+            const ticketData = {
+                folio: folio,
+                cliente: name,
+                telefono: phone,
+                origen: source,
+                tecnico: 'JOEL DURAN',
+                created_at: new Date().toISOString()
+            };
 
-            document.getElementById('send-ticket-whatsapp')?.addEventListener('click', async () => {
-                const nameInput = document.getElementById('ticket-client-name');
-                const phoneInput = document.getElementById('ticket-client-phone');
-                const name = nameInput.value || 'Cliente';
-                const phone = phoneInput.value;
-                const source = document.getElementById('ticket-source').value;
-                const folio = document.getElementById('ticket-folio-display').textContent;
-                const currentTech = 'JOEL DURAN';
-                const techPhone = '5535757364';
+            try {
+                const { error } = await supabaseClient.from('tickets_taller').insert([ticketData]);
+                if (error) throw error;
 
-                if (!phone || phone.length < 10) {
-                    alert("Por favor ingresa un número de WhatsApp de 10 dígitos.");
-                    return;
-                }
+                // Update local and storage
+                allTickets.unshift(ticketData);
+                let counter = parseInt(localStorage.getItem('workshop_ticket_counter') || '239');
+                localStorage.setItem('workshop_ticket_counter', counter + 1);
 
-                const ticketData = {
-                    folio: folio,
-                    cliente: name,
-                    telefono: phone,
-                    origen: source,
-                    tecnico: currentTech,
-                    created_at: new Date().toISOString()
-                };
-
-                try {
-                    await supabaseClient.from('tickets_taller').insert([ticketData]);
-                    allTickets.unshift(ticketData);
-                    renderTicketsList();
-                } catch (err) {
-                    console.error("Supabase Save Error:", err);
-                }
-
-                const message = `Hola ${name}, este es tu ticket de visita: ${folio}. Nos conociste por ${source}. Muestra este mensaje en taller.`;
-                window.open(`https://wa.me/52${phone}?text=${encodeURIComponent(message)}`, '_blank');
+                // WhatsApp
+                const msg = `Hola ${name}, este es tu ticket de visita: ${folio}. Muestralo en taller.`;
+                window.open(`https://wa.me/52${phone}?text=${encodeURIComponent(msg)}`, '_blank');
 
                 setTimeout(() => {
-                    const techMessage = `🚀 TICKET GENERADO: \nCliente: ${name}\nOrigen: ${source}\nFolio: ${folio}\nWhatsApp: ${phone}`;
-                    window.open(`https://wa.me/52${techPhone}?text=${encodeURIComponent(techMessage)}`, '_blank');
-                    document.getElementById('ticket-modal').style.display = 'none';
-                    nameInput.value = '';
-                    phoneInput.value = '';
-                }, 1000);
-            });
-        });
+                    const techMsg = `🚀 TICKET: ${folio}\nCliente: ${name}\nOrigen: ${source}\nWA: ${phone}`;
+                    window.open(`https://wa.me/52${techPhone}?text=${encodeURIComponent(techMsg)}`, '_blank');
+                    showTicketUnifiedView(); // Refresh UI
+                }, 800);
 
+            } catch (err) {
+                console.error("Save Error:", err);
+                alert("Error al guardar en Supabase.");
+            }
+        }
+
+        // --- Navigation Controller ---
         function switchView(view) {
-            console.log("Navigating to view:", view);
+            console.log("Switching to view:", view);
             currentView = view;
 
             const views = {
                 'list': 'list-view-container',
                 'kanban': 'kanban-view-container',
                 'finance': 'finance-view-container',
-                'tickets': 'tickets-view-container',
-                'quote': 'quote-view-container'
+                'tickets': 'tickets-view-container'
             };
 
-            // 1. Clear all active states
+            // Reset active states
             document.querySelectorAll('.nav-item').forEach(btn => btn.classList.remove('active'));
 
-            // 2. Hide all containers
+            // Hide/Show containers
             Object.values(views).forEach(id => {
                 const el = document.getElementById(id);
                 if (el) el.style.display = 'none';
             });
 
-            // 3. Show target container
-            const containerId = views[view];
-            const target = document.getElementById(containerId);
+            const targetId = views[view];
+            const target = document.getElementById(targetId);
             if (target) {
-                target.style.display = 'flex';
+                target.style.display = (view === 'list') ? 'flex' : 'block';
+                if (view === 'list') target.style.display = 'flex';
+                if (view === 'tickets') target.style.display = 'flex'; // Use flex for unified layout
             }
 
-            // 4. Set active button(s)
+            // Mark active button
             if (view === 'list') document.getElementById('nav-list')?.classList.add('active');
             if (view === 'kanban') document.getElementById('nav-kanban')?.classList.add('active');
             if (view === 'finance') document.getElementById('nav-finance')?.classList.add('active');
-            if (view === 'quote') document.getElementById('nav-quote')?.classList.add('active');
 
-            // Special: If view is tickets, we can mark both the generator and the history as active if needed, 
-            // but let's just mark the one clicked for better UX
-            if (view === 'tickets') {
-                // If the click came from a specific button, that one gets handled by the browser event 
-                // but since we call it manually, let's be smart:
-                document.getElementById('nav-tickets')?.classList.add('active');
-            }
-
-            // 5. Trigger Data Loads/Renders
+            // Trigger Renders
             if (view === 'list') renderSidebar();
             if (view === 'kanban') renderKanban();
             if (view === 'finance') renderFinance();
@@ -1354,13 +1404,12 @@
 
         function renderTicketsList() {
             const tableBody = document.getElementById('tickets-table-body');
-            const searchVal = document.getElementById('tickets-search').value.toLowerCase();
+            const searchVal = document.getElementById('tickets-search')?.value.toLowerCase() || '';
 
             const filtered = allTickets.filter(t =>
                 (t.folio || '').toLowerCase().includes(searchVal) ||
                 (t.cliente || '').toLowerCase().includes(searchVal) ||
-                (t.telefono || '').toLowerCase().includes(searchVal) ||
-                (t.tecnico || '').toLowerCase().includes(searchVal)
+                (t.telefono || '').toLowerCase().includes(searchVal)
             );
 
             if (filtered.length === 0) {
@@ -1369,20 +1418,17 @@
             }
 
             tableBody.innerHTML = filtered.map(t => {
-                const date = t.created_at ? new Date(t.created_at).toLocaleString() : 'N/A';
+                const date = t.created_at ? new Date(t.created_at).toLocaleDateString() : 'N/A';
                 return `
-                    <tr style="border-bottom: 1px solid rgba(255,255,255,0.03);">
+                    <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
                         <td style="padding: 12px; font-weight: 700; color: var(--mac-blue);">${t.folio || 'N/A'}</td>
                         <td style="padding: 12px; color: var(--mac-text-muted);">${date}</td>
-                        <td style="padding: 12px; color: #fff; font-weight: 500;">${t.cliente || 'N/A'}</td>
                         <td style="padding: 12px;">
-                            <a href="https://wa.me/52${t.telefono}" target="_blank" style="color: var(--mac-green); text-decoration: none; display: flex; align-items: center; gap: 5px;">
-                                <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24"><path d="M12.031 6.172c-2.31 0-4.191 1.881-4.191 4.191 0 .816.234 1.579.638 2.227l-.679 2.477 2.535-.665c.504.28 1.082.443 1.697.443 2.31 0 4.191-1.881 4.191-4.191s-1.881-4.191-4.191-4.191zm2.943 5.483c-.042.12-.24.23-.418.27-.132.028-.306.046-.464.04-.158-.006-.312-.008-.454-.038-.37-.08-.726-.226-1.045-.44l-.193-.133-.193-.138c-.37-.272-.687-.614-.94-.997l-.093-.153c-.11-.18-.19-.378-.236-.583-.046-.205-.05-.418-.008-.621.042-.204.14-.388.275-.536.136-.148.27-.197.438-.197h.236c.07 0 .144.004.21.01.066.006.126.044.17.104l.326.793c.04.098.026.208-.04.296-.067.088-.13.14-.23.18-.1.04-.15.08-.22.15-.07.07-.11.13-.11.23s.04.2.14.34c.1.14.24.26.4.38.16.12.35.21.57.29s.44.13.67.13c.23 0 .42-.04.57-.14s.24-.26.34-.41c.1-.15.15-.24.22-.31.07-.07.13-.1.21-.1h.236c.07 0 .144.02.21.06s.126.11.17.21l.326.793c.04.098.05.208.024.328zM12 2C6.477 2 2 6.477 2 12c0 1.765.456 3.425 1.254 4.872L2 22l5.253-1.378c1.464.848 3.167 1.378 5.179 1.378 5.523 0 10-4.477 10-10S17.523 2 12 2zm0 18c-1.63 0-3.146-.483-4.427-1.31l-.317-.205-2.887.757.77-2.812-.224-.356c-.84-1.334-1.332-2.91-1.332-4.597 0-4.632 3.768-8.4 8.4-8.4s8.4 3.768 8.4 8.4-3.768 8.4-8.4 8.4z"/></svg>
-                                ${t.telefono || 'Ver'}
+                            <a href="https://wa.me/52${t.telefono}" target="_blank" style="color:#fff; text-decoration:none; font-weight:600;">
+                                ${t.cliente || 'S/N'} <span style="color:var(--mac-green); font-size:10px;">(WA)</span>
                             </a>
                         </td>
                         <td style="padding: 12px; color: var(--mac-text-muted); font-size: 11px;">${t.origen || 'N/A'}</td>
-                        <td style="padding: 12px; color: var(--mac-text-muted); font-size: 11px;">${t.tecnico || 'N/A'}</td>
                     </tr>
                 `;
             }).join('');
@@ -2011,6 +2057,7 @@
 
         // Run
         document.addEventListener('DOMContentLoaded', () => {
+            initVistaGlow();
             const urlParams = new URLSearchParams(window.location.search);
             const viewParam = urlParams.get('view');
             const idParam = urlParams.get('id');
