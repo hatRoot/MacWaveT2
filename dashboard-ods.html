@@ -81,14 +81,14 @@
             font-weight: 700;
             cursor: pointer;
             transition: all 0.05s ease-out;
-            margin-bottom: 8px;
-            border: 1px solid rgba(0, 162, 255, 0.2);
+            margin-bottom: 16px;
+            border: 1px solid rgba(0, 162, 255, 0.3);
             /* Subtle blue border by default */
             background: linear-gradient(180deg,
-                    rgba(255, 255, 255, 0.15) 0%,
+                    rgba(255, 255, 255, 0.2) 0%,
                     rgba(255, 255, 255, 0.05) 50%,
-                    rgba(0, 0, 0, 0.5) 50.1%,
-                    rgba(0, 0, 0, 0.3) 100%);
+                    rgba(0, 90, 200, 0.5) 50.1%,
+                    rgba(0, 120, 220, 0.4) 100%);
             position: relative;
             overflow: hidden;
             width: 100%;
@@ -1011,7 +1011,7 @@
         </div>
 
         <nav class="nav-group">
-            <div class="nav-label">Gestión</div>
+            <div class="nav-label">OPERACIONES</div>
             <button class="nav-item active" onclick="switchView('list')" id="nav-list">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01" />
@@ -1044,8 +1044,7 @@
             </script>
         </nav>
 
-        <nav class="nav-group">
-            <div class="nav-label">Herramientas</div>
+        <nav class="nav-group" style="padding-top: 16px;">
             <button class="nav-item" onclick="showTicketUnifiedView()" id="nav-tickets-unified">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path d="M15 5l-1.41 1.41L15.17 8H4v2h11.17l-1.58 1.59L15 13l4-4-4-4z" />
