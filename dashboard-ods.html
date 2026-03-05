@@ -48,86 +48,94 @@
             overflow: hidden;
         }
 
-        /* Sidebar Navigation VISTA AERO */
+        /* Sidebar Navigation VISTA AERO SOLID */
         .app-sidebar {
             width: 250px !important;
-            /* Fixed width */
             min-width: 250px !important;
             max-width: 250px !important;
-            background: rgba(20, 20, 25, 0.85);
-            backdrop-filter: blur(20px) saturate(180%);
-            -webkit-backdrop-filter: blur(20px) saturate(180%);
-            border-right: 1px solid rgba(255, 255, 255, 0.1);
+            background: #0d0d0f;
+            /* Solid dark for premium feel */
+            border-right: 1px solid rgba(255, 255, 255, 0.12);
             display: flex;
             flex-direction: column;
-            padding: 24px 8px;
+            padding: 24px 10px;
             z-index: 100;
             height: 100vh;
             position: sticky;
             top: 0;
+            flex-shrink: 0;
         }
 
         .nav-item {
             display: flex;
             align-items: center;
             gap: 12px;
-            padding: 10px 16px;
-            border-radius: 8px;
-            color: rgba(255, 255, 255, 0.9);
+            height: 44px;
+            /* Strictly uniform height */
+            padding: 0 16px;
+            border-radius: 6px;
+            color: rgba(255, 255, 255, 0.85);
             text-decoration: none;
-            font-size: 13.5px;
-            font-weight: 600;
+            font-size: 13px;
+            font-weight: 700;
             cursor: pointer;
-            transition: all 0.2s ease;
-            margin-bottom: 2px;
-            border: 1px solid transparent;
-            background: transparent;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            margin-bottom: 6px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            background: linear-gradient(180deg,
+                    rgba(255, 255, 255, 0.08) 0%,
+                    rgba(255, 255, 255, 0.04) 50%,
+                    rgba(0, 0, 0, 0.3) 50.1%,
+                    rgba(255, 255, 255, 0.02) 100%);
             position: relative;
             overflow: hidden;
             width: 100%;
             text-align: left;
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1);
         }
 
-        /* CRYSTAL GLOSSY EFFECT ON HOVER */
+        /* VISTA HOVER: Crystal Glow & Bottom Light */
         .nav-item:hover {
-            background: linear-gradient(180deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.05) 50%, transparent 50.1%, rgba(255, 255, 255, 0.05) 100%);
-            border-color: rgba(255, 255, 255, 0.25);
+            border-color: rgba(0, 150, 255, 0.5);
+            background: linear-gradient(180deg,
+                    rgba(255, 255, 255, 0.1) 0%,
+                    rgba(255, 255, 255, 0.06) 50%,
+                    rgba(0, 0, 0, 0.2) 50.1%,
+                    rgba(255, 255, 255, 0.04) 100%);
             box-shadow:
-                0 0 15px rgba(255, 255, 255, 0.1),
-                inset 0 1px 1px rgba(255, 255, 255, 0.3);
-            transform: translateY(-1px);
+                0 4px 15px rgba(0, 100, 255, 0.2),
+                inset 0 -12px 20px -10px rgba(0, 150, 255, 0.5);
+            /* Bottom up light */
+            color: #fff;
         }
 
-        /* VISTA ACTIVE CRYSTAL LIGHT-UP (Blueish like Vista) */
+        /* VISTA ACTIVE: Full Crystal Base Lit */
         .nav-item.active {
             background: linear-gradient(180deg,
-                    rgba(0, 150, 255, 0.5) 0%,
+                    rgba(0, 120, 255, 0.5) 0%,
                     rgba(0, 100, 255, 0.3) 50%,
-                    rgba(0, 80, 255, 0.4) 50.1%,
+                    rgba(0, 80, 255, 0.45) 50.1%,
                     rgba(0, 150, 255, 0.6) 100%);
             color: #fff;
             box-shadow:
-                0 0 20px rgba(0, 150, 255, 0.4),
-                inset 0 1px 2px rgba(255, 255, 255, 0.5);
-            border: 1px solid rgba(255, 255, 255, 0.45);
-            font-weight: 700;
-            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+                0 0 25px rgba(0, 150, 255, 0.4),
+                inset 0 1px 1px rgba(255, 255, 255, 0.4),
+                inset 0 -15px 30px -10px rgba(100, 220, 255, 0.7);
+            /* Base light intensive */
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
         }
 
-        /* LIGHT STREAK EFFECT */
-        .nav-item::after {
+        /* GLOSS OVERLAY EFFECT */
+        .nav-item::before {
             content: '';
             position: absolute;
             top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(120deg, transparent, rgba(255, 255, 255, 0.15), transparent);
-            transition: 0.5s;
-        }
-
-        .nav-item:hover::after {
-            left: 100%;
+            left: 0;
+            right: 0;
+            height: 50%;
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.12) 0%, transparent 100%);
+            pointer-events: none;
         }
 
         /* --- PREMIUM TICKET STYLE --- */
