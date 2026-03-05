@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Panel de Presupuestos (PDF) - MacWave T2</title>
+    <title>Panel de ODS (PDF) - MacWave T2</title>
 
     <meta name="description"
         content="Mac Wave T2 - Especialistas en reparación de MacBook Pro, Air y equipos fuera de garantía. Actualizaciones, servicios empresariales y recuperación de datos en CDMX y EdoMex.">
@@ -906,11 +906,11 @@
                 </svg>
                 Reparaciones (ODS)
             </button>
-            <button class="nav-item active" onclick="window.location.href='presupuestos.html'">
+            <button class="nav-item active" onclick="window.location.href='ods.html'">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path d="M12 5v14M5 12h14" />
                 </svg>
-                Nuevo Presupuesto (PDF)
+                Nueva ODS (PDF)
             </button>
             <button class="nav-item" onclick="window.location.href='dashboard-ods.html?view=kanban'">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -1691,7 +1691,7 @@
                         </div>
 
                         <div class="ps-terms">
-                            <p>Vigencia de la ODS : 1 día para aceptación de presupuesto.</p>
+                            <p>Vigencia de la ODS : 1 día para aceptación de la misma.</p>
                             <p>Garantía: 31 días en el servicio técnico, pregunta por tu garantía extendida a 100 días POR UN COSTO ADICIONAL.</p>
                             <p>Condiciones: El cliente acepta los <a href="terminos.html" target="_blank" style="color: inherit; font-weight: bold;">Términos y Condiciones</a> publicados en macwave.com.mx/terminos.html.</p>
                             <p style="font-size: 9px; font-weight: 900;">PAGO ANTICIPADO DEL 100% PARA EL SERVICIO.</p>
@@ -1931,7 +1931,7 @@
                 doc.setFontSize(7.5);
                 doc.setTextColor(0, 0, 0); // Black for readability
                 doc.setFont("helvetica", "bold");
-                doc.text(`Vigencia de la ODS : 1 día para aceptación de presupuesto.`, 15, cY);
+                doc.text(`Vigencia de la ODS : 1 día para aceptación de la misma.`, 15, cY);
                 doc.text("Garantía: 31 días en el servicio técnico, pregunta por tu garantía extendida a 100 días POR UN COSTO ADICIONAL.", 15, cY + 5);
                 doc.text("Condiciones: El cliente acepta los términos y condiciones en macwave.com.mx/terminos.html", 15, cY + 11);
                 doc.setFontSize(9);

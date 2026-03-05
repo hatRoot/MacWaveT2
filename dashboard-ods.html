@@ -969,11 +969,11 @@
                 </svg>
                 Reparaciones (ODS)
             </button>
-            <button class="nav-item" onclick="window.location.href='presupuestos.html'" id="nav-quote">
+            <button class="nav-item" onclick="window.location.href='ods.html'" id="nav-quote">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path d="M12 5v14M5 12h14" />
                 </svg>
-                Nuevo Presupuesto (PDF)
+                Nueva ODS (PDF)
             </button>
             <button class="nav-item" onclick="switchView('kanban')" id="nav-kanban">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -1081,7 +1081,7 @@
                         <label
                             style="display:block; font-size:12px; font-weight:800; margin-bottom:8px; color:#333;">¿Cómo
                             nos conociste?</label>
-                        <select id="t-unified-source" class="btn"
+                        <select id="t-unified-source" class="btn" onchange="updateFolioPreview()"
                             style="width:100%; text-align:left; background:rgba(255,255,255,0.4); border:1px solid #000; color:#000; margin-bottom:15px; font-weight:700;">
                             <option value="INTERNET">INTERNET</option>
                             <option value="GOOGLE MAPS">GOOGLE MAPS</option>
@@ -1137,10 +1137,10 @@
             </div>
         </div>
 
-        <!-- Quote View (Iframe) -->
+        <!-- ODS View (Iframe) -->
         <div class="workspace" id="quote-view-container"
             style="display: none; height: 100%; border: none; background: #000; overflow: hidden;">
-            <iframe src="cotizaciones.html?embed=true" style="width: 100%; height: 100%; border: none;"></iframe>
+            <iframe src="ods.html?embed=true" style="width: 100%; height: 100%; border: none;"></iframe>
         </div>
     </main>
 
@@ -1290,14 +1290,39 @@
         }
 
         // --- Unified Ticket & History Logic ---
-        window.showTicketUnifiedView = async function () {
-            switchView('tickets');
-            // Re-select active button correctly
-            document.querySelectorAll('.nav-item').forEach(btn => btn.classList.remove('active'));
-            document.getElementById('nav-tickets-unified')?.classList.add('active');
+        function getNextTicketNumber() {
+            let maxCount = 0;
+            // Iterate allTickets to find the highest number
+            allTickets.forEach(t => {
+                if (t.folio) {
+                    const parts = t.folio.split('-');
+                    if (parts.length === 3) {
+                        const num = parseInt(parts[2]);
+                        if (!isNaN(num) && num > maxCount) maxCount = num;
+                    }
+                }
+            });
+            // Initial/Fallback counter if no tickets found
+            if (maxCount === 0) {
+                maxCount = parseInt(localStorage.getItem('workshop_ticket_counter') || '239');
+            }
+            return maxCount + 1;
+        }
 
-            // Generate Initial Folio
-            let counter = parseInt(localStorage.getItem('workshop_ticket_counter') || '239');
+        window.updateFolioPreview = function () {
+            const sourceSelector = document.getElementById('t-unified-source');
+            if (!sourceSelector) return;
+
+            const source = sourceSelector.value;
+            const prefixMap = {
+                'INTERNET': 'I',
+                'GOOGLE MAPS': 'G',
+                'RECOMENDACIÓN': 'R'
+            };
+            const prefix = prefixMap[source] || 'T';
+
+            const nextCount = getNextTicketNumber();
+
             const now = new Date();
             const yy = now.getFullYear().toString().slice(2);
             const mm = (now.getMonth() + 1).toString().padStart(2, '0');
@@ -1305,8 +1330,17 @@
             const dateStr = yy + mm + dd;
 
             const folioDisplay = document.getElementById('t-unified-folio');
-            if (folioDisplay) folioDisplay.innerText = `G-${dateStr}-${counter}`;
+            if (folioDisplay) folioDisplay.innerText = `${prefix}-${dateStr}-${nextCount}`;
+        };
 
+        window.showTicketUnifiedView = async function () {
+            await loadData(); // Force sync from DB
+            switchView('tickets');
+            // Re-select active button correctly
+            document.querySelectorAll('.nav-item').forEach(btn => btn.classList.remove('active'));
+            document.getElementById('nav-tickets-unified')?.classList.add('active');
+
+            updateFolioPreview();
             renderTicketsList();
         };
 
@@ -1340,10 +1374,14 @@
                 const { error } = await supabaseClient.from('tickets_taller').insert([ticketData]);
                 if (error) throw error;
 
-                // Update local and storage
+                // Update local and storage (keep localStorage as secondary fallback)
                 allTickets.unshift(ticketData);
-                let counter = parseInt(localStorage.getItem('workshop_ticket_counter') || '239');
-                localStorage.setItem('workshop_ticket_counter', counter + 1);
+                const nextNum = parseInt(folio.split('-')[2]);
+                localStorage.setItem('workshop_ticket_counter', nextNum);
+
+                // Refresh folio preview for the next one
+                updateFolioPreview();
+                renderTicketsList();
 
                 // WhatsApp
                 const msg = `Hola ${name}, este es tu ticket de visita: ${folio}. Muestralo en taller.`;
@@ -1847,7 +1885,7 @@
                                     <input type="text" id="inp-fecha" class="form-control" value="${o.fecha || ''}">
                                 </div>
                                 <div class="form-group" style="grid-column: span 2;">
-                                    <label>Monto de Presupuesto / Venta</label>
+                                    <label>Monto de ODS / Venta</label>
                                     <div class="price-input">
                                         <input type="number" id="inp-monto" class="form-control" value="${o.monto || '0'}" step="0.01">
                                     </div>
