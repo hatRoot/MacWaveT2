@@ -1169,8 +1169,10 @@
                 <h2 style="color: #fff; margin-bottom: 20px; font-weight: 800; font-size: 24px;">Catálogo para ODS</h2>
                 <div
                     style="display: flex; gap: 20px; margin-bottom: 30px; background: rgba(255,255,255,0.02); padding: 20px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05);">
-                    <input type="text" id="cat-nombre" class="modal-input" placeholder="Nombre (ej. Reballing, LCD...)"
+                    <input type="text" id="cat-nombre" class="modal-input" placeholder="Nombre completo"
                         style="flex: 2; margin: 0;">
+                    <input type="text" id="cat-clave" class="modal-input" placeholder="Clave (ej. SMA1)"
+                        style="flex: 0.8; margin: 0;">
                     <select id="cat-tipo" class="modal-input" style="flex: 1; margin: 0;">
                         <option value="Servicio">Servicio</option>
                         <option value="Hardware">Hardware/Pieza</option>
@@ -1860,7 +1862,10 @@
                 const row = document.createElement('tr');
                 row.style.borderBottom = '1px solid rgba(255,255,255,0.05)';
                 row.innerHTML = `
-                    <td style="padding: 15px; font-weight: 700;">${item.nombre}</td>
+                    <td style="padding: 15px; font-weight: 700;">
+                        ${item.nombre} <br>
+                        <span style="font-size: 11px; color: var(--mac-blue);">${item.clave || ''}</span>
+                    </td>
                     <td style="padding: 15px; opacity: 0.8;">${item.tipo}</td>
                     <td style="padding: 15px; color: var(--mac-red);">$ ${parseFloat(item.costo).toLocaleString()}</td>
                     <td style="padding: 15px;">$ ${parseFloat(item.precio).toLocaleString()}</td>
@@ -1880,13 +1885,15 @@
             const tipo = document.getElementById('cat-tipo').value;
             const costo = parseFloat(document.getElementById('cat-costo').value || 0);
             const precio = parseFloat(document.getElementById('cat-precio').value || 0);
+            const clave = document.getElementById('cat-clave').value;
 
             if (!nombre || !precio) return alert("Ingresa al menos el nombre y el precio.");
 
-            financeCatalog.push({ id: Date.now().toString(), nombre, tipo, costo, precio });
+            financeCatalog.push({ id: Date.now().toString(), nombre, tipo, costo, precio, clave });
             localStorage.setItem('mw_finance_catalog', JSON.stringify(financeCatalog));
 
             document.getElementById('cat-nombre').value = '';
+            document.getElementById('cat-clave').value = '';
             document.getElementById('cat-costo').value = '';
             document.getElementById('cat-precio').value = '';
 

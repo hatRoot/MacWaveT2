@@ -1455,11 +1455,22 @@
                 const div = document.createElement('div');
                 div.className = 'item-row';
                 div.innerHTML = `
-                    <input type="text" class="i-desc" value="${item.d}" placeholder="Concepto de Servicio o Producto...">
+                    <input type="text" class="i-desc" value="${item.d}" placeholder="Concepto de Servicio o Producto..." list="catalog-list-data">
                     <input type="number" class="i-price" value="${item.p}" placeholder="0.00" style="text-align: right;">
                     <input type="number" class="i-qty" value="${item.q}" min="0" step="1" style="text-align: center;">
                     <button type="button" class="remove-btn">✕</button>
                 `;
+
+                // Auto-populate price if item from catalog is selected
+                div.querySelector('.i-desc').addEventListener('input', (e) => {
+                    const val = e.target.value;
+                    const opt = document.querySelector(`#catalog-list-data option[value="${val}"]`);
+                    if (opt) {
+                        const price = opt.dataset.precio;
+                        div.querySelector('.i-price').value = price;
+                        update();
+                    }
+                });
                 div.querySelector('.remove-btn').onclick = () => { div.remove(); update(); };
                 div.querySelectorAll('input').forEach(i => i.oninput = update);
                 itemsContainer.appendChild(div);
@@ -2158,6 +2169,21 @@
             const qrObserver = new MutationObserver(() => setTimeout(generatePreviewQR, 100));
             qrObserver.observe(document.getElementById('preview-canvas'), { childList: true, subtree: true });
 
+            // --- Catalog Integration (Pull from Dashboard Catalog) ---
+            const mwCatalog = JSON.parse(localStorage.getItem('mw_finance_catalog')) || [];
+            if (mwCatalog.length > 0) {
+                const dl = document.createElement('datalist');
+                dl.id = 'catalog-list-data';
+                mwCatalog.forEach(item => {
+                    const opt = document.createElement('option');
+                    // Format: "CLAVE - Nombre"
+                    opt.value = item.clave ? `${item.clave} - ${item.nombre}` : item.nombre;
+                    opt.dataset.precio = item.precio || 0;
+                    dl.appendChild(opt);
+                });
+                document.body.appendChild(dl);
+            }
+
             // Logout Handler
             const finalLogoutBtn = document.getElementById('logout-btn-side');
             if (finalLogoutBtn) {
@@ -2166,8 +2192,6 @@
                     window.location.href = 'tecnicos.html';
                 };
             }
-
-
         });
     </script>
 </body>
