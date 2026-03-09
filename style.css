@@ -144,16 +144,10 @@ html {
     }
 }
 
+/* Eliminado el borrado de texto para laptops de 14" - Los botones ahora siempre dicen algo */
 @media (max-width: 1400px) {
-    .btn-text {
-        display: none;
-    }
-
-    /* Ocultamos texto solo cuando el espacio es crítico */
-    .header-cta {
-        width: 44px;
-        padding: 0;
-        border-radius: 50% !important;
+    .main-nav {
+        gap: 15px;
     }
 }
 
@@ -487,21 +481,22 @@ h3 {
 }
 
 .header-cta {
-    height: 40px;
-    padding: 0 18px;
-    border-radius: 8px;
-    /* Diseño Industrial Pro */
+    height: 38px;
+    padding: 0 22px;
+    border-radius: 50px;
+    /* Estilo Píldora Apple Premium */
     display: inline-flex;
     align-items: center;
     justify-content: center;
     gap: 8px;
     font-weight: 800;
-    /* Texto muy fuerte */
-    font-size: 0.8rem;
+    /* Tipografía pesada y nítida */
+    font-size: 0.78rem;
     transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     text-transform: uppercase;
-    letter-spacing: 0.5px;
+    letter-spacing: 0.8px;
     border: none;
+    text-decoration: none;
 }
 
 .header-cta svg {
@@ -534,20 +529,15 @@ h3 {
 }
 
 .header-cta.neon-red {
-    width: 44px !important;
-    height: 44px !important;
-    padding: 0 !important;
-    border-radius: 50% !important;
-    /* Volvemos al círculo pero sólido/fuerte */
-    background: rgba(255, 69, 58, 0.1) !important;
-    border: 2px solid #FF453A !important;
-    color: #FF453A !important;
+    background: #FF453A !important;
+    border: none !important;
+    color: #FFFFFF !important;
 }
 
 .header-cta.neon-red:hover {
-    background: #FF453A !important;
-    color: #FFFFFF !important;
-    transform: scale(1.1);
+    background: #FF3B30 !important;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(255, 69, 58, 0.4);
 }
 
 .large-cta {
