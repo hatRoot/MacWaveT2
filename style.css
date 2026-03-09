@@ -94,18 +94,20 @@ html {
 
 .main-nav {
     display: flex;
-    gap: 20px;
+    gap: 12px;
+    /* Junta todo: Menos espacio */
     align-items: center;
     margin-left: auto;
-    /* Empuja el menú a la derecha del logo */
-    margin-right: 35px;
-    /* Aire antes de los botones */
+    /* Empuja todo el bloque a la derecha del logo */
 }
 
 .header-actions {
-    display: flex;
+    display: flex !important;
     align-items: center;
-    gap: 12px;
+    gap: 10px;
+    /* Junta todo: Botones pegados */
+    margin-left: 15px;
+    /* Separación mínima del menú */
 }
 
 /* Status Circle Standardized */
@@ -179,14 +181,7 @@ html {
     color: var(--text-primary);
 }
 
-/* Header Actions - Groups Contacto and WhatsApp button on the right */
-.header-actions {
-    display: flex;
-    align-items: center;
-    gap: 20px;
-    margin-left: auto;
-    /* Push to the right */
-}
+/* Eliminado bloque duplicado de header-actions que causaba errores */
 
 .container {
     max-width: 1200px;
@@ -255,11 +250,10 @@ h3 {
     display: flex;
     align-items: center;
     justify-content: flex-start;
-    /* Logo a la izquierda, el auto-margin del nav hará el resto */
     width: 100%;
-    max-width: 1450px;
+    max-width: 1500px;
     margin: 0 auto;
-    padding: 0 40px;
+    padding: 0 25px;
 }
 
 /* ESTILOS DEL LOGO MULTILÍNEA */
@@ -464,9 +458,8 @@ h3 {
 }
 
 .cta-button.primary:hover {
-    background-color: #FF7B33;
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+    background-color: var(--text-primary);
+    color: var(--primary-bg);
 }
 
 .cta-button.secondary {
@@ -482,24 +475,24 @@ h3 {
 
 .header-cta {
     height: 44px;
-    /* Altura Premium Table */
+    /* Altura Pro */
     padding: 0 25px;
     border-radius: 50px;
-    /* Píldora Perfecta Apple */
+    /* Píldora Apple */
     display: inline-flex;
     align-items: center;
     justify-content: center;
     gap: 10px;
-    font-weight: 850;
-    /* Super Bold para que "digan algo" */
-    font-size: 0.9rem;
-    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    font-weight: 950;
+    /* Super Bold Máximo */
+    font-size: 0.95rem;
+    transition: all 0.2s ease;
     text-transform: uppercase;
-    letter-spacing: 1px;
+    letter-spacing: 1.5px;
     border: none;
     text-decoration: none;
     cursor: pointer;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
 }
 
 .header-cta svg {
@@ -508,39 +501,32 @@ h3 {
 }
 
 .header-cta.neon-green {
-    background: #30D158;
-    /* Verde sólido Apple */
-    color: #000000;
-}
-
-.header-cta.neon-green:hover {
-    background: #28b04a;
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(48, 209, 88, 0.4);
+    background: #30D158 !important;
+    /* Verde sólido real */
+    color: #000000 !important;
+    border: none !important;
+    box-shadow: 0 4px 15px rgba(48, 209, 88, 0.4);
 }
 
 .header-cta.neon-yellow {
-    background: #FFD60A;
-    /* Amarillo sólido Apple */
-    color: #000000;
-}
-
-.header-cta.neon-yellow:hover {
-    background: #e6c109;
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(255, 214, 10, 0.4);
+    background: #FFD60A !important;
+    /* Amarillo sólido real */
+    color: #000000 !important;
+    border: none !important;
+    box-shadow: 0 4px 15px rgba(255, 214, 10, 0.4);
 }
 
 .header-cta.neon-red {
     background: #FF453A !important;
+    /* Rojo sólido real */
     color: #FFFFFF !important;
-    box-shadow: 0 4px 15px rgba(255, 69, 58, 0.3);
+    border: none !important;
+    box-shadow: 0 4px 15px rgba(255, 69, 58, 0.4);
 }
 
-.header-cta.neon-red:hover {
-    background: #FF3B30 !important;
-    transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(255, 69, 58, 0.5);
+.header-cta:hover {
+    transform: scale(1.05);
+    filter: brightness(1.1);
 }
 
 .large-cta {
@@ -1400,24 +1386,20 @@ h3 {
         border-radius: 2px;
     }
 
-    /* Header actions — keep hidden on mobile (we use in-nav buttons instead) */
     /* Header actions — ALWAYS VISIBLE as they are critical CTAs */
     .header-actions {
         display: flex !important;
-        scale: 0.82;
-        margin-right: -10px;
+        gap: 8px;
+        /* Pegaditos */
     }
 
     .logo {
-        margin: 0 !important;
-        order: 2 !important;
-        flex: 1;
-        display: flex;
-        justify-content: center;
+        flex-shrink: 0;
+        margin-right: 15px !important;
     }
 
     .logo-brand {
-        font-size: 1.3rem !important;
+        font-size: 1.1rem !important;
     }
 
     .logo-subtext {
@@ -3405,3 +3387,5 @@ details.modern-accordion[open] {
     white-space: nowrap;
     border-width: 0;
 }
+
+/* Cierre de bloque principal si fuera necesario */
