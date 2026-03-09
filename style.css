@@ -92,23 +92,28 @@ html {
     box-sizing: border-box;
 }
 
-.main-nav {
-    order: 3;
-    /* Menú TERCERO (a la derecha) */
-    display: flex;
-    gap: 15px;
-    align-items: center;
+.logo {
+    order: 1 !important;
+    margin-right: 30px !important;
+    display: flex !important;
+    align-items: center !important;
 }
 
 .header-actions {
-    order: 2;
-    /* Botones SEGUNDO (A LA IZQUIERDA) */
+    order: 2 !important;
     display: flex !important;
-    align-items: center;
-    gap: 12px;
-    margin-right: auto;
-    /* Empuja el menú a la derecha */
-    flex-shrink: 0;
+    align-items: center !important;
+    gap: 15px !important;
+    margin-right: auto !important;
+    /* EMPUJA EL MENÚ A LA DERECHA */
+    flex-shrink: 0 !important;
+}
+
+.main-nav {
+    order: 3 !important;
+    display: flex !important;
+    gap: 15px !important;
+    align-items: center !important;
 }
 
 /* Status Circle Standardized */
@@ -241,14 +246,10 @@ h3 {
 
 /* ESTILOS DEL LOGO MULTILÍNEA */
 .logo {
-    order: 1;
-    /* Logo Primero */
+    /* Estilos base del logo - El orden se maneja arriba con !important */
     display: flex;
     align-items: center;
     flex-shrink: 0;
-    /* Prevents logo from shrinking and crushing text */
-    margin-right: 40px;
-    /* Aire después del logo */
 }
 
 .logo a.logo-link {
@@ -1364,38 +1365,30 @@ h3 {
         border-radius: 2px;
     }
 
-    /* Header actions — ALWAYS VISIBLE as they are critical CTAs */
     .header-actions {
+        order: 2 !important;
         display: flex !important;
-        gap: 8px;
-        order: 3;
+        gap: 10px !important;
+        margin-right: auto !important;
     }
 
     .logo {
-        margin: 0 !important;
-        order: 2 !important;
-        flex: 1;
-        display: flex;
-        justify-content: center;
-    }
-
-    .logo-brand {
-        font-size: 1.15rem !important;
-    }
-
-    .logo-subtext {
-        display: none !important;
-    }
-
-    .header-cta {
-        padding: 0 12px;
-        height: 34px;
-        font-size: 0.7rem;
+        order: 1 !important;
+        flex: 0 !important;
+        margin-right: 20px !important;
+        display: flex !important;
+        justify-content: flex-start !important;
     }
 
     .header-cta span {
-        display: none;
-        /* Hide text only on very small screens to fit buttons */
+        display: inline !important;
+        /* SIEMPRE MOSTRAR TEXTO */
+    }
+
+    .header-cta {
+        padding: 0 15px !important;
+        height: 40px !important;
+        font-size: 0.8rem !important;
     }
 
     .header-cta svg {
