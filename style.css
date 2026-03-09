@@ -481,27 +481,30 @@ h3 {
 }
 
 .header-cta {
-    height: 38px;
-    padding: 0 22px;
+    height: 44px;
+    /* Altura Premium Table */
+    padding: 0 25px;
     border-radius: 50px;
-    /* Estilo Píldora Apple Premium */
+    /* Píldora Perfecta Apple */
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 8px;
-    font-weight: 800;
-    /* Tipografía pesada y nítida */
-    font-size: 0.78rem;
+    gap: 10px;
+    font-weight: 850;
+    /* Super Bold para que "digan algo" */
+    font-size: 0.9rem;
     transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     text-transform: uppercase;
-    letter-spacing: 0.8px;
+    letter-spacing: 1px;
     border: none;
     text-decoration: none;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
 }
 
 .header-cta svg {
-    width: 18px;
-    height: 18px;
+    width: 20px;
+    height: 20px;
 }
 
 .header-cta.neon-green {
@@ -530,14 +533,14 @@ h3 {
 
 .header-cta.neon-red {
     background: #FF453A !important;
-    border: none !important;
     color: #FFFFFF !important;
+    box-shadow: 0 4px 15px rgba(255, 69, 58, 0.3);
 }
 
 .header-cta.neon-red:hover {
     background: #FF3B30 !important;
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(255, 69, 58, 0.4);
+    box-shadow: 0 8px 25px rgba(255, 69, 58, 0.5);
 }
 
 .large-cta {
@@ -1398,8 +1401,11 @@ h3 {
     }
 
     /* Header actions — keep hidden on mobile (we use in-nav buttons instead) */
+    /* Header actions — ALWAYS VISIBLE as they are critical CTAs */
     .header-actions {
-        display: none !important;
+        display: flex !important;
+        scale: 0.82;
+        margin-right: -10px;
     }
 
     .logo {
