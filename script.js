@@ -172,7 +172,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         confirmContainer.style.display = 'block';
                         noSelectionMsg.style.display = 'none';
 
-                        const message = `Hola, tengo un problema con mi mac, me ayudas?`;
+                        const message = `Hola, quisiera agendar una cita para el ${dateString}.`;
                         whatsappBtn.href = `https://wa.me/525535757364?text=${encodeURIComponent(message)}`;
                     }
 
