@@ -94,11 +94,12 @@ html {
 
 .main-nav {
     display: flex;
-    gap: 18px;
-    /* Ultra-compacto, máxima precisión Apple */
+    gap: 20px;
     align-items: center;
     margin-left: auto;
-    margin-right: 15px;
+    /* Empuja el menú a la derecha del logo */
+    margin-right: 35px;
+    /* Aire antes de los botones */
 }
 
 .header-actions {
@@ -259,12 +260,12 @@ h3 {
 .header-content {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    gap: clamp(10px, 2vw, 25px);
+    justify-content: flex-start;
+    /* Logo a la izquierda, el auto-margin del nav hará el resto */
     width: 100%;
-    max-width: 1350px;
+    max-width: 1450px;
     margin: 0 auto;
-    padding: 0 20px;
+    padding: 0 40px;
 }
 
 /* ESTILOS DEL LOGO MULTILÍNEA */
@@ -332,12 +333,18 @@ h3 {
 
 /* Navegación */
 .main-nav a {
-    margin-left: max(40px, 3vw);
-    font-weight: var(--font-weight-medium);
+    font-weight: 600;
+    font-size: 0.9rem;
     color: var(--text-secondary);
     position: relative;
-    padding-bottom: 5px;
+    padding-bottom: 2px;
     white-space: nowrap;
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.main-nav a:hover {
+    color: var(--text-primary);
 }
 
 /* Ocultar "Inicio" y su icono de casa en el modo escritorio para evitar que se amontone */
@@ -480,71 +487,67 @@ h3 {
 }
 
 .header-cta {
-    height: 38px;
-    padding: 0 16px;
-    border-radius: 12px;
+    height: 40px;
+    padding: 0 18px;
+    border-radius: 8px;
+    /* Diseño Industrial Pro */
     display: inline-flex;
     align-items: center;
     justify-content: center;
     gap: 8px;
-    font-weight: 700;
-    font-size: 0.78rem;
-    transition: all 0.25s cubic-bezier(0.23, 1, 0.32, 1);
+    font-weight: 800;
+    /* Texto muy fuerte */
+    font-size: 0.8rem;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     text-transform: uppercase;
-    letter-spacing: 0.6px;
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.03) 100%);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(15px);
-    -webkit-backdrop-filter: blur(15px);
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    letter-spacing: 0.5px;
+    border: none;
 }
 
 .header-cta svg {
-    width: 16px;
-    height: 16px;
-    filter: drop-shadow(0 0 4px currentColor);
+    width: 18px;
+    height: 18px;
 }
 
 .header-cta.neon-green {
-    color: #30D158;
-    border-color: rgba(48, 209, 88, 0.3);
+    background: #30D158;
+    /* Verde sólido Apple */
+    color: #000000;
 }
 
 .header-cta.neon-green:hover {
-    background: rgba(48, 209, 88, 0.15);
-    border-color: #30D158;
+    background: #28b04a;
     transform: translateY(-2px);
-    box-shadow: 0 8px 15px rgba(48, 209, 88, 0.2);
+    box-shadow: 0 6px 20px rgba(48, 209, 88, 0.4);
 }
 
 .header-cta.neon-yellow {
-    color: #FFD60A;
-    border-color: rgba(255, 214, 10, 0.3);
+    background: #FFD60A;
+    /* Amarillo sólido Apple */
+    color: #000000;
 }
 
 .header-cta.neon-yellow:hover {
-    background: rgba(255, 214, 10, 0.15);
-    border-color: #FFD60A;
+    background: #e6c109;
     transform: translateY(-2px);
-    box-shadow: 0 8px 15px rgba(255, 214, 10, 0.2);
+    box-shadow: 0 6px 20px rgba(255, 214, 10, 0.4);
 }
 
 .header-cta.neon-red {
-    width: 38px !important;
-    height: 38px !important;
+    width: 44px !important;
+    height: 44px !important;
     padding: 0 !important;
-    border-radius: 12px !important;
+    border-radius: 50% !important;
+    /* Volvemos al círculo pero sólido/fuerte */
+    background: rgba(255, 69, 58, 0.1) !important;
+    border: 2px solid #FF453A !important;
     color: #FF453A !important;
-    border-color: rgba(255, 69, 58, 0.4) !important;
-    background: rgba(255, 255, 255, 0.03) !important;
-    backdrop-filter: blur(15px) !important;
 }
 
 .header-cta.neon-red:hover {
-    background: rgba(255, 69, 58, 0.15) !important;
-    border-color: #FF453A !important;
-    transform: scale(1.08);
-    box-shadow: 0 0 20px rgba(255, 69, 58, 0.2);
+    background: #FF453A !important;
+    color: #FFFFFF !important;
+    transform: scale(1.1);
 }
 
 .large-cta {
