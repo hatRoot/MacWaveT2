@@ -93,19 +93,21 @@ html {
 }
 
 .main-nav {
+    order: 3;
+    /* Menú TERCERO (a la derecha) */
     display: flex;
-    gap: 10px;
-    /* Junta todo: Máxima densidad de enlaces */
+    gap: 15px;
     align-items: center;
-    margin-left: auto;
 }
 
 .header-actions {
+    order: 2;
+    /* Botones SEGUNDO (A LA IZQUIERDA) */
     display: flex !important;
     align-items: center;
-    gap: 8px;
-    /* Junta todo: Botones pegados */
-    margin-left: 15px;
+    gap: 12px;
+    margin-right: auto;
+    /* Empuja el menú a la derecha */
     flex-shrink: 0;
 }
 
@@ -239,12 +241,14 @@ h3 {
 
 /* ESTILOS DEL LOGO MULTILÍNEA */
 .logo {
+    order: 1;
+    /* Logo Primero */
     display: flex;
     align-items: center;
     flex-shrink: 0;
     /* Prevents logo from shrinking and crushing text */
-    margin-right: 60px;
-    /* Sensible gap */
+    margin-right: 40px;
+    /* Aire después del logo */
 }
 
 .logo a.logo-link {
@@ -455,23 +459,23 @@ h3 {
 }
 
 .header-cta {
-    height: 40px;
-    /* Más compacto */
-    padding: 0 18px;
+    height: 44px;
+    /* Imponente */
+    padding: 0 25px;
     border-radius: 50px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 8px;
-    font-weight: 900;
-    font-size: 0.85rem;
-    transition: all 0.2s ease;
+    gap: 10px;
+    font-weight: 950;
+    font-size: 0.95rem;
+    transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     text-transform: uppercase;
-    letter-spacing: 0.3px;
+    letter-spacing: 0.5px;
     border: none !important;
     text-decoration: none;
     cursor: pointer;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.6);
     white-space: nowrap;
     flex-shrink: 0;
     background-clip: padding-box;
