@@ -11,30 +11,26 @@
         gtag('js', new Date());
         gtag('config', 'G-JENWM4W22D');
     </script>
-    <!-- End Google Analytics 4 -->
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Reparación de MacBook Pro y Air en CDMX | Tarjeta Lógica | Mac Wave</title>
+    <title>Reparación de MacBook Pro, Air e iMac en CDMX | Mac Wave T2</title>
     <meta name="description"
-        content="¿MacBook Pro mojada o no enciende? Especialistas en REPARACIÓN DE MACBOOK y tarjeta lógica en CDMX. Pantallas, baterías y servicio técnico Apple profesional.">
+        content="¿MacBook Pro mojada, no enciende o pantalla rota? Especialistas en reparación de tarjeta lógica, pantallas y baterías en CDMX. Diagnóstico profesional gratuito. Mac Wave T2.">
     <meta name="keywords"
-        content="reparación macbook pro cdmx, reparación macbook air cdmx, tarjeta lógica macbook, macbook mojada cdmx, no enciende macbook, soporte técnico apple cdmx">
+        content="reparación macbook pro cdmx, reparación macbook air cdmx, tarjeta lógica macbook, macbook mojada cdmx, no enciende macbook, soporte técnico apple cdmx, actualizar mac antigua, opencore cdmx, ssd macbook cdmx">
 
-    <!-- Geo Meta Tags for Local SEO -->
     <meta name="geo.region" content="MX-CMX">
     <meta name="geo.placename" content="Ciudad de México">
     <meta name="geo.position" content="19.432608;-99.133209">
 
-    <!-- Favicon -->
     <link rel="icon" type="image/png" href="https://www.macwave.com.mx/images/favicon1.png">
     <link rel="apple-touch-icon" href="https://www.macwave.com.mx/images/favicon1.png">
 
-    <!-- Open Graph & Twitter -->
-    <meta property="og:title" content="Reparación de MacBook y Tarjeta Lógica CDMX | Mac Wave">
+    <meta property="og:title" content="Reparación de MacBook y Tarjeta Lógica CDMX | Mac Wave T2">
     <meta property="og:description"
-        content="¿Mac mojada o no enciende? Somos especialistas en reparación de tarjeta lógica, cambio de batería y pantalla.">
+        content="¿Mac mojada o no enciende? Somos especialistas en reparación de tarjeta lógica, cambio de batería y pantalla. Diagnóstico profesional gratuito.">
     <meta property="og:url" content="https://macwave.com.mx/reparaciones.html">
     <meta property="og:type" content="website">
     <meta property="og:image" content="https://macwave.com.mx/images/mac-repair-logic.jpg">
@@ -42,51 +38,25 @@
 
     <link rel="stylesheet" href="style.css?v=21.0.0">
 
-    <!-- Structured Data (JSON-LD) for Repair Services -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "Service",
-      "serviceType": "Reparación de MacBook y Tarjeta Lógica",
+      "serviceType": "Reparación de MacBook, Tarjeta Lógica y Optimización de Hardware",
       "provider": {
         "@type": "LocalBusiness",
         "name": "Mac Wave T2",
         "url": "https://macwave.com.mx/"
       },
-      "areaServed": {
-        "@type": "City",
-        "name": "Ciudad de México"
-      },
+      "areaServed": { "@type": "City", "name": "Ciudad de México" },
       "specialty": "Reparación de Hardware Apple y Micro-soldadura",
-      "knowsAbout": ["Reparación de MacBook Pro", "Diagnóstico de Cortocircuitos", "Recuperación de Datos MacBook"],
       "hasOfferCatalog": {
         "@type": "OfferCatalog",
-        "name": "Catálogo de Reparaciones",
+        "name": "Catálogo de Reparaciones y Optimización",
         "itemListElement": [
-          {
-            "@type": "Offer",
-            "itemOffered": {
-              "@type": "Service",
-              "name": "Reparación de Tarjeta Lógica",
-              "description": "Reparación a nivel componente (micro-soldadura) para MacBook Pro, Air e iMac."
-            }
-          },
-          {
-            "@type": "Offer",
-            "itemOffered": {
-              "@type": "Service",
-              "name": "Cambio de Pantalla MacBook",
-              "description": "Sustitución de pantallas originales para toda la gama MacBook."
-            }
-          },
-          {
-            "@type": "Offer",
-            "itemOffered": {
-              "@type": "Service",
-              "name": "Reparación Face ID iPhone",
-              "description": "Soluciones para fallos en el módulo de Face ID y cámaras."
-            }
-          }
+          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Reparación de Tarjeta Lógica", "description": "Micro-soldadura a nivel componente para MacBook Pro, Air e iMac." }},
+          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Cambio de Pantalla y Batería", "description": "Sustitución con refacciones OEM para MacBook e iPhone." }},
+          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Optimización y Upgrade de Hardware", "description": "Instalación de macOS moderno en Macs antiguas, SSD NVMe y RAM." }}
         ]
       }
     }
@@ -94,10 +64,7 @@
 
     <script>
         function toggleMobileMenu(e) {
-            if (e) {
-                e.preventDefault();
-                e.stopPropagation();
-            }
+            if (e) { e.preventDefault(); e.stopPropagation(); }
             var body = document.body;
             var btn = document.getElementById('mobile-menu-toggle');
             var isNowActive = body.classList.toggle('menu-active');
@@ -110,14 +77,18 @@
 </head>
 
 <body class="reparaciones-page">
+
+    <!-- ═══════════════════ HEADER ═══════════════════ -->
     <header class="main-header">
-        <div class="container header-content">
+        <div class="container header-content" style="display:flex; align-items:center; justify-content:space-between;">
+
+            <!-- Hamburguesa móvil -->
             <button class="mobile-menu-toggle" id="mobile-menu-toggle" aria-label="Abrir menú"
                 onclick="toggleMobileMenu(event)">
-                <span></span>
-                <span></span>
-                <span></span>
+                <span></span><span></span><span></span>
             </button>
+
+            <!-- IZQUIERDA: Logo -->
             <div class="logo">
                 <a href="index.html" class="logo-link">
                     <img src="./images/logo_dashboard_white.png" alt="Logo Mac Wave T2" class="logo-img">
@@ -127,31 +98,16 @@
                     </div>
                 </a>
             </div>
-            <nav class="main-nav">
+
+            <!-- CENTRO: 3 enlaces -->
+            <nav class="main-nav" style="flex:1; display:flex; justify-content:center; gap:8px;">
                 <button class="mobile-nav-close" onclick="toggleMobileMenu(event)" aria-label="Cerrar menú">✕</button>
-                <a data-link="index.html" class="nav-link">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor"
-                        viewBox="0 0 16 16" style="margin-right: 12px; opacity: 0.9;">
-                        <path
-                            d="M8.707 1.5a1 1 0 0 0-1.414 0L.646 8.146a.5.5 0 0 0 .708.708L8 2.207l6.646 6.647a.5.5 0 0 0 .708-.708L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.707 1.5Z" />
-                        <path d="m8 3.293 6 6V13.5a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 2 13.5V9.293l6-6Z" />
-                    </svg>
-                    Inicio
-                </a>
                 <a data-link="reparaciones.html" class="nav-link" style="color: var(--text-primary);">Reparaciones</a>
                 <a data-link="empresas.html" class="nav-link">Empresas</a>
                 <a data-link="software.html" class="nav-link">Software</a>
-                <a data-link="upgrades.html" class="nav-link" style="white-space: nowrap;">Revive tu Mac</a>
+
+                <!-- Acciones mobile dentro del menú -->
                 <div class="mobile-nav-actions">
-                    <a href="status-ods.html" class="mobile-nav-status">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor"
-                            viewBox="0 0 16 16">
-                            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
-                            <path
-                                d="M7.5 3a.5.5 0 0 1 .5.5v5.21l3.247 1.856a.5.5 0 0 1-.494.868l-3.5-2A.5.5 0 0 1 7 9V3.5a.5.5 0 0 1 .5-.5z" />
-                        </svg>
-                        ¿Cómo va tu reparación?
-                    </a>
                     <a href="https://wa.me/525535757364" target="_blank" rel="noopener noreferrer"
                         class="mobile-nav-wa">
                         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor"
@@ -159,54 +115,51 @@
                             <path
                                 d="M13.601 2.326A7.854 7.854 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.933 7.933 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.898 7.898 0 0 0 13.6 2.326zM7.994 14.521a6.573 6.573 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.557 6.557 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592zm3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.729.729 0 0 0-.529.247c-.182.198-.691.677-.691 1.654 0 .977.71 1.916.81 2.049.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232z" />
                         </svg>
-                        Contactar por WhatsApp
+                        Presupuesto Inmediato
                     </a>
                 </div>
             </nav>
-            <div class="header-actions" style="display: flex; align-items: center; gap: 12px;">
-                <a data-link="https://wa.me/525535757364" target="_blank" rel="noopener noreferrer"
-                    class="cta-button header-cta neon-green" style="padding: 10px 18px; font-size: 0.85rem;">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                        class="bi bi-whatsapp" viewBox="0 0 16 16" style="margin-right: 8px;">
+
+            <!-- DERECHA: Botón WhatsApp -->
+            <div class="header-actions">
+                <a href="https://wa.me/525535757364?text=Hola,%20necesito%20un%20presupuesto%20para%20mi%20Mac"
+                    target="_blank" rel="noopener noreferrer" class="cta-button header-cta"
+                    style="background: rgba(0,122,255,0.15); color: #3a9eff; border: 1px solid rgba(0,122,255,0.45); padding: 10px 20px; font-size: 0.85rem; white-space: nowrap;"
+                    onclick="gtag('event', 'whatsapp_click', { 'event_category': 'contact', 'event_label': 'header' });">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor"
+                        viewBox="0 0 16 16" style="margin-right:8px;">
                         <path
                             d="M13.601 2.326A7.854 7.854 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.933 7.933 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.898 7.898 0 0 0 13.6 2.326zM7.994 14.521a6.573 6.573 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.557 6.557 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592zm3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.729.729 0 0 0-.529.247c-.182.198-.691.677-.691 1.654 0 .977.71 1.916.81 2.049.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232z" />
                     </svg>
-                    WhatsApp
-                </a>
-                <a data-link="tecnicos.html" class="nav-link-small"
-                    style="margin: 0; display: flex; align-items: center;" title="Acceso Técnicos">
-                    <span class="status-circle-yellow"></span>
+                    Presupuesto Inmediato
                 </a>
             </div>
         </div>
     </header>
 
     <main>
-        <!-- Page Header -->
+        <!-- ═══ HERO ═══ -->
         <section class="section-padded"
             style="background-color: var(--primary-bg); text-align: center; border-bottom: 1px solid var(--secondary-bg); padding-top: 150px; padding-bottom: 60px;">
             <div class="container">
                 <span class="hero-banner-promo" style="margin: 0 auto 20px;">
                     <span>ESPECIALISTAS</span> DIAGNÓSTICO PROFESIONAL EN CDMX
                 </span>
-                <!-- SEO H1 -->
                 <h1 style="font-size: 3.5rem; margin-bottom: 20px;">Reparación de MacBook Pro, Air y Mac en CDMX</h1>
-                <p class="section-description" style="font-size: 1.2rem; max-width: 800px;">
+                <p class="section-description" style="font-size: 1.2rem; max-width: 800px; margin: 0 auto;">
                     ¿Tu MacBook Pro no enciende? ¿Tu MacBook Air sufrió daño por líquidos? Somos expertos en
-                    micro-soldadura a nivel
-                    componente. <strong>Rescatamos equipos que otros dan por muertos.</strong>
+                    micro-soldadura a nivel componente. <strong>Rescatamos equipos que otros dan por muertos.</strong>
                 </p>
             </div>
         </section>
 
-        <!-- Main Services Section -->
+        <!-- ═══ REPARACIONES ═══ -->
         <section class="section-padded solution-grid-section">
             <div class="container">
-                <!-- SEO H2 -->
                 <h2 style="margin-bottom: 60px;">Salvamos tu Equipo cuando otros dicen "No tiene arreglo"</h2>
 
                 <div class="services-stack">
-                    <!-- Servicio 1: Mac / H3 -->
+                    <!-- Servicio 1: Tarjeta Lógica -->
                     <div class="service-row"
                         style="background: var(--primary-bg); padding: 30px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05); margin-bottom: 30px;">
                         <div class="service-image">
@@ -217,8 +170,7 @@
                             <h3 style="color: #FFFFFF !important;">Reparación de Tarjeta Lógica (Micro-soldadura)</h3>
                             <h4 style="color: var(--accent-orange); margin-bottom: 15px;">MacBook Pro, Air e iMac</h4>
                             <p style="color: #E0E0E6 !important;">¿Te dijeron que "cambies la placa base" a un costo
-                                excesivo? <strong>En Mac Wave
-                                    reparamos a nivel componente.</strong></p>
+                                excesivo? <strong>En Mac Wave reparamos a nivel componente.</strong></p>
 
                             <details class="modern-accordion">
                                 <summary>Ver detalles técnicos de Reparación Lógica</summary>
@@ -226,13 +178,13 @@
                                     <p>Identificamos cortocircuitos, resistencias quemadas o chips de control de energía
                                         dañados (SMC, CD3215, T2 Shield). Reemplazamos únicamente el microcomponente
                                         fallido, lo cual reduce el costo hasta en un 70% comparado con el cambio de la
-                                        tarjeta completa en tiendas oficiales oficiales.</p>
+                                        tarjeta completa en tiendas oficiales.</p>
                                     <ul
                                         style="list-style: disc; margin-left: 20px; margin-top: 10px; color: var(--text-secondary);">
                                         <li style="color: #E0E0E6 !important;">Diagnóstico con cámara térmica y
                                             diagramas esquemáticos.</li>
                                         <li style="color: #E0E0E6 !important;">Reparación de daño severo por líquidos
-                                            (Derrames de café, agua, etc).</li>
+                                            (café, agua, etc).</li>
                                         <li style="color: #E0E0E6 !important;">Solución a problemas de retroiluminación
                                             (pantalla oscura).</li>
                                     </ul>
@@ -250,7 +202,7 @@
                         </div>
                     </div>
 
-                    <!-- Servicio 2: Pantallas y Baterías / H3 -->
+                    <!-- Servicio 2: Pantallas y Baterías -->
                     <div class="service-row"
                         style="background: var(--primary-bg); padding: 30px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05); margin-bottom: 30px;">
                         <div class="service-image">
@@ -271,8 +223,7 @@
                                         nosotros sí lo podemos reparar.</p>
                                     <p style="margin-top:10px;">Cambiamos piezas cumpliendo estrictamente los estándares
                                         de fábrica para evitar mensajes de "pieza desconocida" en iOS, garantizando
-                                        funcionalidad perfecta y lectura correcta del porcentaje de batería. Por eso
-                                        estamos certificados: reparamos lo que otros solo reemplazan.</p>
+                                        funcionalidad perfecta y lectura correcta del porcentaje de batería.</p>
                                 </div>
                             </details>
 
@@ -291,8 +242,90 @@
             </div>
         </section>
 
+        <!-- ═══ OPTIMIZACIÓN Y UPGRADES (antes "Revive tu Mac") ═══ -->
+        <section class="section-padded"
+            style="background-color: var(--bg-secondary); border-top: 1px solid rgba(255,255,255,0.06);">
+            <div class="container">
+                <div class="section-header text-center" style="margin-bottom: 50px;">
+                    <span class="section-subtitle">Ampliación y Optimización de Hardware</span>
+                    <h2 class="section-title">Maximiza el Rendimiento de tu Mac</h2>
+                    <p class="section-desc" style="max-width: 700px; margin: 0 auto;">
+                        ¿Tu Mac de 2012–2017 ya no corre los bancos, Chrome marca error o va lentísima?
+                        <strong>No necesitas comprar una nueva.</strong> Con los componentes y el software correctos, tu
+                        equipo quedará rápido y funcional.
+                    </p>
+                </div>
+
+                <!-- OpenCore / macOS moderno -->
+                <div class="compatibility-split" style="margin-bottom: 60px;">
+                    <div class="compatibility-content">
+                        <h3 style="color: #FFFFFF !important; font-size: 1.8rem; margin-bottom: 10px;">Instalación de
+                            macOS Sonoma y Sequoia en Macs Antiguas</h3>
+                        <h4 style="color: var(--accent-orange) !important; font-size: 1.2rem; margin-bottom: 15px;">
+                            Optimización avanzada con OpenCore Legacy Patcher</h4>
+                        <p style="color: #E0E0E6;">Las Mac están construidas para durar muchos años, el problema es
+                            que Apple deja de darles soporte. Aplicamos una técnica certificada que fuerza al equipo a
+                            correr sistemas operativos modernos de forma fluida.</p>
+
+                        <ul style="list-style: none; padding: 0; margin: 20px 0; color: #E0E0E6;">
+                            <li>✅ <strong>Las apps de bancos vuelven a funcionar</strong> al tener seguridad moderna.
+                            </li>
+                            <li>✅ <strong>Instala Netflix, Office 365, Adobe y todo lo actual.</strong></li>
+                            <li>✅ <strong>Obtén Modo Oscuro, Siri y funciones modernas.</strong></li>
+                            <li>✅ <strong>Ahorra decenas de miles de pesos</strong> sin comprar otro equipo.</li>
+                        </ul>
+
+                        <a href="https://wa.me/525535757364?text=Hola,%20tengo%20una%20Mac%20vieja%20y%20quiero%20ponerle%20sistema%20nuevo"
+                            class="cta-button primary" target="_blank"
+                            style="margin-top: 15px; display: inline-block;">Actualizar mi Mac Antigua</a>
+                    </div>
+                    <div class="compatibility-image" style="position: relative;">
+                        <img src="images/opencore_transformation.png"
+                            alt="MacBook Pro 2012 con macOS Sonoma vía OpenCore" class="compatibility-img"
+                            loading="lazy">
+                        <div class="image-text-overlay"
+                            style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(0,0,0,0.7); color: white; padding: 10px 20px; border-radius: 8px; font-weight: bold; font-size: 1.2rem; text-align: center; width: 80%;">
+                            ¿Mac Lenta? <br> <span style="color: var(--accent-orange); font-size: 1.4rem;">¡Sistema
+                                Nuevo!</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SSD y RAM -->
+                <div class="configure-mac-grid" style="align-items: center;">
+                    <div class="configure-mac-content text-white">
+                        <h3 style="color: #FFFFFF !important; font-size: 1.8rem; margin-bottom: 10px;">Ampliación de
+                            Disco Sólido (SSD) y Memoria RAM</h3>
+                        <h4 style="color: var(--text-muted); font-size: 1.1rem; margin-bottom: 20px;">Componentes de
+                            alto rendimiento para tu Mac</h4>
+                        <p style="color: #E0E0E6;">Sustituimos el antiguo disco mecánico por memoria Flash NVMe
+                            ultrarrápida y ampliamos la RAM para que puedas trabajar con múltiples aplicaciones sin
+                            caídas de rendimiento.</p>
+
+                        <details class="modern-accordion" style="margin-top: 20px;">
+                            <summary>¿Se pueden instalar en cualquier Mac?</summary>
+                            <div class="accordion-content">
+                                <p>La mayoría de MacBook Pro, Air e iMac hasta 2017 permiten cambios de SSD ultrarrápido
+                                    (NVMe), y las Pro e iMac antiguas permiten crecimiento masivo de RAM. ¡Cotiza con tu
+                                    número de serie!</p>
+                            </div>
+                        </details>
+
+                        <div style="margin-top: 25px;">
+                            <a href="https://wa.me/525535757364?text=Hola,%20quiero%20crecer%20el%20disco%20o%20la%20RAM%20de%20mi%20Mac"
+                                class="cta-button secondary" target="_blank">Consultar Upgrade de Hardware</a>
+                        </div>
+                    </div>
+                    <div class="configure-mac-image">
+                        <img src="./images/imac.png" alt="Aumento de SSD y RAM para Mac en CDMX" class="imac-img"
+                            loading="lazy" style="border-radius: 12px;">
+                    </div>
+                </div>
+            </div>
+        </section>
     </main>
 
+    <!-- ═══════════════════ FOOTER ═══════════════════ -->
     <footer class="main-footer">
         <div class="container footer-grid">
             <div class="footer-col brand-info">
@@ -302,14 +335,34 @@
                     Soporte especializado desde hace 18 años.</p>
                 <p style="font-size: 0.9em; color: var(--text-muted);">Centro de Reparación en CDMX. Micro-soldadura y
                     Soporte B2B.</p>
+
+                <!-- Botones de acceso interno en el footer -->
+                <div style="margin-top: 24px; display: flex; flex-direction: column; gap: 10px;">
+                    <a href="status-ods.html"
+                        style="display: inline-flex; align-items: center; gap: 8px; padding: 9px 16px; border-radius: 8px; background: rgba(255, 204, 0, 0.1); color: #ffcc00; border: 1px solid rgba(255, 204, 0, 0.3); font-size: 0.82rem; font-weight: 600; text-decoration: none; width: fit-content;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor"
+                            viewBox="0 0 16 16">
+                            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+                            <path
+                                d="M7.5 3a.5.5 0 0 1 .5.5v5.21l3.247 1.856a.5.5 0 0 1-.494.868l-3.5-2A.5.5 0 0 1 7 9V3.5a.5.5 0 0 1 .5-.5z" />
+                        </svg>
+                        ¿Cómo va tu reparación?
+                    </a>
+                    <a href="tecnicos.html"
+                        style="display: inline-flex; align-items: center; gap: 8px; padding: 9px 16px; border-radius: 8px; background: rgba(220, 50, 50, 0.1); color: #ff5555; border: 1px solid rgba(220, 50, 50, 0.3); font-size: 0.82rem; font-weight: 600; text-decoration: none; width: fit-content;">
+                        <span
+                            style="width:8px; height:8px; border-radius:50%; background:#ff5555; display:inline-block;"></span>
+                        Acceso Técnicos
+                    </a>
+                </div>
             </div>
+
             <div class="footer-col">
                 <h4>Navegación</h4>
                 <ul>
                     <li><a href="reparaciones.html">Reparación Mac</a></li>
                     <li><a href="empresas.html">Servicios B2B</a></li>
                     <li><a href="software.html">Licencias Software</a></li>
-                    <li><a href="upgrades.html">Revive tu Mac</a></li>
                 </ul>
             </div>
             <div class="footer-col">
@@ -320,6 +373,20 @@
                     <li>✓ Condesa / Roma</li>
                     <li>✓ CDMX y EdoMex</li>
                 </ul>
+            </div>
+        </div>
+
+        <div class="footer-bottom-mini"
+            style="border-top: 1px solid #111; padding: 24px 0; background: #000; text-align: center;">
+            <div class="container" style="color: #333; font-size: 0.75em; position: relative;">
+                <p>© 2026 Mac Wave T2. Todos los derechos reservados. | Sitio desarrollado por <a
+                        href="https://intersite.netlify.app" target="_blank"
+                        style="color: #555; text-decoration: none;">InterSite</a></p>
+                <div class="mobile-only-gear"
+                    style="margin-top: 15px; font-size: 1.5rem; opacity: 0.1; user-select: none;">
+                    <span ondblclick="window.location.href='dashboard-ods.html'" style="cursor:pointer;"
+                        title="Acceso a Dashboard">⚙️</span>
+                </div>
             </div>
         </div>
     </footer>
