@@ -94,20 +94,19 @@ html {
 
 .main-nav {
     display: flex;
-    gap: 12px;
-    /* Junta todo: Menos espacio */
+    gap: 10px;
+    /* Junta todo: Máxima densidad de enlaces */
     align-items: center;
     margin-left: auto;
-    /* Empuja todo el bloque a la derecha del logo */
 }
 
 .header-actions {
     display: flex !important;
     align-items: center;
-    gap: 10px;
+    gap: 8px;
     /* Junta todo: Botones pegados */
     margin-left: 15px;
-    /* Separación mínima del menú */
+    flex-shrink: 0;
 }
 
 /* Status Circle Standardized */
@@ -140,25 +139,7 @@ html {
     }
 }
 
-@media (max-width: 1550px) {
-    .main-nav {
-        gap: 25px;
-    }
-}
-
-/* Eliminado el borrado de texto para laptops de 14" - Los botones ahora siempre dicen algo */
-@media (max-width: 1400px) {
-    .main-nav {
-        gap: 15px;
-    }
-}
-
-@media (max-width: 1250px) {
-    .main-nav {
-        gap: 15px;
-    }
-}
-
+/* Eliminadas media queries intermedias que causaban desplazamientos espaciados */
 .mobile-menu-toggle {
     display: none;
 }
@@ -335,9 +316,9 @@ h3 {
     color: var(--text-primary);
 }
 
-/* Ocultar "Inicio" y su icono de casa en el modo escritorio para evitar que se amontone */
+/* Ocultar "Inicio" en escritorio para ganar espacio y juntarlo todo */
 @media (min-width: 1025px) {
-    .main-nav a[data-link="index.html"] {
+    .nav-link.desktop-only {
         display: none !important;
     }
 }
@@ -474,59 +455,52 @@ h3 {
 }
 
 .header-cta {
-    height: 44px;
-    /* Altura Pro */
-    padding: 0 25px;
+    height: 40px;
+    /* Más compacto */
+    padding: 0 18px;
     border-radius: 50px;
-    /* Píldora Apple */
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 10px;
-    font-weight: 950;
-    /* Super Bold Máximo */
-    font-size: 0.95rem;
+    gap: 8px;
+    font-weight: 900;
+    font-size: 0.85rem;
     transition: all 0.2s ease;
     text-transform: uppercase;
-    letter-spacing: 1.5px;
-    border: none;
+    letter-spacing: 0.3px;
+    border: none !important;
     text-decoration: none;
     cursor: pointer;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
-}
-
-.header-cta svg {
-    width: 20px;
-    height: 20px;
+    white-space: nowrap;
+    flex-shrink: 0;
+    background-clip: padding-box;
 }
 
 .header-cta.neon-green {
     background: #30D158 !important;
-    /* Verde sólido real */
     color: #000000 !important;
-    border: none !important;
-    box-shadow: 0 4px 15px rgba(48, 209, 88, 0.4);
 }
 
 .header-cta.neon-yellow {
     background: #FFD60A !important;
-    /* Amarillo sólido real */
     color: #000000 !important;
-    border: none !important;
-    box-shadow: 0 4px 15px rgba(255, 214, 10, 0.4);
 }
 
 .header-cta.neon-red {
     background: #FF453A !important;
-    /* Rojo sólido real */
     color: #FFFFFF !important;
-    border: none !important;
-    box-shadow: 0 4px 15px rgba(255, 69, 58, 0.4);
 }
 
 .header-cta:hover {
-    transform: scale(1.05);
-    filter: brightness(1.1);
+    transform: translateY(-1px);
+    filter: brightness(1.15);
+}
+
+.header-cta svg {
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
 }
 
 .large-cta {
@@ -1390,20 +1364,38 @@ h3 {
     .header-actions {
         display: flex !important;
         gap: 8px;
-        /* Pegaditos */
+        order: 3;
     }
 
     .logo {
-        flex-shrink: 0;
-        margin-right: 15px !important;
+        margin: 0 !important;
+        order: 2 !important;
+        flex: 1;
+        display: flex;
+        justify-content: center;
     }
 
     .logo-brand {
-        font-size: 1.1rem !important;
+        font-size: 1.15rem !important;
     }
 
     .logo-subtext {
         display: none !important;
+    }
+
+    .header-cta {
+        padding: 0 12px;
+        height: 34px;
+        font-size: 0.7rem;
+    }
+
+    .header-cta span {
+        display: none;
+        /* Hide text only on very small screens to fit buttons */
+    }
+
+    .header-cta svg {
+        margin: 0;
     }
 
     /* Hero & Sections - Keep mobile adaptations */
@@ -3326,34 +3318,7 @@ details.modern-accordion[open] {
 
 
 
-/* Futuristic WhatsApp Button for Header */
-.neon-green {
-    background: rgba(37, 211, 102, 0.1) !important;
-    color: #25D366 !important;
-    border: 1px solid #25D366 !important;
-    box-shadow: 0 0 10px rgba(37, 211, 102, 0.4), inset 0 0 5px rgba(37, 211, 102, 0.2) !important;
-    text-transform: uppercase;
-    letter-spacing: 1.5px;
-    font-weight: 700 !important;
-    transition: all 0.3s ease-in-out !important;
-    border-radius: 8px !important;
-    backdrop-filter: blur(4px);
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-}
 
-.neon-green:hover {
-    background: rgba(37, 211, 102, 0.25) !important;
-    color: #25D366 !important;
-    box-shadow: 0 0 20px rgba(37, 211, 102, 0.9), inset 0 0 15px rgba(37, 211, 102, 0.5) !important;
-    border-color: #25D366 !important;
-    transform: translateY(-2px) scale(1.03);
-}
-
-.neon-green svg {
-    fill: currentColor;
-}
 
 /* Accordions in light sections */
 .light-section details.modern-accordion {
