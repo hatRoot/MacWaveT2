@@ -93,28 +93,24 @@ html {
 }
 
 .logo {
-    display: flex !important;
-    align-items: center !important;
-    flex-shrink: 0 !important;
-    margin: 0 !important;
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
 }
 
 .header-actions {
-    display: flex !important;
-    align-items: center !important;
-    gap: 15px !important;
-    flex-shrink: 0 !important;
-    margin: 0 40px 0 0 !important;
-    /* Espacio a la derecha de los botones */
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    flex-shrink: 0;
+    margin-right: 40px;
 }
 
 .main-nav {
-    display: flex !important;
-    gap: 20px !important;
-    align-items: center !important;
-    margin-left: auto !important;
-    /* EMPUJA EL MENÚ A LA DERECHA */
-    flex-shrink: 1 !important;
+    display: flex;
+    gap: 25px;
+    align-items: center;
+    margin-left: auto;
 }
 
 /* Status Circle Standardized */
@@ -236,15 +232,11 @@ h3 {
 }
 
 .header-content {
-    display: flex !important;
-    align-items: center !important;
-    justify-content: flex-start !important;
-    max-width: 100% !important;
-    /* Ocupa todo el ancho disponible */
-    margin: 0 !important;
-    padding: 0 40px !important;
-    height: 80px !important;
-    /* Altura de cabecera fija y profesional */
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 0 40px;
+    height: 80px;
 }
 
 /* ESTILOS DEL LOGO MULTILÍNEA */
@@ -463,53 +455,48 @@ h3 {
 }
 
 .header-cta {
-    height: 48px !important;
-    padding: 0 25px !important;
-    border-radius: 50px !important;
-    display: inline-flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    gap: 12px !important;
-    font-weight: 950 !important;
-    font-size: 0.95rem !important;
-    transition: all 0.2s ease !important;
-    text-transform: uppercase !important;
-    letter-spacing: 1px !important;
-    border: none !important;
-    text-decoration: none !important;
-    cursor: pointer !important;
-    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.6) !important;
-    white-space: nowrap !important;
-    flex-shrink: 0 !important;
-    min-width: 140px !important;
-    background-color: #333 !important;
-}
-
-.header-cta.neon-green {
-    background: #30D158 !important;
-    color: #000000 !important;
-}
-
-.header-cta.neon-yellow {
-    background: #FFD60A !important;
-    color: #000000 !important;
-}
-
-.header-cta.neon-red {
-    background: #FF453A !important;
-    color: #FFFFFF !important;
+    height: 40px;
+    padding: 0 20px;
+    border-radius: 50px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-weight: 700;
+    font-size: 0.85rem;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border: none;
+    text-decoration: none;
+    cursor: pointer;
+    white-space: nowrap;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
 .header-cta:hover {
-    transform: translateY(-2px) !important;
-    filter: brightness(1.1) !important;
-    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.6) !important;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+}
+
+.header-cta.neon-yellow {
+    background: #ffcc00;
+    color: #000;
+}
+
+.header-cta.neon-green {
+    background: #30d158;
+    color: #000;
+}
+
+.header-cta.neon-red {
+    background: #ff3b30;
+    color: #fff;
 }
 
 .header-cta svg {
-    width: 20px !important;
-    height: 20px !important;
-    flex-shrink: 0 !important;
+    width: 16px;
+    height: 16px;
 }
 
 .large-cta {
@@ -1377,39 +1364,21 @@ h3 {
     }
 
     .logo {
-
-        flex: 0 !important;
-        margin-right: 20px !important;
-        display: flex !important;
-        justify-content: flex-start !important;
-    }
-
-    .header-cta span {
-        display: inline !important;
-        /* SIEMPRE MOSTRAR TEXTO */
+        flex: 0;
+        margin-right: 20px;
+        display: flex;
+        justify-content: flex-start;
     }
 
     .header-cta {
-        height: 48px !important;
-        padding: 0 25px !important;
-        border-radius: 50px !important;
-        display: inline-flex !important;
-        align-items: center !important;
-        justify-content: center !important;
-        gap: 12px !important;
-        font-weight: 950 !important;
-        font-size: 0.95rem !important;
-        transition: all 0.2s ease !important;
-        text-transform: uppercase !important;
-        letter-spacing: 1px !important;
-        border: none !important;
-        text-decoration: none !important;
-        cursor: pointer !important;
-        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.6) !important;
-        white-space: nowrap !important;
-        flex-shrink: 0 !important;
-        min-width: 140px !important;
-        background-color: #333 !important;
+        height: 36px;
+        padding: 0 15px;
+        font-size: 0.75rem;
+        min-width: auto;
+    }
+
+    .header-cta span {
+        display: none;
     }
 
     .header-cta svg {
@@ -2128,11 +2097,12 @@ h3 {
     }
 
     .configure-mac-grid .configure-mac-content {
-
-        /* Texto primero en móvil */
+        padding: 20px;
     }
 
-    .configure-mac-grid .configure-mac-image {}
+    .configure-mac-grid .configure-mac-image {
+        display: block;
+    }
 }
 
 /* Employee Access Section */
