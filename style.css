@@ -94,8 +94,8 @@ html {
 
 .main-nav {
     display: flex;
-    gap: 30px;
-    /* Reducción de espacio desperdiciado */
+    gap: 18px;
+    /* Ultra-compacto, máxima precisión Apple */
     align-items: center;
     margin-left: auto;
     margin-right: 15px;
@@ -138,19 +138,27 @@ html {
 }
 
 @media (max-width: 1550px) {
+    .main-nav {
+        gap: 25px;
+    }
+}
+
+@media (max-width: 1400px) {
     .btn-text {
         display: none;
     }
 
-    /* En laptops de 13/15", con 60px de aire no caben botones y links. Oculto texto. */
-    .main-nav {
-        gap: 40px;
+    /* Ocultamos texto solo cuando el espacio es crítico */
+    .header-cta {
+        width: 44px;
+        padding: 0;
+        border-radius: 50% !important;
     }
 }
 
 @media (max-width: 1250px) {
     .main-nav {
-        gap: 20px;
+        gap: 15px;
     }
 }
 
@@ -265,7 +273,7 @@ h3 {
     align-items: center;
     flex-shrink: 0;
     /* Prevents logo from shrinking and crushing text */
-    margin-right: 30px;
+    margin-right: 60px;
     /* Sensible gap */
 }
 
@@ -291,21 +299,29 @@ h3 {
 }
 
 .logo-brand {
-    /* Mac Wave T2 */
     font-size: 1.6em;
-    /* Tamaño principal, en proporción al logo de 40px */
-    font-weight: var(--font-weight-bold);
     color: var(--text-primary) !important;
     white-space: nowrap;
+    display: flex;
+    align-items: baseline;
+    gap: 4px;
+}
+
+.brand-bold {
+    font-weight: 800;
+}
+
+.brand-thin {
+    font-weight: 300;
 }
 
 .logo-subtext {
-    /* Reparaciones y piezas Mac + Para tu dispositivo... */
-    font-size: 0.75em;
-    font-weight: var(--font-weight-regular);
+    font-size: 0.72em;
+    font-weight: 400;
     color: var(--text-secondary);
     line-height: 1.2;
     white-space: nowrap;
+    letter-spacing: 0.3px;
 }
 
 .logo-subtext.subtext-2 {
@@ -464,83 +480,71 @@ h3 {
 }
 
 .header-cta {
-    margin-left: 8px;
-    border-radius: 14px;
-    text-transform: none;
-    font-size: 0.8rem;
-    font-weight: 500;
-    padding: 2px 12px;
-    display: flex;
+    height: 38px;
+    padding: 0 16px;
+    border-radius: 12px;
+    display: inline-flex;
     align-items: center;
-    gap: 6px;
-    height: 30px;
-    /* More elegant smaller height */
-    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.header-cta.neon-green {
-    background: rgba(48, 209, 88, 0.15);
-    color: #30D158;
-    border: 1px solid rgba(48, 209, 88, 0.4);
-    box-shadow: 0 0 10px rgba(48, 209, 88, 0.2);
-}
-
-.header-cta.neon-green:hover {
-    background: #30D158;
-    color: #000;
-    box-shadow: 0 0 20px rgba(48, 209, 88, 0.6);
-}
-
-.header-cta.neon-yellow {
-    background: rgba(255, 204, 0, 0.15);
-    color: #ffcc00;
-    border: 1px solid rgba(255, 204, 0, 0.4);
-    box-shadow: 0 0 10px rgba(255, 204, 0, 0.2);
-}
-
-.header-cta.neon-yellow:hover {
-    background: #ffcc00;
-    color: #000;
-    box-shadow: 0 0 20px rgba(255, 204, 0, 0.6);
-}
-
-.header-cta.neon-orange {
-    background: rgba(255, 102, 0, 0.15);
-    color: #ff6600;
-    border: 1px solid rgba(255, 102, 0, 0.4);
-    box-shadow: 0 0 10px rgba(255, 102, 0, 0.2);
-}
-
-.header-cta.neon-orange:hover {
-    background: #ff6600;
-    color: #fff;
-    box-shadow: 0 0 200px rgba(255, 102, 0, 0.6);
-}
-
-.header-cta.neon-red {
-    background: rgba(255, 59, 48, 0.1);
-    color: #ff3b30;
-    border: 1px solid rgba(255, 59, 48, 0.2);
-    box-shadow: 0 0 10px rgba(255, 59, 48, 0.1);
-    width: 30px;
-    height: 30px;
-    display: flex;
     justify-content: center;
-    align-items: center;
-    padding: 0 !important;
-    border-radius: 50%;
-    /* Perfect circle */
-}
-
-.header-cta.neon-red:hover {
-    background: #ff3b30;
-    color: #fff;
-    box-shadow: 0 0 15px rgba(255, 59, 48, 0.5);
+    gap: 8px;
+    font-weight: 700;
+    font-size: 0.78rem;
+    transition: all 0.25s cubic-bezier(0.23, 1, 0.32, 1);
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.03) 100%);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }
 
 .header-cta svg {
-    width: 14px;
-    height: 14px;
+    width: 16px;
+    height: 16px;
+    filter: drop-shadow(0 0 4px currentColor);
+}
+
+.header-cta.neon-green {
+    color: #30D158;
+    border-color: rgba(48, 209, 88, 0.3);
+}
+
+.header-cta.neon-green:hover {
+    background: rgba(48, 209, 88, 0.15);
+    border-color: #30D158;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 15px rgba(48, 209, 88, 0.2);
+}
+
+.header-cta.neon-yellow {
+    color: #FFD60A;
+    border-color: rgba(255, 214, 10, 0.3);
+}
+
+.header-cta.neon-yellow:hover {
+    background: rgba(255, 214, 10, 0.15);
+    border-color: #FFD60A;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 15px rgba(255, 214, 10, 0.2);
+}
+
+.header-cta.neon-red {
+    width: 38px !important;
+    height: 38px !important;
+    padding: 0 !important;
+    border-radius: 12px !important;
+    color: #FF453A !important;
+    border-color: rgba(255, 69, 58, 0.4) !important;
+    background: rgba(255, 255, 255, 0.03) !important;
+    backdrop-filter: blur(15px) !important;
+}
+
+.header-cta.neon-red:hover {
+    background: rgba(255, 69, 58, 0.15) !important;
+    border-color: #FF453A !important;
+    transform: scale(1.08);
+    box-shadow: 0 0 20px rgba(255, 69, 58, 0.2);
 }
 
 .large-cta {
