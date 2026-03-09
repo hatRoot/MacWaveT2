@@ -462,6 +462,22 @@
             max-width: 300px;
         }
     </style>
+    <link rel="stylesheet" href="style.css?v=21.0.1">
+    <script>
+        function toggleMobileMenu(e) {
+            if (e) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+            var body = document.body;
+            var btn = document.getElementById('mobile-menu-toggle');
+            var isNowActive = body.classList.toggle('menu-active');
+            if (btn) {
+                if (isNowActive) btn.classList.add('active');
+                else btn.classList.remove('active');
+            }
+        }
+    </script>
 </head>
 
 <body>
