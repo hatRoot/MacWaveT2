@@ -96,6 +96,7 @@ html {
     display: flex;
     gap: 30px;
     align-items: center;
+    margin-left: max(50px, 5vw);
 }
 
 .mobile-menu-toggle {
@@ -3286,4 +3287,16 @@ details.modern-accordion[open] {
     .mobile-only-gear {
         display: none !important;
     }
+}
+/* Utility: Screen Reader Only (for SEO texts) */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
 }
