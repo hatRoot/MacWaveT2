@@ -93,27 +93,27 @@ html {
 }
 
 .logo {
-    order: 1 !important;
+    display: flex !important;
+    align-items: center !important;
     flex-shrink: 0 !important;
     margin: 0 !important;
 }
 
 .header-actions {
-    order: 2 !important;
     display: flex !important;
     align-items: center !important;
-    gap: 12px !important;
+    gap: 15px !important;
     flex-shrink: 0 !important;
-    margin: 0 !important;
+    margin: 0 40px 0 0 !important;
+    /* Espacio a la derecha de los botones */
 }
 
 .main-nav {
-    order: 3 !important;
     display: flex !important;
-    gap: 15px !important;
+    gap: 20px !important;
     align-items: center !important;
     margin-left: auto !important;
-    /* Empuja el menú a la derecha */
+    /* EMPUJA EL MENÚ A LA DERECHA */
     flex-shrink: 1 !important;
 }
 
@@ -239,11 +239,12 @@ h3 {
     display: flex !important;
     align-items: center !important;
     justify-content: flex-start !important;
-    gap: 30px !important;
-    /* Espacio base entre bloques */
-    max-width: 1600px !important;
-    margin: 0 auto;
-    padding: 0 30px !important;
+    max-width: 100% !important;
+    /* Ocupa todo el ancho disponible */
+    margin: 0 !important;
+    padding: 0 40px !important;
+    height: 80px !important;
+    /* Altura de cabecera fija y profesional */
 }
 
 /* ESTILOS DEL LOGO MULTILÍNEA */
@@ -462,29 +463,26 @@ h3 {
 }
 
 .header-cta {
-    height: 46px !important;
-    padding: 0 22px !important;
+    height: 48px !important;
+    padding: 0 25px !important;
     border-radius: 50px !important;
     display: inline-flex !important;
     align-items: center !important;
     justify-content: center !important;
-    gap: 8px !important;
-    font-weight: 850 !important;
-    font-size: 0.9rem !important;
+    gap: 12px !important;
+    font-weight: 950 !important;
+    font-size: 0.95rem !important;
     transition: all 0.2s ease !important;
     text-transform: uppercase !important;
-    letter-spacing: 0.5px !important;
+    letter-spacing: 1px !important;
     border: none !important;
     text-decoration: none !important;
     cursor: pointer !important;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5) !important;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.6) !important;
     white-space: nowrap !important;
     flex-shrink: 0 !important;
-    width: auto !important;
-    /* Jamás un círculo */
-    min-width: 120px !important;
-    /* Asegura presencia */
-    background-clip: padding-box !important;
+    min-width: 140px !important;
+    background-color: #333 !important;
 }
 
 .header-cta.neon-green {
@@ -860,12 +858,12 @@ h3 {
     }
 
     .ecosystem-image {
-        order: 1;
+
         margin-bottom: 30px;
     }
 
     .ecosystem-content {
-        order: 2;
+
         text-align: center;
     }
 
@@ -1347,7 +1345,7 @@ h3 {
         cursor: pointer;
         z-index: 1000000 !important;
         padding: 10px;
-        order: 1 !important;
+
         margin-right: 10px;
         position: relative;
         touch-action: manipulation !important;
@@ -1372,14 +1370,14 @@ h3 {
     }
 
     .header-actions {
-        order: 2 !important;
+
         display: flex !important;
         gap: 10px !important;
         margin-right: auto !important;
     }
 
     .logo {
-        order: 1 !important;
+
         flex: 0 !important;
         margin-right: 20px !important;
         display: flex !important;
@@ -1392,9 +1390,26 @@ h3 {
     }
 
     .header-cta {
-        padding: 0 15px !important;
-        height: 40px !important;
-        font-size: 0.8rem !important;
+        height: 48px !important;
+        padding: 0 25px !important;
+        border-radius: 50px !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        gap: 12px !important;
+        font-weight: 950 !important;
+        font-size: 0.95rem !important;
+        transition: all 0.2s ease !important;
+        text-transform: uppercase !important;
+        letter-spacing: 1px !important;
+        border: none !important;
+        text-decoration: none !important;
+        cursor: pointer !important;
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.6) !important;
+        white-space: nowrap !important;
+        flex-shrink: 0 !important;
+        min-width: 140px !important;
+        background-color: #333 !important;
     }
 
     .header-cta svg {
@@ -1411,12 +1426,12 @@ h3 {
     }
 
     .hero-image-container {
-        order: 1;
+
         margin-bottom: 40px;
     }
 
     .hero-content-text {
-        order: 2;
+
         padding-left: 0;
         text-align: center;
     }
@@ -1737,13 +1752,13 @@ h3 {
     }
 
     .compatibility-image {
-        order: 1;
+
         /* Imagen arriba en móvil */
         margin-bottom: 30px;
     }
 
     .compatibility-content {
-        order: 2;
+
         text-align: center;
     }
 }
@@ -2113,13 +2128,11 @@ h3 {
     }
 
     .configure-mac-grid .configure-mac-content {
-        order: 1;
+
         /* Texto primero en móvil */
     }
 
-    .configure-mac-grid .configure-mac-image {
-        order: 2;
-    }
+    .configure-mac-grid .configure-mac-image {}
 }
 
 /* Employee Access Section */
