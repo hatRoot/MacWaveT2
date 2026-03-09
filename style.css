@@ -202,6 +202,11 @@ h3 {
 }
 
 /* ESTILOS DEL LOGO MULTILÍNEA */
+.logo {
+    margin-right: max(100px, 15vw);
+    /* FORCE VIRTUAL SPACING ON RIGHT OF LOGO */
+}
+
 .logo a.logo-link {
     display: flex;
     align-items: center;
@@ -249,7 +254,7 @@ h3 {
 
 /* Navegación */
 .main-nav a {
-    margin-left: 20px;
+    margin-left: max(40px, 3vw);
     font-weight: var(--font-weight-medium);
     color: var(--text-secondary);
     position: relative;
