@@ -415,14 +415,14 @@
         .preview-canvas {
             background: var(--preview-bg);
             width: 100%;
-            aspect-ratio: 1 / 1.414;
+            min-height: 800px;
             border-radius: 2px;
             box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
             position: relative;
             color: #000;
             padding: 28px 35px 28px 35px;
             font-family: 'Helvetica', Arial, sans-serif;
-            overflow: hidden;
+            overflow: visible;
         }
 
         .ps-content {
@@ -2111,7 +2111,7 @@
                 doc.text(`sitio web: https://macwave.com.mx\nmail: soporte@macwave.com.mx`, 198, footerY, { align: "right" });
 
                 const currentFolio = document.getElementById('quote-number').value;
-                doc.save(`ODS_${currentFolio}.pdf`);
+                window.open(doc.output('bloburl'), '_blank');
 
                 // Increment folio counter AFTER capturing it for current PDF/Supabase
                 getNextFolio(true);
@@ -2127,7 +2127,12 @@
                     fecha: document.getElementById('quote-date').value || '',
                     monto: total, // Use the total calculated in the submit handler
                     status: 'Recibido',
-                    notas: document.getElementById('ods-notes').value || ''
+                    notas: JSON.stringify([{
+                        date: document.getElementById('quote-date').value || new Date().toLocaleDateString('es-MX', { day: '2-digit', month: '2-digit', year: 'numeric' }) + ' ' + new Date().toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit' }),
+                        status: 'Recibido',
+                        text: document.getElementById('ods-notes').value || 'Ingreso a laboratorio.',
+                        img: null
+                    }])
                 };
                 try {
                     await window._sbClient.from('ordenes_servicio').insert([odsData]);

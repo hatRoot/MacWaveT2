@@ -2443,7 +2443,14 @@
                     const dateStr = now.toLocaleDateString('es-MX', { day: '2-digit', month: '2-digit', year: 'numeric' }) + ' ' +
                         now.toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit' });
 
-                    const newHistorial = JSON.parse(o.notas || '[]');
+                    let newHistorial = [];
+                    try {
+                        newHistorial = JSON.parse(o.notas || '[]');
+                        if (!Array.isArray(newHistorial)) throw new Error('Not array');
+                    } catch (err) {
+                        if (o.notas) newHistorial = [{ date: o.fecha || '', status: 'Nota General', text: o.notas, img: null }];
+                    }
+
                     newHistorial.push({ date: dateStr, status: newStatus, text: text, img: base64Img });
                     const newNotasString = JSON.stringify(newHistorial);
 
