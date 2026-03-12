@@ -689,18 +689,21 @@
         }
 
         async function doSearch() {
-            const query = document.getElementById('search-input').value.trim();
+            let query = document.getElementById('search-input').value.trim();
             const rs = document.getElementById('result-section');
             if (!query) { rs.innerHTML = ''; return; }
 
-            rs.innerHTML = '<div style="color:#8e8e93;text-align:center;padding:30px;">Buscando información...</div>';
+            // Si solo buscan el número (ej: 9473), lo dejamos tal cual para que el ilike lo encuentre
+            // Limpiamos la búsqueda de caracteres extraños pero mantenemos flexibilidad
+            
+            rs.innerHTML = '<div style="color:#8e8e93;text-align:center;padding:30px;">Buscando información técnica...</div>';
 
-            // Search by Folio, Name or Serial
+            // Search by Folio, Name or Serial (Súper Flexible Mode)
             const { data, error } = await _sb
                 .from('ordenes_servicio')
                 .select('*')
                 .or(`folio.ilike.%${query}%,cliente.ilike.%${query}%,serie.ilike.%${query}%`)
-                .order('fecha', { ascending: false });
+                .order('created_at', { ascending: false });
 
             if (error || !data || data.length === 0) {
                 rs.innerHTML = `
