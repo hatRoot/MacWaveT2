@@ -642,7 +642,7 @@
                                     <div style="color: var(--muted); font-size: 0.75rem;">${ev.date}</div>
                                 </div>
                             </div>
-                            ${ev.text ? `<div style="font-size: 0.88rem; color: #E0E0E6; line-height: 1.5;">${ev.text.replace(/\\n/g, '<br>')}</div>` : ''}
+                            ${ev.text && !ev.text.startsWith('Cambio de estatus vía Tablero') ? `<div style="font-size: 0.88rem; color: #E0E0E6; line-height: 1.5;">${ev.text.replace(/\\n/g, '<br>')}</div>` : ''}
                             ${ev.img ? `<div style="margin-top: 12px;"><img src="${ev.img}" style="max-width: 100%; border-radius: 8px; border: 1px solid var(--border);" alt="Evidencia Técnica"></div>` : ''}
                         </div>
                     </div>
