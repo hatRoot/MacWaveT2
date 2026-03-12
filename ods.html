@@ -1710,7 +1710,10 @@
                 previewCanvas.innerHTML = `
                     <div class="ps-content">
                         <div class="ps-header">
-                            <div class="ps-logo-col"><img src="./images/logo_dashboard_white.png" class="ps-logo" style="width: 50px; height: 50px; border-radius: 8px;"></div>
+                            <div class="ps-logo-col" style="text-align: center;">
+                                <img src="./images/logo_dashboard_white.png" class="ps-logo" style="width: 50px; height: 50px; border-radius: 8px; margin-bottom: 2px;">
+                                <div style="font-size: 9px; font-weight: 700; color: #1d1d1f; line-height: 1;">macWave.com.mx</div>
+                            </div>
                             <div class="ps-title-col" style="padding-left: 20px;">
                                 <h1 style="font-size: 16px;">Laboratorio de reparación de computadoras Apple</h1>
                                 <p>Apple Certified Device Support 2025</p>
@@ -1864,6 +1867,12 @@
                 const logoW = 32;
                 const logoH = (RECOVERY_PRO_BADGE.h && RECOVERY_PRO_BADGE.w) ? ((RECOVERY_PRO_BADGE.h * logoW) / RECOVERY_PRO_BADGE.w) : 10;
                 doc.addImage(RECOVERY_PRO_BADGE.data, 'PNG', 12, 10, logoW, logoH);
+
+                // macWave.com.mx under logo
+                doc.setFont("helvetica", "bold");
+                doc.setFontSize(9);
+                doc.setTextColor(0, 0, 0);
+                doc.text("macWave.com.mx", 12 + (logoW / 2), 10 + logoH + 4, { align: "center" });
 
                 doc.setFont("helvetica", "bold");
                 doc.setFontSize(16);
