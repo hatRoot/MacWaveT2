@@ -1724,6 +1724,11 @@
                     </tr>
                 `;
             }).join('');
+            
+            // Generate the consecutive code correctly after data is rendered
+            if (typeof updateFolioPreview === 'function') {
+                updateFolioPreview();
+            }
         }
 
         // --- TICKETS LOGIC ---
