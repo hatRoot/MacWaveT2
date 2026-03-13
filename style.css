@@ -3305,3 +3305,110 @@ details.modern-accordion[open] {
         display: none !important;
     }
 }
+
+/* --- NEW CLIENT LOGO CAROUSEL --- */
+.client-trust-section {
+    padding: 100px 0;
+    background-color: #ffffff;
+    overflow: hidden;
+    border-top: 1px solid #f0f0f2;
+    border-bottom: 1px solid #f0f0f2;
+}
+
+.trust-header {
+    text-align: center;
+    margin-bottom: 80px;
+}
+
+.trust-title {
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 800;
+    line-height: 1.15;
+    color: #1d1d1f;
+    margin-bottom: 30px;
+    letter-spacing: -0.04em;
+    padding: 0 20px;
+}
+
+.trust-subtitle {
+    font-size: clamp(1rem, 1.5vw, 1.3rem);
+    color: #515154;
+    max-width: 900px;
+    margin: 0 auto;
+    line-height: 1.8;
+}
+
+.trust-cta-hook {
+    margin-top: 50px;
+    margin-bottom: 0;
+    font-size: 1.4rem;
+    color: #1d1d1f;
+    font-weight: 600;
+    line-height: 1.5;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.trust-cta-hook strong {
+    color: var(--primary-color);
+}
+
+.new-marquee-container {
+    mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+    -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+    width: 100%;
+    overflow: hidden;
+    padding: 50px 0 30px 0;
+    margin-top: 50px;
+}
+
+.new-marquee-track {
+    display: flex;
+    width: max-content;
+    animation: scroll-rl 50s linear infinite;
+    will-change: transform;
+}
+
+@keyframes scroll-rl {
+    0% { transform: translate3d(0, 0, 0); }
+    /* Precisely 11 cards * (150px width + 30px total margin) = 1980px */
+    100% { transform: translate3d(-1980px, 0, 0); }
+}
+
+.client-logo-card {
+    flex: 0 0 auto;
+    width: 150px; 
+    margin: 0 15px; 
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.client-logo-card img {
+    height: 63px;
+    width: auto;
+    max-width: 100%;
+    object-fit: contain;
+    filter: grayscale(100%);
+    opacity: 0.6;
+    margin-bottom: 12px;
+    transition: 0.3s;
+}
+
+.client-logo-card:hover img {
+    filter: grayscale(0%);
+    opacity: 1;
+    transform: scale(1.05);
+}
+
+.client-name-label {
+    font-size: 0.7rem;
+    color: #a1a1a6; /* Apple Silver/Gray */
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    margin-top: 5px;
+}

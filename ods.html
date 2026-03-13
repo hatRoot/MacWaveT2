@@ -782,6 +782,62 @@
             color: #1a1a1a;
         }
 
+        /* CONFIRMATION MODAL ODS */
+        #confirm-ods-modal .golden-ticket {
+            background: linear-gradient(135deg, #1c1c1e 0%, #2c2c2e 100%);
+            border: 1px solid var(--primary);
+            color: #fff;
+        }
+
+        #confirm-ods-modal .ticket-stars-header {
+            color: var(--primary);
+        }
+
+        #confirm-ods-modal .ticket-instruction {
+            color: var(--text-dim);
+            margin-top: 10px;
+            font-size: 14px;
+            display: block;
+        }
+
+        .confirm-btns {
+            display: flex;
+            gap: 15px;
+            margin-top: 25px;
+        }
+
+        .btn-yes {
+            background: var(--primary);
+            color: white;
+            flex: 1;
+            border: none;
+            padding: 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .btn-no {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            flex: 1;
+            border: none;
+            padding: 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .btn-yes:hover {
+            background: var(--primary-hover);
+            transform: scale(1.02);
+        }
+
+        .btn-no:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: scale(1.02);
+        }
+
         .close-ticket {
             position: absolute;
             right: 20px;
@@ -1168,6 +1224,20 @@
                 </svg>
                 ENVIAR AL CLIENTE
             </button>
+        </div>
+    </div>
+    <div id="confirm-ods-modal" class="modal">
+        <div class="golden-ticket">
+            <div class="ticket-stars-header">
+                <span>★</span> CONFIRMACIÓN <span>★</span>
+            </div>
+            <h1 class="ticket-main-title" style="font-size: 24px; color: var(--primary);">¿GENERAR ODS?</h1>
+            <p class="ticket-instruction">Revisala bien antes de continuar.</p>
+            
+            <div class="confirm-btns">
+                <button id="confirm-ods-yes" class="btn btn-yes">SÍ, GENERAR</button>
+                <button id="confirm-ods-no" class="btn btn-no">NO, ESPERAR</button>
+            </div>
         </div>
     </div>
 
@@ -1825,8 +1895,7 @@
                 `;
             }
 
-            form.onsubmit = async (e) => {
-                e.preventDefault();
+            const executeGeneration = async () => {
                 const { jsPDF } = window.jspdf;
                 const doc = new jsPDF('p', 'mm', 'a4');
 
@@ -2120,7 +2189,10 @@
                 doc.text(`sitio web: https://macwave.com.mx\nmail: soporte@macwave.com.mx`, 198, footerY, { align: "right" });
 
                 const currentFolio = document.getElementById('quote-number').value;
-                window.open(doc.output('bloburl'), '_blank');
+                
+                // Save the PDF with the folio as filename
+                doc.save(`${currentFolio}.pdf`);
+                // window.open(doc.output('bloburl'), '_blank');
 
                 // Increment folio counter AFTER capturing it for current PDF/Supabase
                 getNextFolio(true);
@@ -2149,6 +2221,20 @@
                 } catch (e) {
                     console.warn('No se pudo guardar ODS en Supabase:', e.message);
                 }
+            };
+
+            form.onsubmit = (e) => {
+                e.preventDefault();
+                document.getElementById('confirm-ods-modal').style.display = 'flex';
+            };
+
+            document.getElementById('confirm-ods-no').onclick = () => {
+                document.getElementById('confirm-ods-modal').style.display = 'none';
+            };
+
+            document.getElementById('confirm-ods-yes').onclick = async () => {
+                document.getElementById('confirm-ods-modal').style.display = 'none';
+                await executeGeneration();
             };
 
             update();
