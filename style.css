@@ -3308,16 +3308,26 @@ details.modern-accordion[open] {
 
 /* --- NEW CLIENT LOGO CAROUSEL --- */
 .client-trust-section {
-    padding: 100px 0;
+    padding: 70px 0;
     background-color: #ffffff;
     overflow: hidden;
     border-top: 1px solid #f0f0f2;
     border-bottom: 1px solid #f0f0f2;
+    /* Break out of parent container */
+    width: 100vw;
+    position: relative;
+    left: 50%;
+    right: 50%;
+    margin-left: -50vw;
+    margin-right: -50vw;
+    margin-top: 60px;
+    margin-bottom: 0;
 }
 
 .trust-header {
     text-align: center;
-    margin-bottom: 80px;
+    margin-bottom: 50px;
+    padding: 0 20px;
 }
 
 .trust-title {
@@ -3387,13 +3397,13 @@ details.modern-accordion[open] {
 }
 
 .client-logo-card img {
-    height: 63px;
+    height: 45px;
     width: auto;
-    max-width: 100%;
+    max-width: 140px;
     object-fit: contain;
     filter: grayscale(100%);
-    opacity: 0.6;
-    margin-bottom: 12px;
+    opacity: 0.65;
+    margin-bottom: 10px;
     transition: 0.3s;
 }
 
