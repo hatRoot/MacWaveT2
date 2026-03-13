@@ -3366,6 +3366,8 @@ details.modern-accordion[open] {
 
 .new-marquee-track {
     display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
     width: max-content;
     animation: scroll-rl 50s linear infinite;
     will-change: transform;
