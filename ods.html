@@ -1590,7 +1590,7 @@
                 const file = e.target.files[0];
                 if (!file) return;
 
-                pdfSpinner.style.display = 'inline-block';
+                if (pdfSpinner) pdfSpinner.style.display = 'inline-block';
 
                 try {
                     const arrayBuffer = await file.arrayBuffer();
@@ -1711,7 +1711,7 @@
                     console.error("Error parsing PDF:", error);
                     alert("❌ Ocurrió un error al intentar leer el PDF. Asegúrate de que sea un PDF generado por este sistema.\nDetalles: " + error.message);
                 } finally {
-                    pdfSpinner.style.display = 'none';
+                    if (pdfSpinner) pdfSpinner.style.display = 'none';
                     update();
                 }
             };
