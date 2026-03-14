@@ -1597,8 +1597,11 @@
                     const pdfData = new Uint8Array(arrayBuffer);
 
                     // Initialize PDF.js
-                    const pdfjsLib = window['pdfjs-dist/build/pdf'];
-                    // Setup worker (using local or cdn depending on environment, setting empty skips worker for small files usually, or use global workerSrc)
+                    const pdfjsLib = window.pdfjsLib || window['pdfjs-dist/build/pdf'];
+                    if (!pdfjsLib) {
+                        throw new Error("SDK de PDF no cargado correctamente.");
+                    }
+                    // Setup worker
                     pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js';
 
                     const pdf = await pdfjsLib.getDocument({ data: pdfData }).promise;
@@ -1706,7 +1709,7 @@
 
                 } catch (error) {
                     console.error("Error parsing PDF:", error);
-                    alert("❌ Ocurrió un error al intentar leer el PDF. Asegúrate de que sea un PDF generado por este sistema.");
+                    alert("❌ Ocurrió un error al intentar leer el PDF. Asegúrate de que sea un PDF generado por este sistema.\nDetalles: " + error.message);
                 } finally {
                     pdfSpinner.style.display = 'none';
                     update();
