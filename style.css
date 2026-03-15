@@ -492,32 +492,43 @@ h3 {
 
 /* LION AQUA GLASS STYLE TAGS - TRUE SKEUOMORPHIC LOOK */
 .lion-tag-glass {
-    position: relative;
-    display: inline-block;
-    padding: 8px 18px;
-    border-radius: 25px;
-    font-size: 0.85rem;
-    font-weight: 700;
-    color: white;
-    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.4);
-    cursor: pointer;
-    transition: all 0.2s ease-in-out;
-    letter-spacing: 0.5px;
+    position: relative !important;
+    display: inline-block !important;
+    padding: 10px 22px !important;
+    border-radius: 30px !important;
+    font-size: 0.9rem !important;
+    font-weight: 800 !important;
+    color: white !important;
+    text-shadow: 0 -1px 1px rgba(0, 0, 0, 0.6) !important;
+    cursor: pointer !important;
+    transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+    letter-spacing: 0.8px !important;
+    text-transform: none !important;
+    margin: 5px !important;
     
-    /* El fondo base Aqua */
-    background: #1062af; /* Fallback */
+    /* El fondo base Aqua - EXTREME GRADIENT */
+    background: #1062af !important;
     background: linear-gradient(to bottom, 
-        #79bbff 0%, 
-        #378de5 50%, 
-        #1d77d1 51%, 
-        #1960ab 100%);
+        #a6d1ff 0%, 
+        #7bbaff 49%, 
+        #3d94f6 50%, 
+        #1e7ce2 51%, 
+        #1a64b5 100%) !important;
     
     /* El brillo de cristal superior */
-    border: 1px solid #1a5694;
+    border: 1px solid #0f4075 !important;
     box-shadow: 
-        inset 0 1px 0 rgba(255, 255, 255, 0.6), /* Brillo superior interno */
-        inset 0 10px 10px rgba(255, 255, 255, 0.2), /* Reflejo volumen */
-        0 4px 8px rgba(0, 0, 0, 0.4); /* Sombra externa */
+        inset 0 1px 0 rgba(255, 255, 255, 0.9), 
+        inset 0 12px 12px rgba(255, 255, 255, 0.3),
+        0 4px 10px rgba(0, 0, 0, 0.5),
+        0 0 15px rgba(30, 124, 226, 0.3) !important;
+    
+    animation: aqua-blink 4s infinite;
+}
+
+@keyframes aqua-blink {
+    0%, 100% { filter: brightness(1); }
+    50% { filter: brightness(1.15); box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9), 0 0 20px rgba(30, 124, 226, 0.6); }
 }
 
 /* Efecto de luz superior extra (Glossy) */
