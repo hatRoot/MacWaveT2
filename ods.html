@@ -850,6 +850,46 @@
             transition: 0.2s;
         }
 
+        .ticket-address-box {
+            margin-top: 15px;
+            padding: 10px;
+            border: 1px dashed rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            font-size: 11px;
+            color: #333;
+            line-height: 1.4;
+            text-align: center;
+        }
+
+        .ticket-qr-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 15px;
+            gap: 5px;
+        }
+
+        .ticket-qr-img {
+            width: 80px;
+            height: 80px;
+            border: 4px solid #fff;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .ticket-qr-text {
+            font-size: 10px;
+            font-weight: 700;
+            color: #444;
+            text-transform: uppercase;
+        }
+
+        .datetime-picker-ticket {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            margin-bottom: 15px;
+        }
+
         .ticket-stars-header {
             font-size: 22px;
             font-weight: 800;
@@ -1214,6 +1254,23 @@
                 <input type="text" id="ticket-client-name" class="ticket-input-field" placeholder="Nombre del cliente">
                 <input type="text" id="ticket-client-phone" class="ticket-input-field"
                     placeholder="WhatsApp del cliente (10 dígitos)">
+
+                <div class="datetime-picker-ticket">
+                    <label class="ticket-form-label">Fecha y Hora de la Cita:</label>
+                    <input type="datetime-local" id="ticket-appointment-time" class="ticket-input-field">
+                </div>
+            </div>
+
+            <div class="ticket-address-box">
+                <p><strong>📍 Direccion de Taller Mac Wave:</strong></p>
+                <p>Av. México Coyoacán 276, Benito Juárez, CDMX.</p>
+                <p style="margin-top: 4px; color: var(--primary);">Atendido por: <strong>Técnico Especialista Issac</strong></p>
+            </div>
+
+            <div class="ticket-qr-section">
+                <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://maps.app.goo.gl/PeSD75SSGMoCD4qZA" 
+                     class="ticket-qr-img" alt="QR Taller">
+                <p class="ticket-qr-text">ESCANÉA PARA LLEGAR AL TALLER</p>
             </div>
 
             <button id="send-ticket-whatsapp" class="whatsapp-gold-btn">
@@ -1322,6 +1379,15 @@
 
                 const folio = `${prefix}-${dateStr}-${counter}`;
                 folioDisplay.textContent = folio;
+
+                // Set default appointment time to now
+                const appointmentInput = document.getElementById('ticket-appointment-time');
+                if (appointmentInput) {
+                    const localNow = new Date();
+                    localNow.setMinutes(localNow.getMinutes() - localNow.getTimezoneOffset());
+                    appointmentInput.value = localNow.toISOString().slice(0, 16);
+                }
+
                 modal.style.display = 'flex';
             };
 
@@ -1354,12 +1420,26 @@
                 const phone = document.getElementById('ticket-client-phone').value;
                 const source = document.getElementById('ticket-source').value;
                 const folio = document.getElementById('ticket-folio-display').textContent;
+                const appointmentTime = document.getElementById('ticket-appointment-time').value;
                 const currentTech = (document.getElementById('tech-name').value || 'JOEL DURAN').toUpperCase();
                 const techPhone = '5535757364'; // Fixed as per user request (Joel's WhatsApp)
 
                 if (!phone || phone.length < 10) {
                     alert("Por favor ingresa un número de WhatsApp de 10 dígitos.");
                     return;
+                }
+
+                let formattedAppointment = "Por definir";
+                if (appointmentTime) {
+                    const date = new Date(appointmentTime);
+                    formattedAppointment = date.toLocaleString('es-MX', { 
+                        weekday: 'long', 
+                        day: 'numeric', 
+                        month: 'long', 
+                        hour: '2-digit', 
+                        minute: '2-digit',
+                        hour12: true 
+                    });
                 }
 
                 // --- 0. Save to Supabase ---
@@ -1369,6 +1449,7 @@
                     telefono: phone,
                     origen: source,
                     tecnico: currentTech,
+                    appointment_time: appointmentTime,
                     created_at: new Date().toISOString()
                 };
 
@@ -1386,14 +1467,14 @@
                 }
 
                 // Optimized Message Template
-                const message = `Hola ${name}, este es tu ticket de visita: ${folio}. Nos conociste por ${source}. Muestra este mensaje en taller.`;
+                const message = `*TICKET DE VISITA - MAC WAVE*\n\nHola *${name}*, este es tu ticket: *${folio}*\n\n📅 *Cita:* ${formattedAppointment}\n📍 *Ubicación:* https://maps.app.goo.gl/PeSD75SSGMoCD4qZA\n🏠 *Dirección:* Av. México Coyoacán 276, Benito Juárez, CDMX.\n👨‍🔧 *Atendido por:* Técnico Especialista Issac\n\nNos conociste por ${source}. ¡Te esperamos!`;
 
                 // 1. Send to Client
                 window.open(`https://wa.me/52${phone}?text=${encodeURIComponent(message)}`, '_blank');
 
                 // 2. Parallel send to Technician (1sec delay to help avoid popup blockers)
                 setTimeout(() => {
-                    const techMessage = `🚀 TICKET GENERADO: \nCliente: ${name}\nOrigen: ${source}\nFolio: ${folio}\nWhatsApp: ${phone}`;
+                    const techMessage = `🚀 *NUEVA CITA GENERADA:*\n\nCliente: ${name}\nOrigen: ${source}\nFolio: ${folio}\nCita: ${formattedAppointment}\nWhatsApp: ${phone}\nAtiende: Técnico Especialista Issac`;
                     window.open(`https://wa.me/52${techPhone}?text=${encodeURIComponent(techMessage)}`, '_blank');
                     document.getElementById('ticket-modal').style.display = 'none';
                 }, 1000);
