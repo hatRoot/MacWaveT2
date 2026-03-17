@@ -1928,9 +1928,13 @@
             };
 
             try {
-                // Save to Supabase
-                const { error } = await supabaseClient.from('tickets_taller').insert([ticketData]);
-                if (error) throw error;
+                // Save to Supabase (wrapped in a try/catch so it doesn't block ticket generation if the DB fails)
+                try {
+                    const { error } = await supabaseClient.from('tickets_taller').insert([ticketData]);
+                    if (error) console.warn("Supabase Warning:", error);
+                } catch(dbErr) {
+                    console.error("Supabase Error saving ticket:", dbErr);
+                }
 
                 if (Array.isArray(window.allTickets)) {
                     window.allTickets.unshift(ticketData);
