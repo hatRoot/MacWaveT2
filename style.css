@@ -960,8 +960,6 @@ h3 {
     background-color: #000000;
     /* Negro puro para coincidir con el header */
     color: var(--text-secondary);
-    padding-top: 60px;
-    border-top: 1px solid #333;
 }
 
 .footer-grid {
