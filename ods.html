@@ -753,7 +753,7 @@
         .ps-footer-col {
             font-weight: bold;
             flex: 1;
-          /* TICKET MODAL STYLES (APPLE BADGE DESIGN) */
+        /* MODAL BASE STYLES */
         .modal {
             display: none;
             position: fixed;
@@ -762,220 +762,82 @@
             top: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.9);
-            backdrop-filter: blur(15px);
+            background-color: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(10px);
             align-items: center;
             justify-content: center;
-            overflow-y: auto;
-            padding: 20px;
         }
 
-        .apple-badge {
-            background: #ffffff;
-            width: 380px;
-            border-radius: 28px;
-            box-shadow: 0 30px 100px rgba(0, 0, 0, 0.8);
-            position: relative;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            color: #1d1d1f;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            animation: badgeAppear 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        @keyframes badgeAppear {
-            from { transform: scale(0.9) translateY(40px); opacity: 0; }
-            to { transform: scale(1) translateY(0); opacity: 1; }
-        }
-
-        /* Lanyard Hole */
-        .badge-lanyard-hole {
-            width: 80px;
-            height: 12px;
-            background: rgba(0,0,0,0.05);
-            margin: 25px auto 0;
-            border-radius: 10px;
-            position: relative;
-        }
-
-        .badge-header {
-            padding: 20px 30px 10px;
+        /* GOLDEN TICKET / CONFIRMATION BOX */
+        .golden-ticket {
+            background: linear-gradient(135deg, #1c1c1e 0%, #2c2c2e 100%);
+            border: 1px solid var(--primary);
+            padding: 40px 30px;
+            border-radius: 24px;
+            width: 420px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
             text-align: center;
+            position: relative;
+            font-family: 'Outfit', sans-serif;
+            color: #fff;
         }
 
-        .apple-logo-badge {
-            width: 45px;
-            height: 45px;
-            margin: 0 auto 15px;
-            background: url('data:image/svg+xml;utf8,<svg viewBox="0 0 170 170" xmlns="http://www.w3.org/2000/svg"><path d="M150.37 130.25c-2.45 5.66-5.35 10.87-8.71 15.66-4.58 6.53-8.33 11.05-11.22 13.56-4.48 4.12-9.28 6.23-14.42 6.35-3.69.03-8.14-1.05-13.36-3.23-5.22-2.18-9.93-3.28-14.13-3.28-4.35 0-9.13 1.1-14.34 3.28-5.21 2.18-9.52 3.32-12.92 3.44-5.06.12-9.93-2-14.61-6.35-2.89-2.51-6.73-7.03-11.52-13.56-6.14-8.36-10.95-18.06-14.42-29.09-3.48-11.03-5.23-21.36-5.23-31 0-11 2.21-20.35 6.64-28.06 4.43-7.71 10.51-12.93 18.23-15.65 7.72-2.73 15.68-4.1 23.9-4.1 4.23 0 9.04.91 14.42 2.72 5.38 1.81 9.38 2.72 12.01 2.72 2.27 0 6.6-1.1 12.98-3.3 6.38-2.2 11.45-3.3 15.22-3.3 8.35 0 15.69 2.05 22.02 6.13 6.32 4.08 11.2 9.68 14.62 16.79-8.47 5.14-12.7 12.1-12.7 20.89 0 7.72 2.65 14.28 7.96 19.67 5.3 5.4 12.06 8.5 20.27 9.32.14 1.34.19 2.76.14 4.28zM121.78 40.1c0 5.4-1.99 10.51-5.96 15.34s-8.6 8.24-13.88 10.2c-1.12.44-2.24.8-3.36 1.07-.1-.28-.14-.56-.14-.84 0-5.11 1.94-10.05 5.81-14.83 3.84-4.78 8.65-8.24 14.44-10.37.14.28.27.56.4.84.44.8.69 1.61.69 2.43z" fill="%23000"/></svg>') no-repeat center;
-            background-size: contain;
-        }
-
-        .badge-title {
-            font-size: 10px;
-            font-weight: 700;
-            letter-spacing: 2px;
-            color: #86868b;
-            text-transform: uppercase;
-            margin-bottom: 5px;
-        }
-
-        .badge-main-text {
-            font-size: 26px;
-            font-weight: 700;
-            letter-spacing: -0.5px;
-            line-height: 1.1;
-        }
-
-        .badge-body {
-            padding: 20px 30px;
-            flex-grow: 1;
-        }
-
-        .apple-input-group {
-            margin-bottom: 20px;
-        }
-
-        .apple-label {
-            display: block;
-            font-size: 11px;
-            font-weight: 600;
-            color: #86868b;
-            margin-bottom: 6px;
-            padding-left: 2px;
-        }
-
-        .apple-input {
-            width: 100%;
-            padding: 14px 16px;
-            border-radius: 12px;
-            border: 1px solid #d2d2d7;
-            background: #f5f5f7;
-            font-size: 15px;
-            font-weight: 500;
-            color: #1d1d1f;
-            transition: all 0.2s ease;
-            box-sizing: border-box;
-        }
-
-        .apple-input:focus {
-            outline: none;
-            border-color: #0071e3;
-            background: #ffffff;
-            box-shadow: 0 0 0 4px rgba(0, 113, 227, 0.1);
-        }
-
-        .apple-select {
-            appearance: none;
-            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2386868b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
-            background-repeat: no-repeat;
-            background-position: right 12px center;
-            background-size: 16px;
-            padding-right: 40px;
-        }
-
-        .badge-folio-display {
-            font-size: 28px;
+        .ticket-stars-header {
+            font-size: 22px;
             font-weight: 800;
-            text-align: center;
-            margin: 10px 0 25px;
-            color: #0071e3;
-            font-family: inherit;
-        }
-
-        .badge-footer {
-            padding: 25px 30px 40px;
-            background: #f5f5f7;
-            border-top: 1px solid #d2d2d7;
-            text-align: center;
-        }
-
-        .apple-button {
-            width: 100%;
-            background: #0071e3;
-            color: #ffffff;
-            border: none;
-            padding: 16px;
-            border-radius: 12px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s ease;
+            letter-spacing: 2px;
+            margin-bottom: 20px;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 10px;
+            color: var(--primary);
         }
 
-        .apple-button:hover {
-            background: #0077ed;
-            transform: scale(1.01);
+        .ticket-main-title {
+            font-size: 32px;
+            font-weight: 900;
+            margin-bottom: 10px;
+            letter-spacing: -1px;
+            color: var(--primary);
         }
 
-        .apple-button:active {
-            transform: scale(0.98);
+        .ticket-instruction {
+            font-size: 14px;
+            color: var(--text-dim);
+            margin-bottom: 30px;
         }
 
-        .apple-badge-address {
-            font-size: 11px;
-            color: #86868b;
-            line-height: 1.5;
-            margin-bottom: 20px;
-            text-align: center;
-            padding: 0 10px;
-        }
-
-        .badge-qr-container {
-            margin: 0 auto 15px;
-            width: 100px;
-            height: 100px;
-            background: #fff;
-            padding: 8px;
-            border-radius: 14px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        .confirm-btns {
             display: flex;
-            align-items: center;
-            justify-content: center;
+            gap: 15px;
+            margin-top: 25px;
         }
 
-        .badge-qr-container img {
-            width: 100%;
-            height: 100%;
-        }
-
-        .close-badge {
-            position: absolute;
-            top: 25px;
-            right: 25px;
-            width: 32px;
-            height: 32px;
-            background: rgba(0,0,0,0.05);
+        .btn-yes {
+            background: var(--primary);
+            color: white;
+            flex: 1;
             border: none;
-            border-radius: 50%;
-            color: #1d1d1f;
-            font-size: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            z-index: 10;
-            transition: background 0.2s;
-        }
-
-        .close-badge:hover {
-            background: rgba(0,0,0,0.1);
-        }
-
-        .badge-tech-info {
-            background: #e8e8ed;
-            padding: 8px 12px;
+            padding: 12px;
             border-radius: 8px;
-            display: inline-block;
-            font-size: 11px;
-            font-weight: 600;
-            margin-top: 10px;
+            cursor: pointer;
+            font-weight: bold;
         }
+
+        .btn-no {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            flex: 1;
+            border: none;
+            padding: 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .btn-yes:hover { background: var(--primary-hover); transform: scale(1.02); }
+        .btn-no:hover { background: rgba(255, 255, 255, 0.2); transform: scale(1.02); }
        }
 
         @media (max-width: 1000px) {
@@ -1163,63 +1025,66 @@
     <!-- ODS Management Panel removed, moved to dashboard-ods.html -->
 
     <div id="ticket-modal" class="modal">
-        <div class="apple-badge">
-            <button id="close-ticket-modal" class="close-badge">&times;</button>
-            <div class="badge-lanyard-hole"></div>
-            
-            <div class="badge-header">
-                <div class="apple-logo-badge"></div>
-                <div class="badge-title">CREDENCIAL DE VISITA</div>
-                <div class="badge-main-text">TALLER MAC WAVE</div>
-            </div>
-
-            <div class="badge-body">
-                <div id="ticket-folio-display" class="badge-folio-display">G-260316-247</div>
+        <div class="apple-badge-container">
+            <div class="apple-badge">
+                <button id="close-ticket-modal" class="close-badge">&times;</button>
+                <div class="badge-lanyard-hole"></div>
                 
-                <div class="apple-input-group">
-                    <label class="apple-label">¿Cómo nos conociste?</label>
-                    <select id="ticket-source" class="apple-input apple-select">
-                        <option value="INTERNET">Internet</option>
-                        <option value="GOOGLE MAPS" selected>Google Maps</option>
-                        <option value="RECOMENDACIÓN">Recomendación</option>
-                    </select>
+                <div class="badge-header">
+                    <div class="apple-logo-badge"></div>
+                    <div class="badge-title">CREDENCIAL DE VISITA</div>
+                    <div class="badge-main-text">TALLER MAC WAVE</div>
                 </div>
 
-                <div class="apple-input-group">
-                    <label class="apple-label">Nombre del Cliente</label>
-                    <input type="text" id="ticket-client-name" class="apple-input" placeholder="Nombre completo">
+                <div class="badge-body">
+                    <div id="ticket-folio-display" class="badge-folio-display">G-260316-247</div>
+                    
+                    <div class="apple-input-group">
+                        <label class="apple-label">¿Cómo nos conociste?</label>
+                        <select id="ticket-source" class="apple-input apple-select">
+                            <option value="INTERNET">Internet</option>
+                            <option value="GOOGLE MAPS" selected>Google Maps</option>
+                            <option value="RECOMENDACIÓN">Recomendación</option>
+                        </select>
+                    </div>
+
+                    <div class="apple-input-group">
+                        <label class="apple-label">Nombre del Cliente</label>
+                        <input type="text" id="ticket-client-name" class="apple-input" placeholder="Nombre completo">
+                    </div>
+
+                    <div class="apple-input-group">
+                        <label class="apple-label">WhatsApp (10 dígitos)</label>
+                        <input type="tel" id="ticket-client-phone" class="apple-input" placeholder="Ej. 5512345678" maxlength="10">
+                    </div>
+
+                    <div class="apple-input-group">
+                        <label class="apple-label">Fecha y Hora de Cita</label>
+                        <input type="datetime-local" id="ticket-appointment-time" class="apple-input">
+                    </div>
                 </div>
 
-                <div class="apple-input-group">
-                    <label class="apple-label">WhatsApp (10 dígitos)</label>
-                    <input type="tel" id="ticket-client-phone" class="apple-input" placeholder="Ej. 5512345678" maxlength="10">
-                </div>
+                <div class="badge-footer">
+                    <div class="badge-qr-container">
+                        <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://maps.app.goo.gl/PeSD75SSGMoCD4qZA" alt="QR Taller">
+                    </div>
+                    <div class="apple-badge-address">
+                        <strong>Av. México Coyoacán 276</strong><br>
+                        Sta Cruz Atoyac, Benito Juárez, CDMX.<br>
+                        <em>Escanea para llegar al taller</em>
+                    </div>
+                    
+                    <div class="badge-tech-info">
+                       <span style="color: #0071e3;">●</span> Atendido por Técnico Issac
+                    </div>
 
-                <div class="apple-input-group">
-                    <label class="apple-label">Fecha y Hora de Cita</label>
-                    <input type="datetime-local" id="ticket-appointment-time" class="apple-input">
+                    <button id="send-ticket-whatsapp" class="apple-button" style="margin-top: 25px;">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12.031 6.172c-2.31 0-4.191 1.881-4.191 4.191 0 .816.234 1.579.638 2.227l-.679 2.477 2.535-.665c.504.28 1.082.443 1.697.443 2.31 0 4.191-1.881 4.191-4.191s-1.881-4.191-4.191-4.191zm2.943 5.483c-.042.12-.24.23-.418.27-.132.028-.306.046-.464.04-.158-.006-.312-.008-.454-.038-.37-.08-.726-.226-1.045-.44l-.193-.133-.193-.138c-.37-.272-.687-.614-.94-.997l-.093-.153c-.11-.18-.19-.378-.236-.583-.046-.205-.05-.418-.008-.621.042-.204.14-.388.275-.536.136-.148.27-.197.438-.197h.236c.07 0 .144.004.21.01.066.006.126.044.17.104l.326.793c.04.098.026.208-.04.296-.067.088-.13.14-.23.18-.1.04-.15.08-.22.15-.07.07-.11.13-.11.23s.04.2.14.34c.1.14.24.26.4.38.16.12.35.21.57.29s.44.13.67.13c.23 0 .42-.04.57-.14s.24-.26.34-.41c.1-.15.15-.24.22-.31.07-.07.13-.1.21-.1h.236c.07 0 .144.02.21.06s.126.11.17.21l.326.793c.04.098.05.208.024.328zM12 2C6.477 2 2 6.477 2 12c0 1.765.456 3.425 1.254 4.872L2 22l5.253-1.378c1.464.848 3.167 1.378 5.179 1.378 5.523 0 10-4.477 10-10S17.523 2 12 2zm0 18c-1.63 0-3.146-.483-4.427-1.31l-.317-.205-2.887.757.77-2.812-.224-.356c-.84-1.334-1.332-2.91-1.332-4.597 0-4.632 3.768-8.4 8.4-8.4s8.4 3.768 8.4 8.4-3.768 8.4-8.4 8.4z"></path>
+                        </svg>
+                        ENVIAR TICKET DE VISITA
+                    </button>
                 </div>
-            </div>
-
-            <div class="badge-footer">
-                <div class="badge-qr-container">
-                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://maps.app.goo.gl/PeSD75SSGMoCD4qZA" alt="QR Taller">
-                </div>
-                <div class="apple-badge-address">
-                    Av. México Coyoacán 276, Sta Cruz Atoyac, CDMX.<br>
-                    <strong>Escanea para llegar al taller</strong>
-                </div>
-                
-                <div class="badge-tech-info">
-                   <span style="color: #0071e3;">●</span> Atendido por Técnico Issac
-                </div>
-
-                <button id="send-ticket-whatsapp" class="apple-button" style="margin-top: 25px;">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M12.031 6.172c-2.31 0-4.191 1.881-4.191 4.191 0 .816.234 1.579.638 2.227l-.679 2.477 2.535-.665c.504.28 1.082.443 1.697.443 2.31 0 4.191-1.881 4.191-4.191s-1.881-4.191-4.191-4.191zm2.943 5.483c-.042.12-.24.23-.418.27-.132.028-.306.046-.464.04-.158-.006-.312-.008-.454-.038-.37-.08-.726-.226-1.045-.44l-.193-.133-.193-.138c-.37-.272-.687-.614-.94-.997l-.093-.153c-.11-.18-.19-.378-.236-.583-.046-.205-.05-.418-.008-.621.042-.204.14-.388.275-.536.136-.148.27-.197.438-.197h.236c.07 0 .144.004.21.01.066.006.126.044.17.104l.326.793c.04.098.026.208-.04.296-.067.088-.13.14-.23.18-.1.04-.15.08-.22.15-.07.07-.11.13-.11.23s.04.2.14.34c.1.14.24.26.4.38.16.12.35.21.57.29s.44.13.67.13c.23 0 .42-.04.57-.14s.24-.26.34-.41c.1-.15.15-.24.22-.31.07-.07.13-.1.21-.1h.236c.07 0 .144.02.21.06s.126.11.17.21l.326.793c.04.098.05.208.024.328zM12 2C6.477 2 2 6.477 2 12c0 1.765.456 3.425 1.254 4.872L2 22l5.253-1.378c1.464.848 3.167 1.378 5.179 1.378 5.523 0 10-4.477 10-10S17.523 2 12 2zm0 18c-1.63 0-3.146-.483-4.427-1.31l-.317-.205-2.887.757.77-2.812-.224-.356c-.84-1.334-1.332-2.91-1.332-4.597 0-4.632 3.768-8.4 8.4-8.4s8.4 3.768 8.4 8.4-3.768 8.4-8.4 8.4z"></path>
-                    </svg>
-                    ENVIAR TICKET DE VISITA
-                </button>
             </div>
         </div>
     </div>
@@ -1296,129 +1161,6 @@
                 // Add more technicians if needed
             };
 
-            // Ticket Generator Logic
-            const showWorkshopTicket = () => {
-                const modal = document.getElementById('ticket-modal');
-                const folioDisplay = document.getElementById('ticket-folio-display');
-                const source = document.getElementById('ticket-source').value;
-                let counter = parseInt(localStorage.getItem('workshop_ticket_counter') || '239');
-
-                // Increment immediately so each ticket has a unique code
-                localStorage.setItem('workshop_ticket_counter', counter + 1);
-
-                const now = new Date();
-                const yy = now.getFullYear().toString().slice(2);
-                const mm = (now.getMonth() + 1).toString().padStart(2, '0');
-                const dd = now.getDate().toString().padStart(2, '0');
-                const dateStr = yy + mm + dd;
-
-                // Dynamic Prefix Logic
-                let prefix = 'G'; // Default Google
-                if (source === 'INTERNET') prefix = 'I';
-                if (source === 'RECOMENDACIÓN') prefix = 'R';
-
-                const folio = `${prefix}-${dateStr}-${counter}`;
-                folioDisplay.textContent = folio;
-
-                // Set default appointment time to now
-                const appointmentInput = document.getElementById('ticket-appointment-time');
-                if (appointmentInput) {
-                    const localNow = new Date();
-                    localNow.setMinutes(localNow.getMinutes() - localNow.getTimezoneOffset());
-                    appointmentInput.value = localNow.toISOString().slice(0, 16);
-                }
-
-                modal.style.display = 'flex';
-            };
-
-            // Live Folio Update when source changes
-            document.getElementById('ticket-source')?.addEventListener('change', (e) => {
-                const folioDisplay = document.getElementById('ticket-folio-display');
-                const currentFolio = folioDisplay.textContent;
-                const source = e.target.value;
-
-                let prefix = 'G';
-                if (source === 'INTERNET') prefix = 'I';
-                if (source === 'RECOMENDACIÓN') prefix = 'R';
-
-                // Replace the prefix part (everything before the first dash)
-                folioDisplay.textContent = `${prefix}${currentFolio.slice(currentFolio.indexOf('-'))}`;
-            });
-
-            document.getElementById('generate-ticket-btn')?.addEventListener('click', showWorkshopTicket);
-            document.getElementById('nav-ticket-btn')?.addEventListener('click', showWorkshopTicket);
-            document.getElementById('close-ticket-modal')?.addEventListener('click', () => { document.getElementById('ticket-modal').style.display = 'none'; });
-
-            // Auto-open ticket modal if coming from dashboard with ?ticket=true
-            if (new URLSearchParams(window.location.search).get('ticket') === 'true') {
-                showWorkshopTicket();
-            }
-
-            // Parallel WhatsApp Sending Logic
-            document.getElementById('send-ticket-whatsapp')?.addEventListener('click', async () => {
-                const name = document.getElementById('ticket-client-name').value || 'Cliente';
-                const phone = document.getElementById('ticket-client-phone').value;
-                const source = document.getElementById('ticket-source').value;
-                const folio = document.getElementById('ticket-folio-display').textContent;
-                const appointmentTime = document.getElementById('ticket-appointment-time').value;
-                const currentTech = (document.getElementById('tech-name').value || 'JOEL DURAN').toUpperCase();
-                const techPhone = '5535757364'; // Fixed as per user request (Joel's WhatsApp)
-
-                if (!phone || phone.length < 10) {
-                    alert("Por favor ingresa un número de WhatsApp de 10 dígitos.");
-                    return;
-                }
-
-                let formattedAppointment = "Por definir";
-                if (appointmentTime) {
-                    const date = new Date(appointmentTime);
-                    formattedAppointment = date.toLocaleString('es-MX', { 
-                        weekday: 'long', 
-                        day: 'numeric', 
-                        month: 'long', 
-                        hour: '2-digit', 
-                        minute: '2-digit',
-                        hour12: true 
-                    });
-                }
-
-                // --- 0. Save to Supabase ---
-                const ticketData = {
-                    folio: folio,
-                    cliente: name,
-                    telefono: phone,
-                    origen: source,
-                    tecnico: currentTech,
-                    appointment_time: appointmentTime,
-                    created_at: new Date().toISOString()
-                };
-
-                try {
-                    const { error } = await window._sbClient
-                        .from('tickets_taller')
-                        .insert([ticketData]);
-
-                    if (error) {
-                        console.error("Error saving ticket to Supabase:", error);
-                        // We proceed anyway to send WhatsApp
-                    }
-                } catch (err) {
-                    console.error("Supabase Exception:", err);
-                }
-
-                // Optimized Message Template
-                const message = `*TICKET DE VISITA - MAC WAVE*\n\nHola *${name}*, este es tu ticket: *${folio}*\n\n📅 *Cita:* ${formattedAppointment}\n📍 *Ubicación:* https://maps.app.goo.gl/PeSD75SSGMoCD4qZA\n🏠 *Dirección:* Av. México Coyoacán 276, Benito Juárez, CDMX.\n👨‍🔧 *Atendido por:* Técnico Especialista Issac\n\nNos conociste por ${source}. ¡Te esperamos!`;
-
-                // 1. Send to Client
-                window.open(`https://wa.me/52${phone}?text=${encodeURIComponent(message)}`, '_blank');
-
-                // 2. Parallel send to Technician (1sec delay to help avoid popup blockers)
-                setTimeout(() => {
-                    const techMessage = `🚀 *NUEVA CITA GENERADA:*\n\nCliente: ${name}\nOrigen: ${source}\nFolio: ${folio}\nCita: ${formattedAppointment}\nWhatsApp: ${phone}\nAtiende: Técnico Especialista Issac`;
-                    window.open(`https://wa.me/52${techPhone}?text=${encodeURIComponent(techMessage)}`, '_blank');
-                    document.getElementById('ticket-modal').style.display = 'none';
-                }, 1000);
-            });
 
             // Folio Auto-Increment — Format: MW-YYYYMMDD-NNNN
             const getNextFolio = (inc = false) => {

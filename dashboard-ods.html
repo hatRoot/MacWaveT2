@@ -1001,6 +1001,197 @@
             box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
             padding: 24px;
         }
+
+        /* APPLE ID BADGE DESIGN (Tickets Module) */
+        .apple-badge-container {
+            position: relative;
+            padding-top: 120px;
+            margin: 0 auto 40px;
+            width: 380px;
+        }
+
+        /* Essential Lanyard Cords */
+        .apple-badge-container::before,
+        .apple-badge-container::after {
+            content: '';
+            position: absolute;
+            top: -500px;
+            width: 3px;
+            height: 620px;
+            background: #d2d2d7; 
+            box-shadow: inset -1px 0 2px rgba(0,0,0,0.1), 0 0 15px rgba(255,255,255,0.05);
+            z-index: 1;
+        }
+        .apple-badge-container::before { left: 45%; transform: rotate(-3deg); }
+        .apple-badge-container::after { right: 45%; transform: rotate(3deg); }
+
+        .apple-badge-card {
+            background: linear-gradient(135deg, #ffffff 0%, #f5f5f7 100%);
+            width: 100%;
+            border-radius: 32px;
+            box-shadow: 
+                0 50px 120px rgba(0, 0, 0, 0.9),
+                0 0 0 1px rgba(255,255,255,0.3) inset;
+            position: relative;
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", sans-serif;
+            color: #1d1d1f;
+            display: flex;
+            flex-direction: column;
+            z-index: 2;
+            border: 1px solid #e5e5e5;
+            overflow: hidden;
+            padding: 0;
+        }
+
+        .apple-badge-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(110deg, 
+                rgba(255,255,255,0.4) 0%, 
+                rgba(255,255,255,0.1) 35%, 
+                transparent 40%, 
+                rgba(255,255,255,0.05) 50%, 
+                transparent 100%);
+            pointer-events: none;
+            z-index: 10;
+        }
+
+        .badge-lanyard-hole {
+            width: 65px;
+            height: 12px;
+            background: #1d1d1f;
+            margin: 24px auto 10px;
+            border-radius: 20px;
+            box-shadow: inset 0 2px 5px rgba(0,0,0,0.7);
+        }
+
+        .badge-header { padding: 10px 30px; text-align: center; }
+
+        .apple-logo-badge {
+            width: 42px;
+            height: 42px;
+            margin: 0 auto 10px;
+            background: url('data:image/svg+xml;utf8,<svg viewBox="0 0 170 170" xmlns="http://www.w3.org/2000/svg"><path d="M150.37 130.25c-2.45 5.66-5.35 10.87-8.71 15.66-4.58 6.53-8.33 11.05-11.22 13.56-4.48 4.12-9.28 6.23-14.42 6.35-3.69.03-8.14-1.05-13.36-3.23-5.22-2.18-9.93-3.28-14.13-3.28-4.35 0-9.13 1.1-14.34 3.28-5.21 2.18-9.52 3.32-12.92 3.44-5.06.12-9.93-2-14.61-6.35-2.89-2.51-6.73-7.03-11.52-13.56-6.14-8.36-10.95-18.06-14.42-29.09-3.48-11.03-5.23-21.36-5.23-31 0-11 2.21-20.35 6.64-28.06 4.43-7.71 10.51-12.93 18.23-15.65 7.72-2.73 15.68-4.1 23.9-4.1 4.23 0 9.04.91 14.42 2.72 5.38 1.81 9.38 2.72 12.01 2.72 2.27 0 6.6-1.1 12.98-3.3 6.38-2.2 11.45-3.3 15.22-3.3 8.35 0 15.69 2.05 22.02 6.13 6.32 4.08 11.2 9.68 14.62 16.79-8.47 5.14-12.7 12.1-12.7 20.89 0 7.72 2.65 14.28 7.96 19.67 5.3 5.4 12.06 8.5 20.27 9.32.14 1.34.19 2.76.14 4.28zM121.78 40.1c0 5.4-1.99 10.51-5.96 15.34s-8.6 8.24-13.88 10.2c-1.12.44-2.24.8-3.36 1.07-.1-.28-.14-.56-.14-.84 0-5.11 1.94-10.05 5.81-14.83 3.84-4.78 8.65-8.24 14.44-10.37.14.28.27.56.4.84.44.8.69 1.61.69 2.43z" fill="%23000"/></svg>') no-repeat center;
+            background-size: contain;
+        }
+
+        .badge-title {
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            color: #86868b;
+            text-transform: uppercase;
+            margin-bottom: 4px;
+        }
+
+        .badge-main-text {
+            font-size: 26px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            color: #000;
+            line-height: 1.1;
+        }
+
+        .badge-body { padding: 15px 30px; }
+
+        .apple-input-group { margin-bottom: 15px; text-align: left; }
+
+        .apple-label {
+            display: block;
+            font-size: 10px;
+            font-weight: 700;
+            color: #86868b;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+        }
+
+        .apple-id-input {
+            width: 100%;
+            padding: 12px 14px;
+            border-radius: 12px;
+            border: 1px solid #e5e5e7;
+            background: rgba(255,255,255,0.9);
+            font-size: 14px;
+            font-weight: 500;
+            color: #1d1d1f;
+            box-sizing: border-box;
+            font-family: inherit;
+        }
+
+        .badge-folio-display {
+            font-size: 34px;
+            font-weight: 900;
+            text-align: center;
+            margin: 5px 0 20px;
+            color: #0071e3;
+            letter-spacing: -1px;
+        }
+
+        .badge-footer {
+            padding: 25px 30px 45px;
+            background: #f5f5f7;
+            border-top: 1px solid #d2d2d7;
+            text-align: center;
+            position: relative;
+        }
+
+        .badge-qr-container {
+            margin: 0 auto 15px;
+            width: 90px;
+            height: 90px;
+            background: #fff;
+            padding: 10px;
+            border-radius: 14px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid #e5e5e7;
+        }
+
+        .apple-id-button {
+            width: 100%;
+            background: #0071e3;
+            color: #fff !important;
+            border: none;
+            padding: 16px;
+            border-radius: 14px;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            box-shadow: 0 4px 15px rgba(0, 113, 227, 0.3);
+            transition: all 0.2s;
+            margin-top: 25px;
+            text-decoration: none;
+        }
+
+        .apple-id-button:hover { background: #0077ed; transform: translateY(-2px); }
+
+        .apple-id-address {
+            font-size: 11px;
+            color: #48484a;
+            line-height: 1.5;
+            margin-bottom: 20px;
+        }
+
+        .badge-tech-info {
+            background: #fff;
+            padding: 6px 14px;
+            border-radius: 20px;
+            display: inline-block;
+            font-size: 10px;
+            font-weight: 700;
+            margin-top: 0;
+            color: #1d1d1f;
+            border: 1px solid #d2d2d7;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
     </style>
 </head>
 
@@ -1247,52 +1438,67 @@
 
             <div style="display: flex; gap: 40px; align-items: flex-start;">
                 <!-- LEFT: THE GOLDEN TICKET GENERATOR -->
-                <div class="golden-ticket" style="flex-shrink: 0;">
-                    <div class="ticket-stars-header"
-                        style="font-size: 20px; font-weight: 800; letter-spacing: 5px; margin-bottom: 20px;">
-                        ★ TICKET DE VISITA ★
-                    </div>
-                    <h1 class="ticket-main-title" style="font-size: 38px; font-weight: 900; margin-bottom: 5px;">
-                        SERVICIO TÉCNICO</h1>
-                    <p class="ticket-instruction"
-                        style="font-size: 13px; font-weight: 600; margin-bottom: 25px; color: #333;">manda este ticket o
-                        muestralo en taller</p>
+                <div class="apple-badge-container">
+                    <div class="apple-badge-card" id="apple-ticket-card">
+                        <div class="badge-lanyard-hole"></div>
+                        
+                        <div class="badge-header">
+                            <div class="apple-logo-badge"></div>
+                            <div class="badge-title">CREDENCIAL DE VISITA</div>
+                            <div class="badge-main-text">TALLER MAC WAVE</div>
+                        </div>
 
-                    <div class="folio-box">
-                        <p class="folio-label"
-                            style="font-size: 11px; font-weight: 800; color: #444; margin-bottom: 8px;">TU CÓDIGO ÚNICO:
-                        </p>
-                        <p id="t-unified-folio" class="folio-number">G-000000-000</p>
-                    </div>
+                        <div class="badge-body">
+                            <div id="t-unified-folio" class="badge-folio-display">T-000000-000</div>
+                            
+                            <div class="apple-input-group">
+                                <label class="apple-label">¿Cómo nos conociste?</label>
+                                <select id="t-unified-source" class="apple-id-input" onchange="updateFolioPreview()">
+                                    <option value="GOOGLE MAPS" selected>GOOGLE MAPS</option>
+                                    <option value="INTERNET">INTERNET / OTRO</option>
+                                    <option value="RECOMENDACIÓN">RECOMENDACIÓN</option>
+                                    <option value="TIENDA">TIENDA FÍSICA</option>
+                                </select>
+                            </div>
 
-                    <div style="text-align: left;">
-                        <label
-                            style="display:block; font-size:12px; font-weight:800; margin-bottom:8px; color:#333;">¿Cómo
-                            nos conociste?</label>
-                        <select id="t-unified-source" class="btn" onchange="updateFolioPreview()"
-                            style="width:100%; text-align:left; background:rgba(255,255,255,0.4); border:1px solid #000; color:#000; margin-bottom:15px; font-weight:700;">
-                            <option value="INTERNET">INTERNET</option>
-                            <option value="GOOGLE MAPS">GOOGLE MAPS</option>
-                            <option value="RECOMENDACIÓN">RECOMENDACIÓN</option>
-                        </select>
-                        <input type="text" id="t-unified-name" class="btn"
-                            style="width:100%; text-align:left; background:rgba(255,255,255,0.4); border:1px solid #000; color:#000; margin-bottom:15px;"
-                            placeholder="Nombre del cliente">
-                        <input type="text" id="t-unified-phone" class="btn"
-                            style="width:100%; text-align:left; background:rgba(255,255,255,0.4); border:1px solid #000; color:#000; margin-bottom:20px;"
-                            placeholder="WhatsApp (10 dígitos)">
-                    </div>
+                            <div class="apple-input-group">
+                                <label class="apple-label">Nombre del Cliente</label>
+                                <input type="text" id="t-unified-name" class="apple-id-input" placeholder="Nombre completo">
+                            </div>
 
-                    <button id="btn-send-unified-ticket" class="btn btn-whatsapp">
-                        ENVIAR POR WHATSAPP
-                    </button>
-                    <div style="margin-top:20px; font-weight:900; font-size:14px; color:#444; letter-spacing:1px; text-transform:uppercase;">macWave.com.mx</div>
-                    <script>
-                        document.getElementById('btn-send-unified-ticket')?.addEventListener('click', () => {
-                            // Logic to be added in the main script block
-                            if (window.sendTicketAction) window.sendTicketAction();
-                        });
-                    </script>
+                            <div class="apple-input-group">
+                                <label class="apple-label">WhatsApp (10 dígitos)</label>
+                                <input type="tel" id="t-unified-phone" class="apple-id-input" placeholder="Ej. 5512345678" maxlength="10">
+                            </div>
+
+                            <div class="apple-input-group">
+                                <label class="apple-label">Fecha y Hora de Cita</label>
+                                <input type="datetime-local" id="t-unified-appointment" class="apple-id-input">
+                            </div>
+                        </div>
+
+                        <div class="badge-footer">
+                            <div class="badge-qr-container">
+                                <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://maps.app.goo.gl/PeSD75SSGMoCD4qZA" alt="QR Taller" style="width:100%; height:100%;">
+                            </div>
+                            <div class="apple-id-address">
+                                <strong>Av. México Coyoacán 276</strong><br>
+                                Sta Cruz Atoyac, Benito Juárez, CDMX.<br>
+                                <em>Escanea para llegar al taller</em>
+                            </div>
+                            
+                            <div class="badge-tech-info">
+                                <span style="color: #0071e3;">●</span> Atendido por Técnico Issac
+                            </div>
+
+                            <button id="btn-send-unified-ticket" class="apple-id-button" onclick="if(window.sendTicketAction) window.sendTicketAction();">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M12.031 6.172c-2.31 0-4.191 1.881-4.191 4.191 0 .816.234 1.579.638 2.227l-.679 2.477 2.535-.665c.504.28 1.082.443 1.697.443 2.31 0 4.191-1.881 4.191-4.191s-1.881-4.191-4.191-4.191zm2.943 5.483c-.042.12-.24.23-.418.27-.132.028-.306.046-.464.04-.158-.006-.312-.008-.454-.038-.37-.08-.726-.226-1.045-.44l-.193-.133-.193-.138c-.37-.272-.687-.614-.94-.997l-.093-.153c-.11-.18-.19-.378-.236-.583-.046-.205-.05-.418-.008-.621.042-.204.14-.388.275-.536.136-.148.27-.197.438-.197h.236c.07 0 .144.004.21.01.066.006.126.044.17.104l.326.793c.04.098.026.208-.04.296-.067.088-.13.14-.23.18-.1.04-.15.08-.22.15-.07.07-.11.13-.11.23s.04.2.14.34c.1.14.24.26.4.38.16.12.35.21.57.29s.44.13.67.13c.23 0 .42-.04.57-.14s.24-.26.34-.41c.1-.15.15-.24.22-.31.07-.07.13-.1.21-.1h.236c.07 0 .144.02.21.06s.126.11.17.21l.326.793c.04.098.05.208.024.328zM12 2C6.477 2 2 6.477 2 12c0 1.765.456 3.425 1.254 4.872L2 22l5.253-1.378c1.464.848 3.167 1.378 5.179 1.378 5.523 0 10-4.477 10-10S17.523 2 12 2zm0 18c-1.63 0-3.146-.483-4.427-1.31l-.317-.205-2.887.757.77-2.812-.224-.356c-.84-1.334-1.332-2.91-1.332-4.597 0-4.632 3.768-8.4 8.4-8.4s8.4 3.768 8.4 8.4-3.768 8.4-8.4 8.4z"></path>
+                                </svg>
+                                ENVIAR TICKET DE VISITA
+                            </button>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- RIGHT: THE HISTORY TABLE -->
@@ -1360,47 +1566,69 @@
         </div>
     </div>
 
-    <!-- Ticket Modal -->
+    <!-- Apple Badge ID Ticket Modal -->
     <div class="modal-overlay" id="ticket-modal">
-        <div class="ticket-modal-content">
-            <div class="ticket-modal-header">
-                <h3>Generar Ticket de Visita</h3>
-                <button class="btn-close" id="close-ticket-modal">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18">
-                        <line x1="18" y1="6" x2="6" y2="18"></line>
-                        <line x1="6" y1="6" x2="18" y2="18"></line>
-                    </svg>
-                </button>
-            </div>
-            <div class="ticket-modal-body">
-                <div class="form-group">
-                    <label>Folio del Ticket</label>
-                    <div class="form-control" style="background: rgba(255,255,255,0.05); font-weight: 600;"
-                        id="ticket-folio-display"></div>
+        <div class="apple-badge-container">
+            <div class="apple-badge-card">
+                <button class="close-badge" onclick="document.getElementById('ticket-modal').style.display = 'none';">&times;</button>
+                <div class="badge-lanyard-hole"></div>
+                
+                <div class="badge-header">
+                    <div class="apple-logo-badge"></div>
+                    <div class="badge-title">CREDENCIAL DE VISITA</div>
+                    <div class="badge-main-text">TALLER MAC WAVE</div>
                 </div>
-                <div class="form-group">
-                    <label>Nombre del Cliente</label>
-                    <input type="text" id="ticket-client-name" class="form-control" placeholder="Nombre completo">
+
+                <div class="badge-body">
+                    <div id="ticket-folio-display" class="badge-folio-display">T-000000-000</div>
+                    
+                    <div class="apple-input-group">
+                        <label class="apple-label">¿Cómo nos conociste?</label>
+                        <select id="ticket-source" class="apple-id-input">
+                            <option value="GOOGLE">Google Maps</option>
+                            <option value="RECOMENDACIÓN">Recomendación</option>
+                            <option value="INTERNET">Internet / Otro</option>
+                            <option value="TIENDA">Tienda Física</option>
+                        </select>
+                    </div>
+
+                    <div class="apple-input-group">
+                        <label class="apple-label">Nombre del Cliente</label>
+                        <input type="text" id="ticket-client-name" class="apple-id-input" placeholder="Nombre completo">
+                    </div>
+
+                    <div class="apple-input-group">
+                        <label class="apple-label">WhatsApp (10 dígitos)</label>
+                        <input type="tel" id="ticket-client-phone" class="apple-id-input" placeholder="Ej. 5512345678" maxlength="10">
+                    </div>
+
+                    <div class="apple-input-group">
+                        <label class="apple-label">Fecha y Hora de Cita</label>
+                        <input type="datetime-local" id="ticket-appointment-time" class="apple-id-input">
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label>WhatsApp (10 dígitos)</label>
-                    <input type="tel" id="ticket-client-phone" class="form-control" placeholder="Ej. 5512345678"
-                        maxlength="10">
+
+                <div class="badge-footer">
+                    <div class="badge-qr-container">
+                        <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://maps.app.goo.gl/PeSD75SSGMoCD4qZA" alt="QR Taller" style="width:100%; height:100%;">
+                    </div>
+                    <div class="apple-id-address">
+                        <strong>Av. México Coyoacán 276</strong><br>
+                        Sta Cruz Atoyac, Benito Juárez, CDMX.<br>
+                        <em>Escanea para llegar al taller</em>
+                    </div>
+                    
+                    <button class="apple-id-button" id="send-ticket-whatsapp">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12.031 6.172c-2.31 0-4.191 1.881-4.191 4.191 0 .816.234 1.579.638 2.227l-.679 2.477 2.535-.665c.504.28 1.082.443 1.697.443 2.31 0 4.191-1.881 4.191-4.191s-1.881-4.191-4.191-4.191zm2.943 5.483c-.042.12-.24.23-.418.27-.132.028-.306.046-.464.04-.158-.006-.312-.008-.454-.038-.37-.08-.726-.226-1.045-.44l-.193-.133-.193-.138c-.37-.272-.687-.614-.94-.997l-.093-.153c-.11-.18-.19-.378-.236-.583-.046-.205-.05-.418-.008-.621.042-.204.14-.388.275-.536.136-.148.27-.197.438-.197h.236c.07 0 .144.004.21.01.066.006.126.044.17.104l.326.793c.04.098.026.208-.04.296-.067.088-.13.14-.23.18-.1.04-.15.08-.22.15-.07.07-.11.13-.11.23s.04.2.14.34c.1.14.24.26.4.38.16.12.35.21.57.29s.44.13.67.13c.23 0 .42-.04.57-.14s.24-.26.34-.41c.1-.15.15-.24.22-.31.07-.07.13-.1.21-.1h.236c.07 0 .144.02.21.06s.126.11.17.21l.326.793c.04.098.05.208.024.328zM12 2C6.477 2 2 6.477 2 12c0 1.765.456 3.425 1.254 4.872L2 22l5.253-1.378c1.464.848 3.167 1.378 5.179 1.378 5.523 0 10-4.477 10-10S17.523 2 12 2zm0 18c-1.63 0-3.146-.483-4.427-1.31l-.317-.205-2.887.757.77-2.812-.224-.356c-.84-1.334-1.332-2.91-1.332-4.597 0-4.632 3.768-8.4 8.4-8.4s8.4 3.768 8.4 8.4-3.768 8.4-8.4 8.4z"></path>
+                        </svg>
+                        ENVIAR TICKET DE VISITA
+                    </button>
+                    
+                    <div style="font-size: 10px; font-weight: 700; color: #0071e3; margin-top: 15px; text-transform: uppercase;">
+                        ● Técnico Especialista Issac
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label>¿Cómo nos conociste?</label>
-                    <select id="ticket-source" class="form-control">
-                        <option value="GOOGLE">Google</option>
-                        <option value="RECOMENDACIÓN">Recomendación</option>
-                        <option value="INTERNET">Internet (Otro)</option>
-                        <option value="TIENDA">Tienda Física</option>
-                    </select>
-                </div>
-            </div>
-            <div class="ticket-modal-footer">
-                <button class="btn" id="cancel-ticket-modal"
-                    onclick="document.getElementById('ticket-modal').style.display = 'none';">Cancelar</button>
-                <button class="btn btn-primary" id="send-ticket-whatsapp">Generar y Enviar WhatsApp</button>
             </div>
         </div>
     </div>
@@ -1539,16 +1767,27 @@
             const phoneInput = document.getElementById('t-unified-phone');
             const sourceInput = document.getElementById('t-unified-source');
             const folioDisplay = document.getElementById('t-unified-folio');
+            const appointmentInput = document.getElementById('t-unified-appointment');
 
             const name = nameInput.value || 'Cliente';
             const phone = phoneInput.value;
             const source = sourceInput.value;
             const folio = folioDisplay.innerText;
+            const appointmentTime = appointmentInput ? appointmentInput.value : '';
             const techPhone = '5535757364';
 
             if (!phone || phone.length < 10) {
                 alert("Ingresa un número de WhatsApp de 10 dígitos.");
                 return;
+            }
+
+            let formattedAppointment = "Por definir";
+            if (appointmentTime) {
+                const date = new Date(appointmentTime);
+                formattedAppointment = date.toLocaleString('es-MX', { 
+                    weekday: 'long', day: 'numeric', month: 'long', 
+                    hour: '2-digit', minute: '2-digit', hour12: true 
+                });
             }
 
             const ticketData = {
@@ -1557,6 +1796,7 @@
                 telefono: phone,
                 origen: source,
                 tecnico: 'JOEL DURAN',
+                appointment_time: appointmentTime,
                 created_at: new Date().toISOString()
             };
 
@@ -1564,79 +1804,62 @@
                 const { error } = await supabaseClient.from('tickets_taller').insert([ticketData]);
                 if (error) throw error;
 
-                // Update local and storage (keep localStorage as secondary fallback)
                 allTickets.unshift(ticketData);
                 const nextNum = parseInt(folio.split('-')[2]);
                 localStorage.setItem('workshop_ticket_counter', nextNum);
 
-                // Refresh folio preview for the next one
                 updateFolioPreview();
 
                 const btnSend = document.getElementById('btn-send-unified-ticket');
-                const originalText = btnSend.innerText;
+                const originalText = btnSend.innerHTML;
                 btnSend.innerText = "GENERANDO TICKET...";
-                btnSend.style.opacity = '0.5';
+                btnSend.disabled = true;
 
-                // Temporarily hide form inputs so they aren't in the ticket image
-                const formDiv = document.querySelector('.golden-ticket div[style*="text-align: left;"]');
-                if (formDiv) formDiv.style.display = 'none';
-                btnSend.style.display = 'none';
-
-                const ticketEl = document.querySelector('.golden-ticket');
+                // Capture high-fidelity badge
+                const ticketEl = document.getElementById('apple-ticket-card');
                 const canvas = await html2canvas(ticketEl, {
-                    scale: 2,
-                    backgroundColor: null
+                    scale: 3,
+                    backgroundColor: null,
+                    useCORS: true,
+                    logging: false
                 });
 
-                // Restore UI
-                if (formDiv) formDiv.style.display = 'block';
-                btnSend.style.display = 'inline-block';
-                btnSend.innerText = originalText;
-                btnSend.style.opacity = '1';
+                btnSend.innerHTML = originalText;
+                btnSend.disabled = false;
 
                 renderTicketsList();
 
                 canvas.toBlob(async (blob) => {
                     const file = new File([blob], `Ticket_${folio}.png`, { type: 'image/png' });
-                    const msg = `Hola muestra este ticket de visita en taller.`;
+                    const clientMsg = `*TICKET DE VISITA - MAC WAVE*\n\nHola *${name}*, este es tu ticket: *${folio}*\n\n📅 *Cita:* ${formattedAppointment}\n📍 *Ubicación:* https://maps.app.goo.gl/PeSD75SSGMoCD4qZA\n🏠 *Dirección:* Av. México Coyoacán 276, Benito Juárez, CDMX.\n👨‍🔧 *Atendido por:* Técnico Especialista Issac\n\n¡Te esperamos!`;
 
                     if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
                         try {
                             await navigator.share({
                                 files: [file],
                                 title: 'Ticket de Visita',
-                                text: msg
+                                text: clientMsg
                             });
-                            // Admin notification
-                            setTimeout(() => {
-                                const techMsg = `🚀 TICKET: ${folio}\nCliente: ${name}\nOrigen: ${source}\nWA: ${phone}`;
-                                window.open(`https://wa.me/52${techPhone}?text=${encodeURIComponent(techMsg)}`, '_blank');
-                                showTicketUnifiedView();
-                            }, 1000);
-                            return;
-                        } catch (e) { console.log('Share canceled or failed'); }
+                        } catch (e) { console.log('Share canceled'); }
                     }
 
-                    // Fallback for Desktop (Copy to clipboard/Download)
+                    // Always copy to clipboard (silent)
                     try {
                         const item = new ClipboardItem({ 'image/png': blob });
                         await navigator.clipboard.write([item]);
-                        // Silently copied
                     } catch (e) {
-                        const link = document.createElement('a');
-                        link.download = `Ticket_${folio}.png`;
-                        link.href = canvas.toDataURL();
-                        link.click();
-                        // Silently downloaded
+                         const link = document.createElement('a');
+                         link.download = `Ticket_${folio}.png`;
+                         link.href = canvas.toDataURL();
+                         link.click();
                     }
 
-                    window.open(`https://wa.me/52${phone}?text=${encodeURIComponent(msg)}`, '_blank');
+                    window.open(`https://wa.me/52${phone}?text=${encodeURIComponent(clientMsg)}`, '_blank');
 
                     setTimeout(() => {
-                        const techMsg = `🚀 TICKET: ${folio}\nCliente: ${name}\nOrigen: ${source}\nWA: ${phone}`;
+                        const techMsg = `🚀 *TICKET:* ${folio}\nCliente: ${name}\nOrigen: ${source}\nCita: ${formattedAppointment}\nWA: ${phone}`;
                         window.open(`https://wa.me/52${techPhone}?text=${encodeURIComponent(techMsg)}`, '_blank');
-                        showTicketUnifiedView();
-                    }, 1000);
+                    }, 1500);
 
                 }, 'image/png');
 
