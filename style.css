@@ -565,14 +565,14 @@ h3 {
     -webkit-backdrop-filter: blur(15px);
     border: 1px solid rgba(255, 255, 255, 0.1);
     color: #e0e0e6;
-    padding: 10px 24px;
+    padding: 8px 18px;
     border-radius: 30px;
     display: inline-flex;
     align-items: center;
-    gap: 0;
+    gap: 12px;
     font-weight: 500;
-    font-size: 0.95rem;
-    margin-bottom: 30px;
+    font-size: 0.9rem;
+    margin-bottom: 25px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
     transition: transform 0.3s ease, border-color 0.3s ease;
 }
@@ -648,15 +648,10 @@ h3 {
 /* NUEVOS ESTILOS DE LA AGRUPACIÓN DE CERTIFICACIONES */
 .certification-group {
     display: flex;
-    /* Para poner el logo y el texto lado a lado */
     align-items: center;
-    /* CENTRADO VERTICAL: La manzana y el texto se alinean al medio */
     color: var(--text-primary);
-    /* Blanco para todo el grupo */
-    margin-bottom: 60px;
-    /* Espacio antes del H1 */
+    margin-bottom: 30px; /* Reduced margin to bring it closer to title */
     line-height: 1;
-    /* Para controlar el espaciado vertical general */
 }
 
 .cert-apple-logo {
@@ -709,13 +704,10 @@ h3 {
 /* 2. ESTILO DE LA LÍNEA NARANJA (Apple consulting...) - [La línea que va ARRIBA en el HTML] */
 /* ---------------------------------------------------- */
 .cert-line-2 {
-    /* Color naranja específico del logo Apple Engineer */
-    color: #FF4500 !important;
-    /* Espacio entre letras aumentado */
-    letter-spacing: 1.5px;
-    /* Inclinación y desplazamiento */
+    color: #ff6b00 !important; /* Orange */
+    letter-spacing: 1px;
     transform: none !important;
-    text-align: center;
+    text-align: left;
 }
 
 .hero-content-text {
