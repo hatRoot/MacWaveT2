@@ -1579,8 +1579,6 @@
                     display: flex; 
                     flex-direction: column; 
                     align-items: center;
-                    transform: rotate(-1.5deg);
-                    transform-origin: center top;
                 ">
                     
                     <div style="width: 45px; height: 45px; margin-bottom: 25px; background: url('data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 256 315%22 fill=%22%231d1d1f%22%3E%3Cpath d=%22M213.803 167.03c.442 47.58 41.74 63.413 42.147 63.581-.338 1.056-6.505 22.344-21.636 44.407-13.069 19.066-26.632 38.033-47.93 38.423-20.923.385-27.669-12.332-51.586-12.332-23.922 0-31.328 12.128-51.373 12.934-20.449.803-36.012-20.613-49.207-39.61-26.98-38.835-47.567-109.684-19.954-157.653 13.714-23.834 38.271-38.96 64.915-39.344 20.306-.385 39.468 13.684 51.91 13.684 12.443 0 35.617-16.63 59.914-14.156 10.17.424 38.74 4.09 57.062 30.916-1.474.912-34.11 19.914-33.784 60.106V167.03h.034zm-42.302-120.43c10.916-13.197 18.274-31.547 16.26-49.851-15.736.635-34.782 10.468-46.03 23.666-10.096 11.693-18.914 30.41-16.538 48.337 17.568 1.357 35.392-8.955 46.308-22.152z%22/%3E%3C/svg%3E') no-repeat center center; background-size: contain;"></div>
@@ -1605,7 +1603,24 @@
                         </div>
                     </div>
 
-                    <button onclick="if(window.sendTicketAction) window.sendTicketAction();" style="margin-top: 40px; width: 100%; background: #007aff; color: white; border: none; padding: 14px; border-radius: 12px; font-weight: 600; font-size: 1rem; cursor: pointer; box-shadow: 0 4px 12px rgba(0, 122, 255, 0.3); transition: background 0.2s;" onmouseover="this.style.background='#0066d6'" onmouseout="this.style.background='#007aff'">
+                    <div style="margin-top: 25px; text-align: center; color: #424245; font-size: 0.85rem; line-height: 1.4; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
+                        <div style="font-weight: 600; color: #1d1d1f; margin-bottom: 5px;">Av. México Coyoacán 276</div>
+                        <div>Sta Cruz Atoyac, Benito Juárez, CDMX.</div>
+                    </div>
+
+                    <div style="margin-top: 20px; width: 100px; height: 100px; border-radius: 8px; overflow: hidden; border: 1px solid rgba(0,0,0,0.1); padding: 5px; background: white;">
+                        <img src="https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=https://maps.app.goo.gl/PeSD75SSGMoCD4qZA" alt="QR Ubicación" style="width:100%; height:100%;">
+                    </div>
+
+                    <div style="margin-top: 20px; font-weight: 500; font-size: 0.9rem; color: #1d1d1f; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
+                        Técnico Especialista: Issac
+                    </div>
+
+                    <div style="margin-top: 5px; font-weight: 400; font-size: 0.85rem; color: #007aff; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
+                        www.macwave.com.mx
+                    </div>
+
+                    <button onclick="if(window.sendTicketAction) window.sendTicketAction();" style="margin-top: 30px; width: 100%; background: #007aff; color: white; border: none; padding: 14px; border-radius: 12px; font-weight: 600; font-size: 1rem; cursor: pointer; box-shadow: 0 4px 12px rgba(0, 122, 255, 0.3); transition: transform 0.1s, background 0.2s;" onmouseover="this.style.background='#0066d6'" onmouseout="this.style.background='#007aff'" onmousedown="this.style.transform='scale(0.98)'" onmouseup="this.style.transform='scale(1)'">
                         Generar Ticket QR
                     </button>
                     
