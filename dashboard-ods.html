@@ -1621,13 +1621,13 @@
                     try {
                         const item = new ClipboardItem({ 'image/png': blob });
                         await navigator.clipboard.write([item]);
-                        alert("¡Imagen del ticket copiada al portapapeles! Abre WhatsApp y pega (Ctrl+V) la imagen en el chat del cliente.");
+                        // Silently copied
                     } catch (e) {
                         const link = document.createElement('a');
                         link.download = `Ticket_${folio}.png`;
                         link.href = canvas.toDataURL();
                         link.click();
-                        alert("Ticket descargado como imagen. Adjúntalo o arrástralo en el chat de WhatsApp.");
+                        // Silently downloaded
                     }
 
                     window.open(`https://wa.me/52${phone}?text=${encodeURIComponent(msg)}`, '_blank');
