@@ -1735,19 +1735,26 @@
         async function deleteTicketTaller(id, folio) {
             if (!confirm(`¿Estás seguro de que deseas eliminar el ticket ${folio}?`)) return;
             try {
-                const { error, count } = await supabaseClient
-                    .from('tickets_taller')
-                    .delete({ count: 'exact' })
-                    .eq('id', id);
+                // Try deletion by ID, fallback to Folio if ID is missing or invalid
+                let query = supabaseClient.from('tickets_taller').delete();
+                
+                if (id && id !== 'undefined' && id !== 'null') {
+                    query = query.eq('id', id);
+                } else {
+                    query = query.eq('folio', folio);
+                }
+                
+                const { error } = await query;
                     
                 if (error) throw error;
-                if (count === 0) return alert('No se pudo borrar el ticket (verifica permisos de base de datos).');
                 
-                allTickets = allTickets.filter(t => t.id !== id);
+                // Remove from local array and re-render
+                allTickets = allTickets.filter(t => t.id !== id && t.folio !== folio);
                 renderTicketsList();
                 alert(`El ticket ${folio} fue eliminado correctamente.`);
             } catch (err) {
-                alert('Error al eliminar ticket: ' + err.message);
+                console.error("Delete Error:", err);
+                alert('Error al eliminar ticket: ' + err.message + '. Verifica que tengas permisos en la base de datos.');
             }
         }
 
@@ -2421,16 +2428,16 @@
             document.getElementById('btn-delete').onclick = async () => {
                 if (!confirm(`¿Eliminar la orden ${o.folio} permanentemente?`)) return;
                 try {
-                    const { error, count } = await supabaseClient.from('ordenes_servicio').delete({ count: 'exact' }).eq('id', o.id);
+                    const { error } = await supabaseClient.from('ordenes_servicio').delete().eq('id', o.id);
                     if (error) throw error;
-                    if (count === 0) return alert('No se pudo borrar, revise RLS en Supabase.');
 
                     allODS = allODS.filter(x => x.id !== o.id);
                     currentSelectedId = null;
                     renderSidebar(document.getElementById('search-input').value);
                     document.getElementById('detail-view').innerHTML = `<div class="empty-selection"><h3>Orden Eliminada</h3></div>`;
                 } catch (e) {
-                    alert('Error: ' + e.message);
+                    console.error("Delete ODS Error:", e);
+                    alert('Error al eliminar orden: ' + e.message + '. Verifica permisos de base de datos.');
                 }
             };
 
