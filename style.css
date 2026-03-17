@@ -509,43 +509,44 @@ h3 {
     background: rgba(255, 255, 255, 0.05);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.15); /* Slightly clearer border */
     border-radius: 50px;
-    padding: 8px 20px; /* Larger padding */
-    margin-top: 30px; /* More margin top */
-    gap: 12px; /* More gap */
+    padding: 12px 28px; /* Even larger padding */
+    margin-top: 70px; /* Approx 3 lines of air */
+    gap: 16px; /* More gap */
     text-decoration: none;
     pointer-events: none;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
 }
 
 .google-g-icon {
-    width: 20px; /* Larger icon */
-    height: 20px;
+    width: 24px; /* Even larger icon */
+    height: 24px;
 }
 
 /* Más chico */
 .google-star {
     color: #FBBC04;
-    font-size: 1.2rem; /* Larger star */
+    font-size: 1.5rem; /* Larger star */
 }
 
 .google-rating-score {
     color: #fff;
-    font-weight: 700;
-    font-size: 1.1rem; /* Larger score */
+    font-weight: 800; /* Extra bold */
+    font-size: 1.4rem; /* Even larger score */
 }
 
 .google-divider {
     width: 1px;
-    height: 18px; /* Taller divider */
-    background: rgba(255, 255, 255, 0.2);
-    margin: 0 4px;
+    height: 24px; /* Taller divider */
+    background: rgba(255, 255, 255, 0.3);
+    margin: 0 6px;
 }
 
 .google-reviews-count {
-    color: rgba(255, 255, 255, 0.8);
-    font-size: 1rem; /* Larger text */
-    font-weight: 500;
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 1.2rem; /* Even larger text */
+    font-weight: 600;
 }
 
 @media (max-width: 768px) {
