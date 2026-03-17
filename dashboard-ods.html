@@ -1942,17 +1942,20 @@
 
                 if (window.updateFolioPreview) window.updateFolioPreview();
 
-                const btnSend = document.getElementById('send-ticket-whatsapp') || document.getElementById('btn-send-unified-ticket');
-                const originalText = btnSend.innerHTML;
-                btnSend.innerText = "GENERANDO...";
-                btnSend.disabled = true;
-
                 // Find the new ticket card directly
                 const ticketEl = document.getElementById('simple-ticket-form-placeholder');
 
                 if (!ticketEl) {
                     alert("No se encontró el formato del ticket.");
                     return;
+                }
+
+                const btnSend = ticketEl.querySelector('button');
+                let originalText = "Generar Ticket QR";
+                if(btnSend) {
+                     originalText = btnSend.innerHTML;
+                     btnSend.innerText = "GENERANDO...";
+                     btnSend.disabled = true;
                 }
 
                 // Temporarily mask the button during capture so it doesn't appear in the wallet
