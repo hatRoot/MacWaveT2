@@ -1563,68 +1563,11 @@
             style="display: none; height: 100%; padding: 40px; overflow-y: auto; flex-direction: column;">
 
             <div style="display: flex; gap: 40px; align-items: flex-start;">
-                <!-- LEFT: THE GOLDEN TICKET GENERATOR -->
-                <div class="apple-badge-container">
-                    <div class="apple-badge-card" id="apple-ticket-card">
-                        <div class="badge-lanyard-hole"></div>
-                        
-                        <div class="badge-inner-face">
-                            <div class="badge-header">
-                                <div class="apple-logo-badge"></div>
-                                <div class="badge-main-text">MAC WAVE</div>
-                            </div>
-
-                            <div class="badge-body">
-                                <div id="t-unified-folio" class="badge-folio-display">T-000000-000</div>
-                                
-                                <div class="apple-input-group">
-                                    <label class="apple-label">ORIGEN VISITA</label>
-                                    <select id="t-unified-source" class="apple-id-input" onchange="updateFolioPreview()">
-                                        <option value="GOOGLE MAPS" selected>GOOGLE MAPS</option>
-                                        <option value="INTERNET">INTERNET / OTRO</option>
-                                        <option value="RECOMENDACIÓN">RECOMENDACIÓN</option>
-                                        <option value="TIENDA">TIENDA FÍSICA</option>
-                                    </select>
-                                </div>
-
-                                <div class="apple-input-group">
-                                    <label class="apple-label">CON CARIÑO PARA</label>
-                                    <input type="text" id="t-unified-name" class="apple-id-input" placeholder="Nombre del cliente">
-                                </div>
-
-                                <div class="apple-input-group">
-                                    <label class="apple-label">WHATSAPP</label>
-                                    <input type="tel" id="t-unified-phone" class="apple-id-input" placeholder="Ej. 5512345678" maxlength="10">
-                                </div>
-
-                                <div class="apple-input-group">
-                                    <label class="apple-label">PROGRAMACIÓN CITA</label>
-                                    <input type="datetime-local" id="t-unified-appointment" class="apple-id-input">
-                                </div>
-                            </div>
-
-                            <div class="badge-footer">
-                                <div class="badge-qr-container">
-                                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://maps.app.goo.gl/PeSD75SSGMoCD4qZA" alt="QR Taller" style="width:100%; height:100%; opacity: 0.8;">
-                                </div>
-                                <div class="apple-id-address" style="color:#000;">
-                                    <strong>Av. México Coyoacán 276</strong><br>
-                                    Sta Cruz Atoyac, Benito Juárez, CDMX.
-                                </div>
-                                
-                                <div class="badge-tech-info" style="margin-bottom: 20px;">
-                                    Técnico Especialista Issac
-                                </div>
-
-                                <button id="btn-send-unified-ticket" class="apple-id-button" onclick="if(window.sendTicketAction) window.sendTicketAction();">
-                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                                        <path d="M12.031 6.172c-2.31 0-4.191 1.881-4.191 4.191 0 .816.234 1.579.638 2.227l-.679 2.477 2.535-.665c.504.28 1.082.443 1.697.443 2.31 0 4.191-1.881 4.191-4.191s-1.881-4.191-4.191-4.191zm2.943 5.483c-.042.12-.24.23-.418.27-.132.028-.306.046-.464.04-.158-.006-.312-.008-.454-.038-.37-.08-.726-.226-1.045-.44l-.193-.133-.193-.138c-.37-.272-.687-.614-.94-.997l-.093-.153c-.11-.18-.19-.378-.236-.583-.046-.205-.05-.418-.008-.621.042-.204.14-.388.275-.536.136-.148.27-.197.438-.197h.236c.07 0 .144.004.21.01.066.006.126.044.17.104l.326.793c.04.098.026.208-.04.296-.067.088-.13.14-.23.18-.1.04-.15.08-.22.15-.07.07-.11.13-.11.23s.04.2.14.34c.1.14.24.26.4.38.16.12.35.21.57.29s.44.13.67.13c.23 0 .42-.04.57-.14s.24-.26.34-.41c.1-.15.15-.24.22-.31.07-.07.13-.1.21-.1h.236c.07 0 .144.02.21.06s.126.11.17.21l.326.793c.04.098.05.208.024.328zM12 2C6.477 2 2 6.477 2 12c0 1.765.456 3.425 1.254 4.872L2 22l5.253-1.378c1.464.848 3.167 1.378 5.179 1.378 5.523 0 10-4.477 10-10S17.523 2 12 2zm0 18c-1.63 0-3.146-.483-4.427-1.31l-.317-.205-2.887.757.77-2.812-.224-.356c-.84-1.334-1.332-2.91-1.332-4.597 0-4.632 3.768-8.4 8.4-8.4s8.4 3.768 8.4 8.4-3.768 8.4-8.4 8.4z"></path>
-                                    </svg>
-                                    ENVIAR TICKET DE VISITA
-                                </button>
-                            </div>
-                        </div>
-                    </div>
+                <!-- TICKETS FORM PLACEHOLDER -->
+                <div id="simple-ticket-form-placeholder" style="width: 380px; background: rgba(255,255,255,0.02); padding: 30px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.05);">
+                    <h3 style="color: #fff; margin-bottom: 20px;">Generar Nuevo Ticket</h3>
+                    <p style="color: var(--mac-text-muted); font-size: 14px;">El diseño premium ha sido ocultado temporalmente. Puedes seguir generando tickets aquí.</p>
+                    <!-- Form elements will go here -->
                 </div>
 
                 <!-- RIGHT: THE HISTORY TABLE -->
