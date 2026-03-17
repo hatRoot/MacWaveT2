@@ -1947,12 +1947,17 @@
                 btnSend.innerText = "GENERANDO...";
                 btnSend.disabled = true;
 
-                // Find the closest apple-badge-card to the button clicked (or the main one)
-                let ticketEl = document.getElementById('apple-ticket-card');
-                if (!ticketEl || !ticketEl.offsetParent) {
-                    // Try to find the one in the modal if main isn't visible
-                    ticketEl = document.querySelector('.modal-overlay.active .apple-badge-card') || document.querySelector('.apple-badge-card');
+                // Find the new ticket card directly
+                const ticketEl = document.getElementById('simple-ticket-form-placeholder');
+
+                if (!ticketEl) {
+                    alert("No se encontró el formato del ticket.");
+                    return;
                 }
+
+                // Temporarily mask the button during capture so it doesn't appear in the wallet
+                const generateButton = ticketEl.querySelector('button');
+                if(generateButton) generateButton.style.display = 'none';
 
                 const canvas = await html2canvas(ticketEl, {
                     scale: 3,
@@ -1961,37 +1966,45 @@
                     logging: false
                 });
 
-                btnSend.innerHTML = originalText;
-                btnSend.disabled = false;
+                // Restore button
+                if(generateButton) generateButton.style.display = 'block';
 
                 if (window.renderTicketsList) window.renderTicketsList();
 
                 canvas.toBlob(async (blob) => {
                     const file = new File([blob], `Ticket_${folio}.png`, { type: 'image/png' });
-                    const clientMsg = `*TICKET DE VISITA - MAC WAVE*\n\nHola *${name}*, este es tu ticket: *${folio}*\n\n📅 *Cita:* ${formattedAppointment}\n📍 *Ubicación:* https://maps.app.goo.gl/PeSD75SSGMoCD4qZA\n🏠 *Dirección:* Av. México Coyoacán 276, Benito Juárez, CDMX.\n👨‍🔧 *Atendido por:* Técnico Especialista Issac\n\n¡Te esperamos!`;
+                    const clientMsg = `*TICKET DE VISITA - MAC WAVE*\n\nHola *${name}*, este es tu ticket de visita: *${folio}*\n\n📅 *Cita:* ${formattedAppointment}\n📍 *Ubicación Maps:* https://maps.app.goo.gl/PeSD75SSGMoCD4qZA\n🏠 *Dirección:* Av. México Coyoacán 276, Sta Cruz Atoyac, Benito Juárez, CDMX.\n👨‍🔧 *Técnico Especialista:* Issac\n\nPor favor, guarda la imagen adjunta en tu celular y muéstrala al llegar a la tienda.\n¡Te esperamos!`;
 
+                    // Try to share via native share menu first (iOS/Android)
                     if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
                         try {
                             await navigator.share({
                                 files: [file],
-                                title: 'Ticket de Visita',
+                                title: 'Ticket de Visita - Mac Wave',
                                 text: clientMsg
                             });
-                        } catch (e) { console.log('Share canceled'); }
+                            // If successful, open tech WA and we are done.
+                            const techMsg = `🚀 *NUEVO TICKET:* ${folio}\nCliente: ${name}\nOrigen: ${source}\nCita: ${formattedAppointment}\nWA: ${phone}`;
+                            setTimeout(() => { window.open(`https://wa.me/52${techPhone}?text=${encodeURIComponent(techMsg)}`, '_blank'); }, 1000);
+                            return;
+                        } catch (e) { console.log('Share canceled or failed'); }
                     }
 
-                    // Silent Clipboard Copy
+                    // Fallback for Desktop/Web: Download Image + Open WA Web
                     try {
-                        const item = new ClipboardItem({ 'image/png': blob });
-                        await navigator.clipboard.write([item]);
+                         const objUrl = URL.createObjectURL(blob);
+                         const a = document.createElement("a");
+                         a.style.display = "none";
+                         a.href = objUrl;
+                         a.download = `Ticket_${folio}.png`;
+                         document.body.appendChild(a);
+                         a.click();
+                         window.URL.revokeObjectURL(objUrl);
                     } catch (e) {
-                         console.log("Clipboard not available, downloading.");
-                         const link = document.createElement('a');
-                         link.download = `Ticket_${folio}.png`;
-                         link.href = canvas.toDataURL();
-                         link.click();
+                         console.error("Error downloading file", e);
                     }
 
+                    // Open WhatsApp automatically
                     window.open(`https://wa.me/52${phone}?text=${encodeURIComponent(clientMsg)}`, '_blank');
 
                     setTimeout(() => {
