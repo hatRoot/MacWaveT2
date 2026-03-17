@@ -1962,11 +1962,20 @@
                 const generateButton = ticketEl.querySelector('button');
                 if(generateButton) generateButton.style.display = 'none';
 
+                // Small timeout to allow UI to settle before taking picture
+                await new Promise(r => setTimeout(r, 100));
+
                 const canvas = await html2canvas(ticketEl, {
                     scale: 3,
                     backgroundColor: null,
                     useCORS: true,
-                    logging: false
+                    logging: true,
+                    allowTaint: true,
+                    ignoreElements: (element) => {
+                         // Ignore the button completely
+                         if (element.tagName === 'BUTTON') return true;
+                         return false;
+                    }
                 });
 
                 // Restore button
