@@ -1002,152 +1002,200 @@
             padding: 24px;
         }
 
-        /* APPLE ID BADGE DESIGN (Tickets Module) */
+        /* APPLE ID BADGE DESIGN (Acrylic Glass Style) */
         .apple-badge-container {
             position: relative;
-            padding-top: 120px;
+            padding-top: 40px;
             margin: 0 auto 40px;
             width: 380px;
         }
 
-        /* Essential Lanyard Cords */
-        .apple-badge-container::before,
-        .apple-badge-container::after {
-            content: '';
-            position: absolute;
-            top: -500px;
-            width: 3px;
-            height: 620px;
-            background: #d2d2d7; 
-            box-shadow: inset -1px 0 2px rgba(0,0,0,0.1), 0 0 15px rgba(255,255,255,0.05);
-            z-index: 1;
-        }
-        .apple-badge-container::before { left: 45%; transform: rotate(-3deg); }
-        .apple-badge-container::after { right: 45%; transform: rotate(3deg); }
-
         .apple-badge-card {
-            background: linear-gradient(135deg, #ffffff 0%, #f5f5f7 100%);
+            background: rgba(255, 255, 255, 0.4);
+            backdrop-filter: blur(25px) saturate(180%);
+            -webkit-backdrop-filter: blur(25px) saturate(180%);
             width: 100%;
-            border-radius: 32px;
+            border-radius: 40px;
             box-shadow: 
-                0 50px 120px rgba(0, 0, 0, 0.9),
-                0 0 0 1px rgba(255,255,255,0.3) inset;
+                0 40px 100px rgba(0, 0, 0, 0.6),
+                0 0 0 1px rgba(255, 255, 255, 0.5) inset;
             position: relative;
             font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", sans-serif;
             color: #1d1d1f;
             display: flex;
             flex-direction: column;
             z-index: 2;
-            border: 1px solid #e5e5e5;
+            border: 1px solid rgba(255, 255, 255, 0.3);
             overflow: hidden;
             padding: 0;
         }
 
-        .apple-badge-card::before {
+        /* Glass Reflection Shine */
+        .apple-badge-card::after {
             content: '';
             position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: linear-gradient(110deg, 
-                rgba(255,255,255,0.4) 0%, 
-                rgba(255,255,255,0.1) 35%, 
-                transparent 40%, 
-                rgba(255,255,255,0.05) 50%, 
-                transparent 100%);
+            top: -150%; left: -50%; width: 200%; height: 300%;
+            background: linear-gradient(115deg, 
+                rgba(255,255,255,0) 0%, 
+                rgba(255,255,255,0) 40%, 
+                rgba(255,255,255,0.2) 48%, 
+                rgba(255,255,255,0.05) 52%, 
+                rgba(255,255,255,0) 60%);
+            transform: rotate(35deg);
             pointer-events: none;
             z-index: 10;
         }
 
         .badge-lanyard-hole {
-            width: 65px;
-            height: 12px;
-            background: #1d1d1f;
-            margin: 24px auto 10px;
+            width: 70px;
+            height: 14px;
+            background: rgba(0, 0, 0, 0.8);
+            margin: 28px auto 8px;
             border-radius: 20px;
-            box-shadow: inset 0 2px 5px rgba(0,0,0,0.7);
+            box-shadow: inset 0 2px 8px rgba(0,0,0,0.8);
+            position: relative;
         }
 
-        .badge-header { padding: 10px 30px; text-align: center; }
+        .badge-header { padding: 20px 30px 10px; text-align: center; }
 
         .apple-logo-badge {
-            width: 42px;
-            height: 42px;
-            margin: 0 auto 10px;
+            width: 48px;
+            height: 48px;
+            margin: 0 auto 12px;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
             background: url('data:image/svg+xml;utf8,<svg viewBox="0 0 170 170" xmlns="http://www.w3.org/2000/svg"><path d="M150.37 130.25c-2.45 5.66-5.35 10.87-8.71 15.66-4.58 6.53-8.33 11.05-11.22 13.56-4.48 4.12-9.28 6.23-14.42 6.35-3.69.03-8.14-1.05-13.36-3.23-5.22-2.18-9.93-3.28-14.13-3.28-4.35 0-9.13 1.1-14.34 3.28-5.21 2.18-9.52 3.32-12.92 3.44-5.06.12-9.93-2-14.61-6.35-2.89-2.51-6.73-7.03-11.52-13.56-6.14-8.36-10.95-18.06-14.42-29.09-3.48-11.03-5.23-21.36-5.23-31 0-11 2.21-20.35 6.64-28.06 4.43-7.71 10.51-12.93 18.23-15.65 7.72-2.73 15.68-4.1 23.9-4.1 4.23 0 9.04.91 14.42 2.72 5.38 1.81 9.38 2.72 12.01 2.72 2.27 0 6.6-1.1 12.98-3.3 6.38-2.2 11.45-3.3 15.22-3.3 8.35 0 15.69 2.05 22.02 6.13 6.32 4.08 11.2 9.68 14.62 16.79-8.47 5.14-12.7 12.1-12.7 20.89 0 7.72 2.65 14.28 7.96 19.67 5.3 5.4 12.06 8.5 20.27 9.32.14 1.34.19 2.76.14 4.28zM121.78 40.1c0 5.4-1.99 10.51-5.96 15.34s-8.6 8.24-13.88 10.2c-1.12.44-2.24.8-3.36 1.07-.1-.28-.14-.56-.14-.84 0-5.11 1.94-10.05 5.81-14.83 3.84-4.78 8.65-8.24 14.44-10.37.14.28.27.56.4.84.44.8.69 1.61.69 2.43z" fill="%23000"/></svg>') no-repeat center;
             background-size: contain;
         }
 
         .badge-title {
-            font-size: 11px;
+            font-size: 10px;
             font-weight: 700;
-            letter-spacing: 1.5px;
-            color: #86868b;
+            letter-spacing: 2px;
+            color: rgba(0,0,0,0.5);
             text-transform: uppercase;
-            margin-bottom: 4px;
+            margin-bottom: 6px;
         }
 
         .badge-main-text {
-            font-size: 26px;
+            font-size: 28px;
             font-weight: 800;
             letter-spacing: -0.5px;
-            color: #000;
+            color: rgba(0,0,0,0.9);
             line-height: 1.1;
         }
 
-        .badge-body { padding: 15px 30px; }
+        .badge-body { padding: 20px 30px; }
 
         .apple-input-group { margin-bottom: 15px; text-align: left; }
 
         .apple-label {
             display: block;
-            font-size: 10px;
-            font-weight: 700;
-            color: #86868b;
-            margin-bottom: 5px;
+            font-size: 9px;
+            font-weight: 800;
+            color: rgba(0,0,0,0.6);
+            margin-bottom: 6px;
             text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
         .apple-id-input {
             width: 100%;
             padding: 12px 14px;
             border-radius: 12px;
-            border: 1px solid #e5e5e7;
-            background: rgba(255,255,255,0.9);
+            border: 1px solid rgba(255,255,255,0.4);
+            background: rgba(255,255,255,0.4);
             font-size: 14px;
-            font-weight: 500;
-            color: #1d1d1f;
+            font-weight: 600;
+            color: #000;
             box-sizing: border-box;
             font-family: inherit;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+
+        .apple-id-input:focus {
+            background: rgba(255,255,255,0.8);
+            outline: none;
+            border-color: #0071e3;
         }
 
         .badge-folio-display {
-            font-size: 34px;
+            font-size: 36px;
             font-weight: 900;
             text-align: center;
-            margin: 5px 0 20px;
+            margin: 5px 0 25px;
             color: #0071e3;
-            letter-spacing: -1px;
+            letter-spacing: -1.5px;
+            filter: drop-shadow(0 2px 4px rgba(0,113,227,0.2));
         }
 
         .badge-footer {
-            padding: 25px 30px 45px;
-            background: #f5f5f7;
-            border-top: 1px solid #d2d2d7;
+            padding: 30px;
+            background: rgba(255, 255, 255, 0.2);
+            border-top: 1px solid rgba(255,255,255,0.3);
             text-align: center;
             position: relative;
         }
 
         .badge-qr-container {
             margin: 0 auto 15px;
-            width: 90px;
-            height: 90px;
+            width: 95px;
+            height: 95px;
             background: #fff;
             padding: 10px;
-            border-radius: 14px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+            border-radius: 18px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
             display: flex;
             align-items: center;
             justify-content: center;
-            border: 1px solid #e5e5e7;
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .apple-id-button {
+            width: 100%;
+            background: #0071e3;
+            color: #fff !important;
+            border: none;
+            padding: 18px;
+            border-radius: 16px;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            box-shadow: 0 10px 30px rgba(0, 113, 227, 0.4);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            margin-top: 25px;
+            text-decoration: none;
+        }
+
+        .apple-id-button:hover { 
+            background: #0077ed; 
+            transform: translateY(-4px);
+            box-shadow: 0 15px 40px rgba(0, 113, 227, 0.5);
+        }
+
+        .apple-id-address {
+            font-size: 11px;
+            color: rgba(0,0,0,0.7);
+            line-height: 1.6;
+            margin-bottom: 25px;
+            font-weight: 500;
+        }
+
+        .badge-tech-info {
+            background: rgba(255,255,255,0.5);
+            padding: 8px 18px;
+            border-radius: 20px;
+            display: inline-block;
+            font-size: 10px;
+            font-weight: 700;
+            color: #000;
+            border: 1px solid rgba(255,255,255,0.5);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
         }
 
         .apple-id-button {
@@ -1443,16 +1491,15 @@
                         <div class="badge-lanyard-hole"></div>
                         
                         <div class="badge-header">
-                            <div class="apple-logo-badge"></div>
-                            <div class="badge-title">CREDENCIAL DE VISITA</div>
-                            <div class="badge-main-text">TALLER MAC WAVE</div>
+                            <div class="apple-logo-badge" style="width: 55px; height: 55px; margin-bottom: 25px;"></div>
+                            <div class="badge-main-text">MAC WAVE</div>
                         </div>
 
                         <div class="badge-body">
                             <div id="t-unified-folio" class="badge-folio-display">T-000000-000</div>
                             
                             <div class="apple-input-group">
-                                <label class="apple-label">¿Cómo nos conociste?</label>
+                                <label class="apple-label">ORIGEN VISITA</label>
                                 <select id="t-unified-source" class="apple-id-input" onchange="updateFolioPreview()">
                                     <option value="GOOGLE MAPS" selected>GOOGLE MAPS</option>
                                     <option value="INTERNET">INTERNET / OTRO</option>
@@ -1462,33 +1509,32 @@
                             </div>
 
                             <div class="apple-input-group">
-                                <label class="apple-label">Nombre del Cliente</label>
-                                <input type="text" id="t-unified-name" class="apple-id-input" placeholder="Nombre completo">
+                                <label class="apple-label">CON CARIÑO PARA</label>
+                                <input type="text" id="t-unified-name" class="apple-id-input" placeholder="Nombre del cliente">
                             </div>
 
                             <div class="apple-input-group">
-                                <label class="apple-label">WhatsApp (10 dígitos)</label>
+                                <label class="apple-label">WHATSAPP</label>
                                 <input type="tel" id="t-unified-phone" class="apple-id-input" placeholder="Ej. 5512345678" maxlength="10">
                             </div>
 
                             <div class="apple-input-group">
-                                <label class="apple-label">Fecha y Hora de Cita</label>
+                                <label class="apple-label">PROGRAMACIÓN CITA</label>
                                 <input type="datetime-local" id="t-unified-appointment" class="apple-id-input">
                             </div>
                         </div>
 
                         <div class="badge-footer">
                             <div class="badge-qr-container">
-                                <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://maps.app.goo.gl/PeSD75SSGMoCD4qZA" alt="QR Taller" style="width:100%; height:100%;">
+                                <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://maps.app.goo.gl/PeSD75SSGMoCD4qZA" alt="QR Taller" style="width:100%; height:100%; opacity: 0.8;">
                             </div>
                             <div class="apple-id-address">
                                 <strong>Av. México Coyoacán 276</strong><br>
-                                Sta Cruz Atoyac, Benito Juárez, CDMX.<br>
-                                <em>Escanea para llegar al taller</em>
+                                Sta Cruz Atoyac, Benito Juárez, CDMX.
                             </div>
                             
                             <div class="badge-tech-info">
-                                <span style="color: #0071e3;">●</span> Atendido por Técnico Issac
+                                Técnico Especialista Issac
                             </div>
 
                             <button id="btn-send-unified-ticket" class="apple-id-button" onclick="if(window.sendTicketAction) window.sendTicketAction();">
@@ -1574,16 +1620,30 @@
                 <div class="badge-lanyard-hole"></div>
                 
                 <div class="badge-header">
-                    <div class="apple-logo-badge"></div>
-                    <div class="badge-title">CREDENCIAL DE VISITA</div>
-                    <div class="badge-main-text">TALLER MAC WAVE</div>
+                    <div class="apple-logo-badge" style="width: 55px; height: 55px; margin-bottom: 25px;"></div>
+                    <div class="badge-main-text" style="color:#000;">MAC WAVE</div>
                 </div>
 
                 <div class="badge-body">
                     <div id="ticket-folio-display" class="badge-folio-display">T-000000-000</div>
                     
                     <div class="apple-input-group">
-                        <label class="apple-label">¿Cómo nos conociste?</label>
+                        <label class="apple-label">PROGRAMACIÓN CITA</label>
+                        <input type="datetime-local" id="ticket-appointment-time" class="apple-id-input">
+                    </div>
+
+                    <div class="apple-input-group">
+                        <label class="apple-label">ESTE PAQUETE ES PARA</label>
+                        <input type="text" id="ticket-client-name" class="apple-id-input" placeholder="Nombre completo">
+                    </div>
+
+                    <div class="apple-input-group">
+                        <label class="apple-label">TELÉFONO DE CONTACTO</label>
+                        <input type="tel" id="ticket-client-phone" class="apple-id-input" placeholder="Ej. 5512345678" maxlength="10">
+                    </div>
+                    
+                    <div class="apple-input-group">
+                        <label class="apple-label">ORIGEN DE PROSPECTO</label>
                         <select id="ticket-source" class="apple-id-input">
                             <option value="GOOGLE">Google Maps</option>
                             <option value="RECOMENDACIÓN">Recomendación</option>
@@ -1591,43 +1651,27 @@
                             <option value="TIENDA">Tienda Física</option>
                         </select>
                     </div>
-
-                    <div class="apple-input-group">
-                        <label class="apple-label">Nombre del Cliente</label>
-                        <input type="text" id="ticket-client-name" class="apple-id-input" placeholder="Nombre completo">
-                    </div>
-
-                    <div class="apple-input-group">
-                        <label class="apple-label">WhatsApp (10 dígitos)</label>
-                        <input type="tel" id="ticket-client-phone" class="apple-id-input" placeholder="Ej. 5512345678" maxlength="10">
-                    </div>
-
-                    <div class="apple-input-group">
-                        <label class="apple-label">Fecha y Hora de Cita</label>
-                        <input type="datetime-local" id="ticket-appointment-time" class="apple-id-input">
-                    </div>
                 </div>
 
                 <div class="badge-footer">
                     <div class="badge-qr-container">
-                        <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://maps.app.goo.gl/PeSD75SSGMoCD4qZA" alt="QR Taller" style="width:100%; height:100%;">
+                        <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://maps.app.goo.gl/PeSD75SSGMoCD4qZA" alt="QR Taller" style="width:100%; height:100%; opacity: 0.8;">
                     </div>
                     <div class="apple-id-address">
                         <strong>Av. México Coyoacán 276</strong><br>
-                        Sta Cruz Atoyac, Benito Juárez, CDMX.<br>
-                        <em>Escanea para llegar al taller</em>
+                        Sta Cruz Atoyac, Benito Juárez, CDMX.
                     </div>
                     
+                    <div class="badge-tech-info">
+                        Técnico Especialista Issac
+                    </div>
+
                     <button class="apple-id-button" id="send-ticket-whatsapp">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
                             <path d="M12.031 6.172c-2.31 0-4.191 1.881-4.191 4.191 0 .816.234 1.579.638 2.227l-.679 2.477 2.535-.665c.504.28 1.082.443 1.697.443 2.31 0 4.191-1.881 4.191-4.191s-1.881-4.191-4.191-4.191zm2.943 5.483c-.042.12-.24.23-.418.27-.132.028-.306.046-.464.04-.158-.006-.312-.008-.454-.038-.37-.08-.726-.226-1.045-.44l-.193-.133-.193-.138c-.37-.272-.687-.614-.94-.997l-.093-.153c-.11-.18-.19-.378-.236-.583-.046-.205-.05-.418-.008-.621.042-.204.14-.388.275-.536.136-.148.27-.197.438-.197h.236c.07 0 .144.004.21.01.066.006.126.044.17.104l.326.793c.04.098.026.208-.04.296-.067.088-.13.14-.23.18-.1.04-.15.08-.22.15-.07.07-.11.13-.11.23s.04.2.14.34c.1.14.24.26.4.38.16.12.35.21.57.29s.44.13.67.13c.23 0 .42-.04.57-.14s.24-.26.34-.41c.1-.15.15-.24.22-.31.07-.07.13-.1.21-.1h.236c.07 0 .144.02.21.06s.126.11.17.21l.326.793c.04.098.05.208.024.328zM12 2C6.477 2 2 6.477 2 12c0 1.765.456 3.425 1.254 4.872L2 22l5.253-1.378c1.464.848 3.167 1.378 5.179 1.378 5.523 0 10-4.477 10-10S17.523 2 12 2zm0 18c-1.63 0-3.146-.483-4.427-1.31l-.317-.205-2.887.757.77-2.812-.224-.356c-.84-1.334-1.332-2.91-1.332-4.597 0-4.632 3.768-8.4 8.4-8.4s8.4 3.768 8.4 8.4-3.768 8.4-8.4 8.4z"></path>
                         </svg>
                         ENVIAR TICKET DE VISITA
                     </button>
-                    
-                    <div style="font-size: 10px; font-weight: 700; color: #0071e3; margin-top: 15px; text-transform: uppercase;">
-                        ● Técnico Especialista Issac
-                    </div>
                 </div>
             </div>
         </div>
@@ -1763,17 +1807,18 @@
         };
 
         window.sendTicketAction = async function () {
-            const nameInput = document.getElementById('t-unified-name');
-            const phoneInput = document.getElementById('t-unified-phone');
-            const sourceInput = document.getElementById('t-unified-source');
-            const folioDisplay = document.getElementById('t-unified-folio');
-            const appointmentInput = document.getElementById('t-unified-appointment');
+            // Support both static and modal IDs
+            const nameEl = document.getElementById('t-unified-name') || document.getElementById('ticket-client-name');
+            const phoneEl = document.getElementById('t-unified-phone') || document.getElementById('ticket-client-phone');
+            const sourceEl = document.getElementById('t-unified-source') || document.getElementById('ticket-source');
+            const folioEl = document.getElementById('t-unified-folio') || document.getElementById('ticket-folio-display');
+            const appointmentEl = document.getElementById('t-unified-appointment') || document.getElementById('ticket-appointment-time');
 
-            const name = nameInput.value || 'Cliente';
-            const phone = phoneInput.value;
-            const source = sourceInput.value;
-            const folio = folioDisplay.innerText;
-            const appointmentTime = appointmentInput ? appointmentInput.value : '';
+            const name = nameEl ? nameEl.value : 'Cliente';
+            const phone = phoneEl ? phoneEl.value : '';
+            const source = sourceEl ? sourceEl.value : 'GOOGLE';
+            const folio = folioEl ? folioEl.innerText || folioEl.textContent : 'MW-0000';
+            const appointmentTime = appointmentEl ? appointmentEl.value : '';
             const techPhone = '5535757364';
 
             if (!phone || phone.length < 10) {
@@ -1801,22 +1846,32 @@
             };
 
             try {
+                // Save to Supabase
                 const { error } = await supabaseClient.from('tickets_taller').insert([ticketData]);
                 if (error) throw error;
 
-                allTickets.unshift(ticketData);
-                const nextNum = parseInt(folio.split('-')[2]);
+                if (Array.isArray(window.allTickets)) {
+                    window.allTickets.unshift(ticketData);
+                }
+                
+                const folioParts = folio.split('-');
+                const nextNum = folioParts.length > 2 ? parseInt(folioParts[2]) : 239;
                 localStorage.setItem('workshop_ticket_counter', nextNum);
 
-                updateFolioPreview();
+                if (window.updateFolioPreview) window.updateFolioPreview();
 
-                const btnSend = document.getElementById('btn-send-unified-ticket');
+                const btnSend = document.getElementById('send-ticket-whatsapp') || document.getElementById('btn-send-unified-ticket');
                 const originalText = btnSend.innerHTML;
-                btnSend.innerText = "GENERANDO TICKET...";
+                btnSend.innerText = "GENERANDO...";
                 btnSend.disabled = true;
 
-                // Capture high-fidelity badge
-                const ticketEl = document.getElementById('apple-ticket-card');
+                // Find the closest apple-badge-card to the button clicked (or the main one)
+                let ticketEl = document.getElementById('apple-ticket-card');
+                if (!ticketEl || !ticketEl.offsetParent) {
+                    // Try to find the one in the modal if main isn't visible
+                    ticketEl = document.querySelector('.modal-overlay.active .apple-badge-card') || document.querySelector('.apple-badge-card');
+                }
+
                 const canvas = await html2canvas(ticketEl, {
                     scale: 3,
                     backgroundColor: null,
@@ -1827,7 +1882,7 @@
                 btnSend.innerHTML = originalText;
                 btnSend.disabled = false;
 
-                renderTicketsList();
+                if (window.renderTicketsList) window.renderTicketsList();
 
                 canvas.toBlob(async (blob) => {
                     const file = new File([blob], `Ticket_${folio}.png`, { type: 'image/png' });
@@ -1843,11 +1898,12 @@
                         } catch (e) { console.log('Share canceled'); }
                     }
 
-                    // Always copy to clipboard (silent)
+                    // Silent Clipboard Copy
                     try {
                         const item = new ClipboardItem({ 'image/png': blob });
                         await navigator.clipboard.write([item]);
                     } catch (e) {
+                         console.log("Clipboard not available, downloading.");
                          const link = document.createElement('a');
                          link.download = `Ticket_${folio}.png`;
                          link.href = canvas.toDataURL();
@@ -1857,15 +1913,15 @@
                     window.open(`https://wa.me/52${phone}?text=${encodeURIComponent(clientMsg)}`, '_blank');
 
                     setTimeout(() => {
-                        const techMsg = `🚀 *TICKET:* ${folio}\nCliente: ${name}\nOrigen: ${source}\nCita: ${formattedAppointment}\nWA: ${phone}`;
+                        const techMsg = `🚀 *NUEVO TICKET:* ${folio}\nCliente: ${name}\nOrigen: ${source}\nCita: ${formattedAppointment}\nWA: ${phone}`;
                         window.open(`https://wa.me/52${techPhone}?text=${encodeURIComponent(techMsg)}`, '_blank');
-                    }, 1500);
+                    }, 2000);
 
                 }, 'image/png');
 
             } catch (err) {
                 console.error("Save Error:", err);
-                alert("Error al guardar en Supabase.");
+                alert("Error al procesar el ticket.");
             }
         }
 
