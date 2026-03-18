@@ -753,92 +753,94 @@
         .ps-footer-col {
             font-weight: bold;
             flex: 1;
-        /* MODAL BASE STYLES */
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 2000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.85);
-            backdrop-filter: blur(10px);
-            align-items: center;
-            justify-content: center;
         }
 
-        /* GOLDEN TICKET / CONFIRMATION BOX */
-        .golden-ticket {
-            background: linear-gradient(135deg, #1c1c1e 0%, #2c2c2e 100%);
-            border: 1px solid var(--primary);
-            padding: 40px 30px;
-            border-radius: 24px;
-            width: 420px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
-            text-align: center;
+        /* Modals styles removed to speed up workflow */
+
+        /* iOS style switch */
+        .switch {
             position: relative;
-            font-family: 'Outfit', sans-serif;
-            color: #fff;
+            display: inline-block;
+            width: 44px;
+            height: 24px;
         }
 
-        .ticket-stars-header {
-            font-size: 22px;
-            font-weight: 800;
-            letter-spacing: 2px;
-            margin-bottom: 20px;
+        .switch input { 
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(255,255,255,0.1);
+            transition: .4s;
+            border-radius: 24px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 2px;
+            bottom: 2px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        input:checked + .slider {
+            background-color: var(--mac-green);
+            border-color: var(--mac-green);
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(20px);
+        }
+
+        .section-separator {
+            height: 1px;
+            background: rgba(255,255,255,0.08);
+            margin: 20px 0;
+            width: 100%;
+        }
+
+        .header-with-toggle {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }
+
+        .ps-watermark {
+            height: 250px;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 10px;
-            color: var(--primary);
+            border: 1px solid #f0f0f0;
+            border-radius: 12px;
+            margin: 20px 0;
+            position: relative;
+            overflow: hidden;
+            background: #fafafa;
         }
 
-        .ticket-main-title {
-            font-size: 32px;
+        .ps-watermark::before {
+            content: "macWave.com.mx";
+            font-size: 40px;
             font-weight: 900;
-            margin-bottom: 10px;
-            letter-spacing: -1px;
-            color: var(--primary);
+            color: rgba(0,0,0,0.03);
+            transform: rotate(-15deg);
+            white-space: nowrap;
         }
-
-        .ticket-instruction {
-            font-size: 14px;
-            color: var(--text-dim);
-            margin-bottom: 30px;
-        }
-
-        .confirm-btns {
-            display: flex;
-            gap: 15px;
-            margin-top: 25px;
-        }
-
-        .btn-yes {
-            background: var(--primary);
-            color: white;
-            flex: 1;
-            border: none;
-            padding: 12px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: bold;
-        }
-
-        .btn-no {
-            background: rgba(255, 255, 255, 0.1);
-            color: white;
-            flex: 1;
-            border: none;
-            padding: 12px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: bold;
-        }
-
-        .btn-yes:hover { background: var(--primary-hover); transform: scale(1.02); }
-        .btn-no:hover { background: rgba(255, 255, 255, 0.2); transform: scale(1.02); }
-       }
 
         @media (max-width: 1000px) {
             .dashboard-grid {
@@ -915,15 +917,18 @@
     <main class="app-main">
         <header style="margin-bottom: 40px; display: block;">
             <h1 style="font-size: 2.5rem; letter-spacing: -1px; margin-bottom: 4px;">ORDEN DE SERVICIO</h1>
-            <p style="color: var(--mac-text-muted); font-size: 14px;">macWave.com.mx &mdash; Sistema de Gestión
-                Técnica</p>
+            <div style="display: flex; gap: 20px; align-items: center;">
+                <p id="live-clock" style="color: var(--mac-text-muted); font-size: 14px; font-weight: 500;"></p>
+                <div style="width: 1px; height: 14px; background: rgba(255,255,255,0.2);"></div>
+                <p id="active-user-display" style="color: var(--primary); font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;"></p>
+            </div>
         </header>
 
         <div class="dashboard-grid">
             <!-- CONTROLS -->
             <section class="controls-side">
                 <div class="glass-card">
-                    <div class="section-title">CAPTURA LA INFORMACIÓN DEL CLIENTE</div>
+                    <div class="section-title">CLIENTE</div>
                     <form id="quote-form">
                         <div class="form-grid">
                             <div class="form-group">
@@ -956,17 +961,45 @@
                             </div>
                         </div>
 
-                        <div class="section-title" style="margin-top: 30px;">Conceptos</div>
-                        <div class="items-header">
-                            <span>Descripción</span>
-                            <span style="text-align: right;">Unitario</span>
-                            <span style="text-align: center;">Cant</span>
-                            <span></span>
+                        <div class="section-separator"></div>
+
+                        <!-- FOTOS DEL EQUIPO (Visible ONLY if Concepts and Bank are OFF) -->
+                        <div id="photos-controls-wrapper" style="display: none; margin-top: 15px;">
+                            <div class="section-title">EVIDENCIAS FOTOGRÁFICAS</div>
+                            <p style="font-size: 10px; color: var(--mac-text-muted); margin-bottom: 12px;">Se habilitan al apagar Conceptos y Banco.</p>
+                            <div style="margin-top: 12px;">
+                                <button type="button" class="btn btn-secondary" style="width: 100%; font-size: 12px; height: 48px; display: flex; align-items: center; justify-content: center; gap: 8px; font-weight: 700;" onclick="document.getElementById('upload-photos').click()">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"/><circle cx="12" cy="13" r="4"/></svg>
+                                    SUBIR EVIDENCIAS DE FOTO
+                                </button>
+                                <input type="file" id="upload-photos" multiple accept="image/*" style="display: none;">
+                            </div>
                         </div>
-                        <div id="items-container"></div>
-                        <button type="button" id="add-item-btn" class="btn btn-secondary"
-                            style="width: 100%; height: 40px; margin-top: 10px;">+
-                            AGREGAR POSICIÓN</button>
+
+                        <div id="photos-separator" class="section-separator" style="display: none;"></div>
+
+                        <div class="header-with-toggle" style="margin-top: 10px;">
+                            <div class="section-title" style="margin-bottom: 0;">CONCEPTOS</div>
+                            <label class="switch">
+                                <input type="checkbox" id="toggle-concepts" checked>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                        
+                        <div id="concepts-controls-wrapper" style="margin-top: 20px;">
+                            <div class="items-header">
+                                <span>Descripción</span>
+                                <span style="text-align: right;">Unitario</span>
+                                <span style="text-align: center;">Cant</span>
+                                <span></span>
+                            </div>
+                            <div id="items-container"></div>
+                            <button type="button" id="add-item-btn" class="btn btn-secondary"
+                                style="width: 100%; height: 40px; margin-top: 10px;">+
+                                AGREGAR CONCEPTO</button>
+                        </div>
+
+                        <div class="section-separator" style="background: rgba(255,255,255,0.15);"></div>
 
                         <div class="form-group" style="margin-top: 15px;">
                             <label>Notas / Observaciones*</label>
@@ -975,20 +1008,31 @@
                                 style="width: 100%; height: 100px; padding: 12px; border-radius: 8px; background: rgba(255, 255, 255, 0.04); border: 1px solid var(--border); color: #fff; font-size: 0.9rem; resize: vertical;"></textarea>
                         </div>
 
-                        <div class="section-title" style="margin-top: 30px;">Configuración Bancaria</div>
-                        <div class="form-grid">
-                            <div class="form-group">
-                                <label>CLABE</label>
-                                <input type="text" id="clabe" placeholder="Ej. 012 180..." value="012 180015766935846">
-                            </div>
-                            <div class="form-group">
-                                <label>CUENTA</label>
-                                <input type="text" id="account-number" placeholder="Ej. 1576..." value="1576693584">
-                            </div>
-                            <div class="form-group">
-                                <label>TARJETA</label>
-                                <input type="text" id="card-number" placeholder="Ej. 4152..."
-                                    value="4152 3144 2988 0571">
+                        <div class="section-separator" style="background: rgba(255,255,255,0.15);"></div>
+
+                        <div class="header-with-toggle" style="margin-top: 10px;">
+                            <div class="section-title" style="margin-bottom: 0;">CONFIGURACIÓN BANCARIA</div>
+                            <label class="switch">
+                                <input type="checkbox" id="toggle-bank" checked>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+
+                        <div id="bank-controls-wrapper" style="margin-top: 20px;">
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label>CLABE</label>
+                                    <input type="text" id="clabe" placeholder="Ej. 012 180..." value="012 180015766935846">
+                                </div>
+                                <div class="form-group">
+                                    <label>CUENTA</label>
+                                    <input type="text" id="account-number" placeholder="Ej. 1576..." value="1576693584">
+                                </div>
+                                <div class="form-group">
+                                    <label>TARJETA</label>
+                                    <input type="text" id="card-number" placeholder="Ej. 4152..."
+                                        value="4152 3144 2988 0571">
+                                </div>
                             </div>
                         </div>
 
@@ -1024,84 +1068,8 @@
 
     <!-- ODS Management Panel removed, moved to dashboard-ods.html -->
 
-    <div id="ticket-modal" class="modal">
-        <div class="apple-badge-container">
-            <div class="apple-badge">
-                <button id="close-ticket-modal" class="close-badge">&times;</button>
-                <div class="badge-lanyard-hole"></div>
-                
-                <div class="badge-header">
-                    <div class="apple-logo-badge"></div>
-                    <div class="badge-title">CREDENCIAL DE VISITA</div>
-                    <div class="badge-main-text">TALLER MAC WAVE</div>
-                </div>
 
-                <div class="badge-body">
-                    <div id="ticket-folio-display" class="badge-folio-display">G-260316-247</div>
-                    
-                    <div class="apple-input-group">
-                        <label class="apple-label">¿Cómo nos conociste?</label>
-                        <select id="ticket-source" class="apple-input apple-select">
-                            <option value="INTERNET">Internet</option>
-                            <option value="GOOGLE MAPS" selected>Google Maps</option>
-                            <option value="RECOMENDACIÓN">Recomendación</option>
-                        </select>
-                    </div>
-
-                    <div class="apple-input-group">
-                        <label class="apple-label">Nombre del Cliente</label>
-                        <input type="text" id="ticket-client-name" class="apple-input" placeholder="Nombre completo">
-                    </div>
-
-                    <div class="apple-input-group">
-                        <label class="apple-label">WhatsApp (10 dígitos)</label>
-                        <input type="tel" id="ticket-client-phone" class="apple-input" placeholder="Ej. 5512345678" maxlength="10">
-                    </div>
-
-                    <div class="apple-input-group">
-                        <label class="apple-label">Fecha y Hora de Cita</label>
-                        <input type="datetime-local" id="ticket-appointment-time" class="apple-input">
-                    </div>
-                </div>
-
-                <div class="badge-footer">
-                    <div class="badge-qr-container">
-                        <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://maps.app.goo.gl/PeSD75SSGMoCD4qZA" alt="QR Taller">
-                    </div>
-                    <div class="apple-badge-address">
-                        <strong>Av. México Coyoacán 276</strong><br>
-                        Sta Cruz Atoyac, Benito Juárez, CDMX.<br>
-                        <em>Escanea para llegar al taller</em>
-                    </div>
-                    
-                    <div class="badge-tech-info">
-                       <span style="color: #0071e3;">●</span> Atendido por Técnico Issac
-                    </div>
-
-                    <button id="send-ticket-whatsapp" class="apple-button" style="margin-top: 25px;">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M12.031 6.172c-2.31 0-4.191 1.881-4.191 4.191 0 .816.234 1.579.638 2.227l-.679 2.477 2.535-.665c.504.28 1.082.443 1.697.443 2.31 0 4.191-1.881 4.191-4.191s-1.881-4.191-4.191-4.191zm2.943 5.483c-.042.12-.24.23-.418.27-.132.028-.306.046-.464.04-.158-.006-.312-.008-.454-.038-.37-.08-.726-.226-1.045-.44l-.193-.133-.193-.138c-.37-.272-.687-.614-.94-.997l-.093-.153c-.11-.18-.19-.378-.236-.583-.046-.205-.05-.418-.008-.621.042-.204.14-.388.275-.536.136-.148.27-.197.438-.197h.236c.07 0 .144.004.21.01.066.006.126.044.17.104l.326.793c.04.098.026.208-.04.296-.067.088-.13.14-.23.18-.1.04-.15.08-.22.15-.07.07-.11.13-.11.23s.04.2.14.34c.1.14.24.26.4.38.16.12.35.21.57.29s.44.13.67.13c.23 0 .42-.04.57-.14s.24-.26.34-.41c.1-.15.15-.24.22-.31.07-.07.13-.1.21-.1h.236c.07 0 .144.02.21.06s.126.11.17.21l.326.793c.04.098.05.208.024.328zM12 2C6.477 2 2 6.477 2 12c0 1.765.456 3.425 1.254 4.872L2 22l5.253-1.378c1.464.848 3.167 1.378 5.179 1.378 5.523 0 10-4.477 10-10S17.523 2 12 2zm0 18c-1.63 0-3.146-.483-4.427-1.31l-.317-.205-2.887.757.77-2.812-.224-.356c-.84-1.334-1.332-2.91-1.332-4.597 0-4.632 3.768-8.4 8.4-8.4s8.4 3.768 8.4 8.4-3.768 8.4-8.4 8.4z"></path>
-                        </svg>
-                        ENVIAR TICKET DE VISITA
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div id="confirm-ods-modal" class="modal">
-        <div class="golden-ticket">
-            <div class="ticket-stars-header">
-                <span>★</span> CONFIRMACIÓN <span>★</span>
-            </div>
-            <h1 class="ticket-main-title" style="font-size: 24px; color: var(--primary);">¿GENERAR ODS?</h1>
-            <p class="ticket-instruction">Revisala bien antes de continuar.</p>
-            
-            <div class="confirm-btns">
-                <button id="confirm-ods-yes" class="btn btn-yes">SÍ, GENERAR</button>
-                <button id="confirm-ods-no" class="btn btn-no">NO, ESPERAR</button>
-            </div>
-        </div>
-    </div>
+    <!-- Modals removed for direct generation -->
 
     <!-- Supabase -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -1123,9 +1091,74 @@
         window._sbClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
         document.addEventListener('DOMContentLoaded', () => {
+            // Live Clock and User Display
+            const updateHeaderInfo = () => {
+                const clockEl = document.getElementById('live-clock');
+                const userEl = document.getElementById('active-user-display');
+                
+                if (clockEl) {
+                    const now = new Date();
+                    clockEl.textContent = now.toLocaleString('es-MX', { 
+                        day: '2-digit', month: '2-digit', year: 'numeric',
+                        hour: '2-digit', minute: '2-digit', second: '2-digit',
+                        hour12: false 
+                    });
+                }
+                
+                if (userEl) {
+                    const fullUser = sessionStorage.getItem('macwave_user') || 'Técnico';
+                    const shortName = fullUser.split('.')[0].split('@')[0]; // Extract "joel" from "joel.duran" or email
+                    userEl.textContent = `TÉCNICO: ${shortName}`;
+                }
+            };
+            
+            updateHeaderInfo();
+            setInterval(updateHeaderInfo, 1000);
+
             const itemsContainer = document.getElementById('items-container');
             const previewCanvas = document.getElementById('preview-canvas');
             const form = document.getElementById('quote-form');
+
+            // ── QR code generator ──────────────────────────────────
+            let qrTimeout;
+            const generatePreviewQR = () => {
+                clearTimeout(qrTimeout);
+                qrTimeout = setTimeout(() => {
+                    const qrDiv = document.getElementById('preview-qr-canvas');
+                    if (!qrDiv || typeof QRCode === 'undefined') return;
+                    qrDiv.innerHTML = '';
+                    const folio = document.getElementById('quote-number').value || 'ODS';
+                    const client = document.getElementById('client-name').value || '';
+                    const serial = document.getElementById('serial-number').value || '';
+                    const url = `https://macwave.com.mx/status-ods.html?folio=${encodeURIComponent(folio)}&cliente=${encodeURIComponent(client)}&serie=${encodeURIComponent(serial)}`;
+                    new QRCode(qrDiv, { text: url, width: 70, height: 70, correctLevel: QRCode.CorrectLevel.M });
+                }, 50);
+            };
+
+            // ── Photo Upload Logic ──────────────────────────────────
+            window._allPhotos = []; // Store as { data, desc, type }
+
+            const handlePhotoUpload = (event) => {
+                const files = event.target.files;
+                if (!files) return;
+
+                const processFile = (file) => {
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        const description = prompt(`Introduce una descripción corta para esta foto (Ej. Vista general, Golpe en tapa, etc):`) || 'Evidencia de equipo';
+                        window._allPhotos.push({
+                            data: e.target.result,
+                            desc: description.toUpperCase()
+                        });
+                        update();
+                    };
+                    reader.readAsDataURL(file);
+                };
+
+                Array.from(files).forEach(processFile);
+            };
+
+            document.getElementById('upload-photos').addEventListener('change', (e) => handlePhotoUpload(e));
 
             // Set Current Date and Time
             const quoteDateInput = document.getElementById('quote-date');
@@ -1582,6 +1615,7 @@
                             <p><span class="label">Número de Serie del equipo :</span><span class="value">${serialNumber}</span></p>
                         </div>
 
+                        ${document.getElementById('toggle-concepts').checked ? `
                         <table class="ps-table">
                             <thead>
                                 <tr>
@@ -1594,17 +1628,33 @@
                             <tbody>${itemsHtml}</tbody>
                         </table>
 
+                        <div class="ps-total-row">
+                            <span class="ps-total-label">TOTAL</span>
+                            <span class="ps-total-value">$ ${total.toLocaleString('en-US', { minimumFractionDigits: 2 })}</span>
+                        </div>
+                        ` : `
+                        <div class="ps-watermark" style="min-height: 250px; padding: 20px; display: flex; flex-wrap: wrap; gap: 12px; align-items: flex-start; justify-content: center; position: relative; background: #fafafa; border: 1px dashed #ccc; border-radius: 8px;">
+                             ${window._allPhotos && window._allPhotos.length > 0 && !document.getElementById('toggle-bank').checked ? `
+                                ${window._allPhotos.map(p => `
+                                    <div style="flex: 0 0 110px; background: white; border: 1px solid #eee; border-radius: 6px; padding: 4px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); text-align: center;">
+                                        <img src="${p.data}" style="width: 100%; height: 80px; object-fit: cover; border-radius: 4px; display: block; margin-bottom: 3px;">
+                                        <div style="font-size: 6px; font-weight: 900; color: #ff6600; text-transform: uppercase; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${p.desc}</div>
+                                    </div>
+                                `).join('')}
+                             ` : `
+                                <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; pointer-events: none;">
+                                    <span style="font-size: 35px; font-weight: 900; color: rgba(0,0,0,0.02); transform: rotate(-15deg);">macWave.com.mx</span>
+                                </div>
+                             `}
+                        </div>
+                        `}
+
                         ${odsNotes ? `
                         <div style="margin-top: 15px; padding: 10px; border: 1px dashed #ccc; border-radius: 8px; font-size: 10px; color: #333; line-height: 1.4; background: #fafafa;">
                             <strong style="color: #ff6600; display: block; margin-bottom: 4px; text-transform: uppercase; font-size: 8px;">Notas / Observaciones:</strong>
                             ${odsNotes.replace(/\n/g, '<br>')}
                         </div>
                         ` : ''}
-
-                        <div class="ps-total-row">
-                            <span class="ps-total-label">TOTAL</span>
-                            <span class="ps-total-value">$ ${total.toLocaleString('en-US', { minimumFractionDigits: 2 })}</span>
-                        </div>
 
                         <div class="ps-terms">
                             <p>Vigencia de la ODS : 1 día para aceptación de la misma.</p>
@@ -1615,17 +1665,23 @@
                         </div>
 
                         <div class="ps-bank-area">
-                            <div class="ps-bank-qr-row">
-                                <div class="ps-bank-info">
-                                    <div class="ps-bank-title">PAGAR A ESTE BANCO</div>
-                                    <div class="ps-bank-main">BBVA</div>
-                                    <div class="ps-bank-details">
-                                        CUENTA CLABE : ${clabeVal}<br>
-                                        NUMERO DE CUENTA : ${accountVal}<br>
-                                        NUMERO DE TARJETA BBVA : ${cardVal}
-                                    </div>
+                            <div class="ps-bank-qr-row" style="display: flex; gap: 20px; align-items: stretch;">
+                                <div class="ps-bank-info" style="flex: 1;">
+                                    ${document.getElementById('toggle-bank').checked ? `
+                                        <div class="ps-bank-title">PAGAR A ESTE BANCO</div>
+                                        <div class="ps-bank-main">BBVA</div>
+                                        <div class="ps-bank-details">
+                                            CUENTA CLABE : ${clabeVal}<br>
+                                            NUMERO DE CUENTA : ${accountVal}<br>
+                                            NUMERO DE TARJETA BBVA : ${cardVal}
+                                        </div>
+                                    ` : `
+                                        <div class="ps-watermark" style="height: 100px; width: 100%; border: none; background: transparent; margin: 0; display: flex; align-items: center; justify-content: center; opacity: 0.6;">
+                                            <span style="font-size: 20px; font-weight: 900; color: #eee; transform: rotate(-5deg); letter-spacing: 1px;">macWave.com.mx</span>
+                                        </div>
+                                    `}
                                 </div>
-                                <div class="ps-qr-block">
+                                <div class="ps-qr-block" style="width: 100px; display: flex; flex-direction: column; align-items: center; justify-content: center; border-left: 1px solid #f0f0f0; padding-left: 15px;">
                                     <div id="preview-qr-canvas"></div>
                                 </div>
                             </div>
@@ -1659,6 +1715,9 @@
                         </div>
                     </div>
                 `;
+                
+                // Regenerate QR stably
+                generatePreviewQR();
             }
 
             const executeGeneration = async () => {
@@ -1781,74 +1840,95 @@
                 doc.text("Número de Serie del equipo :", 15, currentY);
                 doc.setFont("helvetica", "normal");
                 doc.setTextColor(0, 0, 0);
-                doc.text(serialNumber, 75, currentY);
+                // --- PHOTOS IN PDF (Integrated into Concept space) ---
+                let tableStartY;
+                const showConcepts = document.getElementById('toggle-concepts').checked;
+                const showBank = document.getElementById('toggle-bank').checked;
 
-                // 3. Dynamic Table Positioning
-                let tableStartY = currentY + 7;
-
-                // Estimate table height to draw the box correctly (or just don't draw fixed box)
-                // We'll replace the fixed box logic with a dynamic one after autoTable
-
-                doc.autoTable({
-                    startY: tableStartY,
-                    head: [['DESCRIPCIÓN DEL SERVICIO O PRODUCTO', 'PRECIO UNITARIO', 'UNIDAD', 'SUB TOTAL']],
-                    body: items,
-                    theme: 'plain',
-                    headStyles: {
-                        fillColor: [0, 0, 0],
-                        textColor: [255, 255, 255],
-                        halign: 'center',
-                        fontSize: 9,
-                        minCellHeight: 10,
-                        valign: 'middle'
-                    },
-                    bodyStyles: {
-                        textColor: [0, 0, 0], // Main text black for clarity
-                        fontSize: 9,
-                        minCellHeight: 10,
-                        valign: 'middle'
-                    },
-                    alternateRowStyles: { fillColor: [245, 245, 247] },
-                    columnStyles: {
-                        0: { cellWidth: 100, halign: 'left' },
-                        1: { halign: 'right' },
-                        2: { halign: 'center' },
-                        3: { halign: 'right' }
-                    },
-                    margin: { left: 15, right: 15 },
-                    didDrawCell: (data) => {
-                        if (data.section === 'body') {
-                            doc.setDrawColor(220, 220, 220);
-                            doc.setLineWidth(0.15);
-                            doc.line(data.cell.x, data.cell.y + data.cell.height, data.cell.x + data.cell.width, data.cell.y + data.cell.height);
+                if (showConcepts) {
+                    tableStartY = currentY + 7;
+                    doc.autoTable({
+                        startY: tableStartY,
+                        head: [['DESCRIPCIÓN DEL SERVICIO O PRODUCTO', 'PRECIO UNITARIO', 'UNIDAD', 'SUB TOTAL']],
+                        body: items,
+                        theme: 'plain',
+                        headStyles: {
+                            fillColor: [0, 0, 0],
+                            textColor: [255, 255, 255],
+                            halign: 'center',
+                            fontSize: 9,
+                            minCellHeight: 10,
+                            valign: 'middle'
+                        },
+                        bodyStyles: {
+                            textColor: [0, 0, 0], 
+                            fontSize: 9,
+                            minCellHeight: 10,
+                            valign: 'middle'
+                        },
+                        alternateRowStyles: { fillColor: [245, 245, 247] },
+                        columnStyles: {
+                            0: { cellWidth: 100, halign: 'left' },
+                            1: { halign: 'right' },
+                            2: { halign: 'center' },
+                            3: { halign: 'right' }
+                        },
+                        margin: { left: 15, right: 15 },
+                        didDrawCell: (data) => {
+                            if (data.section === 'body') {
+                                doc.setDrawColor(220, 220, 220);
+                                doc.setLineWidth(0.15);
+                                doc.line(data.cell.x, data.cell.y + data.cell.height, data.cell.x + data.cell.width, data.cell.y + data.cell.height);
+                            }
                         }
-                    },
-                    didDrawPage: (data) => {
-                        // Optional: draw borders for the entire table area if needed
+                    });
+
+                    let finalTableY = doc.lastAutoTable.finalY;
+                    doc.setDrawColor(240, 240, 240);
+                    doc.setLineWidth(0.2);
+                    doc.roundedRect(15, tableStartY, 180, finalTableY - tableStartY, 4, 4, 'D');
+
+                    const totalY = finalTableY + 10;
+                    doc.setFontSize(13);
+                    doc.setTextColor(0);
+                    doc.setFont("helvetica", "bold");
+                    doc.text("TOTAL", 150, totalY);
+                    doc.setTextColor(255, 102, 0);
+                    doc.text(`$ ${total.toLocaleString('en-US', { minimumFractionDigits: 2 })}`, 195, totalY, { align: "right" });
+                    
+                    var nextElementY = totalY + 13;
+                } else {
+                    tableStartY = currentY + 7;
+                    const placeholderH = 90;
+                    doc.setDrawColor(245, 245, 247);
+                    doc.setLineWidth(0.1);
+                    doc.roundedRect(15, tableStartY, 180, placeholderH, 4, 4, 'D');
+                    
+                    if (window._allPhotos.length > 0 && !showBank) {
+                        let photoX = 20;
+                        let photoY = tableStartY + 5;
+                        window._allPhotos.slice(0, 5).forEach(p => {
+                           try {
+                               doc.addImage(p.data, 'JPEG', photoX, photoY, 28, 28);
+                               doc.setFontSize(6);
+                               doc.setTextColor(50);
+                               doc.setFont("helvetica", "bold");
+                               doc.text(p.desc, photoX + 14, photoY + 32, { align: "center", maxWidth: 28 });
+                               photoX += 34;
+                           } catch(e) {}
+                        });
+                    } else {
+                        doc.setFontSize(35);
+                        doc.setTextColor(240, 240, 240);
+                        doc.setFont("helvetica", "bold");
+                        doc.text("macWave.com.mx", 105, tableStartY + (placeholderH/2) + 5, { align: "center", angle: 15 });
                     }
-                });
-
-                // Get the final Y after table
-                let finalTableY = doc.lastAutoTable.finalY;
-
-                // Draw rounded container around the table area dynamically
-                doc.setDrawColor(240, 240, 240);
-                doc.setLineWidth(0.2);
-                doc.roundedRect(15, tableStartY, 180, finalTableY - tableStartY, 4, 4, 'D');
-
-                // Dynamic positions relative to finalTableY
-                const totalY = finalTableY + 10;
-                const termsY = totalY + 13;
-
-                doc.setFontSize(13);
-                doc.setTextColor(0);
-                doc.setFont("helvetica", "bold");
-                doc.text("TOTAL", 150, totalY);
-                doc.setTextColor(255, 102, 0);
-                doc.text(`$ ${total.toLocaleString('en-US', { minimumFractionDigits: 2 })}`, 195, totalY, { align: "right" });
+                    
+                    var nextElementY = tableStartY + placeholderH + 10;
+                }
 
                 // 4. Terms
-                let cY = termsY;
+                let cY = nextElementY;
                 doc.setFontSize(7.5);
                 doc.setTextColor(0, 0, 0); // Black for readability
                 doc.setFont("helvetica", "bold");
@@ -1864,21 +1944,52 @@
 
                 // 5. Bank section (Relative position)
                 let bankSectionY = cY + 35;
-                doc.setFontSize(10);
-                doc.setTextColor(255, 102, 0);
-                doc.text("PAGAR A ESTE BANCO", 15, bankSectionY);
-                doc.setFontSize(15);
-                doc.setTextColor(255, 102, 0);
-                doc.text("BBVA", 58, bankSectionY);
-                doc.setTextColor(255, 102, 0); // Orange
-                doc.setFontSize(10);
-                doc.setFont("helvetica", "bold");
-                doc.text(`CUENTA CLABE :  ${clabeVal}`, 15, bankSectionY + 7);
-                doc.text(`NUMERO DE CUENTA :  ${accountVal}`, 15, bankSectionY + 14);
-                doc.text(`NUMERO DE TARJETA BBVA : ${cardVal}`, 15, bankSectionY + 28);
+                const showBankInPDF = document.getElementById('toggle-bank').checked;
+
+                if (showBankInPDF) {
+                    doc.setFontSize(10);
+                    doc.setTextColor(255, 102, 0);
+                    doc.text("PAGAR A ESTE BANCO", 15, bankSectionY);
+                    doc.setFontSize(15);
+                    doc.setTextColor(255, 102, 0);
+                    doc.text("BBVA", 58, bankSectionY);
+                    doc.setTextColor(255, 102, 0); // Orange
+                    doc.setFontSize(10);
+                    doc.setFont("helvetica", "bold");
+                    doc.text(`CUENTA CLABE :  ${clabeVal}`, 15, bankSectionY + 7);
+                    doc.text(`NUMERO DE CUENTA :  ${accountVal}`, 15, bankSectionY + 14);
+                    doc.text(`NUMERO DE TARJETA BBVA : ${cardVal}`, 15, bankSectionY + 28);
+                    
+                    var disclaimerLineY = bankSectionY + 35;
+                } else {
+                    // Watermark for Bank Area
+                    const bankPlaceholderH = 40;
+                    doc.setDrawColor(245, 245, 247);
+                    doc.setLineWidth(0.1);
+                    doc.roundedRect(15, bankSectionY - 5, 140, bankPlaceholderH, 4, 4, 'D'); 
+                    
+                    doc.setFontSize(22);
+                    doc.setTextColor(235, 235, 235);
+                    doc.setFont("helvetica", "bold");
+                    doc.text("macWave.com.mx", 85, bankSectionY + (bankPlaceholderH/2), { align: "center", angle: 5 });
+                    
+                    var disclaimerLineY = bankSectionY + bankPlaceholderH + 5;
+                }
+
+                // --- QR CODE (ALWAYS PRESENT) ---
+                try {
+                    const qrCanvas = document.querySelector('#preview-qr-canvas canvas');
+                    if (qrCanvas) {
+                        const qrData = qrCanvas.toDataURL("image/png");
+                        // Fixed position on the right
+                        doc.addImage(qrData, 'PNG', 160, bankSectionY - 3, 32, 32);
+                    }
+                } catch (e) {
+                    console.error("Error adding QR to PDF:", e);
+                }
 
                 // 4.5. Notes (New Section)
-                let notesY = bankSectionY + 34;
+                let notesY = disclaimerLineY + 5;
                 if (odsNotes) {
                     doc.setFontSize(6.5);
                     doc.setTextColor(51, 51, 51);
@@ -1888,18 +1999,6 @@
                     const splitNotes = doc.splitTextToSize(odsNotes, 180);
                     doc.text(splitNotes, 15, notesY + 3);
                     notesY += (splitNotes.length * 3.5) + 10;
-                }
-
-                // --- QR CODE (FIXED) ---
-                try {
-                    const qrCanvas = document.querySelector('#preview-qr-canvas canvas');
-                    if (qrCanvas) {
-                        const qrData = qrCanvas.toDataURL("image/png");
-                        // Position QR relative to bank section
-                        doc.addImage(qrData, 'PNG', 160, bankSectionY, 32, 32);
-                    }
-                } catch (e) {
-                    console.error("Error adding QR to PDF:", e);
                 }
 
                 // 6. Disclaimer (Bottom fixed area or relative)
@@ -1989,51 +2088,52 @@
                 }
             };
 
-            form.onsubmit = (e) => {
+            form.onsubmit = async (e) => {
                 e.preventDefault();
-                document.getElementById('confirm-ods-modal').style.display = 'flex';
-            };
-
-            document.getElementById('confirm-ods-no').onclick = () => {
-                document.getElementById('confirm-ods-modal').style.display = 'none';
-            };
-
-            document.getElementById('confirm-ods-yes').onclick = async () => {
-                document.getElementById('confirm-ods-modal').style.display = 'none';
                 await executeGeneration();
             };
 
-            update();
-            // ── QR code generator ──────────────────────────────────
-            const generatePreviewQR = () => {
-                const qrDiv = document.getElementById('preview-qr-canvas');
-                if (!qrDiv || typeof QRCode === 'undefined') return;
-                qrDiv.innerHTML = '';
-                const folio = document.getElementById('quote-number').value || 'ODS';
-                const client = document.getElementById('client-name').value || '';
-                const serial = document.getElementById('serial-number').value || '';
-                const url = `https://macwave.com.mx/status-ods.html?folio=${encodeURIComponent(folio)}&cliente=${encodeURIComponent(client)}&serie=${encodeURIComponent(serial)}`;
-                new QRCode(qrDiv, { text: url, width: 70, height: 70, correctLevel: QRCode.CorrectLevel.M });
-            };
 
-            // Wrapper around update so QR is regenerated on every preview refresh
-            const originalUpdate = update;
-            const updateWithQR = () => { originalUpdate(); setTimeout(generatePreviewQR, 50); };
 
-            // Attach all live-update listeners to regenerate preview and QR
-            document.querySelectorAll('#quote-form input, #quote-form select').forEach(el =>
+            // Listen for toggle change to hide/show controls
+            document.getElementById('toggle-concepts').addEventListener('change', (e) => {
+                const wrapper = document.getElementById('concepts-controls-wrapper');
+                wrapper.style.display = e.target.checked ? 'block' : 'none';
+                checkPhotosVisibility();
+                update();
+            });
+
+            document.getElementById('toggle-bank').addEventListener('change', (e) => {
+                const wrapper = document.getElementById('bank-controls-wrapper');
+                wrapper.style.display = e.target.checked ? 'block' : 'none';
+                checkPhotosVisibility();
+                update();
+            });
+
+            function checkPhotosVisibility() {
+                const conceptsOff = !document.getElementById('toggle-concepts').checked;
+                const bankOff = !document.getElementById('toggle-bank').checked;
+                const photosWrapper = document.getElementById('photos-controls-wrapper');
+                const photosSep = document.getElementById('photos-separator');
+                
+                if (conceptsOff && bankOff) {
+                    photosWrapper.style.display = 'block';
+                    photosSep.style.display = 'block';
+                } else {
+                    photosWrapper.style.display = 'none';
+                    photosSep.style.display = 'none';
+                }
+            }
+
+            // Attach all live-update listeners to regenerate preview
+            document.querySelectorAll('#quote-form input, #quote-form select, #toggle-concepts, #toggle-bank, #ods-notes').forEach(el =>
                 el.addEventListener('input', () => {
                     update();
-                    generatePreviewQR();
                 })
             );
-
-            // Initial QR
+            // Initial QR and update
             setTimeout(generatePreviewQR, 200);
-
-            // Observer for dynamically added items
-            const qrObserver = new MutationObserver(() => setTimeout(generatePreviewQR, 100));
-            qrObserver.observe(document.getElementById('preview-canvas'), { childList: true, subtree: true });
+            update();
 
             // --- Catalog Integration (Pull from Dashboard Catalog) ---
             const mwCatalog = JSON.parse(localStorage.getItem('mw_finance_catalog')) || [];
