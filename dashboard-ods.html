@@ -1249,15 +1249,8 @@
             <div style="display: flex; gap: 40px; align-items: flex-start;">
                 <!-- LEFT: THE GOLDEN TICKET GENERATOR -->
                 <div class="golden-ticket" style="flex-shrink: 0;">
-                    <div class="ticket-stars-header"
-                        style="font-size: 20px; font-weight: 800; letter-spacing: 5px; margin-bottom: 20px;">
-                        ★ TICKET DE VISITA ★
-                    </div>
-                    <h1 class="ticket-main-title" style="font-size: 38px; font-weight: 900; margin-bottom: 5px;">
+                    <h1 class="ticket-main-title" style="font-size: 38px; font-weight: 900; margin-bottom: 25px;">
                         SERVICIO TÉCNICO</h1>
-                    <p class="ticket-instruction"
-                        style="font-size: 13px; font-weight: 600; margin-bottom: 25px; color: #333;">manda este ticket o
-                        muestralo en taller</p>
 
                     <div class="folio-box">
                         <p class="folio-label"
@@ -1280,12 +1273,26 @@
                             style="width:100%; text-align:left; background:rgba(255,255,255,0.4); border:1px solid #000; color:#000; margin-bottom:15px;"
                             placeholder="Nombre del cliente">
                         <input type="text" id="t-unified-phone" class="btn"
-                            style="width:100%; text-align:left; background:rgba(255,255,255,0.4); border:1px solid #000; color:#000; margin-bottom:20px;"
+                            style="width:100%; text-align:left; background:rgba(255,255,255,0.4); border:1px solid #000; color:#000; margin-bottom:15px;"
                             placeholder="WhatsApp (10 dígitos)">
+                        <input type="datetime-local" id="t-unified-date" class="btn"
+                            style="width:100%; text-align:left; background:rgba(255,255,255,0.4); border:1px solid #000; color:#000; margin-bottom:20px;"
+                            placeholder="Fecha de la visita">
+                            
+                        <div style="display: flex; flex-direction: column; align-items: center; margin-bottom: 20px;">
+                            <a href="https://maps.app.goo.gl/PeSD75SSGMoCD4qZA" target="_blank" style="text-decoration: none; display: flex; flex-direction: column; align-items: center;">
+                                <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://maps.app.goo.gl/PeSD75SSGMoCD4qZA" alt="QR Taller" style="width: 100px; height: 100px; margin-bottom: 10px; border-radius: 8px; border: 1px solid #ccc;">
+                                <div style="font-size: 11px; font-weight: 700; color: #333; text-align: center; line-height: 1.4;">
+                                    <strong>Av. México Coyoacán 276</strong><br>
+                                    Sta Cruz Atoyac, Benito Juárez, CDMX.<br>
+                                    <em style="color: var(--mac-blue);">Escanea o da click para abrir en Google Maps</em>
+                                </div>
+                            </a>
+                        </div>
                     </div>
 
-                    <button id="btn-send-unified-ticket" class="btn btn-whatsapp">
-                        ENVIAR POR WHATSAPP
+                    <button id="btn-send-unified-ticket" class="btn btn-whatsapp" style="background:#006add; color:white; border-color:#004fb0;">
+                        GENERAR TICKET DE VISITA
                     </button>
                     <div style="margin-top:20px; font-weight:900; font-size:14px; color:#444; letter-spacing:1px; text-transform:uppercase;">macWave.com.mx</div>
                     <script>
@@ -1482,7 +1489,7 @@
         // --- Unified Ticket & History Logic ---
         function getNextTicketNumber() {
             let maxCount = 0;
-            // Iterate allTickets to find the highest number
+            // Buscar en todos los tickets cargados
             allTickets.forEach(t => {
                 if (t.folio) {
                     const parts = t.folio.split('-');
@@ -1492,11 +1499,12 @@
                     }
                 }
             });
-            // Initial/Fallback counter if no tickets found
-            if (maxCount === 0) {
-                maxCount = parseInt(localStorage.getItem('workshop_ticket_counter') || '239');
-            }
-            return maxCount + 1;
+
+            // Sincronizar con LocalStorage para que nunca retroceda (incluso si borran tickets)
+            let localStored = parseInt(localStorage.getItem('workshop_ticket_counter') || '252'); // Empezamos desde 252 para que el siguiente sea 253
+            
+            const finalMax = Math.max(maxCount, localStored);
+            return finalMax + 1;
         }
 
         window.updateFolioPreview = function () {
@@ -1538,11 +1546,13 @@
         window.sendTicketAction = async function () {
             const nameInput = document.getElementById('t-unified-name');
             const phoneInput = document.getElementById('t-unified-phone');
+            const dateInput = document.getElementById('t-unified-date');
             const sourceInput = document.getElementById('t-unified-source');
             const folioDisplay = document.getElementById('t-unified-folio');
 
             const name = nameInput.value || 'Cliente';
             const phone = phoneInput.value;
+            const dateVal = dateInput.value;
             const source = sourceInput.value;
             const folio = folioDisplay.innerText;
             const techPhone = '5535757364';
@@ -1562,84 +1572,33 @@
             };
 
             try {
-                const { error } = await supabaseClient.from('tickets_taller').insert([ticketData]);
+                const { data, error } = await supabaseClient.from('tickets_taller').insert([ticketData]).select();
                 if (error) throw error;
 
-                // Update local and storage (keep localStorage as secondary fallback)
-                allTickets.unshift(ticketData);
+                // Update local and storage with the actual data from DB (including generated ID)
+                if (data && data[0]) {
+                    allTickets.unshift(data[0]);
+                } else {
+                    allTickets.unshift(ticketData);
+                }
+                
                 const nextNum = parseInt(folio.split('-')[2]);
                 localStorage.setItem('workshop_ticket_counter', nextNum);
 
                 // Refresh folio preview for the next one
                 updateFolioPreview();
-
-                const btnSend = document.getElementById('btn-send-unified-ticket');
-                const originalText = btnSend.innerText;
-                btnSend.innerText = "GENERANDO TICKET...";
-                btnSend.style.opacity = '0.5';
-
-                // Temporarily hide form inputs so they aren't in the ticket image
-                const formDiv = document.querySelector('.golden-ticket div[style*="text-align: left;"]');
-                if (formDiv) formDiv.style.display = 'none';
-                btnSend.style.display = 'none';
-
-                const ticketEl = document.querySelector('.golden-ticket');
-                const canvas = await html2canvas(ticketEl, {
-                    scale: 2,
-                    backgroundColor: null
-                });
-
-                // Restore UI
-                if (formDiv) formDiv.style.display = 'block';
-                btnSend.style.display = 'inline-block';
-                btnSend.innerText = originalText;
-                btnSend.style.opacity = '1';
-
                 renderTicketsList();
 
-                canvas.toBlob(async (blob) => {
-                    const file = new File([blob], `Ticket_${folio}.png`, { type: 'image/png' });
-                    const msg = `Hola muestra este ticket de visita en taller.`;
+                // Open the new Ticket Badge Design in a new tab
+                const badgeUrl = `ticket-badge.html?name=${encodeURIComponent(name)}&folio=${encodeURIComponent(folio)}&source=${encodeURIComponent(source)}&phone=${encodeURIComponent(phone)}&date=${encodeURIComponent(dateVal)}`;
+                window.open(badgeUrl, '_blank');
 
-                    if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
-                        try {
-                            await navigator.share({
-                                files: [file],
-                                title: 'Ticket de Visita',
-                                text: msg
-                            });
-                            // Admin notification
-                            setTimeout(() => {
-                                const techMsg = `🚀 TICKET: ${folio}\nCliente: ${name}\nOrigen: ${source}\nWA: ${phone}`;
-                                window.open(`https://wa.me/52${techPhone}?text=${encodeURIComponent(techMsg)}`, '_blank');
-                                showTicketUnifiedView();
-                            }, 1000);
-                            return;
-                        } catch (e) { console.log('Share canceled or failed'); }
-                    }
-
-                    // Fallback for Desktop (Copy to clipboard/Download)
-                    try {
-                        const item = new ClipboardItem({ 'image/png': blob });
-                        await navigator.clipboard.write([item]);
-                        alert("¡Imagen del ticket copiada al portapapeles! Abre WhatsApp y pega (Ctrl+V) la imagen en el chat del cliente.");
-                    } catch (e) {
-                        const link = document.createElement('a');
-                        link.download = `Ticket_${folio}.png`;
-                        link.href = canvas.toDataURL();
-                        link.click();
-                        alert("Ticket descargado como imagen. Adjúntalo o arrástralo en el chat de WhatsApp.");
-                    }
-
-                    window.open(`https://wa.me/52${phone}?text=${encodeURIComponent(msg)}`, '_blank');
-
-                    setTimeout(() => {
-                        const techMsg = `🚀 TICKET: ${folio}\nCliente: ${name}\nOrigen: ${source}\nWA: ${phone}`;
-                        window.open(`https://wa.me/52${techPhone}?text=${encodeURIComponent(techMsg)}`, '_blank');
-                        showTicketUnifiedView();
-                    }, 1000);
-
-                }, 'image/png');
+                // Admin notification
+                setTimeout(() => {
+                    const techMsg = `🚀 TICKET CREADO: ${folio}\nCliente: ${name}\nOrigen: ${source}\nWA: ${phone}`;
+                    window.open(`https://wa.me/52${techPhone}?text=${encodeURIComponent(techMsg)}`, '_blank');
+                    showTicketUnifiedView();
+                }, 1000);
 
             } catch (err) {
                 console.error("Save Error:", err);
@@ -1734,21 +1693,37 @@
 
         // --- TICKETS LOGIC ---
         async function deleteTicketTaller(id, folio) {
-            if (!confirm(`¿Estás seguro de que deseas eliminar el ticket ${folio}?`)) return;
+            if (!confirm(`T800: ¿Confirmas eliminación total de ${folio}?`)) return;
             try {
+                console.log(`[T800] Iniciando protocolo de borrado para Folio: ${folio}`);
+                
+                // Intento de borrado directo y agresivo
                 const { error, count } = await supabaseClient
                     .from('tickets_taller')
                     .delete({ count: 'exact' })
-                    .eq('id', id);
-                    
-                if (error) throw error;
-                if (count === 0) return alert('No se pudo borrar el ticket (verifica permisos de base de datos).');
-                
-                allTickets = allTickets.filter(t => t.id !== id);
+                    .or(`id.eq.${id},folio.eq.${folio}`); // Borra por ID O por Folio en un solo paso
+
+                if (error) {
+                    console.error("[T800 Error] Supabase rechazó el borrado:", error);
+                    alert(`Error de base de datos: ${error.message}. Es posible que no tengas permisos de borrado (RLS) activados en Supabase.`);
+                    return;
+                }
+
+                if (count === 0) {
+                    console.warn("[T800 Warning] Supabase no encontró el ticket para borrar.");
+                    alert("Atención: Supabase dice que ese ticket no existe o ya fue borrado. Si sigue apareciendo, intenta recargar la página con Ctrl+F5.");
+                } else {
+                    console.log(`[T800 Success] ${count} registros eliminados de la nube.`);
+                    alert(`Éxito: Se eliminaron ${count} registro(s) correctamente.`);
+                }
+
+                // Limpieza local inmediata y agresiva
+                allTickets = allTickets.filter(t => t.folio !== folio && (id ? t.id !== id : true));
                 renderTicketsList();
-                alert(`El ticket ${folio} fue eliminado correctamente.`);
+                
             } catch (err) {
-                alert('Error al eliminar ticket: ' + err.message);
+                console.error("[T800 Critical Fallo]", err);
+                alert('Fallo crítico en el sistema de borrado T800.');
             }
         }
 

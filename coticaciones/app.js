@@ -46,12 +46,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     document.getElementById('send-ticket-whatsapp')?.addEventListener('click', () => {
         const name = document.getElementById('ticket-client-name').value || 'Cliente';
-        const source = document.getElementById('ticket-source').value;
         const folio = document.getElementById('ticket-folio-display').textContent;
+        const sourceVal = document.getElementById('ticket-source')?.value || '';
+        const ticketDate = document.getElementById('ticket-date')?.value || '';
 
-        const message = `Hola, mi nombre es ${name}. Conocí el taller por ${source}. Mi folio de visita es ${folio}. Solicito diagnóstico gratis.`;
-        const waUrl = `https://wa.me/525530182604?text=${encodeURIComponent(message)}`;
-        window.open(waUrl, '_blank');
+        const badgeUrl = `../ticket-badge.html?name=${encodeURIComponent(name)}&folio=${encodeURIComponent(folio)}&source=${encodeURIComponent(sourceVal)}&date=${encodeURIComponent(ticketDate)}`;
+        window.open(badgeUrl, '_blank');
 
         // Increment and close
         let counter = parseInt(localStorage.getItem('workshop_ticket_counter') || '239');
