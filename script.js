@@ -43,14 +43,14 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Example of a simple scroll animation (e.g., header shadow on scroll)
+    // Dynamic Header (Shrink on scroll)
     const header = document.querySelector('.main-header');
     if (header) {
         window.addEventListener('scroll', () => {
             if (window.scrollY > 50) {
-                header.style.boxShadow = '0 4px 20px rgba(0, 0, 0, 0.4)';
+                header.classList.add('header-scrolled');
             } else {
-                header.style.boxShadow = '0 2px 15px rgba(0, 0, 0, 0.2)'; // Sutil al inicio
+                header.classList.remove('header-scrolled');
             }
         });
     }
