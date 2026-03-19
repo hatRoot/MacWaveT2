@@ -46,13 +46,19 @@ document.addEventListener('DOMContentLoaded', () => {
     // Dynamic Header (Shrink on scroll)
     const header = document.querySelector('.main-header');
     if (header) {
-        window.addEventListener('scroll', () => {
+        const handleHeaderScroll = () => {
             if (window.scrollY > 50) {
                 header.classList.add('header-scrolled');
             } else {
                 header.classList.remove('header-scrolled');
             }
-        });
+        };
+
+        // Escuchar el evento scroll
+        window.addEventListener('scroll', handleHeaderScroll);
+        
+        // Ejecutar inmediatamente para sets de refresco con scroll ya existente
+        handleHeaderScroll();
     }
 
     // Modal Logic

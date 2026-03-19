@@ -312,7 +312,7 @@ h3 {
 
 /* Ocultar "Inicio" y su icono de casa en el modo escritorio para evitar que se amontone */
 @media (min-width: 1025px) {
-    .main-nav a[data-link="index.html"] {
+    .main-nav a[href="index.html"] {
         display: none !important;
     }
 }
