@@ -189,23 +189,25 @@ h3 {
 
 /* Header */
 .main-header {
-    background-color: #000000;
-    padding: 30px 0; /* Doble de grande inicialmente */
+    background-color: #000101; /* Negro profundo inicial */
+    padding: 40px 0; /* Huge initially */
     position: sticky !important;
     top: 0;
     left: 0;
     right: 0;
     width: 100%;
     z-index: 10000 !important;
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    transition: all 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
 
 .main-header.header-scrolled {
-    padding: 10px 0; /* Tamaño normal al bajar */
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
-    background-color: rgba(0, 0, 0, 0.95);
-    backdrop-filter: blur(10px);
+    padding: 8px 0; /* Normal size upon scroll */
+    background-color: rgba(0, 0, 0, 0.35) !important; /* Glassmorphism effect */
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
 }
 
 .header-content {
@@ -215,22 +217,32 @@ h3 {
     gap: 15px;
 }
 
-/* ESTILOS DEL LOGO MULTILÍNEA */
 .logo a.logo-link {
     display: flex;
     align-items: center;
     text-decoration: none;
+    background: #000000; /* Fondo negro sólido para el efecto Dynamic Island */
+    padding: 12px 25px;
+    border-radius: 100px; /* Forma de píldora */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+    transition: all 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.header-scrolled .logo a.logo-link {
+    padding: 6px 18px; /* Se compacta al hacer scroll */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
 }
 
 .logo-img {
-    height: 70px; /* Grande inicialmente */
+    height: 60px; /* Grande inicialmente en negro */
     width: auto;
     margin-right: 15px;
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: all 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
 }
 
 .header-scrolled .logo-img {
-    height: 40px; /* Normal al bajar */
+    height: 32px; /* Muy compacto en modo vidrio */
     margin-right: 10px;
 }
 
@@ -244,15 +256,15 @@ h3 {
 
 .logo-brand {
     /* Mac Wave T2 */
-    font-size: 2.2em; /* Grande inicialmente */
+    font-size: 1.8em; /* Ajustado para caber en la píldora */
     font-weight: var(--font-weight-bold);
-    color: var(--text-primary) !important;
+    color: #ffffff !important;
     white-space: nowrap;
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: all 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
 }
 
 .header-scrolled .logo-brand {
-    font-size: 1.6em; /* Normal al bajar */
+    font-size: 1.3em; /* Muy compacto */
 }
 
 .logo-subtext {
