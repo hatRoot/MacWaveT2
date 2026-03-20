@@ -27,6 +27,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
+    <link rel="stylesheet" href="sidebar-ods.css">
 
     <style>
         :root {
@@ -92,114 +93,7 @@
             padding: 20px !important;
         }
 
-        /* Sidebar Navigation VISTA AERO SOLID */
-        .app-sidebar {
-            width: 250px !important;
-            min-width: 250px !important;
-            max-width: 250px !important;
-            background: #09090b;
-            /* Even deeper solid black */
-            border-right: 1px solid rgba(255, 255, 255, 0.15);
-            display: flex;
-            flex-direction: column;
-            padding: 24px 12px;
-            z-index: 100;
-            height: 100vh;
-            position: sticky;
-            top: 0;
-            flex-shrink: 0;
-        }
 
-        .nav-label {
-            font-size: 13px;
-            font-weight: 700;
-            color: rgba(255, 255, 255, 0.6);
-            letter-spacing: 0.5px;
-            margin-bottom: 12px;
-            padding-left: 4px;
-        }
-
-        .nav-item {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            height: 46px;
-            /* Uniform height */
-            padding: 0 16px;
-            border-radius: 8px;
-            color: rgba(255, 255, 255, 0.95);
-            text-decoration: none;
-            font-size: 13.5px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.05s ease-out;
-            margin-bottom: 16px;
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            /* Subtle border */
-            background: linear-gradient(180deg,
-                    rgba(255, 255, 255, 0.15) 0%,
-                    rgba(255, 255, 255, 0.05) 50%,
-                    rgba(0, 0, 0, 0.5) 50.1%,
-                    rgba(0, 0, 0, 0.3) 100%);
-            position: relative;
-            overflow: hidden;
-            width: 100%;
-            text-align: left;
-            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), inset 0 0 0 rgba(0, 162, 255, 0), 0 2px 4px rgba(0, 0, 0, 0.5);
-        }
-
-        /* VISTA HOVER: Intense Blue Glow */
-        .nav-item:hover {
-            border-color: rgba(0, 162, 255, 0.4);
-            background: linear-gradient(180deg,
-                    rgba(255, 255, 255, 0.2) 0%,
-                    rgba(255, 255, 255, 0.1) 50%,
-                    rgba(0, 40, 80, 0.6) 50.1%,
-                    rgba(0, 80, 140, 0.4) 100%);
-            box-shadow:
-                inset 0 0 15px rgba(0, 162, 255, 0.8),
-                inset 0 1px 0 rgba(255, 255, 255, 0.3),
-                0 2px 4px rgba(0, 0, 0, 0.5);
-            color: #fff;
-        }
-
-        /* VISTA ACTIVE: Full Crystal Blue */
-        .nav-item.active {
-            border-color: rgba(0, 212, 255, 0.6);
-            background: linear-gradient(180deg,
-                    rgba(255, 255, 255, 0.25) 0%,
-                    rgba(255, 255, 255, 0.12) 50%,
-                    rgba(0, 100, 255, 0.6) 50.1%,
-                    rgba(0, 150, 255, 0.8) 100%);
-            color: #fff;
-            box-shadow:
-                inset 0 0 25px rgba(0, 212, 255, 0.9),
-                inset 0 1px 0 rgba(255, 255, 255, 0.5),
-                0 2px 4px rgba(0, 0, 0, 0.5);
-            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
-        }
-
-        /* GLASS REFLECTION */
-        .nav-item::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 50%;
-            background: linear-gradient(180deg, rgba(255, 255, 255, 0.15) 0%, transparent 100%);
-            pointer-events: none;
-        }
-
-        .nav-item svg {
-            width: 18px;
-            height: 18px;
-            opacity: 0.7;
-        }
-
-        .nav-item.active svg {
-            opacity: 1;
-        }
 
         .app-main {
             flex-grow: 1;
@@ -981,12 +875,12 @@
                         <div class="header-with-toggle" style="margin-top: 10px;">
                             <div class="section-title" style="margin-bottom: 0;">CONCEPTOS</div>
                             <label class="switch">
-                                <input type="checkbox" id="toggle-concepts" checked>
+                            <input type="checkbox" id="toggle-concepts">
                                 <span class="slider"></span>
                             </label>
                         </div>
                         
-                        <div id="concepts-controls-wrapper" style="margin-top: 20px;">
+                        <div id="concepts-controls-wrapper" style="margin-top: 20px; display: none;">
                             <div class="items-header">
                                 <span>Descripción</span>
                                 <span style="text-align: right;">Unitario</span>
@@ -1013,12 +907,12 @@
                         <div class="header-with-toggle" style="margin-top: 10px;">
                             <div class="section-title" style="margin-bottom: 0;">CONFIGURACIÓN BANCARIA</div>
                             <label class="switch">
-                                <input type="checkbox" id="toggle-bank" checked>
+                                <input type="checkbox" id="toggle-bank">
                                 <span class="slider"></span>
                             </label>
                         </div>
 
-                        <div id="bank-controls-wrapper" style="margin-top: 20px;">
+                        <div id="bank-controls-wrapper" style="margin-top: 20px; display: none;">
                             <div class="form-grid">
                                 <div class="form-group">
                                     <label>CLABE</label>
@@ -1174,6 +1068,7 @@
 
             // Auto-fill Technician based on session user
             const currentUser = sessionStorage.getItem('macwave_user');
+            const isAdmin = (currentUser === 'joel.duran.mendoza@me.com' || currentUser === 'joel' || currentUser === 'root');
             const techNameInput = document.getElementById('tech-name');
             if (techNameInput) {
                 if (currentUser === 'joel.duran.mendoza@me.com' || currentUser === 'joel') {
@@ -2095,6 +1990,17 @@
 
 
 
+            // Role-based restrictions (standards can toggle BANK but not modify inputs)
+            if (!isAdmin) {
+                // Disable inputs in bank config
+                document.querySelectorAll('#bank-controls-wrapper input').forEach(input => {
+                    input.readOnly = true;
+                    input.style.opacity = '0.7';
+                    input.style.cursor = 'not-allowed';
+                    input.title = "Solo administradores pueden modificar estos datos";
+                });
+            }
+
             // Listen for toggle change to hide/show controls
             document.getElementById('toggle-concepts').addEventListener('change', (e) => {
                 const wrapper = document.getElementById('concepts-controls-wrapper');
@@ -2133,6 +2039,7 @@
             );
             // Initial QR and update
             setTimeout(generatePreviewQR, 200);
+            checkPhotosVisibility();
             update();
 
             // --- Catalog Integration (Pull from Dashboard Catalog) ---

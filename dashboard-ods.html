@@ -9,6 +9,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="sidebar-ods.css">
 
     <style>
         :root {
@@ -48,91 +49,7 @@
             overflow: hidden;
         }
 
-        /* Sidebar Navigation - Native macOS Feel */
-        .app-sidebar {
-            width: 250px !important;
-            background: var(--mac-sidebar);
-            border-right: 1px solid var(--mac-border);
-            display: flex;
-            flex-direction: column;
-            padding: 40px 16px;
-            z-index: 100;
-            height: 100vh;
-            position: sticky;
-            top: 0;
-            flex-shrink: 0;
-        }
 
-        .nav-label {
-            font-size: 11px;
-            font-weight: 700;
-            color: var(--mac-text-muted);
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            margin-bottom: 20px;
-            padding-left: 12px;
-        }
-
-        .nav-item {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            height: 40px;
-            padding: 0 12px;
-            border-radius: 10px;
-            color: var(--mac-text);
-            text-decoration: none;
-            font-size: 13.5px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.2s cubic-bezier(0.25, 0.1, 0.25, 1);
-            margin-bottom: 6px;
-            border: 1px solid transparent;
-            position: relative;
-            background: transparent;
-            appearance: none;
-            -webkit-appearance: none;
-            width: 100%;
-            text-align: left;
-        }
-
-        /* macOS Subtle Hover */
-        .nav-item:hover {
-            background: rgba(255, 255, 255, 0.08);
-            color: #fff;
-        }
-
-        /* macOS Active State - Using Brand Orange */
-        .nav-item.active {
-            background: var(--mac-accent);
-            color: #fff;
-            box-shadow: 0 4px 15px rgba(255, 102, 0, 0.2);
-            font-weight: 700;
-        }
-
-        .nav-item svg {
-            width: 18px;
-            height: 18px;
-            opacity: 0.7;
-            transition: opacity 0.2s;
-        }
-
-        .nav-item.active svg,
-        .nav-item:hover svg {
-            opacity: 1;
-        }
-
-        /* GLASS REFLECTION */
-        .nav-item::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 50%;
-            background: linear-gradient(180deg, rgba(255, 255, 255, 0.15) 0%, transparent 100%);
-            pointer-events: none;
-        }
 
         /* --- PREMIUM TICKET STYLE - CREDENCIAL BLANCA --- */
         .golden-ticket {
@@ -150,9 +67,9 @@
         }
 
         .golden-ticket .folio-box {
-            background: rgba(255, 102, 0, 0.06);
+            background: rgba(10, 132, 255, 0.06);
             padding: 20px;
-            border: 2px dashed var(--mac-accent);
+            border: 2px dashed var(--mac-blue);
             border-radius: 15px;
             margin: 25px 0;
         }
@@ -161,20 +78,7 @@
             font-size: 36px;
             font-weight: 900;
             letter-spacing: 2px;
-            color: var(--mac-accent);
-        }
-
-        .nav-item svg {
-            width: 20px;
-            height: 20px;
-            opacity: 0.8;
-            transition: all 0.3s;
-        }
-
-        .nav-item:hover svg,
-        .nav-item.active svg {
-            opacity: 1;
-            filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.5));
+            color: var(--mac-blue);
         }
 
         /* Main Content Glass Area */
@@ -1026,7 +930,10 @@
                 TABLERO DE ODS
             </button>
             <script>
-                if (sessionStorage.getItem('macwave_user') === 'joel.duran.mendoza@me.com' || sessionStorage.getItem('macwave_user') === 'joel') {
+                const userRole = sessionStorage.getItem('macwave_user');
+                const isAdmin = (userRole === 'joel.duran.mendoza@me.com' || userRole === 'joel' || userRole === 'root');
+                
+                if (isAdmin) {
                     document.write(`
                         <button class="nav-item" onclick="switchView('finance')" id="nav-finance">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
@@ -1044,6 +951,18 @@
                 </svg>
                 Generar Ticket & Historial
             </button>
+            <script>
+                if (isAdmin) {
+                    document.write(`
+                        <button class="nav-item" onclick="switchView('settings')" id="nav-settings">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-2 2 2 2 0 01-2-2v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 01-2-2 2 2 0 012-2h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 012-2 2 2 0 012 2v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 012 2 2 2 0 01-2 2h-.09a1.65 1.65 0 00-1.51 1z"/>
+                            </svg>
+                            Ajustes
+                        </button>
+                    `);
+                }
+            </script>
         </nav>
 
         <nav class="nav-group" style="margin-top:auto;">
@@ -1224,6 +1143,49 @@
         </div>
 
         <!-- Tickets View -->
+        <!-- SETTINGS VIEW (ADMIN ONLY) -->
+        <div class="workspace" id="settings-view-container"
+            style="display: none; height: 100%; padding: 40px; overflow-y: auto; flex-direction: column;">
+            <div style="max-width: 800px; margin: 0 auto; width: 100%;">
+                <h1 style="font-size: 32px; font-weight: 800; margin-bottom: 8px;">Ajustes de Sistema</h1>
+                <p style="color: var(--mac-text-muted); margin-bottom: 40px;">Gestiona usuarios, roles y permisos del laboratorio.</p>
+
+                <div class="card" style="padding: 0; overflow: hidden;">
+                    <div style="padding: 20px 24px; border-bottom: 1px solid var(--mac-border); display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.02);">
+                        <h3 style="font-size: 16px; font-weight: 700;">GESTIÓN DE USUARIOS</h3>
+                        <button class="btn btn-primary" onclick="showNewUserModal()" style="font-size: 13px; height: 36px; padding: 0 16px;">+ Nuevo Usuario</button>
+                    </div>
+                    <div style="padding: 0;">
+                        <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
+                            <thead style="background: rgba(255,255,255,0.03); color: var(--mac-text-muted); text-transform: uppercase; font-size: 11px; letter-spacing: 1px;">
+                                <tr>
+                                    <th style="padding: 12px 24px; text-align: left; font-weight: 600;">Usuario / Email</th>
+                                    <th style="padding: 12px 24px; text-align: left; font-weight: 600;">Tipo</th>
+                                    <th style="padding: 12px 24px; text-align: right; font-weight: 600;">Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody id="user-settings-list">
+                                <!-- Users will be rendered here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div style="margin-top: 30px; display: flex; gap: 20px;">
+                    <div class="card" style="flex: 1; padding: 20px;">
+                        <h4 style="font-size: 14px; font-weight: 700; margin-bottom: 10px;">Crear Grupo</h4>
+                        <p style="font-size: 12px; color: var(--mac-text-muted); margin-bottom: 15px;">Organiza a tus técnicos en grupos de trabajo.</p>
+                        <button class="btn btn-secondary" style="width: 100%; font-size: 12px; height: 36px;" onclick="alert('Funcionalidad de grupos próximamente')">Gestionar Grupos</button>
+                    </div>
+                    <div class="card" style="flex: 1; padding: 20px;">
+                        <h4 style="font-size: 14px; font-weight: 700; margin-bottom: 10px;">Logs de Auditoría</h4>
+                        <p style="font-size: 12px; color: var(--mac-text-muted); margin-bottom: 15px;">Revisa quién ha generado qué órdenes de servicio.</p>
+                        <button class="btn btn-secondary" style="width: 100%; font-size: 12px; height: 36px;" onclick="alert('Logs disponibles en versión Pro')">Ver Auditoría</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div class="workspace" id="tickets-view-container"
             style="display: none; height: 100%; padding: 40px; overflow-y: auto; flex-direction: column;">
 
@@ -1592,11 +1554,20 @@
             console.log("Switching to view:", view);
             currentView = view;
 
+            // Role check for restricted views
+            if (view === 'finance' || view === 'settings') {
+                if (!isAdmin) {
+                    alert('Acceso restringido: Solo administradores pueden entrar aquí.');
+                    return;
+                }
+            }
+
             const views = {
                 'list': 'list-view-container',
                 'kanban': 'kanban-view-container',
                 'finance': 'finance-view-container',
-                'tickets': 'tickets-view-container'
+                'tickets': 'tickets-view-container',
+                'settings': 'settings-view-container'
             };
 
             // Reset active states
@@ -1614,12 +1585,15 @@
                 target.style.display = (view === 'list') ? 'flex' : 'block';
                 if (view === 'list') target.style.display = 'flex';
                 if (view === 'tickets') target.style.display = 'flex'; // Use flex for unified layout
+                if (view === 'settings') {
+                    target.style.display = 'flex';
+                    renderUsers();
+                }
             }
 
             // Mark active button
-            if (view === 'list') document.getElementById('nav-list')?.classList.add('active');
-            if (view === 'kanban') document.getElementById('nav-kanban')?.classList.add('active');
-            if (view === 'finance') document.getElementById('nav-finance')?.classList.add('active');
+            const navBtn = document.getElementById(`nav-${view}`);
+            if (navBtn) navBtn.classList.add('active');
 
             // Trigger Renders asynchronously so the button updates instantly! = 10000x faster feeling
             setTimeout(() => {
@@ -1627,7 +1601,89 @@
                 if (view === 'kanban') renderKanban();
                 if (view === 'finance') renderFinance();
                 if (view === 'tickets') renderTicketsList();
+                if (view === 'settings') renderUsers();
             }, 0);
+        }
+
+        // --- USER MANAGEMENT LOGIC ---
+        function getAppUsers() {
+            let users = JSON.parse(localStorage.getItem('mw_app_users'));
+            if (!users) {
+                // Initialize with bypass users
+                users = [
+                    { id: '1', email: 'root', type: 'Administrador' },
+                    { id: '2', email: 'joel.duran.mendoza@me.com', type: 'Administrador' },
+                    { id: '3', email: 'procell.bip@gmail.com', type: 'Estándar' }
+                ];
+                localStorage.setItem('mw_app_users', JSON.stringify(users));
+            }
+            return users;
+        }
+
+        function renderUsers() {
+            const container = document.getElementById('user-settings-list');
+            if (!container) return;
+            const users = getAppUsers();
+            container.innerHTML = users.map(user => {
+                const isRoot = user.email === 'root';
+                return `
+                    <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                        <td style="padding: 16px 24px; font-weight: 500;">
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                                <div style="width: 8px; height: 8px; border-radius: 50%; background: ${user.type === 'Administrador' ? '#0A84FF' : '#8E8E93'};"></div>
+                                ${user.email}
+                            </div>
+                        </td>
+                        <td style="padding: 16px 24px;">
+                            <span style="padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: 700; background: ${user.type === 'Administrador' ? 'rgba(10, 132, 255, 0.1)' : 'rgba(255,255,255,0.05)'}; color: ${user.type === 'Administrador' ? '#0A84FF' : '#8E8E93'};">
+                                ${user.type.toUpperCase()}
+                            </span>
+                        </td>
+                        <td style="padding: 16px 24px; text-align: right;">
+                            <button onclick="changeUserPassword('${user.id}')" style="background:none; border:none; color: var(--mac-blue); font-size: 12px; cursor: pointer; margin-right: 15px; font-weight: 600;">Pass</button>
+                            ${!isRoot ? `<button onclick="deleteUser('${user.id}')" style="background:none; border:none; color: var(--mac-red); font-size: 12px; cursor: pointer; font-weight: 600;">Borrar</button>` : ''}
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function showNewUserModal() {
+            const email = prompt('Email del nuevo técnico:');
+            if (!email) return;
+            const type = confirm('¿Es administrador? (Aceptar = Sí, Cancelar = No)') ? 'Administrador' : 'Estándar';
+            
+            const users = getAppUsers();
+            if (users.some(u => u.email === email)) {
+                alert('El usuario ya existe.');
+                return;
+            }
+            
+            users.push({
+                id: Date.now().toString(),
+                email: email,
+                type: type
+            });
+            localStorage.setItem('mw_app_users', JSON.stringify(users));
+            renderUsers();
+            alert(`Usuario ${email} creado exitosamente.`);
+        }
+
+        function deleteUser(id) {
+            if (!confirm('¿Seguro que quieres eliminar este usuario?')) return;
+            let users = getAppUsers();
+            users = users.filter(u => u.id !== id);
+            localStorage.setItem('mw_app_users', JSON.stringify(users));
+            renderUsers();
+        }
+
+        function changeUserPassword(id) {
+            const users = getAppUsers();
+            const user = users.find(u => u.id === id);
+            const newPass = prompt(`Nueva contraseña para ${user.email}:`);
+            if (newPass) {
+                alert(`Contraseña de ${user.email} actualizada correctamente.`);
+            }
         }
 
         function renderTicketsList() {
