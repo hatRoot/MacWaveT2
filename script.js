@@ -6,8 +6,6 @@ document.addEventListener('DOMContentLoaded', () => {
             e.preventDefault();
             const url = el.getAttribute('data-link');
             if (url && url !== '#') {
-                // For a smoother transition feel
-                document.body.style.opacity = '0.7';
                 window.location.href = url;
             }
         });
@@ -43,22 +41,33 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Dynamic Header (Shrink on scroll)
+    // Dynamic Header (Throttled Shrink on scroll)
     const header = document.querySelector('.main-header');
     if (header) {
-        const handleHeaderScroll = () => {
-            if (window.scrollY > 50) {
+        let lastKnownScrollPosition = 0;
+        let ticking = false;
+
+        const handleHeaderScroll = (scrollPos) => {
+            if (scrollPos > 50) {
                 header.classList.add('header-scrolled');
             } else {
                 header.classList.remove('header-scrolled');
             }
         };
 
-        // Escuchar el evento scroll
-        window.addEventListener('scroll', handleHeaderScroll);
+        window.addEventListener('scroll', () => {
+            lastKnownScrollPosition = window.scrollY;
+            if (!ticking) {
+                window.requestAnimationFrame(() => {
+                    handleHeaderScroll(lastKnownScrollPosition);
+                    ticking = false;
+                });
+                ticking = true;
+            }
+        });
         
-        // Ejecutar inmediatamente para sets de refresco con scroll ya existente
-        handleHeaderScroll();
+        // Initial check
+        handleHeaderScroll(window.scrollY);
     }
 
     // Modal Logic

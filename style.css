@@ -190,20 +190,21 @@ h3 {
 /* Header */
 .main-header {
     background-color: #000101; /* Negro profundo inicial */
-    padding: 40px 0; /* Huge initially */
+    padding: 30px 0; /* Huge initially */
     position: sticky !important;
     top: 0;
     left: 0;
     right: 0;
     width: 100%;
     z-index: 10000 !important;
-    transition: all 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
+    transition: padding 0.4s cubic-bezier(0.165, 0.84, 0.44, 1), background-color 0.4s ease;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    will-change: padding, background-color;
 }
 
 .main-header.header-scrolled {
-    padding: 8px 0; /* Normal size upon scroll */
-    background-color: rgba(0, 0, 0, 0.35) !important; /* Glassmorphism effect */
+    padding: 10px 0; /* Reduced the difference to avoid jumping */
+    background-color: rgba(0, 0, 0, 0.4) !important; /* Glassmorphism effect */
     backdrop-filter: blur(25px);
     -webkit-backdrop-filter: blur(25px);
     border-bottom: 1px solid rgba(255, 255, 255, 0.08);

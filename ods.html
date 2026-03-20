@@ -1735,6 +1735,7 @@
                 doc.text("Número de Serie del equipo :", 15, currentY);
                 doc.setFont("helvetica", "normal");
                 doc.setTextColor(0, 0, 0);
+                doc.text(serialNumber, 75, currentY);
                 // --- PHOTOS IN PDF (Integrated into Concept space) ---
                 let tableStartY;
                 const showConcepts = document.getElementById('toggle-concepts').checked;
@@ -1952,7 +1953,7 @@
                 
                 // Save the PDF with the folio as filename
                 doc.save(`${currentFolio}.pdf`);
-                // window.open(doc.output('bloburl'), '_blank');
+                window.open(doc.output('bloburl'), '_blank');
 
                 // Increment folio counter AFTER capturing it for current PDF/Supabase
                 getNextFolio(true);
