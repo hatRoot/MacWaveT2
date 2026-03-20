@@ -3893,3 +3893,194 @@ details.modern-accordion[open] {
 body {
     padding-top: 0 !important; /* El header sticky se auto-gestiona */
 }
+
+/* ===========================
+   MOBILE / iPHONE FIXES
+   Comprehensive overrides for screens <= 480px
+   =========================== */
+
+/* Fix horizontal overflow on iPhone */
+html, body {
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+}
+
+/* Safe area insets for iPhone with notch/Dynamic Island */
+.main-header {
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
+}
+
+@media (max-width: 480px) {
+
+    /* Hero Section */
+    h1 {
+        font-size: 2rem !important;
+        line-height: 1.2 !important;
+    }
+
+    h2 {
+        font-size: 1.6rem !important;
+    }
+
+    h3 {
+        font-size: 1.2rem !important;
+    }
+
+    .hero-content,
+    .hero-content-text {
+        text-align: center !important;
+        padding: 0 16px !important;
+    }
+
+    .hero-banner-promo {
+        font-size: 0.75rem;
+        padding: 6px 12px;
+        gap: 8px;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    /* Hero image: don't overflow on iPhone */
+    .hero-image img,
+    .hero-image {
+        width: 100% !important;
+        height: auto !important;
+        max-width: 100% !important;
+    }
+
+    /* Header / Nav */
+    .main-header .container {
+        padding: 0 16px !important;
+    }
+
+    /* Service Sections */
+    .service-row {
+        flex-direction: column !important;
+        gap: 20px !important;
+    }
+
+    .service-image,
+    .service-content {
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+
+    .service-content {
+        padding: 0 16px !important;
+    }
+
+    /* CTA Buttons */
+    .cta-button,
+    .btn-primary,
+    .btn-whatsapp {
+        width: 100% !important;
+        text-align: center !important;
+        font-size: 0.95rem !important;
+        padding: 14px 20px !important;
+    }
+
+    /* Coverage Section */
+    .coverage-grid {
+        grid-template-columns: 1fr !important;
+        gap: 40px !important;
+        padding: 0 16px;
+    }
+
+    .coverage-title {
+        font-size: 1.6rem !important;
+        padding: 0 16px;
+    }
+
+    .coverage-footer {
+        font-size: 1rem !important;
+        padding: 0 16px !important;
+    }
+
+    /* Why macWave (Trust) Section */
+    .trust-grid {
+        grid-template-columns: 1fr !important;
+        gap: 40px !important;
+        padding: 0 16px;
+    }
+
+    .why-macwave-section h2 {
+        font-size: 1.6rem !important;
+        padding: 0 16px;
+    }
+
+    /* Comparative Section */
+    .comparative-container {
+        padding: 24px 16px !important;
+        margin: 20px 16px !important;
+        width: auto !important;
+    }
+
+    .comparative-grid {
+        grid-template-columns: 1fr !important;
+        gap: 20px !important;
+    }
+
+    /* Section Padding */
+    .section-padded {
+        padding: 60px 0 !important;
+    }
+
+    /* Certification Badges */
+    .cert-badge,
+    .cert-badge-blue,
+    .cert-badge-glass {
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box;
+    }
+
+    /* Contact Form */
+    .form-grid,
+    .contact-form .form-grid {
+        grid-template-columns: 1fr !important;
+    }
+
+    /* Pricing / Packages */
+    .pricing-grid,
+    .packages-grid {
+        grid-template-columns: 1fr !important;
+    }
+
+    /* Modal */
+    .modal-content {
+        width: 95vw !important;
+        max-height: 90vh !important;
+        overflow-y: auto;
+        padding: 20px 16px !important;
+    }
+
+    /* Marquee / Ticker */
+    .emergency-ticker {
+        font-size: 0.75rem;
+        letter-spacing: 0.5px;
+    }
+}
+
+/* iPhone Pro / Plus (390-430px range — same grid adjustments as above) */
+@media (max-width: 430px) {
+    .trust-grid,
+    .coverage-grid {
+        grid-template-columns: 1fr !important;
+    }
+}
+
+/* Landscape iPhone (short height, wide) */
+@media (max-height: 500px) and (orientation: landscape) {
+    .main-header {
+        padding: 10px 0 !important;
+    }
+
+    h1 {
+        font-size: 1.6rem !important;
+    }
+
+    .section-padded {
+        padding: 40px 0 !important;
+    }
+}

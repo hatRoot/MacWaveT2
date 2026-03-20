@@ -1250,8 +1250,8 @@
                 });
                 // Clear persistence
                 localStorage.removeItem('ods_temp_draft');
-                // New Folio
-                document.getElementById('quote-number').value = getNextFolio(true);
+                // New Folio — read current without incrementing (next PDF will increment)
+                document.getElementById('quote-number').value = getNextFolio();
                 // Clear items and recreate initial empty rows
                 if (itemsContainer) {
                     itemsContainer.innerHTML = '';
@@ -1956,8 +1956,9 @@
                 window.open(doc.output('bloburl'), '_blank');
 
                 // Increment folio counter AFTER capturing it for current PDF/Supabase
-                getNextFolio(true);
-                document.getElementById('quote-number').value = getNextFolio();
+                // Then read the new (next) folio number and display it on the form
+                getNextFolio(true); // increments counter once
+                document.getElementById('quote-number').value = getNextFolio(); // reads without incrementing again
 
                 // ── Auto-save ODS to Supabase ────────────────────────
                 const odsData = {
