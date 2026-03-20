@@ -20,10 +20,10 @@
             --mac-text: #FFFFFF;
             --mac-text-muted: #8E8E93;
             
-            /* iTunes / Snow Leopard Accent Palette */
-            --mac-accent: #058CF5; /* iTunes Blue */
-            --mac-accent-hover: #1FA2FF;
-            --mac-blue: #058CF5; 
+            /* Accents unified with Main Brand (Orange/Bronze) */
+            --mac-accent: #FF6600; /* Brand Orange */
+            --mac-accent-hover: #FF8533;
+            --mac-blue: #0A84FF; /* San Francisco Blue */
             --mac-green: #30D158;
             --mac-red: #FF453A;
             
@@ -40,11 +40,8 @@
         }
 
         body {
-            background-color: #111112;
-            /* Snow Leopard Metallic Feel */
-            background-image: 
-                radial-gradient(circle at center, rgba(255, 255, 255, 0.03) 0%, transparent 100%),
-                linear-gradient(180deg, #1a1a1c 0%, #000000 100%);
+            background-color: var(--mac-bg);
+            background-image: radial-gradient(circle at top right, #1a2a3a, #000);
             color: var(--mac-text);
             height: 100vh;
             display: flex;
@@ -53,7 +50,7 @@
 
         /* Sidebar Navigation - Native macOS Feel */
         .app-sidebar {
-            width: 250px;
+            width: 250px !important;
             background: var(--mac-sidebar);
             border-right: 1px solid var(--mac-border);
             display: flex;
@@ -61,11 +58,9 @@
             padding: 40px 16px;
             z-index: 100;
             height: 100vh;
-            position: fixed; /* Solid Fixed Position */
-            left: 0;
+            position: sticky;
             top: 0;
             flex-shrink: 0;
-            overflow: hidden; /* No scroll inside sidebar */
         }
 
         .nav-label {
@@ -82,81 +77,56 @@
             display: flex;
             align-items: center;
             gap: 12px;
-            height: 48px; /* Consistent Height */
-            width: 100%;  /* Full Sidebar Width */
-            padding: 0 16px;
-            border-radius: 24px; /* Pill style */
-            color: rgba(255, 255, 255, 0.95);
+            height: 40px;
+            padding: 0 12px;
+            border-radius: 10px;
+            color: var(--mac-text);
             text-decoration: none;
             font-size: 13.5px;
-            font-weight: 700;
+            font-weight: 500;
             cursor: pointer;
-            transition: all 0.2s ease;
-            margin-bottom: 12px;
-            white-space: nowrap; /* NO WRAPPING */
-            overflow: hidden;    /* NO OVERFLOW */
-            text-overflow: ellipsis; /* FADE OUT IF TOO LONG */
-            flex-shrink: 0;      /* DO NOT SHRINK */
-            border: 1px solid rgba(255, 255, 255, 0.12);
-            background: linear-gradient(180deg, 
-                rgba(255, 255, 255, 0.12) 0%, 
-                rgba(255, 255, 255, 0.05) 50%, 
-                rgba(0, 0, 0, 0.3) 50.1%, 
-                rgba(0, 0, 0, 0.2) 100%);
+            transition: all 0.2s cubic-bezier(0.25, 0.1, 0.25, 1);
+            margin-bottom: 6px;
+            border: 1px solid transparent;
             position: relative;
-            overflow: hidden;
-            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 2px 4px rgba(0, 0, 0, 0.3);
         }
 
-        /* macOS Aqua Hover */
+        /* macOS Subtle Hover */
         .nav-item:hover {
-            border-color: rgba(255, 255, 255, 0.3);
-            background: linear-gradient(180deg, 
-                rgba(255, 255, 255, 0.15) 0%, 
-                rgba(255, 255, 255, 0.08) 50%, 
-                rgba(255, 255, 255, 0.02) 51%, 
-                rgba(255, 255, 255, 0.1) 100%);
-        }
-
-        /* macOS Snow Leopard / iTunes Active - Refined Blue Gloss */
-        .nav-item.active {
-            background: linear-gradient(180deg, 
-                #5BBEFF 0%, 
-                #058CF5 50%, 
-                #0176D3 51%, 
-                #389DFF 100%);
-            border-color: rgba(255, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0.08);
             color: #fff;
-            box-shadow: 
-                inset 0 1px 1px rgba(255, 255, 255, 0.5),
-                0 0 12px rgba(5, 140, 245, 0.4),
-                0 2px 4px rgba(0, 0, 0, 0.5);
-            text-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
         }
 
-        /* Aqua Highlight Overlay */
-        .nav-item::before {
-            content: '';
-            position: absolute;
-            top: 2px;
-            left: 2px;
-            right: 2px;
-            height: 45%;
-            background: linear-gradient(180deg, rgba(255, 255, 255, 0.35) 0%, rgba(255, 255, 255, 0.1) 100%);
-            border-radius: 18px 18px 4px 4px;
-            pointer-events: none;
-            z-index: 1;
+        /* macOS Active State - Using Brand Orange */
+        .nav-item.active {
+            background: var(--mac-accent);
+            color: #fff;
+            box-shadow: 0 4px 15px rgba(255, 102, 0, 0.2);
+            font-weight: 700;
         }
 
         .nav-item svg {
             width: 18px;
             height: 18px;
-            opacity: 0.8;
-            z-index: 2;
+            opacity: 0.7;
+            transition: opacity 0.2s;
         }
 
-        .nav-item span {
-            z-index: 2;
+        .nav-item.active svg,
+        .nav-item:hover svg {
+            opacity: 1;
+        }
+
+        /* GLASS REFLECTION */
+        .nav-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 50%;
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.15) 0%, transparent 100%);
+            pointer-events: none;
         }
 
         /* --- PREMIUM TICKET STYLE - CREDENCIAL BLANCA --- */
@@ -175,7 +145,7 @@
         }
 
         .golden-ticket .folio-box {
-            background: rgba(5, 140, 245, 0.06);
+            background: rgba(255, 102, 0, 0.06);
             padding: 20px;
             border: 2px dashed var(--mac-accent);
             border-radius: 15px;
@@ -204,7 +174,6 @@
 
         /* Main Content Glass Area */
         .app-main {
-            margin-left: 250px; /* Space for Fixed Sidebar */
             flex-grow: 1;
             display: flex;
             flex-direction: column;
@@ -230,42 +199,32 @@
         }
 
         .btn {
-            background: linear-gradient(180deg, 
-                rgba(255, 255, 255, 0.1) 0%, 
-                rgba(255, 255, 255, 0.05) 50%, 
-                rgba(0, 0, 0, 0.1) 51%, 
-                rgba(0, 0, 0, 0.2) 100%);
-            border: 1px solid rgba(255, 255, 255, 0.15);
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             color: var(--mac-text);
-            padding: 0 24px;
-            height: 48px; /* Consistent Height */
-            min-width: 160px; /* Consistent Width */
-            border-radius: 24px; /* Pill style */
-            font-size: 13.5px;
+            padding: 10px 18px;
+            border-radius: 8px;
+            font-size: 13px;
             font-weight: 700;
             cursor: pointer;
             display: inline-flex;
             align-items: center;
             justify-content: center;
             gap: 8px;
-            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.25s ease;
             position: relative;
             overflow: hidden;
-            box-shadow: 
-                inset 0 1px 0 rgba(255, 255, 255, 0.2), 
-                0 2px 4px rgba(0, 0, 0, 0.5);
-            text-shadow: 0 1px 1px rgba(0, 0, 0, 0.5);
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
         }
 
         .btn::before {
             content: '';
             position: absolute;
-            top: 1px;
-            left: 1px;
-            right: 1px;
-            height: 48%;
-            background: linear-gradient(180deg, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 0.05) 100%);
-            border-radius: 20px 20px 4px 4px;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 50%;
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.12) 0%, transparent 100%);
             pointer-events: none;
             z-index: 1;
         }
@@ -273,28 +232,20 @@
         .btn:hover {
             border-color: rgba(255, 255, 255, 0.3);
             background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-1px);
         }
 
         .btn-primary {
-            background: linear-gradient(180deg, 
-                #5BBEFF 0%, 
-                #058CF5 50%, 
-                #0176D3 51%, 
-                #389DFF 100%);
+            background: var(--mac-accent);
             color: #fff;
-            border-color: rgba(255, 255, 255, 0.3);
-            box-shadow: 
-                inset 0 1px 1px rgba(255, 255, 255, 0.5),
-                0 0 10px rgba(5, 140, 245, 0.2),
-                0 4px 8px rgba(0, 0, 0, 0.4);
+            border-color: rgba(255, 255, 255, 0.1);
+            font-weight: 600;
         }
 
         .btn-primary:hover {
-            filter: brightness(1.1);
-            box-shadow: 
-                inset 0 1px 1px rgba(255, 255, 255, 0.7),
-                0 0 15px rgba(5, 140, 245, 0.4),
-                0 6px 12px rgba(0, 0, 0, 0.5);
+            background: var(--mac-accent-hover);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 15px rgba(255, 102, 0, 0.3);
         }
 
         .btn-whatsapp {
@@ -1049,7 +1000,7 @@
 
         <nav class="nav-group">
             <div class="nav-label">OPERACIONES</div>
-            <button class="nav-item" onclick="switchView('list')" id="nav-list">
+            <button class="nav-item active" onclick="switchView('list')" id="nav-list">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01" />
                 </svg>
@@ -1059,7 +1010,7 @@
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path d="M12 5v14M5 12h14" />
                 </svg>
-                Diagnóstico Profesional
+                Nueva ODS (PDF)
             </button>
             <button class="nav-item" onclick="switchView('kanban')" id="nav-kanban">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -1070,7 +1021,7 @@
                 TABLERO DE ODS
             </button>
             <script>
-                if (['joel.duran.mendoza@me.com', 'joel', 'root'].includes(sessionStorage.getItem('macwave_user'))) {
+                if (sessionStorage.getItem('macwave_user') === 'joel.duran.mendoza@me.com' || sessionStorage.getItem('macwave_user') === 'joel') {
                     document.write(`
                         <button class="nav-item" onclick="switchView('finance')" id="nav-finance">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
@@ -1088,16 +1039,6 @@
                 </svg>
                 Generar Ticket & Historial
             </button>
-            <script>
-                if (['joel.duran.mendoza@me.com', 'joel', 'root'].includes(sessionStorage.getItem('macwave_user'))) {
-                    document.write(`
-                        <button class="nav-item" onclick="alert('Configuración disponible próximamente')" style="margin-top: 8px;">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-2 2 2 2 0 01-2-2v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 01-2-2 2 2 0 012-2h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 012-2 2 2 0 012 2v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 012 2 2 2 0 01-2 2h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
-                            Ajustes
-                        </button>
-                    `);
-                }
-            </script>
         </nav>
 
         <nav class="nav-group" style="margin-top:auto;">
@@ -1653,8 +1594,8 @@
                 'tickets': 'tickets-view-container'
             };
 
-            // Reset active states (removed for consistency)
-            // document.querySelectorAll('.nav-item').forEach(btn => btn.classList.remove('active'));
+            // Reset active states
+            document.querySelectorAll('.nav-item').forEach(btn => btn.classList.remove('active'));
 
             // Hide/Show containers
             Object.values(views).forEach(id => {
@@ -1670,10 +1611,10 @@
                 if (view === 'tickets') target.style.display = 'flex'; // Use flex for unified layout
             }
 
-            // Mark active button (removed for consistency as requested)
-            // if (view === 'list') document.getElementById('nav-list')?.classList.add('active');
-            // if (view === 'kanban') document.getElementById('nav-kanban')?.classList.add('active');
-            // if (view === 'finance') document.getElementById('nav-finance')?.classList.add('active');
+            // Mark active button
+            if (view === 'list') document.getElementById('nav-list')?.classList.add('active');
+            if (view === 'kanban') document.getElementById('nav-kanban')?.classList.add('active');
+            if (view === 'finance') document.getElementById('nav-finance')?.classList.add('active');
 
             // Trigger Renders asynchronously so the button updates instantly! = 10000x faster feeling
             setTimeout(() => {
@@ -2173,7 +2114,7 @@
         }
 
         function renderSidebar(query = '') {
-            const isAdmin = ['joel.duran.mendoza@me.com', 'joel', 'root'].includes(sessionStorage.getItem('macwave_user'));
+            const isJoel = sessionStorage.getItem('macwave_user') === 'joel.duran.mendoza@me.com' || sessionStorage.getItem('macwave_user') === 'joel';
             const listContainer = document.getElementById('ods-list');
             listContainer.innerHTML = '';
 
@@ -2218,7 +2159,7 @@
         });
 
         function renderDetail(o) {
-            const isAdmin = ['joel.duran.mendoza@me.com', 'joel', 'root'].includes(sessionStorage.getItem('macwave_user'));
+            const isJoel = sessionStorage.getItem('macwave_user') === 'joel.duran.mendoza@me.com' || sessionStorage.getItem('macwave_user') === 'joel';
             const detailView = document.getElementById('detail-view');
             const statusColor = getStatusColor(o.status);
 
@@ -2331,7 +2272,7 @@
                             </div>
                         </div>
 
-                        ${isAdmin ? `
+                        ${isJoel ? `
                         <div class="card" style="border-color: #5E5CE6;">
                             <div class="card-title" style="color: #5E5CE6;">
                                 GESTIÓN FINANCIERA (PRIVADO)
@@ -2391,7 +2332,7 @@
                 </div>
             `;
 
-            if (isAdmin) setTimeout(() => window.calculateBalance(), 100);
+            if (isJoel) setTimeout(() => window.calculateBalance(), 100);
             // Bind Event Listeners
             document.getElementById('btn-save-meta').onclick = async function () {
                 const btn = this;

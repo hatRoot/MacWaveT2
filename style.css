@@ -12,12 +12,14 @@
     /* Texto secundario gris muy claro */
     --text-muted: #B0B0B5;
     /* Texto para descripciones o info extra - Brightened from #8E8E93 for better contrast */
-    --accent-orange: #FF6600; /* Original Brand Orange */
-    --accent-blue-itunes: #058CF5; /* Azul iTunes Clásico */
-    --accent-blue-hover: #389DFF;
-    --accent-bronze: #C87533; 
-    --accent-blue: #058CF5;
-    --accent-green: #30D158; /* Verde para WhatsApp */
+
+    /* VARIABLES DE COLOR DE MARCA NARANJA/BRONCE */
+    --accent-orange: #FF6600;
+    /* Naranja fuerte para CTAs y Nav Hover */
+    --accent-bronze: #C87533;
+    --accent-blue: #0A84FF;
+    --accent-green: #30D158;
+    /* Verde para WhatsApp */
     --accent-red: #FF453A;
 
     --border-radius-lg: 12px;
@@ -42,7 +44,7 @@
     }
 
     70% {
-        /* transform: scale(1.05); Removed for stability */
+        transform: scale(1.05);
         box-shadow: 0 0 0 15px rgba(48, 209, 88, 0);
     }
 
@@ -187,28 +189,21 @@ h3 {
 
 /* Header */
 .main-header {
-    background-color: #000101;
-    /* Negro profundo inicial */
-    padding: 10px 0;
-    /* Reduced height for premium slim look */
+    background-color: #000101; /* Negro profundo inicial */
+    padding: 40px 0; /* Huge initially */
     position: sticky !important;
     top: 0;
     left: 0;
     right: 0;
     width: 100%;
     z-index: 10000 !important;
-    transition: padding 0.5s cubic-bezier(0.165, 0.84, 0.44, 1), 
-                background-color 0.5s cubic-bezier(0.165, 0.84, 0.44, 1), 
-                box-shadow 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
-    will-change: padding, background-color, box-shadow;
+    transition: all 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
 
 .main-header.header-scrolled {
-    padding: 4px 0;
-    /* Normal size upon scroll */
-    background-color: rgba(0, 0, 0, 0.35) !important;
-    /* Glassmorphism effect */
+    padding: 8px 0; /* Normal size upon scroll */
+    background-color: rgba(0, 0, 0, 0.35) !important; /* Glassmorphism effect */
     backdrop-filter: blur(25px);
     -webkit-backdrop-filter: blur(25px);
     border-bottom: 1px solid rgba(255, 255, 255, 0.08);
@@ -226,42 +221,28 @@ h3 {
     display: flex;
     align-items: center;
     text-decoration: none;
-    background: #000000;
-    /* Fondo negro sólido para el efecto Dynamic Island */
+    background: #000000; /* Fondo negro sólido para el efecto Dynamic Island */
     padding: 12px 25px;
-    border-radius: 100px;
-    /* Forma de píldora */
+    border-radius: 100px; /* Forma de píldora */
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
-    transition: padding 0.5s cubic-bezier(0.165, 0.84, 0.44, 1), 
-                box-shadow 0.5s cubic-bezier(0.165, 0.84, 0.44, 1), 
-                transform 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
-    will-change: padding, box-shadow, transform;
-    backface-visibility: hidden;
-    transform: translateZ(0);
+    transition: all 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
     border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .header-scrolled .logo a.logo-link {
-    padding: 6px 18px;
-    /* Se compacta al hacer scrdoll */
+    padding: 6px 18px; /* Se compacta al hacer scroll */
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
 }
 
 .logo-img {
-    height: 60px;
-    /* Grande inicialmente en negro */
+    height: 60px; /* Grande inicialmente en negro */
     width: auto;
     margin-right: 15px;
-    transition: height 0.5s cubic-bezier(0.165, 0.84, 0.44, 1), 
-                margin-right 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
-    will-change: height, margin;
-    backface-visibility: hidden;
-    transform: translateZ(0);
+    transition: all 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
 }
 
 .header-scrolled .logo-img {
-    height: 32px;
-    /* Muy compacto en modo vidrio */
+    height: 32px; /* Muy compacto en modo vidrio */
     margin-right: 10px;
 }
 
@@ -275,20 +256,15 @@ h3 {
 
 .logo-brand {
     /* Mac Wave T2 */
-    font-size: 1.8em;
-    /* Ajustado para caber en la píldora */
+    font-size: 1.8em; /* Ajustado para caber en la píldora */
     font-weight: var(--font-weight-bold);
     color: #ffffff !important;
     white-space: nowrap;
-    transition: font-size 0.5s cubic-bezier(0.165, 0.84, 0.44, 1), 
-                color 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
-    will-change: font-size;
-    backface-visibility: hidden;
+    transition: all 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
 }
 
 .header-scrolled .logo-brand {
-    font-size: 1.3em;
-    /* Muy compacto */
+    font-size: 1.3em; /* Muy compacto */
 }
 
 .logo-subtext {
@@ -351,7 +327,7 @@ h3 {
 
 .main-nav a.nav-link-small:hover {
     opacity: 1;
-    color: var(--accent-blue-itunes);
+    color: var(--accent-orange);
 }
 
 .status-circle-yellow {
@@ -396,12 +372,12 @@ h3 {
 }
 
 .nav-link::after {
-    /* LÍNEA AZUL iTunes AL PASAR EL RATÓN */
+    /* LÍNEA NARANJA AL PASAR EL RATÓN */
     content: '';
     position: absolute;
     width: 0;
     height: 2px;
-    background-color: var(--accent-blue-itunes);
+    background-color: var(--accent-orange);
     left: 50%;
     bottom: -5px;
     transform: translateX(-50%);
@@ -450,56 +426,16 @@ h3 {
     border: none;
 }
 
-.cta-button {
-    padding: 0 24px;
-    height: 44px;
-    min-width: 180px;
-    border-radius: 22px;
-    font-size: 14px;
-    font-weight: 700;
-    cursor: pointer;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    transition: all 0.3s ease;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    position: relative;
-    overflow: hidden;
-}
-
 .cta-button.primary {
-    /* BOTÓN PRIMARIO ES AZUL ITUNES AQUA */
-    background: linear-gradient(180deg, 
-        #5BBEFF 0%, 
-        #058CF5 50%, 
-        #0176D3 51%, 
-        #389DFF 100%);
-    color: #fff;
-    box-shadow: 
-        inset 0 1px 1px rgba(255, 255, 255, 0.5),
-        0 4px 15px rgba(5, 140, 245, 0.3);
+    /* BOTÓN PRIMARIO ES NARANJA */
+    background-color: var(--accent-orange);
+    color: var(--primary-bg);
 }
 
 .cta-button.primary:hover {
-    filter: brightness(1.1);
-    /* transform: translateY(-2px); Removed for stability */
-    box-shadow: 
-        0 8px 25px rgba(5, 140, 245, 0.5),
-        inset 0 1px 1px rgba(255, 255, 255, 0.7);
-}
-
-.cta-button.primary::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 48%;
-    background: linear-gradient(180deg, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 0.05) 100%);
-    pointer-events: none;
+    background-color: #FF7B33;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
 }
 
 .cta-button.secondary {
@@ -549,15 +485,15 @@ h3 {
 
 .header-cta.neon-orange {
     background: rgba(255, 102, 0, 0.15);
-    color: #FF6600;
+    color: #ff6600;
     border: 1px solid rgba(255, 102, 0, 0.4);
     box-shadow: 0 0 10px rgba(255, 102, 0, 0.2);
 }
 
 .header-cta.neon-orange:hover {
-    background: #FF6600;
+    background: #ff6600;
     color: #fff;
-    box-shadow: 0 0 20px rgba(255, 102, 0, 0.6);
+    box-shadow: 0 0 200px rgba(255, 102, 0, 0.6);
 }
 
 .large-cta {
@@ -708,43 +644,26 @@ h3 {
 }
 
 .neon-orange {
-    background: linear-gradient(180deg, 
-        #FF9933 0%, 
-        #FF6600 50%, 
-        #CC5200 51%, 
-        #FF3300 100%) !important;
+    background-color: #FF7B33 !important;
     color: white !important;
-    box-shadow: 0 0 15px rgba(255, 102, 0, 0.5), 0 0 30px rgba(255, 102, 0, 0.3) !important;
+    box-shadow: 0 0 10px rgba(255, 123, 51, 0.5), 0 0 20px rgba(255, 123, 51, 0.3) !important;
     border: 1px solid rgba(255, 255, 255, 0.4) !important;
-    text-shadow: 0 0 5px rgba(255, 255, 255, 0.3);
+    text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
     animation: neon-pulse-orange 2s infinite ease-in-out;
-    position: relative;
-    overflow: hidden;
 }
 
-.neon-orange::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 48%;
-    background: linear-gradient(180deg, rgba(255, 255, 255, 0.25) 0%, rgba(255, 255, 255, 0.05) 100%);
-    pointer-events: none;
-}
-
-@keyframes neon-pulse-orange {
+@keyframes neon-pulse-blue {
     0% {
-        box-shadow: 0 0 10px rgba(255, 102, 0, 0.5), 0 0 20px rgba(255, 102, 0, 0.3);
+        box-shadow: 0 0 10px rgba(0, 113, 227, 0.5), 0 0 20px rgba(0, 113, 227, 0.3);
     }
 
     50% {
-        box-shadow: 0 0 25px rgba(255, 102, 0, 0.8), 0 0 40px rgba(255, 102, 0, 0.5);
-        /* transform: scale(1.02); Removed for stability */
+        box-shadow: 0 0 25px rgba(0, 113, 227, 0.8), 0 0 40px rgba(0, 113, 227, 0.5);
+        transform: scale(1.02);
     }
 
     100% {
-        box-shadow: 0 0 10px rgba(255, 102, 0, 0.5), 0 0 20px rgba(255, 102, 0, 0.3);
+        box-shadow: 0 0 10px rgba(0, 113, 227, 0.5), 0 0 20px rgba(0, 113, 227, 0.3);
     }
 }
 
@@ -755,7 +674,7 @@ h3 {
 
     50% {
         box-shadow: 0 0 25px rgba(255, 123, 51, 0.8), 0 0 40px rgba(255, 123, 51, 0.5);
-        /* transform: scale(1.02); Removed for stability */
+        transform: scale(1.02);
     }
 
     100% {
@@ -3779,7 +3698,6 @@ details.modern-accordion[open] {
         display: none !important;
     }
 }
-
 /* Floating WhatsApp Button */
 .floating-wa-btn {
     position: fixed;
@@ -3817,7 +3735,6 @@ details.modern-accordion[open] {
         width: 50px;
         height: 50px;
     }
-
     .floating-wa-btn svg {
         width: 28px;
         height: 28px;
@@ -3845,8 +3762,7 @@ details.modern-accordion[open] {
 }
 
 .cert-badge-dark {
-    background: #48484a;
-    /* Gris Apple Premium */
+    background: #48484a; /* Gris Apple Premium */
     border: 1px solid rgba(255, 255, 255, 0.15);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
@@ -3871,20 +3787,15 @@ details.modern-accordion[open] {
 }
 
 .cert-badge-blue {
-    background: linear-gradient(180deg, 
-        #5BBEFF 0%, 
-        #058CF5 50%, 
-        #0176D3 51%, 
-        #389DFF 100%);
-    border: 1px solid rgba(255, 255, 255, 0.4);
-    box-shadow: 
-        inset 0 1px 1px rgba(255, 255, 255, 0.5),
-        0 4px 15px rgba(5, 140, 245, 0.3);
+    background: linear-gradient(180deg, #007aff 0%, #0056b3 100%);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 4px 12px rgba(0, 122, 255, 0.2);
 }
 
 .cert-badge-blue:hover {
-    filter: brightness(1.1);
+    transform: translateY(-2px);
     box-shadow: 0 8px 24px rgba(0, 122, 255, 0.4);
+    filter: brightness(1.05);
 }
 
 .cert-badge-glass {
@@ -3937,45 +3848,16 @@ details.modern-accordion[open] {
     font-weight: 400;
 }
 
-.cert-badge-dark .cert-badge-title {
-    color: #ff6b00;
-}
-
-.cert-badge-dark .cert-badge-subtitle {
-    color: rgba(255, 255, 255, 0.7);
-}
-
-.cert-badge-orange .cert-badge-title {
-    color: #fff;
-}
-
-.cert-badge-orange .cert-badge-subtitle {
-    color: rgba(255, 255, 255, 0.9);
-}
-
-.cert-badge-blue .cert-badge-title {
-    color: #fff;
-}
-
-.cert-badge-blue .cert-badge-subtitle {
-    color: rgba(255, 255, 255, 0.9);
-}
-
-.cert-badge-gold .cert-badge-title {
-    color: #fff;
-}
-
-.cert-badge-gold .cert-badge-subtitle {
-    color: rgba(255, 255, 255, 0.95);
-}
-
-.cert-badge-glass .cert-badge-title {
-    color: #1d1d1f;
-}
-
-.cert-badge-glass .cert-badge-subtitle {
-    color: #86868b;
-}
+.cert-badge-dark .cert-badge-title { color: #ff6b00; }
+.cert-badge-dark .cert-badge-subtitle { color: rgba(255, 255, 255, 0.7); }
+.cert-badge-orange .cert-badge-title { color: #fff; }
+.cert-badge-orange .cert-badge-subtitle { color: rgba(255, 255, 255, 0.9); }
+.cert-badge-blue .cert-badge-title { color: #fff; }
+.cert-badge-blue .cert-badge-subtitle { color: rgba(255, 255, 255, 0.9); }
+.cert-badge-gold .cert-badge-title { color: #fff; }
+.cert-badge-gold .cert-badge-subtitle { color: rgba(255, 255, 255, 0.95); }
+.cert-badge-glass .cert-badge-title { color: #1d1d1f; }
+.cert-badge-glass .cert-badge-subtitle { color: #86868b; }
 
 /* Emergency Ticker Styles */
 .emergency-ticker {
@@ -3985,8 +3867,7 @@ details.modern-accordion[open] {
     font-size: 0.85rem;
     font-weight: 600;
     text-align: center;
-    position: relative;
-    /* Se queda arriba y se va con el scroll */
+    position: relative; /* Se queda arriba y se va con el scroll */
     z-index: 10001;
     text-transform: uppercase;
     letter-spacing: 1px;
@@ -3999,6 +3880,5 @@ details.modern-accordion[open] {
 }
 
 body {
-    padding-top: 0 !important;
-    /* El header sticky se auto-gestiona */
+    padding-top: 0 !important; /* El header sticky se auto-gestiona */
 }
