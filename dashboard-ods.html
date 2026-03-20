@@ -12,26 +12,24 @@
 
     <style>
         :root {
-            /* Apple GSX / macOS Dark Mode Palette Base */
+            /* Apple macOS Dark Mode - Pure System Palette */
             --mac-bg: #000000;
-            --mac-sidebar: rgba(28, 28, 30, 0.7);
+            --mac-sidebar: #09090b;
             --mac-card: rgba(28, 28, 30, 0.8);
-            --mac-border: rgba(255, 255, 255, 0.1);
-            --mac-text: #F5F5F7;
+            --mac-border: rgba(255, 255, 255, 0.12);
+            --mac-text: #FFFFFF;
             --mac-text-muted: #8E8E93;
-            --mac-blue: #007AFF;
+            
+            /* Accents unified with Main Brand (Orange/Bronze) */
+            --mac-accent: #FF6600; /* Brand Orange */
+            --mac-accent-hover: #FF8533;
+            --mac-blue: #0A84FF; /* San Francisco Blue */
             --mac-green: #30D158;
             --mac-red: #FF453A;
-
-            /* --- WINDOWS VISTA AERO ENGINE --- */
-            --aero-glass: blur(20px) saturate(180%);
-            --vista-blue: #00a2ff;
-            --vista-glow: 0 0 20px rgba(0, 162, 255, 0.6);
-            --vista-active: linear-gradient(180deg,
-                    rgba(255, 255, 255, 0.5) 0%,
-                    rgba(0, 162, 255, 0.8) 50%,
-                    rgba(0, 90, 200, 0.9) 51%,
-                    rgba(0, 150, 255, 0.8) 100%);
+            
+            /* Glass System - Refined Big Sur style */
+            --mac-glass: blur(30px) saturate(150%);
+            --mac-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
         }
 
         * {
@@ -50,17 +48,14 @@
             overflow: hidden;
         }
 
-        /* Sidebar Navigation VISTA AERO SOLID */
+        /* Sidebar Navigation - Native macOS Feel */
         .app-sidebar {
             width: 250px !important;
-            min-width: 250px !important;
-            max-width: 250px !important;
-            background: #09090b;
-            /* Even deeper solid black */
-            border-right: 1px solid rgba(255, 255, 255, 0.15);
+            background: var(--mac-sidebar);
+            border-right: 1px solid var(--mac-border);
             display: flex;
             flex-direction: column;
-            padding: 24px 12px;
+            padding: 40px 16px;
             z-index: 100;
             height: 100vh;
             position: sticky;
@@ -69,73 +64,57 @@
         }
 
         .nav-label {
-            font-size: 13px;
+            font-size: 11px;
             font-weight: 700;
-            color: rgba(255, 255, 255, 0.6);
-            letter-spacing: 0.5px;
-            margin-bottom: 12px;
-            padding-left: 4px;
+            color: var(--mac-text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 20px;
+            padding-left: 12px;
         }
 
         .nav-item {
             display: flex;
             align-items: center;
             gap: 12px;
-            height: 46px;
-            /* Uniform height */
-            padding: 0 16px;
-            border-radius: 8px;
-            /* Smoother corners like the reference */
-            color: rgba(255, 255, 255, 0.95);
+            height: 40px;
+            padding: 0 12px;
+            border-radius: 10px;
+            color: var(--mac-text);
             text-decoration: none;
             font-size: 13.5px;
-            font-weight: 700;
+            font-weight: 500;
             cursor: pointer;
-            transition: all 0.05s ease-out;
-            margin-bottom: 16px;
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            /* Subtle border by default */
-            background: linear-gradient(180deg,
-                    rgba(255, 255, 255, 0.15) 0%,
-                    rgba(255, 255, 255, 0.05) 50%,
-                    rgba(0, 0, 0, 0.5) 50.1%,
-                    rgba(0, 0, 0, 0.3) 100%);
+            transition: all 0.2s cubic-bezier(0.25, 0.1, 0.25, 1);
+            margin-bottom: 6px;
+            border: 1px solid transparent;
             position: relative;
-            overflow: hidden;
-            width: 100%;
-            text-align: left;
-            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), inset 0 0 0 rgba(0, 162, 255, 0), 0 2px 4px rgba(0, 0, 0, 0.5);
         }
 
-        /* VISTA HOVER: Inner Intense Blue Glow */
+        /* macOS Subtle Hover */
         .nav-item:hover {
-            border-color: rgba(0, 162, 255, 0.4);
-            background: linear-gradient(180deg,
-                    rgba(255, 255, 255, 0.2) 0%,
-                    rgba(255, 255, 255, 0.1) 50%,
-                    rgba(0, 40, 80, 0.6) 50.1%,
-                    rgba(0, 80, 140, 0.4) 100%);
-            box-shadow:
-                inset 0 0 15px rgba(0, 162, 255, 0.8),
-                inset 0 1px 0 rgba(255, 255, 255, 0.3),
-                0 2px 4px rgba(0, 0, 0, 0.5);
+            background: rgba(255, 255, 255, 0.08);
             color: #fff;
         }
 
-        /* VISTA ACTIVE: Full Crystal Blue Inner Glow */
+        /* macOS Active State - Using Brand Orange */
         .nav-item.active {
-            border-color: rgba(0, 212, 255, 0.6);
-            background: linear-gradient(180deg,
-                    rgba(255, 255, 255, 0.25) 0%,
-                    rgba(255, 255, 255, 0.12) 50%,
-                    rgba(0, 100, 255, 0.6) 50.1%,
-                    rgba(0, 150, 255, 0.8) 100%);
+            background: var(--mac-accent);
             color: #fff;
-            box-shadow:
-                inset 0 0 25px rgba(0, 212, 255, 0.9),
-                inset 0 1px 0 rgba(255, 255, 255, 0.5),
-                0 2px 4px rgba(0, 0, 0, 0.5);
-            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
+            box-shadow: 0 4px 15px rgba(255, 102, 0, 0.2);
+            font-weight: 700;
+        }
+
+        .nav-item svg {
+            width: 18px;
+            height: 18px;
+            opacity: 0.7;
+            transition: opacity 0.2s;
+        }
+
+        .nav-item.active svg,
+        .nav-item:hover svg {
+            opacity: 1;
         }
 
         /* GLASS REFLECTION */
@@ -166,9 +145,9 @@
         }
 
         .golden-ticket .folio-box {
-            background: rgba(0, 122, 255, 0.06);
+            background: rgba(255, 102, 0, 0.06);
             padding: 20px;
-            border: 2px dashed #007AFF;
+            border: 2px dashed var(--mac-accent);
             border-radius: 15px;
             margin: 25px 0;
         }
@@ -177,7 +156,7 @@
             font-size: 36px;
             font-weight: 900;
             letter-spacing: 2px;
-            color: #007AFF;
+            color: var(--mac-accent);
         }
 
         .nav-item svg {
@@ -193,7 +172,7 @@
             filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.5));
         }
 
-        /* Main Content VISTA Glass */
+        /* Main Content Glass Area */
         .app-main {
             flex-grow: 1;
             display: flex;
@@ -211,12 +190,12 @@
 
         .glass-card {
             background: var(--mac-card);
-            backdrop-filter: var(--aero-glass);
-            -webkit-backdrop-filter: var(--aero-glass);
+            backdrop-filter: var(--mac-glass);
+            -webkit-backdrop-filter: var(--mac-glass);
             border: 1px solid var(--mac-border);
-            border-radius: 16px;
+            border-radius: 20px;
             padding: 24px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+            box-shadow: var(--mac-shadow);
         }
 
         .btn {
@@ -257,19 +236,16 @@
         }
 
         .btn-primary {
-            background: linear-gradient(180deg,
-                    rgba(0, 122, 255, 0.6) 0%,
-                    rgba(0, 100, 255, 0.4) 50%,
-                    rgba(0, 50, 150, 0.8) 50.1%,
-                    rgba(0, 80, 200, 0.7) 100%);
+            background: var(--mac-accent);
             color: #fff;
-            border-color: rgba(0, 122, 255, 0.5);
-            box-shadow: 0 4px 15px rgba(0, 122, 255, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+            border-color: rgba(255, 255, 255, 0.1);
+            font-weight: 600;
         }
 
         .btn-primary:hover {
-            border-color: #007aff;
-            box-shadow: 0 0 15px rgba(0, 122, 255, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.4);
+            background: var(--mac-accent-hover);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 15px rgba(255, 102, 0, 0.3);
         }
 
         .btn-whatsapp {
