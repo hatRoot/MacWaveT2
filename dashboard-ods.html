@@ -1250,7 +1250,14 @@
                 <div style="flex-grow: 1;">
                     <div
                         style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                        <h1 class="folio-title">Historial de Tickets</h1>
+                        <div style="display: flex; align-items: center; gap: 15px;">
+                            <h1 class="folio-title" style="margin: 0;">Historial de Tickets</h1>
+                            <button id="btn-bulk-delete" class="btn" onclick="deleteSelectedTickets()" 
+                                style="display: none; background: var(--mac-red); color: white; border: none; padding: 5px 12px; font-size: 11px; font-weight: 800; border-radius: 6px; cursor: pointer; align-items: center; gap: 5px;">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                                BORRAR SELECCIONADOS (<span id="selected-count">0</span>)
+                            </button>
+                        </div>
                         <input type="text" id="tickets-search" class="search-box" placeholder="Buscar ticket..."
                             style="width: 250px;" oninput="renderTicketsList()">
                     </div>
@@ -1260,6 +1267,9 @@
                             <table style="width: 100%; border-collapse: collapse; font-size: 13px;">
                                 <thead style="background: rgba(255,255,255,0.05);">
                                     <tr style="text-align: left;">
+                                        <th style="padding: 12px; width: 40px; text-align: center;">
+                                            <input type="checkbox" id="select-all-tickets" onchange="toggleAllTickets(this)" style="cursor: pointer;">
+                                        </th>
                                         <th style="padding: 12px; color: var(--mac-text-muted);">Folio</th>
                                         <th style="padding: 12px; color: var(--mac-text-muted);">Fecha</th>
                                         <th style="padding: 12px; color: var(--mac-text-muted);">Cliente</th>
@@ -1686,6 +1696,7 @@
             }
         }
 
+        // --- TICKETS LOGIC REBUILT ---
         function renderTicketsList() {
             const tableBody = document.getElementById('tickets-table-body');
             const searchVal = document.getElementById('tickets-search')?.value.toLowerCase() || '';
@@ -1698,13 +1709,17 @@
 
             if (filtered.length === 0) {
                 tableBody.innerHTML = `<tr><td colspan="6" style="padding: 40px; text-align: center; color: var(--mac-text-muted);">No se encontraron tickets.</td></tr>`;
+                updateBulkDeleteButton();
                 return;
             }
 
             tableBody.innerHTML = filtered.map(t => {
                 const date = t.created_at ? new Date(t.created_at).toLocaleDateString() : 'N/A';
                 return `
-                    <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                    <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);" class="ticket-row" data-id="${t.id}" data-folio="${t.folio}">
+                        <td style="padding: 12px; text-align: center;">
+                            <input type="checkbox" class="ticket-checkbox" onchange="updateBulkDeleteButton()" value="${t.id}" data-folio="${t.folio}" style="cursor: pointer;">
+                        </td>
                         <td style="padding: 12px; font-weight: 700; color: var(--mac-blue);">${t.folio || 'N/A'}</td>
                         <td style="padding: 12px; color: var(--mac-text-muted);">${date}</td>
                         <td style="padding: 12px;">
@@ -1722,45 +1737,85 @@
                 `;
             }).join('');
             
-            // Generate the consecutive code correctly after data is rendered
-            if (typeof updateFolioPreview === 'function') {
-                updateFolioPreview();
+            updateBulkDeleteButton();
+            if (typeof updateFolioPreview === 'function') updateFolioPreview();
+        }
+
+        function toggleAllTickets(master) {
+            document.querySelectorAll('.ticket-checkbox').forEach(cb => cb.checked = master.checked);
+            updateBulkDeleteButton();
+        }
+
+        function updateBulkDeleteButton() {
+            const selected = document.querySelectorAll('.ticket-checkbox:checked');
+            const btn = document.getElementById('btn-bulk-delete');
+            const counter = document.getElementById('selected-count');
+            
+            if (selected.length > 0) {
+                btn.style.display = 'inline-flex';
+                counter.textContent = selected.length;
+            } else {
+                btn.style.display = 'none';
+                if (document.getElementById('select-all-tickets')) document.getElementById('select-all-tickets').checked = false;
             }
         }
 
-        // --- TICKETS LOGIC ---
-        async function deleteTicketTaller(id, folio) {
-            if (!confirm(`T800: ¿Confirmas eliminación total de ${folio}?`)) return;
+        async function deleteSelectedTickets() {
+            const selected = document.querySelectorAll('.ticket-checkbox:checked');
+            if (selected.length === 0) return;
+
+            if (!confirm(`T-800 PROTOCOL: ¿Confirmas la eliminación masiva de ${selected.length} tickets?`)) return;
+
+            const ids = Array.from(selected).map(cb => cb.value);
+            const folios = Array.from(selected).map(cb => cb.getAttribute('data-folio'));
+
+            // Show loading state
+            const btn = document.getElementById('btn-bulk-delete');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = 'ELIMINANDO...';
+            btn.disabled = true;
+
             try {
-                console.log(`[T800] Iniciando protocolo de borrado para Folio: ${folio}`);
+                // Delete from Supabase
+                const { error } = await supabaseClient
+                    .from('tickets_taller')
+                    .delete()
+                    .in('id', ids);
+
+                if (error) throw error;
+
+                // Success! Clean local memory
+                allTickets = allTickets.filter(t => !ids.includes(t.id.toString()) && !folios.includes(t.folio));
                 
-                // Intento de borrado directo y agresivo
+                alert(`Protocolo completado: ${ids.length} tickets eliminados correctamente.`);
+            } catch (err) {
+                console.error("Bulk Delete Error:", err);
+                alert("Error en borrado masivo: " + err.message);
+            } finally {
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+                renderTicketsList();
+            }
+        }
+
+        async function deleteTicketTaller(id, folio) {
+            if (!confirm(`T-800: ¿Confirmas eliminación de ${folio}?`)) return;
+            try {
                 const { error, count } = await supabaseClient
                     .from('tickets_taller')
                     .delete({ count: 'exact' })
-                    .or(`id.eq.${id},folio.eq.${folio}`); // Borra por ID O por Folio en un solo paso
+                    .or(`id.eq.${id},folio.eq.${folio}`);
 
-                if (error) {
-                    console.error("[T800 Error] Supabase rechazó el borrado:", error);
-                    alert(`Error de base de datos: ${error.message}. Es posible que no tengas permisos de borrado (RLS) activados en Supabase.`);
-                    return;
-                }
+                if (error) throw error;
 
-                if (count === 0) {
-                    console.warn("[T800 Warning] Supabase no encontró el ticket para borrar.");
-                    alert("Atención: Supabase dice que ese ticket no existe o ya fue borrado. Si sigue apareciendo, intenta recargar la página con Ctrl+F5.");
-                } else {
-                    console.log(`[T800 Success] ${count} registros eliminados de la nube.`);
-                    alert(`Éxito: Se eliminaron ${count} registro(s) correctamente.`);
-                }
-
-                // Limpieza local inmediata y agresiva
-                allTickets = allTickets.filter(t => t.folio !== folio && (id ? t.id !== id : true));
+                // Sync local state
+                allTickets = allTickets.filter(t => t.folio !== folio && (id ? t.id.toString() !== id.toString() : true));
                 renderTicketsList();
                 
+                console.log(`[T800] Ticket ${folio} eliminado.`);
             } catch (err) {
-                console.error("[T800 Critical Fallo]", err);
-                alert('Fallo crítico en el sistema de borrado T800.');
+                console.error("Delete Error:", err);
+                alert('No se pudo eliminar el ticket.');
             }
         }
 
