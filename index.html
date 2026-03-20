@@ -127,7 +127,7 @@
             "name": "¿Cuánto cuesta reparar una MacBook mojada en CDMX?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "El costo depende del daño a la tarjeta lógica. En Mac Wave T2 reparamos a nivel componente, lo cual es hasta un 60% más económico que cambiar toda la pieza en centros oficiales. Ofrecemos diagnóstico técnico profesional."}
+              "text": "El costo depende del daño a la tarjeta lógica. En Mac Wave T2 reparamos a nivel componente, lo cual es hasta un 60% más económico que cambiar toda la pieza en centros oficiales. Ofrecemos diagnóstico técnico profesional."
             }
           },
           {
@@ -249,7 +249,7 @@
     "name": "¿Cuánto cobran por revisar una Mac?",
     "acceptedAnswer": {
     "@type": "Answer",
-    "text": "En Mac Wave T2 ofrecemos diagnóstico técnico para todos los modelos de MacBook Pro y MacBook Air. Nuestro objetivo es que conozcas el problema real y el costo total antes de comprometerte a cualquier gasto. ¡Transparencia total!"}
+    "text": "En Mac Wave T2 ofrecemos diagnóstico técnico para todos los modelos de MacBook Pro y MacBook Air. Nuestro objetivo es que conozcas el problema real y el costo total antes de comprometerte a cualquier gasto. ¡Transparencia total!"
     }
     },{
     "@type": "Question",
@@ -558,37 +558,132 @@
                 </div>
 
                 <!-- Comparative Conversion Section -->
-                <div style="background: #111; border: 1px solid #333; border-radius: 16px; padding: 40px; margin: 50px auto; text-align: left; max-width: 900px;">
-                    <div class="comparative-grid" style="display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 40px; align-items: center;">
-                        <div>
-                            <h3 style="color: #ff6b00; font-size: 1.8rem; margin-bottom: 20px;">¿En la Apple Store te dijeron que no tiene arreglo?</h3>
-                            <p style="color: #ccc; font-size: 1.05rem; line-height: 1.7;">A diferencia de los centros oficiales, nosotros <strong>no nos limitamos a cambiar piezas completas</strong>. Salvamos tu equipo con microsoldadura avanzada, reparando solo los componentes dañados en la tarjeta lógica.</p>
-                            <ul style="list-style: none; padding: 0; margin-top: 25px; color: #fff;">
-                                <li style="margin-bottom: 12px; display: flex; align-items: center; gap: 10px;">
-                                    <span style="color: #30D158;">✓</span> Ahorra hasta un 60% vs. cambio de lógica oficial.
+                <div class="comparative-container">
+                    <div class="comparative-grid">
+                        <div class="comparative-content">
+                            <h3>¿En la Apple Store te dijeron que no tiene arreglo?</h3>
+                            <p>A diferencia de los centros oficiales, nosotros <strong>no nos limitamos a cambiar piezas completas</strong>. Salvamos tu equipo con microsoldadura avanzada, reparando solo los componentes dañados en la tarjeta lógica.</p>
+                            <ul>
+                                <li>
+                                    <span class="check-icon">✓</span> <span>Ahorra hasta un 60% vs. cambio de lógica oficial.</span>
                                 </li>
-                                <li style="margin-bottom: 12px; display: flex; align-items: center; gap: 10px;">
-                                    <span style="color: #30D158;">✓</span> Recuperamos tu información de equipos "muertos".
+                                <li>
+                                    <span class="check-icon">✓</span> <span>Recuperamos tu información de equipos "muertos".</span>
                                 </li>
-                                <li style="margin-bottom: 12px; display: flex; align-items: center; gap: 10px;">
-                                    <span style="color: #30D158;">✓</span> Garantía real por escrito de 3 a 6 meses.
+                                <li>
+                                    <span class="check-icon">✓</span> <span>Garantía real por escrito de 3 a 6 meses.</span>
                                 </li>
                             </ul>
                         </div>
-                        <div class="comparative-badge" style="text-align: center;">
-                            <div style="background: rgba(255,255,255,0.03); padding: 35px 25px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.08); backdrop-filter: blur(10px);">
-                                <span style="font-size: 3.5rem; display: block; margin-bottom: 15px;">🔬</span>
-                                <h4 style="color: #fff; font-size: 1.2rem; margin-bottom: 12px;">Única Certificación</h4>
-                                <p style="font-size: 0.95rem; color: #888; line-height: 1.5;">Contamos con la certificación ACSP oficial de Apple, avalada internacionalmente. Somos el único centro en CDMX con este nivel de ingeniería real para rescatar tu hardware.</p>
+                        <div class="comparative-badge">
+                            <div class="badge-inner">
+                                <span class="badge-icon">🔬</span>
+                                <h4>Única Certificación</h4>
+                                <p>Contamos con la certificación ACSP oficial de Apple, avalada internacionalmente. Somos el único centro en CDMX con este nivel de ingeniería real para rescatar tu hardware.</p>
                             </div>
                         </div>
                     </div>
                 </div>
 
                 <style>
+                    .comparative-container {
+                        background: #111;
+                        border: 1px solid #333;
+                        border-radius: 16px;
+                        padding: 40px;
+                        margin: 50px auto;
+                        text-align: left;
+                        max-width: 900px;
+                        width: 90%;
+                    }
+                    .comparative-grid {
+                        display: grid;
+                        grid-template-columns: 1.2fr 0.8fr;
+                        gap: 40px;
+                        align-items: center;
+                    }
+                    .comparative-content h3 {
+                        color: #ff6b00;
+                        font-size: clamp(1.4rem, 4vw, 1.8rem);
+                        margin-bottom: 20px;
+                        line-height: 1.3;
+                    }
+                    .comparative-content p {
+                        color: #ccc;
+                        font-size: clamp(0.95rem, 2.5vw, 1.05rem);
+                        line-height: 1.6;
+                    }
+                    .comparative-content ul {
+                        list-style: none;
+                        padding: 0;
+                        margin-top: 25px;
+                        color: #fff;
+                    }
+                    .comparative-content li {
+                        margin-bottom: 12px;
+                        display: flex;
+                        align-items: flex-start;
+                        gap: 10px;
+                        font-size: clamp(0.9rem, 2vw, 1rem);
+                        line-height: 1.4;
+                    }
+                    .check-icon {
+                        color: #30D158;
+                        flex-shrink: 0;
+                        font-weight: bold;
+                        margin-top: 2px;
+                    }
+                    .comparative-badge {
+                        text-align: center;
+                    }
+                    .badge-inner {
+                        background: rgba(255,255,255,0.03);
+                        padding: 35px 25px;
+                        border-radius: 16px;
+                        border: 1px solid rgba(255,255,255,0.08);
+                        backdrop-filter: blur(10px);
+                        -webkit-backdrop-filter: blur(10px);
+                    }
+                    .badge-icon {
+                        font-size: 3.5rem;
+                        display: block;
+                        margin-bottom: 15px;
+                    }
+                    .badge-inner h4 {
+                        color: #fff;
+                        font-size: 1.2rem;
+                        margin-bottom: 12px;
+                    }
+                    .badge-inner p {
+                        font-size: 0.95rem;
+                        color: #888;
+                        line-height: 1.5;
+                    }
+
                     @media (max-width: 768px) {
-                        .comparative-grid { grid-template-columns: 1fr; text-align: center; }
-                        .comparative-grid ul li { justify-content: center; }
+                        .comparative-container {
+                            padding: 24px 20px;
+                            margin: 30px auto;
+                            width: 92%;
+                        }
+                        .comparative-grid {
+                            grid-template-columns: 1fr;
+                            gap: 24px;
+                            text-align: center;
+                        }
+                        .comparative-content {
+                            text-align: left;
+                        }
+                        .comparative-content ul {
+                            margin-top: 20px;
+                        }
+                        .badge-inner {
+                            padding: 24px 20px;
+                        }
+                        .badge-icon {
+                            font-size: 3rem;
+                            margin-bottom: 10px;
+                        }
                     }
                 </style>
 
