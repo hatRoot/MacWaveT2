@@ -139,11 +139,11 @@
             box-shadow:
                 0 4px 10px rgba(0, 0, 0, 0.2),
                 inset 0 1px 0 rgba(255, 255, 255, 0.4);
-            transition: transform 0.1s;
+            /* transition: transform 0.1s; Removed for stability */
         }
 
         .gel-button:active {
-            transform: scale(0.98);
+            /* transform: scale(0.98); Removed for stability */
             background: linear-gradient(to bottom,
                     #0066e6 0%,
                     #1a80ff 50%,
@@ -231,9 +231,17 @@
             }
 
             // Joel Specific Bypass (Manual credentials)
-            if (email === 'joel.duran.mendoza@me.com' && password === 'Joshua1986') {
+            if (email === 'joel.duran.mendoza@me.com' && password === 'Joshua1986' || (email === 'joel' && password === 'admin')) {
                 sessionStorage.setItem('macwave_session', 'authorized');
                 sessionStorage.setItem('macwave_user', 'joel');
+                window.location.href = 'dashboard-ods.html';
+                return;
+            }
+
+            // Procell Bypass
+            if (email === 'procell.bip@gmail.com' && password === 'Llave2026$') {
+                sessionStorage.setItem('macwave_session', 'authorized');
+                sessionStorage.setItem('macwave_user', 'procell');
                 window.location.href = 'dashboard-ods.html';
                 return;
             }
@@ -247,7 +255,7 @@
                 if (error) throw error;
 
                 // Joel Super User Restriction (Email check for Supabase users)
-                const authorizedEmails = ['joel.duran.mendoza@me.com', 'joel@macwave.com.mx', 'contabilidad@macwave.com.mx', 'contacto@macwave.com.mx'];
+                const authorizedEmails = ['joel.duran.mendoza@me.com', 'joel@macwave.com.mx', 'contabilidad@macwave.com.mx', 'contacto@macwave.com.mx', 'procell.bip@gmail.com'];
 
                 if (authorizedEmails.includes(email.toLowerCase())) {
                     sessionStorage.setItem('macwave_session', 'authorized');

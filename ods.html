@@ -30,8 +30,8 @@
 
     <style>
         :root {
-            --primary: #ff6600;
-            --primary-hover: #ff7700;
+            --primary: #058CF5;
+            --primary-hover: #389DFF;
             --bg-dark: #000000;
             --card-bg: rgba(28, 28, 30, 0.7);
             --text-main: #f5f5f7;
@@ -39,20 +39,20 @@
             --border: rgba(255, 255, 255, 0.1);
             --radius: 12px;
             --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-            --accent-red: #ff6600;
-            --apple-blue: #ff6600;
+            --accent-red: #ff3b30;
+            --apple-blue: #058CF5;
             --preview-bg: #ffffff;
-            --terms-teal: #ff6600;
+            --terms-teal: #058CF5;
 
             /* MacWave GSX Theme */
             --mac-bg: #000000;
-            --mac-sidebar: #1C1C1E;
+            --mac-sidebar: #09090b;
             --mac-card: #1C1C1E;
             --mac-card-hover: #2C2C2E;
             --mac-border: #38383A;
             --mac-text: #F5F5F7;
             --mac-text-muted: #8E8E93;
-            --mac-blue: #ff6600;
+            --mac-blue: #058CF5; /* iTunes Blue */
             --mac-green: #30D158;
             --mac-red: #ff3b30;
             --mac-input-bg: #2C2C2E;
@@ -89,25 +89,28 @@
         }
 
         body.embedded .app-main {
-            padding: 20px !important;
+            padding: 24px !important;
+            margin-left: 0 !important;
+            width: 100% !important;
         }
 
         /* Sidebar Navigation VISTA AERO SOLID */
         .app-sidebar {
-            width: 250px !important;
-            min-width: 250px !important;
-            max-width: 250px !important;
+            width: 250px;
+            min-width: 250px;
+            max-width: 250px;
             background: #09090b;
-            /* Even deeper solid black */
             border-right: 1px solid rgba(255, 255, 255, 0.15);
             display: flex;
             flex-direction: column;
-            padding: 24px 12px;
+            padding: 40px 16px; /* Matches dashboard for stability */
             z-index: 100;
             height: 100vh;
-            position: sticky;
+            position: fixed;
+            left: 0;
             top: 0;
             flex-shrink: 0;
+            overflow: hidden;
         }
 
         .nav-label {
@@ -123,39 +126,41 @@
             display: flex;
             align-items: center;
             gap: 12px;
-            height: 46px;
-            /* Uniform height */
+            height: 48px;
             padding: 0 16px;
-            border-radius: 8px;
+            border-radius: 24px;
             color: rgba(255, 255, 255, 0.95);
             text-decoration: none;
             font-size: 13.5px;
             font-weight: 700;
             cursor: pointer;
-            transition: all 0.05s ease-out;
-            margin-bottom: 16px;
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            /* Subtle border */
-            background: linear-gradient(180deg,
-                    rgba(255, 255, 255, 0.15) 0%,
-                    rgba(255, 255, 255, 0.05) 50%,
-                    rgba(0, 0, 0, 0.5) 50.1%,
-                    rgba(0, 0, 0, 0.3) 100%);
+            transition: all 0.2s ease;
+            margin-bottom: 12px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            flex-shrink: 0;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: linear-gradient(180deg, 
+                rgba(255, 255, 255, 0.08) 0%, 
+                rgba(255, 255, 255, 0.03) 50%, 
+                rgba(0, 0, 0, 0.2) 50.1%, 
+                rgba(0, 0, 0, 0.15) 100%);
             position: relative;
             overflow: hidden;
             width: 100%;
             text-align: left;
-            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), inset 0 0 0 rgba(0, 162, 255, 0), 0 2px 4px rgba(0, 0, 0, 0.5);
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 2px 4px rgba(0, 0, 0, 0.4);
         }
 
         /* VISTA HOVER: Intense Blue Glow */
         .nav-item:hover {
-            border-color: rgba(0, 162, 255, 0.4);
-            background: linear-gradient(180deg,
-                    rgba(255, 255, 255, 0.2) 0%,
-                    rgba(255, 255, 255, 0.1) 50%,
-                    rgba(0, 40, 80, 0.6) 50.1%,
-                    rgba(0, 80, 140, 0.4) 100%);
+            border-color: rgba(255, 255, 255, 0.3);
+            background: linear-gradient(180deg, 
+                rgba(255, 255, 255, 0.15) 0%, 
+                rgba(255, 255, 255, 0.08) 50%, 
+                rgba(255, 255, 255, 0.02) 51%, 
+                rgba(255, 255, 255, 0.1) 100%);
             box-shadow:
                 inset 0 0 15px rgba(0, 162, 255, 0.8),
                 inset 0 1px 0 rgba(255, 255, 255, 0.3),
@@ -165,18 +170,18 @@
 
         /* VISTA ACTIVE: Full Crystal Blue */
         .nav-item.active {
-            border-color: rgba(0, 212, 255, 0.6);
-            background: linear-gradient(180deg,
-                    rgba(255, 255, 255, 0.25) 0%,
-                    rgba(255, 255, 255, 0.12) 50%,
-                    rgba(0, 100, 255, 0.6) 50.1%,
-                    rgba(0, 150, 255, 0.8) 100%);
+            border-color: rgba(255, 255, 255, 0.4);
+            background: linear-gradient(180deg, 
+                #5BBEFF 0%, 
+                #058CF5 50%, 
+                #0176D3 51%, 
+                #389DFF 100%);
             color: #fff;
             box-shadow:
-                inset 0 0 25px rgba(0, 212, 255, 0.9),
+                inset 0 0 10px rgba(0, 212, 255, 0.3),
                 inset 0 1px 0 rgba(255, 255, 255, 0.5),
-                0 2px 4px rgba(0, 0, 0, 0.5);
-            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
+                0 4px 10px rgba(5, 140, 245, 0.3);
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
         }
 
         /* GLASS REFLECTION */
@@ -202,12 +207,14 @@
         }
 
         .app-main {
+            margin-left: 250px; /* Space for Fixed Sidebar */
             flex-grow: 1;
             display: flex;
             flex-direction: column;
             overflow-y: auto;
             position: relative;
             padding: 40px;
+            width: calc(100% - 250px);
         }
 
         .app-container {
@@ -362,28 +369,29 @@
         }
 
         .btn-primary {
-            background: linear-gradient(180deg,
-                    rgba(255, 102, 0, 0.6) 0%,
-                    rgba(255, 102, 0, 0.4) 50%,
-                    rgba(150, 50, 0, 0.8) 50.1%,
-                    rgba(180, 60, 0, 0.9) 100%);
+            background: linear-gradient(180deg, 
+                #5BBEFF 0%, 
+                #058CF5 50%, 
+                #0176D3 51%, 
+                #389DFF 100%);
             color: #fff;
             width: 100%;
-            border-color: rgba(255, 102, 0, 0.5);
-            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3), 0 4px 15px rgba(255, 102, 0, 0.3);
+            height: 48px; /* Standard Height */
+            border-color: rgba(255, 255, 255, 0.3);
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 4px 15px rgba(5, 140, 245, 0.3);
+        }
+
+        /* Hover y estados */
+        .btn:hover {
+            filter: brightness(1.15) saturate(1.1);
+            box-shadow: 0 8px 25px rgba(5, 140, 245, 0.4);
+            /* Transform removed for stability */
         }
 
         .btn-primary:hover {
-            border-color: #ff6600;
-            background: linear-gradient(180deg,
-                    rgba(255, 120, 20, 0.7) 0%,
-                    rgba(255, 100, 0, 0.5) 50%,
-                    rgba(180, 60, 0, 0.9) 50.1%,
-                    rgba(255, 102, 0, 1) 100%);
-            box-shadow:
-                0 0 20px rgba(255, 102, 0, 0.5),
-                inset 0 1px 0 rgba(255, 255, 255, 0.4);
-            transform: translateY(-1px);
+            filter: brightness(1.1);
+            /* transform: translateY(-1px); Removed for stability */
+            box-shadow: 0 6px 20px rgba(5, 140, 245, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.5);
         }
 
         .btn-secondary {
@@ -408,7 +416,7 @@
             box-shadow:
                 0 0 25px rgba(255, 215, 0, 0.5),
                 inset 0 1px 0 rgba(255, 255, 255, 0.4);
-            transform: translateY(-1px);
+            /* transform: translateY(-1px); Removed for stability as requested */
         }
 
         /* WYSIWYG PREVIEW - GOLD STANDARD CLONE */
@@ -868,11 +876,11 @@
                 </svg>
                 Reparaciones (ODS)
             </button>
-            <button class="nav-item active" onclick="window.location.href='ods.html'">
+            <button class="nav-item" onclick="window.location.href='ods.html'">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path d="M12 5v14M5 12h14" />
                 </svg>
-                Nueva ODS (PDF)
+                Diagnóstico Profesional
             </button>
             <button class="nav-item" onclick="window.location.href='dashboard-ods.html?view=kanban'">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -883,7 +891,7 @@
                 TABLERO DE ODS
             </button>
             <script>
-                if (sessionStorage.getItem('macwave_user') === 'joel.duran.mendoza@me.com' || sessionStorage.getItem('macwave_user') === 'joel') {
+                if (['joel.duran.mendoza@me.com', 'joel', 'root'].includes(sessionStorage.getItem('macwave_user'))) {
                     document.write(`
                         <button class="nav-item" onclick="window.location.href='dashboard-ods.html?view=finance'">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
@@ -901,6 +909,16 @@
                 </svg>
                 Generar Ticket & Historial
             </button>
+            <script>
+                if (['joel.duran.mendoza@me.com', 'joel', 'root'].includes(sessionStorage.getItem('macwave_user'))) {
+                    document.write(`
+                        <button class="nav-item" onclick="alert('Configuración disponible próximamente')" style="margin-top: 8px;">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-2 2 2 2 0 01-2-2v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 01-2-2 2 2 0 012-2h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 012-2 2 2 0 012 2v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 012 2 2 2 0 01-2 2h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+                            Ajustes
+                        </button>
+                    `);
+                }
+            </script>
         </nav>
 
         <nav class="nav-group" style="margin-top:auto;">
@@ -945,7 +963,7 @@
                             </div>
                             <div class="form-group">
                                 <label>Técnico</label>
-                                <input type="text" id="tech-name" placeholder="Ej. Joel Duran">
+                                <input type="text" id="tech-name" value="Issac" placeholder="Ej. Joel Duran">
                             </div>
                             <div class="form-group">
                                 <label>Fecha de Emisión</label>
@@ -981,12 +999,12 @@
                         <div class="header-with-toggle" style="margin-top: 10px;">
                             <div class="section-title" style="margin-bottom: 0;">CONCEPTOS</div>
                             <label class="switch">
-                                <input type="checkbox" id="toggle-concepts" checked>
+                                <input type="checkbox" id="toggle-concepts">
                                 <span class="slider"></span>
                             </label>
                         </div>
                         
-                        <div id="concepts-controls-wrapper" style="margin-top: 20px;">
+                        <div id="concepts-controls-wrapper" style="margin-top: 20px; display: none;">
                             <div class="items-header">
                                 <span>Descripción</span>
                                 <span style="text-align: right;">Unitario</span>
@@ -1013,25 +1031,25 @@
                         <div class="header-with-toggle" style="margin-top: 10px;">
                             <div class="section-title" style="margin-bottom: 0;">CONFIGURACIÓN BANCARIA</div>
                             <label class="switch">
-                                <input type="checkbox" id="toggle-bank" checked>
+                                <input type="checkbox" id="toggle-bank">
                                 <span class="slider"></span>
                             </label>
                         </div>
 
-                        <div id="bank-controls-wrapper" style="margin-top: 20px;">
+                        <div id="bank-controls-wrapper" style="margin-top: 20px; display: none;">
                             <div class="form-grid">
                                 <div class="form-group">
                                     <label>CLABE</label>
-                                    <input type="text" id="clabe" placeholder="Ej. 012 180..." value="012 180015766935846">
+                                    <input type="text" id="clabe" placeholder="Ej. 012 180..." value="012 180015766935846" readonly class="readonly-faint">
                                 </div>
                                 <div class="form-group">
                                     <label>CUENTA</label>
-                                    <input type="text" id="account-number" placeholder="Ej. 1576..." value="1576693584">
+                                    <input type="text" id="account-number" placeholder="Ej. 1576..." value="1576693584" readonly class="readonly-faint">
                                 </div>
                                 <div class="form-group">
                                     <label>TARJETA</label>
                                     <input type="text" id="card-number" placeholder="Ej. 4152..."
-                                        value="4152 3144 2988 0571">
+                                        value="4152 3144 2988 0571" readonly class="readonly-faint">
                                 </div>
                             </div>
                         </div>
@@ -1180,6 +1198,8 @@
                     techNameInput.value = 'Joel Duran';
                 } else if (currentUser === 'root') {
                     techNameInput.value = 'ADMIN';
+                } else {
+                    techNameInput.value = 'Issac';
                 }
 
                 if (techNameInput.value) {
@@ -2133,6 +2153,7 @@
             );
             // Initial QR and update
             setTimeout(generatePreviewQR, 200);
+            checkPhotosVisibility();
             update();
 
             // --- Catalog Integration (Pull from Dashboard Catalog) ---
