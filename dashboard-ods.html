@@ -915,7 +915,7 @@
                 </svg>
                 Reparaciones (ODS)
             </button>
-            <button class="nav-item" onclick="window.location.href='ods.html'" id="nav-quote">
+            <button class="nav-item" onclick="switchView('quote')" id="nav-quote">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path d="M12 5v14M5 12h14" />
                 </svg>
@@ -929,19 +929,12 @@
                 </svg>
                 TABLERO DE ODS
             </button>
-            <script>
-                const userRole = sessionStorage.getItem('macwave_user');
-                const isAdmin = (userRole === 'joel.duran.mendoza@me.com' || userRole === 'joel' || userRole === 'root');
-                
-                if (isAdmin) {
-                    document.write(`
-                        <button class="nav-item" onclick="switchView('finance')" id="nav-finance">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
-                            Balances Finanzas
-                        </button>
-                    `);
-                }
-            </script>
+            <button class="nav-item" onclick="switchView('finance')" id="nav-finance" style="display: none;">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 1v22M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6" />
+                </svg>
+                Balances Finanzas
+            </button>
         </nav>
 
         <nav class="nav-group" style="padding-top: 16px;">
@@ -951,18 +944,14 @@
                 </svg>
                 Generar Ticket & Historial
             </button>
-            <script>
-                if (isAdmin) {
-                    document.write(`
-                        <button class="nav-item" onclick="switchView('settings')" id="nav-settings">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-2 2 2 2 0 01-2-2v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 01-2-2 2 2 0 012-2h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 012-2 2 2 0 012 2v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 012 2 2 2 0 01-2 2h-.09a1.65 1.65 0 00-1.51 1z"/>
-                            </svg>
-                            Ajustes
-                        </button>
-                    `);
-                }
-            </script>
+            <button class="nav-item" onclick="switchView('settings')" id="nav-settings" style="display: none;">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="3" />
+                    <path
+                        d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-2 2 2 2 0 01-2-2v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 01-2-2 2 2 0 012-2h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 012-2 2 2 0 012 2v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 012 2 2 2 0 01-2 2h-.09a1.65 1.65 0 00-1.51 1z" />
+                </svg>
+                Ajustes
+            </button>
         </nav>
 
         <nav class="nav-group" style="margin-top:auto;">
@@ -1384,10 +1373,22 @@
             'Nota General': { color: '#8E8E93' } // Gray (Neutral)
         };
 
+        // Global state
         let allODS = [];
         let allTickets = [];
         let currentSelectedId = null;
         let currentView = 'list'; // 'list' or 'kanban'
+
+        const userRole = sessionStorage.getItem('macwave_user');
+        const isAdmin = (userRole === 'joel.duran.mendoza@me.com' || userRole === 'joel' || userRole === 'root');
+
+        // Init admin UI
+        window.addEventListener('DOMContentLoaded', () => {
+            if (isAdmin) {
+                if (document.getElementById('nav-finance')) document.getElementById('nav-finance').style.display = 'flex';
+                if (document.getElementById('nav-settings')) document.getElementById('nav-settings').style.display = 'flex';
+            }
+        });
 
         function getStatusColor(status) {
             return STATUS_CONFIG[status] ? STATUS_CONFIG[status].color : '#8E8E93';
@@ -1577,7 +1578,8 @@
                 'kanban': 'kanban-view-container',
                 'finance': 'finance-view-container',
                 'tickets': 'tickets-view-container',
-                'settings': 'settings-view-container'
+                'settings': 'settings-view-container',
+                'quote': 'quote-view-container'
             };
 
             // Reset active states
@@ -1599,6 +1601,9 @@
                     target.style.display = 'flex';
                     renderUsers();
                 }
+                if (view === 'quote') {
+                    target.style.display = 'block';
+                }
             }
 
             // Mark active button
@@ -1612,6 +1617,10 @@
                 if (view === 'finance') renderFinance();
                 if (view === 'tickets') renderTicketsList();
                 if (view === 'settings') renderUsers();
+                if (view === 'quote') {
+                    // No extra render needed for iframe usually, but we could reload it if needed
+                    console.log("ODS View Active");
+                }
             }, 0);
         }
 
@@ -1777,17 +1786,25 @@
 
             try {
                 // Delete from Supabase
-                const { error } = await supabaseClient
+                const { error, count } = await supabaseClient
                     .from('tickets_taller')
-                    .delete()
+                    .delete({ count: 'exact' })
                     .in('id', ids);
 
                 if (error) throw error;
 
+                // IMPORTANT: Verify that rows were actually deleted (RLS might block it silently returning count 0)
+                if (count === 0) {
+                    throw new Error("No se eliminaron registros en la base de datos. Verifica permisos.");
+                }
+
                 // Success! Clean local memory
-                allTickets = allTickets.filter(t => !ids.includes(t.id.toString()) && !folios.includes(t.folio));
+                allTickets = allTickets.filter(t => {
+                    const tid = t.id ? t.id.toString() : null;
+                    return !ids.includes(tid) && !folios.includes(t.folio);
+                });
                 
-                alert(`Protocolo completado: ${ids.length} tickets eliminados correctamente.`);
+                alert(`Protocolo completado: ${count} tickets eliminados correctamente de la nube.`);
             } catch (err) {
                 console.error("Bulk Delete Error:", err);
                 alert("Error en borrado masivo: " + err.message);
@@ -1799,23 +1816,45 @@
         }
 
         async function deleteTicketTaller(id, folio) {
-            if (!confirm(`T-800: ¿Confirmas eliminación de ${folio}?`)) return;
+            if (!confirm(`T-800: ¿Confirmas eliminación permanente de ${folio}?`)) return;
             try {
-                const { error, count } = await supabaseClient
-                    .from('tickets_taller')
-                    .delete({ count: 'exact' })
-                    .or(`id.eq.${id},folio.eq.${folio}`);
+                // Determine the best filter
+                let query = supabaseClient.from('tickets_taller').delete({ count: 'exact' });
+                
+                if (id && id !== 'undefined' && id !== 'null') {
+                    query = query.eq('id', id);
+                } else {
+                    query = query.eq('folio', folio);
+                }
+
+                const { error, count } = await query;
 
                 if (error) throw error;
 
-                // Sync local state
-                allTickets = allTickets.filter(t => t.folio !== folio && (id ? t.id.toString() !== id.toString() : true));
-                renderTicketsList();
+                // Verify the backend actually deleted the row
+                if (count === 0) {
+                    console.warn(`[T800] Supabase returned 0 rows affected for ${folio}. Checking backup filter...`);
+                    // Try one last time by folio if the first attempt (maybe by ID) failed
+                    const backupRes = await supabaseClient.from('tickets_taller').delete({ count: 'exact' }).eq('folio', folio);
+                    if (backupRes.error) throw backupRes.error;
+                    if (backupRes.count === 0) {
+                        throw new Error("El ticket ya no existe en la base de datos o el borrado fue bloqueado por seguridad.");
+                    }
+                }
+
+                // Sync local state ONLY IF DB CONFIRMED DELETION
+                allTickets = allTickets.filter(t => {
+                    const matchFolio = t.folio === folio;
+                    const matchId = (id && t.id) ? t.id.toString() === id.toString() : false;
+                    return !matchFolio && !matchId;
+                });
                 
-                console.log(`[T800] Ticket ${folio} eliminado.`);
+                renderTicketsList();
+                console.log(`[T800] Ticket ${folio} eliminado permanentemente.`);
+                
             } catch (err) {
                 console.error("Delete Error:", err);
-                alert('No se pudo eliminar el ticket.');
+                alert('ERROR DE PERSISTENCIA: ' + err.message);
             }
         }
 
