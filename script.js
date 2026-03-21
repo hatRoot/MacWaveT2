@@ -41,19 +41,40 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Dynamic Header (Throttled Shrink on scroll)
+    // Dynamic Header (Fixed positioning & Shrink on scroll)
     const header = document.querySelector('.main-header');
+    const ticker = document.querySelector('.emergency-ticker');
+    
     if (header) {
+        let tickerHeight = ticker ? ticker.offsetHeight : 0;
+        let headerHeight = header.offsetHeight;
+        
+        // Dynamic padding to avoid content jumping
+        document.body.style.paddingTop = `${tickerHeight + headerHeight}px`;
+        document.documentElement.style.scrollPaddingTop = `${tickerHeight + headerHeight}px`;
+
         let lastKnownScrollPosition = 0;
         let ticking = false;
 
         const handleHeaderScroll = (scrollPos) => {
             const threshold = 80;
-            const revertThreshold = 20;
+            tickerHeight = ticker ? ticker.offsetHeight : 0;
+            const tickerThreshold = tickerHeight;
             
+            // Handle Ticker & Header Position
+            if (scrollPos > tickerThreshold) {
+                header.style.top = '0px';
+                if (ticker) ticker.style.transform = `translateY(-${tickerHeight}px)`;
+            } else {
+                header.style.top = `${tickerHeight - scrollPos}px`;
+                if (ticker) ticker.style.transform = `translateY(-${scrollPos}px)`;
+            }
+
+            // Handle Shrink Effect
             if (scrollPos > threshold && !header.classList.contains('header-scrolled')) {
                 header.classList.add('header-scrolled');
-            } else if (scrollPos < revertThreshold && header.classList.contains('header-scrolled')) {
+                // Optional: update padding if shrink is very significant
+            } else if (scrollPos <= threshold && header.classList.contains('header-scrolled')) {
                 header.classList.remove('header-scrolled');
             }
         };
@@ -71,6 +92,15 @@ document.addEventListener('DOMContentLoaded', () => {
         
         // Initial check
         handleHeaderScroll(window.scrollY);
+
+        // Re-calculate on resize
+        window.addEventListener('resize', () => {
+             tickerHeight = ticker ? ticker.offsetHeight : 0;
+             headerHeight = header.offsetHeight;
+             document.body.style.paddingTop = `${tickerHeight + headerHeight}px`;
+             document.documentElement.style.scrollPaddingTop = `${tickerHeight + headerHeight}px`;
+             handleHeaderScroll(window.scrollY);
+        });
     }
 
     // Modal Logic

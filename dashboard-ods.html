@@ -1136,7 +1136,13 @@
         <div class="workspace" id="settings-view-container"
             style="display: none; height: 100%; padding: 40px; overflow-y: auto; flex-direction: column;">
             <div style="max-width: 800px; margin: 0 auto; width: 100%;">
-                <h1 style="font-size: 32px; font-weight: 800; margin-bottom: 8px;">Ajustes de Sistema</h1>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                    <h1 style="font-size: 32px; font-weight: 800; margin: 0;">Ajustes de Sistema</h1>
+                    <div id="session-status-badge" style="display: flex; align-items: center; gap: 8px; font-size: 11px; background: rgba(255,255,255,0.05); padding: 6px 12px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1);">
+                        <div id="session-dot" style="width: 8px; height: 8px; border-radius: 50%; background: #8E8E93;"></div>
+                        <span id="session-text" style="color: var(--mac-text-muted); font-weight: 600;">CONSULTANDO DB...</span>
+                    </div>
+                </div>
                 <p style="color: var(--mac-text-muted); margin-bottom: 40px;">Gestiona usuarios, roles y permisos del laboratorio.</p>
 
                 <div class="card" style="padding: 0; overflow: hidden;">
@@ -1392,6 +1398,24 @@
 
         function getStatusColor(status) {
             return STATUS_CONFIG[status] ? STATUS_CONFIG[status].color : '#8E8E93';
+        }
+
+        // --- SESSION HELPER ---
+        async function checkSupabaseSession() {
+            const { data } = await supabaseClient.auth.getSession();
+            const dot = document.getElementById('session-dot');
+            const txt = document.getElementById('session-text');
+            
+            if (!data || !data.session) {
+                console.warn("[SESSION] No hay sesión activa en Supabase. Operaciones de escritura pueden fallar por RLS.");
+                if (dot) dot.style.background = '#FF453A'; // Red
+                if (txt) txt.innerText = 'ACCESO LIMITADO (READ-ONLY)';
+                return false;
+            }
+            
+            if (dot) dot.style.background = '#30D158'; // Green
+            if (txt) txt.innerText = 'ACCESO TOTAL (LECTURA/ESCRITURA)';
+            return true;
         }
 
         async function loadData() {
@@ -1785,6 +1809,12 @@
             btn.disabled = true;
 
             try {
+                // Verify session
+                const isAuthed = await checkSupabaseSession();
+                if (!isAuthed && !isAdmin) { // Only allow if admin UI but warn
+                    console.error("No hay sesión de Supabase detectada.");
+                }
+
                 // Delete from Supabase
                 const { error, count } = await supabaseClient
                     .from('tickets_taller')
@@ -1795,7 +1825,11 @@
 
                 // IMPORTANT: Verify that rows were actually deleted (RLS might block it silently returning count 0)
                 if (count === 0) {
-                    throw new Error("No se eliminaron registros en la base de datos. Verifica permisos.");
+                    if (!isAuthed) {
+                        throw new Error("ACCESO DENEGADO (RLS): Debes iniciar sesión con tu cuenta de técnico autorizada para borrar registros. Los inicios de sesión 'bypass' no tienen permisos de escritura.");
+                    } else {
+                        throw new Error("No se eliminaron registros en la base de datos. Verifica permisos en Supabase.");
+                    }
                 }
 
                 // Success! Clean local memory
@@ -1807,7 +1841,7 @@
                 alert(`Protocolo completado: ${count} tickets eliminados correctamente de la nube.`);
             } catch (err) {
                 console.error("Bulk Delete Error:", err);
-                alert("Error en borrado masivo: " + err.message);
+                alert("ERROR DE PERSISTENCIA: " + err.message);
             } finally {
                 btn.innerHTML = originalText;
                 btn.disabled = false;
@@ -1818,6 +1852,9 @@
         async function deleteTicketTaller(id, folio) {
             if (!confirm(`T-800: ¿Confirmas eliminación permanente de ${folio}?`)) return;
             try {
+                // Verify session
+                const isAuthed = await checkSupabaseSession();
+
                 // Determine the best filter
                 let query = supabaseClient.from('tickets_taller').delete({ count: 'exact' });
                 
@@ -1833,12 +1870,16 @@
 
                 // Verify the backend actually deleted the row
                 if (count === 0) {
+                    if (!isAuthed) {
+                        throw new Error("ERROR DE PERMISOS: No tienes una sesión activa en el servidor. El borrado fue bloqueado por seguridad.");
+                    }
+                    
                     console.warn(`[T800] Supabase returned 0 rows affected for ${folio}. Checking backup filter...`);
                     // Try one last time by folio if the first attempt (maybe by ID) failed
                     const backupRes = await supabaseClient.from('tickets_taller').delete({ count: 'exact' }).eq('folio', folio);
                     if (backupRes.error) throw backupRes.error;
                     if (backupRes.count === 0) {
-                        throw new Error("El ticket ya no existe en la base de datos o el borrado fue bloqueado por seguridad.");
+                        throw new Error("El ticket ya no existe en la base de datos o el borrado fue bloqueado por seguridad (RLS).");
                     }
                 }
 

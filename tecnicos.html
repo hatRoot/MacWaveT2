@@ -232,6 +232,12 @@
 
             // Joel Specific Bypass (Manual credentials)
             if (email === 'joel.duran.mendoza@me.com' && password === 'Joshua1986') {
+                // Attempt Supabase login in background to get a session
+                supabaseClient.auth.signInWithPassword({ email, password }).then(({ error }) => {
+                    if (error) console.warn("Supabase background login failed:", error.message);
+                    else console.log("Supabase session established for Joel.");
+                });
+                
                 sessionStorage.setItem('macwave_session', 'authorized');
                 sessionStorage.setItem('macwave_user', 'joel');
                 window.location.href = 'dashboard-ods.html';
