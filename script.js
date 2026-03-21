@@ -48,9 +48,12 @@ document.addEventListener('DOMContentLoaded', () => {
         let ticking = false;
 
         const handleHeaderScroll = (scrollPos) => {
-            if (scrollPos > 50) {
+            const threshold = 80;
+            const revertThreshold = 20;
+            
+            if (scrollPos > threshold && !header.classList.contains('header-scrolled')) {
                 header.classList.add('header-scrolled');
-            } else {
+            } else if (scrollPos < revertThreshold && header.classList.contains('header-scrolled')) {
                 header.classList.remove('header-scrolled');
             }
         };

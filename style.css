@@ -37,6 +37,19 @@
     --pulse-animation: pulse 2s infinite;
 }
 
+/* Accessibility & SEO utility: Hide from view, keep for crawlers */
+.sr-only {
+    position: absolute !important;
+    width: 1px !important;
+    height: 1px !important;
+    padding: 0 !important;
+    margin: -1px !important;
+    overflow: hidden !important;
+    clip: rect(0, 0, 0, 0) !important;
+    white-space: nowrap !important;
+    border: 0 !important;
+}
+
 @keyframes pulse {
     0% {
         transform: scale(1);
@@ -90,6 +103,7 @@ body {
     line-height: 1.6;
     overflow-x: clip;
     width: 100%;
+    padding-top: 0;
 }
 
 html {
@@ -197,9 +211,12 @@ h3 {
     right: 0;
     width: 100%;
     z-index: 10000 !important;
-    transition: padding 0.4s cubic-bezier(0.165, 0.84, 0.44, 1), background-color 0.4s ease;
+    transition: padding 0.5s cubic-bezier(0.165, 0.84, 0.44, 1), background-color 0.5s ease, backdrop-filter 0.5s ease;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    will-change: padding, background-color;
+    will-change: padding, background-color, backdrop-filter;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    transform: translateZ(0); /* Hardware acceleration */
 }
 
 .main-header.header-scrolled {
@@ -3878,7 +3895,10 @@ details.modern-accordion[open] {
     font-size: 0.85rem;
     font-weight: 600;
     text-align: center;
-    position: relative; /* Se queda arriba y se va con el scroll */
+    position: relative;
+    top: 0;
+    left: 0;
+    right: 0;
     z-index: 10001;
     text-transform: uppercase;
     letter-spacing: 1px;
@@ -3890,9 +3910,7 @@ details.modern-accordion[open] {
     margin-left: 10px;
 }
 
-body {
-    padding-top: 0 !important; /* El header sticky se auto-gestiona */
-}
+/* body padding managed via fixed header offset at top of file */
 
 /* ===========================
    MOBILE / iPHONE FIXES
@@ -3950,6 +3968,18 @@ html, body {
     }
 
     /* Header / Nav */
+    .logo-img {
+        height: 40px !important;
+    }
+
+    .logo a.logo-link {
+        padding: 8px 16px !important;
+    }
+
+    .header-scrolled .logo-img {
+        height: 28px !important;
+    }
+
     .main-header .container {
         padding: 0 16px !important;
     }
@@ -4083,4 +4113,182 @@ html, body {
     .section-padded {
         padding: 40px 0 !important;
     }
+}
+
+/* ============================================================
+   ESTILOS DE TIPOGRAFÍA CALIGRÁFICA (BRUSH STYLE)
+   Diseñado para el fondo negro (Modo Apple Dark)
+   ============================================================ */
+.brush-typography {
+    font-family: 'Caveat Brush', cursive !important;
+    color: #ffffff;
+    line-height: 1.1;
+    font-weight: 400;
+    text-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+    margin-bottom: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.brush-typography .text-line {
+    display: block;
+    margin-bottom: 0.15em;
+}
+
+.brush-typography .main-text {
+    font-size: 1.25em; /* Ajuste para que destaque la primera línea */
+}
+
+.brush-typography .highlight-wrapper {
+    position: relative;
+    display: inline-block;
+    z-index: 1;
+    padding: 0 0.1em;
+}
+
+.brush-typography .highlight-bg {
+    position: absolute;
+    top: 55%;
+    left: 50%;
+    width: 0%; /* Animación de crecimiento */
+    height: 75%;
+    background-color: #FFB900; /* #FFB900 (Apple Yellow) Sólido para que resalte en negro */
+    transform: translate(-50%, -50%) rotate(-1deg) skew(-2deg);
+    z-index: -1;
+    border-radius: 8px 60px 10px 80px;
+    animation: growHighlightBrush 0.8s cubic-bezier(0.17, 0.67, 0.83, 0.67) 0.8s forwards;
+}
+
+.brush-typography .question-text {
+    font-size: 0.85em; /* Ligeramente más pequeña para equilibrar */
+}
+
+.brush-typography .tagline {
+    font-size: 1.1em;
+    margin-top: 15px;
+}
+
+.brush-typography .underline-wrapper {
+    position: relative;
+    display: inline-block;
+}
+
+.brush-typography .underline-svg {
+    position: absolute;
+    bottom: -12px;
+    left: 0;
+    width: 100%;
+    height: 15px;
+    z-index: -1;
+}
+
+.brush-typography .underline-path {
+    stroke-dasharray: 1000;
+    stroke-dashoffset: 1000;
+    stroke: #009CDF; /* #009CDF (Apple Blue) oficial */
+    animation: drawUnderlineBrush 1s ease-out 1.5s forwards;
+}
+
+/* Animaciones */
+@keyframes growHighlightBrush {
+    to { width: 105%; }
+}
+
+@keyframes drawUnderlineBrush {
+    to { stroke-dashoffset: 0; }
+}
+
+/* Variantes de Color (Apple Vintage Palette) */
+.brush-typography.color-green { color: #5EBD3E; }
+.brush-typography.color-yellow { color: #FFB900; }
+.brush-typography.color-orange { color: #F78200; }
+.brush-typography.color-red { color: #E23838; }
+.brush-typography.color-purple { color: #973999; }
+.brush-typography.color-blue { color: #009CDF; }
+
+.brush-typography .highlight-bg.bg-green  { background-color: #5EBD3E; }
+.brush-typography .highlight-bg.bg-yellow { background-color: #FFB900; }
+.brush-typography .highlight-bg.bg-orange { background-color: #F78200; }
+.brush-typography .highlight-bg.bg-red    { background-color: #E23838; }
+.brush-typography .highlight-bg.bg-purple { background-color: #973999; }
+.brush-typography .highlight-bg.bg-blue   { background-color: #009CDF; }
+
+.brush-typography .underline-path.stroke-green  { stroke: #5EBD3E; }
+.brush-typography .underline-path.stroke-yellow { stroke: #FFB900; }
+.brush-typography .underline-path.stroke-orange { stroke: #F78200; }
+.brush-typography .underline-path.stroke-red    { stroke: #E23838; }
+.brush-typography .underline-path.stroke-purple { stroke: #973999; }
+.brush-typography .underline-path.stroke-blue   { stroke: #009CDF; }
+
+/* Para fondos claros (Light Mode) */
+.brush-typography.light-mode {
+    color: #121e31;
+    text-shadow: none;
+}
+.brush-typography.light-mode .highlight-bg {
+    opacity: 1; /* Sólido como pidió el usuario */
+}
+
+/* Ajustes finales para el modo responsivo de la nueva tipografía */
+@media (max-width: 768px) {
+    .brush-typography {
+        align-items: center !important;
+        text-align: center !important;
+    }
+}
+
+/* ============================================================
+   DECORACIONES CALIGRÁFICAS (CHISPAS Y FLECHAS)
+   ============================================================ */
+.brush-decoration {
+    position: absolute;
+    pointer-events: none;
+    z-index: 2;
+    opacity: 0.9;
+}
+
+/* Chispa / Spark SVG */
+.decoration-spark {
+    width: 40px;
+    height: 40px;
+}
+
+/* Flecha / Arrow SVG */
+.decoration-arrow {
+    width: 60px;
+    height: 40px;
+}
+
+/* Variantes de Color para Decoraciones */
+.brush-decoration.color-green  { color: #5EBD3E; fill: #5EBD3E; stroke: #5EBD3E; }
+.brush-decoration.color-yellow { color: #FFB900; fill: #FFB900; stroke: #FFB900; }
+.brush-decoration.color-orange { color: #F78200; fill: #F78200; stroke: #F78200; }
+.brush-decoration.color-red    { color: #E23838; fill: #E23838; stroke: #E23838; }
+.brush-decoration.color-purple { color: #973999; fill: #973999; stroke: #973999; }
+.brush-decoration.color-blue   { color: #009CDF; fill: #009CDF; stroke: #009CDF; }
+
+/* Animación de aparición */
+.brush-decoration {
+    transform: scale(0);
+    animation: popInDecoration 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+@keyframes popInDecoration {
+    to { transform: scale(1); }
+}
+
+/* Posiciones específicas para que parezca "random" */
+.pos-top-left     { top: -20px; left: -30px; transform: rotate(-15deg); }
+.pos-top-right    { top: -15px; right: -40px; transform: rotate(10deg); }
+.pos-bottom-left  { bottom: -25px; left: -20px; transform: rotate(-5deg); }
+.pos-bottom-right { bottom: -10px; right: -30px; transform: rotate(20deg); }
+
+/* Flecha curva específica */
+.arrow-curved { transform: rotate(-10deg); }
+
+/* Decoración Sonrisa / Smile */
+.decoration-smile {
+    width: 60px;
+    height: 60px;
 }
