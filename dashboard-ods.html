@@ -1521,6 +1521,18 @@
             loadData();
         };
 
+        function generateGoogleCalendarLink(folio, name, source, phone, dateVal) {
+            const title = encodeURIComponent(`TICKET: ${folio} - ${name}`);
+            const details = encodeURIComponent(`Folio: ${folio}\nCliente: ${name}\nOrigen: ${source}\nWhatsApp: ${phone}\nSitio: Mac Wave T2`);
+            
+            // Format dates for Google Calendar (YYYYMMDDTHHMMSSZ)
+            const now = new Date();
+            const start = now.toISOString().replace(/-|:|\.\d+/g, '');
+            const end = new Date(now.getTime() + 60 * 60 * 1000).toISOString().replace(/-|:|\.\d+/g, '');
+            
+            return `https://www.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=${start}/${end}&details=${details}`;
+        }
+
         window.sendTicketAction = async function () {
             const nameInput = document.getElementById('t-unified-name');
             const phoneInput = document.getElementById('t-unified-phone');
@@ -1571,9 +1583,12 @@
                 const badgeUrl = `ticket-badge.html?name=${encodeURIComponent(name)}&folio=${encodeURIComponent(folio)}&source=${encodeURIComponent(source)}&phone=${encodeURIComponent(phone)}&date=${encodeURIComponent(dateVal)}`;
                 window.open(badgeUrl, '_blank');
 
+                // Generate Calendar Link
+                const calLink = generateGoogleCalendarLink(folio, name, source, phone, dateVal);
+
                 // Admin notification
                 setTimeout(() => {
-                    const techMsg = `🚀 TICKET CREADO: ${folio}\nCliente: ${name}\nOrigen: ${source}\nWA: ${phone}`;
+                    const techMsg = `🚀 TICKET CREADO: ${folio}\nCliente: ${name}\nOrigen: ${source}\nWA: ${phone}\n\n📅 AGENDAR CALENDARIO:\n${calLink}`;
                     window.open(`https://wa.me/52${techPhone}?text=${encodeURIComponent(techMsg)}`, '_blank');
                     showTicketUnifiedView();
                 }, 1000);
