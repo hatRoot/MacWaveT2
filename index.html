@@ -61,51 +61,8 @@
     <meta property="twitter:description" content="⚡ Reparación de Mac a nivel componente. Rescatamos tu MacBook Pro, Air o iMac mojada o apagada.">
     <meta property="twitter:image" content="https://macwave.com.mx/images/logo_og.jpg">
 
-    <!-- JSON-LD Local Business -->
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "LocalBusiness",
-      "name": "Mac Wave T2",
-      "image": "https://macwave.com.mx/images/logo_dashboard_white.png",
-      "@id": "https://macwave.com.mx/",
-      "url": "https://macwave.com.mx/",
-      "telephone": "+525535757364",
-      "address": {
-        "@type": "PostalAddress",
-        "streetAddress": "Polanco / Santa Fe / Interlomas / Hospital ABC / Hospital Angeles",
-        "addressLocality": "Ciudad de México",
-        "addressRegion": "CDMX",
-        "postalCode": "11560",
-        "addressCountry": "MX"
-      },
-      "geo": {
-        "@type": "GeoCoordinates",
-        "latitude": 19.432608,
-        "longitude": -99.133209
-      },
-      "openingHoursSpecification": {
-        "@type": "OpeningHoursSpecification",
-        "dayOfWeek": [
-          "Monday",
-          "Tuesday",
-          "Wednesday",
-          "Thursday",
-          "Friday",
-          "Saturday"
-        ],
-        "opens": "09:00",
-        "closes": "19:00"
-      },
-      "sameAs": [
-        "https://www.facebook.com/macwavet2",
-        "https://www.instagram.com/macwavet2"
-      ],
-      "areaServed": [
-        "Polanco", "Santa Fe", "Interlomas", "Lomas de Chapultepec", "Bosques de las Lomas", "Pedregal", "Tecamachalco", "Satélite", "Hospital ABC Santa Fe", "Hospital ABC Observatorio", "Hospital Angeles Lomas", "Hospital Angeles Pedregal", "Hospital Español Polanco", "Ciudad de México", "Estado de México"
-      ]
-    }
-    </script>
+    <!-- Consolidate all Structured Data (JSON-LD) into a single @graph block at the bottom of head for cleanliness -->
+
 
     <!-- Geo Meta Tags for Local SEO -->
     <meta name="geo.region" content="MX-MEX">
@@ -174,225 +131,183 @@
     <link href="https://fonts.googleapis.com/css2?family=Caveat+Brush&display=swap" rel="stylesheet">
     <link rel="preconnect" href="https://www.googletagmanager.com">
 
-    <!-- Structured Data (JSON-LD) -->
+    <!-- Comprehensive Structured Data (JSON-LD) for SEO -->
     <script type="application/ld+json">
-    [
-      {
-        "@context": "https://schema.org",
-        "@type": "WebSite",
-        "name": "macWave Mexico",
-        "alternateName": ["MacWave", "Mac Wave T2", "Reparación de Mac México"],
-        "url": "https://macwave.com.mx/",
-        "potentialAction": {
-          "@type": "SearchAction",
-          "target": "https://macwave.com.mx/?s={search_term_string}",
-          "query-input": "required name=search_term_string"
-        }
-      },
-      {
-        "@context": "https://schema.org",
-        "@type": "FAQPage",
-        "mainEntity": [
-          {
-            "@type": "Question",
-            "name": "¿Cuánto cuesta reparar una MacBook mojada en CDMX?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "El costo depende del daño a la tarjeta lógica. En Mac Wave T2 reparamos a nivel componente, lo cual es hasta un 60% más económico que cambiar toda la pieza en centros oficiales. Ofrecemos diagnóstico técnico profesional."
-            }
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "LocalBusiness",
+          "name": "Mac Wave T2 - Reparación de Mac y MacBook CDMX",
+          "image": "https://macwave.com.mx/images/logo_dashboard_white.png",
+          "description": "Centro de Reparación de Mac en CDMX. Expertos en MacBook Pro, MacBook Air e iMac. Diagnóstico Profesional y reparación a nivel componente. Cobertura en Polanco, Santa Fe, Interlomas, Lomas, Pedregal, Satélite.",
+          "@id": "https://macwave.com.mx/#localbusiness",
+          "url": "https://macwave.com.mx/",
+          "telephone": "+525535757364",
+          "priceRange": "$$",
+          "address": {
+            "@type": "PostalAddress",
+            "streetAddress": "Polanco / Santa Fe / Interlomas / Hospital ABC / Hospital Angeles",
+            "addressLocality": "Ciudad de México",
+            "addressRegion": "CDMX",
+            "postalCode": "11560",
+            "addressCountry": "MX"
           },
-          {
-            "@type": "Question",
-            "name": "¿Tienen servicio de recolección de Mac en Polanco o Santa Fe?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "Sí, contamos con servicio de recolección y entrega express en las zonas de Polanco, Santa Fe, Interlomas, Pedregal y Satélite para traer tu equipo al laboratorio."
-            }
+          "geo": {
+            "@type": "GeoCoordinates",
+            "latitude": 19.432608,
+            "longitude": -99.133209
           },
-          {
-            "@type": "Question",
-            "name": "¿Reparan equipos Apple fuera de garantía?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "Especialistas en equipos Apple fuera de garantía. Si te dijeron que tu Mac ya es vintage o que no tiene arreglo, nosotros la rescatamos con garantía por escrito."
+          "openingHoursSpecification": [
+            {
+              "@type": "OpeningHoursSpecification",
+              "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+              "opens": "09:00",
+              "closes": "19:00"
+            },
+            {
+              "@type": "OpeningHoursSpecification",
+              "dayOfWeek": "Saturday",
+              "opens": "10:00",
+              "closes": "15:00"
             }
+          ],
+          "sameAs": [
+            "https://www.facebook.com/macwavet2",
+            "https://www.instagram.com/macwavet2",
+            "https://wa.me/525535757364"
+          ],
+          "areaServed": [
+            "Polanco", "Interlomas", "Santa Fe", "Bosques de las Lomas", "Lomas de Chapultepec", "Tecamachalco", "Pedregal", "Satélite", "CDMX", "Estado de México",
+            "Hospital ABC Santa Fe", "Hospital ABC Observatorio", "Hospital Angeles Lomas", "Hospital Angeles Pedregal", "Hospital Español Polanco", "Ciudad de México"
+          ],
+          "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "5.0",
+            "reviewCount": "50"
           },
-          {
-            "@type": "Question",
-            "name": "¿Cuánto cobran por revisar una Mac?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "En Mac Wave T2 ofrecemos diagnóstico técnico para todos los modelos de MacBook Pro y MacBook Air. Nuestro objetivo es que conozcas el problema real y el costo total antes de comprometerte a cualquier gasto. ¡Transparencia total!"
-            }
-          },
-          {
-            "@type": "Question",
-            "name": "¿Cuánto cuesta restaurar un Mac?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "Restaurar una Mac (formateo, instalación de sistema macOS Sonoma/Sequoia y limpieza interna) tiene un costo base altamente competitivo. Esto incluye respaldo de archivos y optimización total para que tu equipo vuele como nuevo."
-            }
-          },
-          {
-            "@type": "Question",
-            "name": "¿Puedes simplemente presentarte en una tienda Apple para repararlo?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "Sí, pero en las tiendas oficiales suelen decir que equipos con más de 5 años son 'vintage' y no tienen piezas, o te cobran la tarjeta lógica completa. En Mac Wave T2 reparamos a nivel componente, rescatando tu equipo a una fracción del costo oficial."
-            }
-          },
-          {
-            "@type": "Question",
-            "name": "¿Cuánto tardan en reparar un Mac?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "La mayoría de los cambios (pantallas, baterías, SDD) se realizan el mismo día. Las reparaciones complejas de micro-soldadura suelen tardar de 24 a 48 horas tras la aprobación del presupuesto gratuito."
-            }
+          "hasOfferCatalog": {
+            "@type": "OfferCatalog",
+            "name": "Servicios de Reparación",
+            "itemListElement": [
+              {
+                "@type": "Offer",
+                "itemOffered": {
+                  "@type": "Service",
+                  "name": "Reparación de Mac y MacBook",
+                  "description": "Servicio técnico especializado para toda la gama Mac: MacBook Pro, Air, iMac y Mac mini."
+                }
+              },
+              {
+                "@type": "Offer",
+                "itemOffered": {
+                  "@type": "Service",
+                  "name": "Reparación de Tarjeta Lógica Dañada o Mojada",
+                  "description": "Micro-soldadura y rescate de tarjetas lógicas con daño por líquidos, cortocircuitos o componentes quemados en MacBook Pro, Air e iMac."
+                }
+              },
+              {
+                "@type": "Offer",
+                "itemOffered": {
+                  "@type": "Service",
+                  "name": "Reparación de iMac",
+                  "description": "Servicio técnico completo para iMac: pantalla, tarjeta lógica, SSD, fuente de poder y mantenimiento preventivo."
+                }
+              },
+              {
+                "@type": "Offer",
+                "itemOffered": {
+                  "@type": "Service",
+                  "name": "Cambio de Pantalla MacBook",
+                  "description": "Sustitución de pantallas para MacBook Pro y MacBook Air."
+                }
+              }
+            ]
           }
-        ]
-      },
-      {
-        "@context": "https://schema.org",
-        "@type": "LocalBusiness",
-        "name": "Mac Wave T2 - Reparación de Mac y MacBook CDMX",
-        "image": "https://macwave.com.mx/images/apple.png",
-        "description": "Centro de Reparación de Mac en CDMX. Expertos en MacBook Pro, MacBook Air e iMac. Diagnóstico Profesional y reparación a nivel componente. Cobertura en Polanco, Santa Fe, Interlomas, Lomas, Pedregal, Satélite.",
-        "@id": "https://macwave.com.mx/#localbusiness",
-        "url": "https://macwave.com.mx/",
-        "telephone": "+525535757364",
-        "priceRange": "$$",
-        "address": {
-          "@type": "PostalAddress",
-          "streetAddress": "Agendar Cita vía WhatsApp",
-          "addressLocality": "Ciudad de México",
-          "addressRegion": "CDMX / Estado de México",
-          "addressCountry": "MX"
         },
-        "geo": {
-          "@type": "GeoCoordinates",
-          "latitude": 19.432608,
-          "longitude": -99.133209
-        },
-        "specialty": "Reparación de Tarjeta Lógica de MacBook y Recuperación de Datos",
-        "knowsAbout": ["Reparación de MacBook Pro", "Servicio Técnico Apple", "Micro-soldadura", "macOS Sonoma", "Apple T2 Chip"],
-        "areaServed": [
-          "Polanco", "Interlomas", "Santa Fe", "Bosques de las Lomas", "Lomas de Chapultepec", "Tecamachalco", "Pedregal", "Satélite", "CDMX", "Estado de México", 
-          "Hospital ABC Santa Fe", "Hospital ABC Observatorio", "Hospital Angeles Lomas", "Hospital Angeles Pedregal", "Hospital Español Polanco"
-        ],
-        "openingHoursSpecification": [
-          {
-            "@type": "OpeningHoursSpecification",
-            "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
-            "opens": "09:00",
-            "closes": "19:00"
-          },
-          {
-            "@type": "OpeningHoursSpecification",
-            "dayOfWeek": "Saturday",
-            "opens": "10:00",
-            "closes": "15:00"
+        {
+          "@type": "WebSite",
+          "@id": "https://macwave.com.mx/#website",
+          "url": "https://macwave.com.mx/",
+          "name": "macWave México",
+          "alternateName": ["MacWave", "Mac Wave T2", "Reparación de Mac México"],
+          "potentialAction": {
+            "@type": "SearchAction",
+            "target": "https://macwave.com.mx/?s={search_term_string}",
+            "query-input": "required name=search_term_string"
           }
-        ],
-        "aggregateRating": {
-          "@type": "AggregateRating",
-          "ratingValue": "5.0",
-          "reviewCount": "50"
         },
-        "sameAs": [
-          "https://wa.me/525535757364"
-        ],
-        "hasOfferCatalog": {
-          "@type": "OfferCatalog",
-          "name": "Servicios de Reparación",
+        {
+          "@type": "FAQPage",
+          "@id": "https://macwave.com.mx/#faq",
+          "mainEntity": [
+            {
+              "@type": "Question",
+              "name": "¿Cuánto cuesta reparar una MacBook mojada en CDMX?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "El costo depende del daño a la tarjeta lógica. En Mac Wave T2 reparamos a nivel componente, lo cual es hasta un 60% más económico que cambiar toda la pieza en centros oficiales."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "¿Tienen servicio de recolección de Mac en Polanco o Santa Fe?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Sí, contamos con servicio de recolección y entrega express en las zonas de Polanco, Santa Fe, Interlomas, Pedregal y Satélite."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "¿Reparan equipos Apple fuera de garantía?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Especialistas en equipos Apple fuera de garantía o vintage que Apple ya no repara."
+              }
+            }
+          ]
+        },
+        {
+          "@type": "SoftwareApplication",
+          "name": "Microsoft Office & Antivirus Genuine Licenses",
+          "operatingSystem": "macOS, Windows",
+          "applicationCategory": "BusinessApplication, SecurityApplication",
+          "offers": {
+            "@type": "Offer",
+            "price": "300.00",
+            "priceCurrency": "MXN"
+          }
+        },
+        {
+          "@type": "VideoObject",
+          "name": "Reparación de Placa Lógica MacBook Pro",
+          "description": "Intervención técnica en el corazón de una MacBook Pro para rescate a nivel componente.",
+          "thumbnailUrl": "https://macwave.com.mx/images/mac-repair-logic.jpg",
+          "uploadDate": "2026-02-11",
+          "contentUrl": "https://macwave.com.mx/#soluciones"
+        },
+        {
+          "@type": "BreadcrumbList",
           "itemListElement": [
             {
-              "@type": "Offer",
-              "itemOffered": {
-                "@type": "Service",
-                "name": "Reparación de Mac y MacBook",
-                "description": "Servicio técnico especializado para toda la gama Mac: MacBook Pro, Air, iMac y Mac mini."
+              "@type": "ListItem",
+              "position": 1,
+              "item": {
+                "@id": "https://macwave.com.mx/",
+                "name": "Inicio"
               }
             },
             {
-              "@type": "Offer",
-              "itemOffered": {
-                "@type": "Service",
-                "name": "Reparación de Tarjeta Lógica Dañada o Mojada",
-                "description": "Micro-soldadura y rescate de tarjetas lógicas con daño por líquidos, cortocircuitos o componentes quemados en MacBook Pro, Air e iMac."
-              }
-            },
-            {
-              "@type": "Offer",
-              "itemOffered": {
-                "@type": "Service",
-                "name": "Reparación de iMac",
-                "description": "Servicio técnico completo para iMac: pantalla, tarjeta lógica, SSD, fuente de poder y mantenimiento preventivo."
-              }
-            },
-            {
-              "@type": "Offer",
-              "itemOffered": {
-                "@type": "Service",
-                "name": "Cambio de Pantalla MacBook",
-                "description": "Sustitución de pantallas para MacBook Pro y MacBook Air."
+              "@type": "ListItem",
+              "position": 2,
+              "item": {
+                "@id": "https://macwave.com.mx/#soluciones",
+                "name": "Reparación MacBook"
               }
             }
           ]
         }
-      }
-    ]
-    </script>
-
-
-    <!-- SoftwareApplication Schema for Licenses -->
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "SoftwareApplication",
-      "name": "Microsoft Office & Antivirus Genuine Licenses",
-      "operatingSystem": "macOS, Windows",
-      "applicationCategory": "BusinessApplication, SecurityApplication",
-      "offers": {
-        "@type": "Offer",
-        "price": "300.00",
-        "priceCurrency": "MXN"
-      }
-    }
-    </script>
-
-    <!-- VideoObject Schema for Technical Success -->
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "VideoObject",
-      "name": "Reparación de Placa Lógica MacBook Pro",
-      "description": "Intervención técnica en el corazón de una MacBook Pro para rescate a nivel componente.",
-      "thumbnailUrl": "https://macwave.com.mx/images/mac-repair-logic.jpg",
-      "uploadDate": "2026-02-11",
-      "contentUrl": "https://macwave.com.mx/#soluciones"
-    }
-    </script>
-
-    <!-- Breadcrumb Schema -->
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "BreadcrumbList",
-      "itemListElement": [{
-        "@type": "ListItem",
-        "position": 1,
-        "item": {
-          "@id": "https://macwave.com.mx/",
-          "name": "Inicio"
-        }
-      },{
-        "@type": "ListItem",
-        "position": 2,
-        "item": {
-          "@id": "https://macwave.com.mx/#soluciones",
-          "name": "Reparación MacBook"
-        }
-      }]
+      ]
     }
     </script>
 
