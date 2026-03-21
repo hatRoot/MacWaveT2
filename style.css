@@ -1094,7 +1094,7 @@ h3 {
         /* Subtle fade zoom */
         pointer-events: none !important;
         overflow-y: auto !important;
-        overflow-x: hidden !important;
+        overflow-x: clip !important;
         -webkit-overflow-scrolling: touch;
         padding: 85px 20px 40px !important;
     }
