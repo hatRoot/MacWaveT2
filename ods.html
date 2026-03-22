@@ -1032,27 +1032,46 @@
             // ── Photo Upload Logic ──────────────────────────────────
             window._allPhotos = []; // Store as { data, desc, type }
 
-            const handlePhotoUpload = (event) => {
-                const files = event.target.files;
-                if (!files) return;
+            const handlePhotoUpload = async (event) => {
+                const files = Array.from(event.target.files);
+                if (!files || files.length === 0) return;
 
-                const processFile = (file) => {
-                    const reader = new FileReader();
-                    reader.onload = (e) => {
-                        const description = prompt(`Introduce una descripción corta para esta foto (Ej. Vista general, Golpe en tapa, etc):`) || 'Evidencia de equipo';
+                // Check for overall limit
+                if (window._allPhotos.length + files.length > 4) {
+                    alert("SISTEMA: Solo se permiten un máximo de 4 fotografías de evidencia por ODS.");
+                    event.target.value = ''; // Reset input
+                    return;
+                }
+
+                for (const file of files) {
+                    // Safety check if limit reached during loop (though already checked)
+                    if (window._allPhotos.length >= 4) break;
+
+                    try {
+                        const dataUrl = await new Promise((resolve, reject) => {
+                            const reader = new FileReader();
+                            reader.onload = (e) => resolve(e.target.result);
+                            reader.onerror = reject;
+                            reader.readAsDataURL(file);
+                        });
+
+                        const description = prompt(`[FOTO ${window._allPhotos.length + 1}] Introduce una descripción corta (Ej. Vista general, Golpe en tapa):`) || 'Evidencia de equipo';
+                        
                         window._allPhotos.push({
-                            data: e.target.result,
+                            data: dataUrl,
                             desc: description.toUpperCase()
                         });
-                        update();
-                    };
-                    reader.readAsDataURL(file);
-                };
-
-                Array.from(files).forEach(processFile);
+                        
+                        update(); // Update preview after each photo
+                    } catch (err) {
+                        console.error("Error al procesar foto:", err);
+                    }
+                }
+                
+                event.target.value = ''; // Reset input to allow re-uploading if needed
             };
 
-            document.getElementById('upload-photos').addEventListener('change', (e) => handlePhotoUpload(e));
+            document.getElementById('upload-photos').addEventListener('change', handlePhotoUpload);
 
             // Set Current Date and Time
             const quoteDateInput = document.getElementById('quote-date');
@@ -1528,16 +1547,18 @@
                             <span class="ps-total-value">$ ${total.toLocaleString('en-US', { minimumFractionDigits: 2 })}</span>
                         </div>
                         ` : `
-                        <div class="ps-watermark" style="min-height: 250px; padding: 20px; display: flex; flex-wrap: wrap; gap: 12px; align-items: flex-start; justify-content: center; position: relative; background: #fafafa; border: 1px dashed #ccc; border-radius: 8px;">
-                             ${window._allPhotos && window._allPhotos.length > 0 && !document.getElementById('toggle-bank').checked ? `
-                                ${window._allPhotos.map(p => `
-                                    <div style="flex: 0 0 110px; background: white; border: 1px solid #eee; border-radius: 6px; padding: 4px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); text-align: center;">
-                                        <img src="${p.data}" style="width: 100%; height: 80px; object-fit: cover; border-radius: 4px; display: block; margin-bottom: 3px;">
-                                        <div style="font-size: 6px; font-weight: 900; color: #ff6600; text-transform: uppercase; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${p.desc}</div>
+                        <div class="ps-watermark" style="min-height: 250px; padding: 15px; display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; gap: 10px; align-items: stretch; justify-items: center; position: relative; background: #fafafa; border: 1px dashed #ccc; border-radius: 8px;">
+                             ${window._allPhotos && window._allPhotos.length > 0 ? `
+                                ${window._allPhotos.slice(0, 4).map(p => `
+                                    <div style="width: 100%; max-width: 180px; background: white; border: 1px solid #eee; border-radius: 6px; padding: 6px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); text-align: center; display: flex; flex-direction: column;">
+                                        <div style="flex: 1; min-height: 80px; display: flex; align-items: center; justify-content: center; overflow: hidden; border-radius: 4px; background: #f0f0f0;">
+                                            <img src="${p.data}" style="width: 100%; height: 100%; object-fit: cover;">
+                                        </div>
+                                        <div style="margin-top: 5px; font-size: 7px; font-weight: 800; color: #ff6600; text-transform: uppercase; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${p.desc}</div>
                                     </div>
                                 `).join('')}
                              ` : `
-                                <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; pointer-events: none;">
+                                <div style="grid-column: span 2; grid-row: span 2; display: flex; align-items: center; justify-content: center; width: 100%; height: 100%;">
                                     <span style="font-size: 35px; font-weight: 900; color: rgba(0,0,0,0.02); transform: rotate(-15deg);">macWave.com.mx</span>
                                 </div>
                              `}
@@ -1707,60 +1728,55 @@
                 doc.setFont("helvetica", "bold");
                 doc.text(currency, valueX, mY + 12, { align: "right" });
 
-                // 2. Client Info (Orange Labels)
-                doc.setFontSize(11);
+                // --- 2. Client Info (Fixed Space 55-85mm) ---
+                const clientY = 55;
+                doc.setFontSize(10);
                 doc.setTextColor(255, 102, 0);
                 doc.setFont("helvetica", "bold");
-                doc.text("Estimado(a) Sr:", 15, 60);
+                doc.text("Estimado(a) Sr:", 15, clientY);
                 doc.setFont("helvetica", "normal");
                 doc.setTextColor(0, 0, 0);
-                doc.text(client, 50, 60);
-
-                doc.setTextColor(255, 102, 0);
-                doc.setFont("helvetica", "bold");
-                doc.text("Oportunidad / Proyecto:", 15, 67);
-                doc.setFont("helvetica", "normal");
-                doc.setTextColor(0, 0, 0);
-
-                // Wrap project text
-                const splitProject = doc.splitTextToSize(project, 125);
-                doc.text(splitProject, 65, 67);
-
-                // Calculate next Y based on project height
-                const projectHeight = (splitProject.length - 1) * 4.5;
-                let currentY = 74 + projectHeight;
+                
+                // Limit client name to 1 line
+                const clientText = doc.splitTextToSize(client, 140)[0] || '';
+                doc.text(clientText, 45, clientY);
 
                 doc.setTextColor(255, 102, 0);
                 doc.setFont("helvetica", "bold");
-                doc.text("Número de Serie del equipo :", 15, currentY);
+                doc.text("Oportunidad / Proyecto:", 15, clientY + 7);
                 doc.setFont("helvetica", "normal");
                 doc.setTextColor(0, 0, 0);
-                doc.text(serialNumber, 75, currentY);
-                // --- PHOTOS IN PDF (Integrated into Concept space) ---
-                let tableStartY;
+
+                // Wrap project text but constrain to 2 lines to keep layout fixed
+                const splitProject = doc.splitTextToSize(project, 130).slice(0, 2);
+                doc.text(splitProject, 60, clientY + 7);
+
+                doc.setTextColor(255, 102, 0);
+                doc.setFont("helvetica", "bold");
+                doc.text("Número de Serie del equipo :", 15, clientY + 18);
+                doc.setFont("helvetica", "normal");
+                doc.setTextColor(0, 0, 0);
+                doc.text(serialNumber, 70, clientY + 18);
+
+                // --- 3. MAIN BODY (Starts at 85mm) ---
+                const bodyStartY = 80;
+                let nextSectionY = 180; // High default for end of body
+                
                 const showConcepts = document.getElementById('toggle-concepts').checked;
                 const showBank = document.getElementById('toggle-bank').checked;
 
                 if (showConcepts) {
-                    tableStartY = currentY + 7;
                     doc.autoTable({
-                        startY: tableStartY,
+                        startY: bodyStartY,
                         head: [['DESCRIPCIÓN DEL SERVICIO O PRODUCTO', 'PRECIO UNITARIO', 'UNIDAD', 'SUB TOTAL']],
                         body: items,
                         theme: 'plain',
                         headStyles: {
-                            fillColor: [0, 0, 0],
-                            textColor: [255, 255, 255],
-                            halign: 'center',
-                            fontSize: 9,
-                            minCellHeight: 10,
-                            valign: 'middle'
+                            fillColor: [0, 0, 0], textColor: [255, 255, 255],
+                            halign: 'center', fontSize: 9, minCellHeight: 10, valign: 'middle'
                         },
                         bodyStyles: {
-                            textColor: [0, 0, 0], 
-                            fontSize: 9,
-                            minCellHeight: 10,
-                            valign: 'middle'
+                            textColor: [0, 0, 0], fontSize: 9, minCellHeight: 10, valign: 'middle'
                         },
                         alternateRowStyles: { fillColor: [245, 245, 247] },
                         columnStyles: {
@@ -1779,175 +1795,151 @@
                         }
                     });
 
-                    let finalTableY = doc.lastAutoTable.finalY;
-                    doc.setDrawColor(240, 240, 240);
-                    doc.setLineWidth(0.2);
-                    doc.roundedRect(15, tableStartY, 180, finalTableY - tableStartY, 4, 4, 'D');
-
-                    const totalY = finalTableY + 10;
+                    nextSectionY = doc.lastAutoTable.finalY + 10;
+                    
+                    // Draw Total
                     doc.setFontSize(13);
                     doc.setTextColor(0);
                     doc.setFont("helvetica", "bold");
-                    doc.text("TOTAL", 150, totalY);
+                    doc.text("TOTAL", 150, nextSectionY);
                     doc.setTextColor(255, 102, 0);
-                    doc.text(`$ ${total.toLocaleString('en-US', { minimumFractionDigits: 2 })}`, 195, totalY, { align: "right" });
+                    doc.text(`$ ${total.toLocaleString('en-US', { minimumFractionDigits: 2 })}`, 195, nextSectionY, { align: "right" });
                     
-                    var nextElementY = totalY + 13;
+                    nextSectionY += 10;
                 } else {
-                    tableStartY = currentY + 7;
-                    const placeholderH = 90;
+                    // PHOTO GRID AREA (Fixed size container 85-175mm)
+                    const gridH = 90;
                     doc.setDrawColor(245, 245, 247);
                     doc.setLineWidth(0.1);
-                    doc.roundedRect(15, tableStartY, 180, placeholderH, 4, 4, 'D');
+                    doc.roundedRect(15, bodyStartY, 180, gridH, 4, 4, 'D');
                     
-                    if (window._allPhotos.length > 0 && !showBank) {
-                        let photoX = 20;
-                        let photoY = tableStartY + 5;
-                        window._allPhotos.slice(0, 5).forEach(p => {
-                           try {
-                               doc.addImage(p.data, 'JPEG', photoX, photoY, 28, 28);
-                               doc.setFontSize(6);
-                               doc.setTextColor(50);
-                               doc.setFont("helvetica", "bold");
-                               doc.text(p.desc, photoX + 14, photoY + 32, { align: "center", maxWidth: 28 });
-                               photoX += 34;
-                           } catch(e) {}
+                    if (window._allPhotos.length > 0) {
+                        // 2x2 Grid Coordinates
+                        const coords = [
+                            { x: 25, y: bodyStartY + 5 },
+                            { x: 115, y: bodyStartY + 5 },
+                            { x: 25, y: bodyStartY + 48 },
+                            { x: 115, y: bodyStartY + 48 }
+                        ];
+
+                        window._allPhotos.slice(0, 4).forEach((p, idx) => {
+                            const c = coords[idx];
+                            try {
+                                doc.addImage(p.data, 'JPEG', c.x, c.y, 70, 35, undefined, 'FAST');
+                                doc.setFontSize(7);
+                                doc.setTextColor(50);
+                                doc.setFont("helvetica", "bold");
+                                doc.text(p.desc, c.x + 35, c.y + 39, { align: "center", maxWidth: 70 });
+                            } catch(e) { console.error("Error adding image to PDF:", e); }
                         });
                     } else {
                         doc.setFontSize(35);
                         doc.setTextColor(240, 240, 240);
                         doc.setFont("helvetica", "bold");
-                        doc.text("macWave.com.mx", 105, tableStartY + (placeholderH/2) + 5, { align: "center", angle: 15 });
+                        doc.text("macWave.com.mx", 105, bodyStartY + (gridH/2) + 5, { align: "center", angle: 15 });
                     }
-                    
-                    var nextElementY = tableStartY + placeholderH + 10;
+                    nextSectionY = bodyStartY + gridH + 10;
                 }
 
-                // 4. Terms
-                let cY = nextElementY;
+                // --- 4. NOTES / OBSERVATIONS (Fixed space or below body) ---
+                let notesY = nextSectionY;
+                if (odsNotes) {
+                    doc.setFontSize(7);
+                    doc.setTextColor(51, 51, 51);
+                    doc.setFont("helvetica", "bold");
+                    doc.text("OBSERVACIONES / NOTAS DE LABORATORIO:", 15, notesY);
+                    doc.setFont("helvetica", "normal");
+                    const splitNotes = doc.splitTextToSize(odsNotes, 180).slice(0, 4); // Limit to 4 lines
+                    doc.text(splitNotes, 15, notesY + 4);
+                    notesY += 20; // Fixed jump for notes
+                } else {
+                    notesY += 5;
+                }
+
+                // --- 5. TERMS (Fixed Y 215mm) ---
+                const termsY = 210;
                 doc.setFontSize(7.5);
-                doc.setTextColor(0, 0, 0); // Black for readability
+                doc.setTextColor(0, 0, 0); 
                 doc.setFont("helvetica", "bold");
-                doc.text(`Vigencia de la ODS : 1 día para aceptación de la misma.`, 15, cY);
-                doc.text("Garantía: 31 días en el servicio técnico, pregunta por tu garantía extendida a 100 días POR UN COSTO ADICIONAL.", 15, cY + 5);
-                doc.text("Condiciones: El cliente acepta los términos y condiciones en macwave.com.mx/terminos.html", 15, cY + 11);
+                doc.text(`Vigencia de la ODS : 1 día para aceptación de la misma.`, 15, termsY);
+                doc.text("Garantía: 31 días en el servicio técnico, pregunta por tu garantía extendida a 100 días POR UN COSTO ADICIONAL.", 15, termsY + 5);
+                doc.text("Condiciones: El cliente acepta los términos y condiciones en macwave.com.mx/terminos.html", 15, termsY + 11);
                 doc.setFontSize(9);
-                doc.setTextColor(255, 102, 0); // Orange for emphasis
-                doc.text("PAGO ANTICIPADO DEL 100% PARA EL SERVICIO.", 15, cY + 17);
+                doc.setTextColor(255, 102, 0);
+                doc.text("PAGO ANTICIPADO DEL 100% PARA EL SERVICIO.", 15, termsY + 17);
                 doc.setFontSize(7.5);
                 doc.setTextColor(0, 0, 0);
-                doc.text(`Tiempo de entrega: ${deliveryTime} ENTREGA TENTATIVA SEGÚN DISPONIBILIDAD.`, 15, cY + 23);
+                doc.text(`Tiempo de entrega: ${deliveryTime} ENTREGA TENTATIVA SEGÚN DISPONIBILIDAD.`, 15, termsY + 23);
 
-                // 5. Bank section (Relative position)
-                let bankSectionY = cY + 35;
+                // --- 6. BANK SECTION / QR (Fixed Y 240mm) ---
+                const bankY = 240;
                 const showBankInPDF = document.getElementById('toggle-bank').checked;
 
                 if (showBankInPDF) {
                     doc.setFontSize(10);
                     doc.setTextColor(255, 102, 0);
-                    doc.text("PAGAR A ESTE BANCO", 15, bankSectionY);
+                    doc.text("PAGAR A ESTE BANCO", 15, bankY);
                     doc.setFontSize(15);
-                    doc.setTextColor(255, 102, 0);
-                    doc.text("BBVA", 58, bankSectionY);
-                    doc.setTextColor(255, 102, 0); // Orange
+                    doc.text("BBVA", 60, bankY);
                     doc.setFontSize(10);
                     doc.setFont("helvetica", "bold");
-                    doc.text(`CUENTA CLABE :  ${clabeVal}`, 15, bankSectionY + 7);
-                    doc.text(`NUMERO DE CUENTA :  ${accountVal}`, 15, bankSectionY + 14);
-                    doc.text(`NUMERO DE TARJETA BBVA : ${cardVal}`, 15, bankSectionY + 28);
-                    
-                    var disclaimerLineY = bankSectionY + 35;
+                    doc.text(`CUENTA CLABE :  ${clabeVal}`, 15, bankY + 7);
+                    doc.text(`NUMERO DE CUENTA :  ${accountVal}`, 15, bankY + 14);
+                    doc.text(`NUMERO DE TARJETA BBVA : ${cardVal}`, 15, bankY + 21);
                 } else {
-                    // Watermark for Bank Area
-                    const bankPlaceholderH = 40;
-                    doc.setDrawColor(245, 245, 247);
-                    doc.setLineWidth(0.1);
-                    doc.roundedRect(15, bankSectionY - 5, 140, bankPlaceholderH, 4, 4, 'D'); 
-                    
                     doc.setFontSize(22);
                     doc.setTextColor(235, 235, 235);
                     doc.setFont("helvetica", "bold");
-                    doc.text("macWave.com.mx", 85, bankSectionY + (bankPlaceholderH/2), { align: "center", angle: 5 });
-                    
-                    var disclaimerLineY = bankSectionY + bankPlaceholderH + 5;
+                    doc.text("macWave.com.mx", 80, bankY + 15, { align: "center", angle: 5 });
                 }
 
-                // --- QR CODE (ALWAYS PRESENT) ---
+                // QR CODE (Fixed position)
                 try {
                     const qrCanvas = document.querySelector('#preview-qr-canvas canvas');
                     if (qrCanvas) {
                         const qrData = qrCanvas.toDataURL("image/png");
-                        // Fixed position on the right
-                        doc.addImage(qrData, 'PNG', 160, bankSectionY - 3, 32, 32);
+                        doc.addImage(qrData, 'PNG', 165, bankY - 5, 30, 30);
                     }
-                } catch (e) {
-                    console.error("Error adding QR to PDF:", e);
-                }
+                } catch (e) {}
 
-                // 4.5. Notes (New Section)
-                let notesY = disclaimerLineY + 5;
-                if (odsNotes) {
-                    doc.setFontSize(6.5);
-                    doc.setTextColor(51, 51, 51);
-                    doc.setFont("helvetica", "bold");
-                    doc.text("OBSERVACIONES:", 15, notesY);
-                    doc.setFont("helvetica", "normal");
-                    const splitNotes = doc.splitTextToSize(odsNotes, 180);
-                    doc.text(splitNotes, 15, notesY + 3);
-                    notesY += (splitNotes.length * 3.5) + 10;
-                }
-
-                // 6. Disclaimer (Bottom fixed area or relative)
-                let disclaimerYStart = 242; // Fallback if notes too high
-                if (notesY > 235) disclaimerYStart = notesY + 5;
-
+                // --- 7. DISCLAIMER (Fixed Y 268mm) ---
+                const discY = 268;
                 doc.setFontSize(6.5);
                 doc.setTextColor(0);
                 doc.setFont("helvetica", "bold");
-                doc.text("***Precios sujetos a cambios sin previo aviso, en variación al dólar americano", 15, disclaimerYStart);
+                doc.text("***Precios sujetos a cambios sin previo aviso, en variación al dólar americano", 15, discY);
                 doc.setFontSize(5.5);
                 doc.setFont("helvetica", "normal");
                 const noticeText = "AVISO: EQUIPOS EN ABANDONO POR MÁS DE 30 DÍAS NATURALES A PARTIR DEL DÍA QUE SE DEJÓ EL EQUIPO, SERÁN DESTRUIDOS SIN GENERAR NINGÚN TIPO DE RESPONSABILIDAD A macWave Y SU EQUIPO. USTED ACEPTA YA ESTE ACUERDO, LA REVISIÓN GENERA UN COSTO DE $499 POR DIAGNÓSTICO Y USO DEL LABORATORIO, SERÁN TOMADOS EN CUENTA SI DECIDE REPARAR AQUÍ EL EQUIPO HOY. CONSULTA TÉRMINOS Y CONDICIONES EN EL SITIO WEB. ¡EQUIPOS APAGADOS O MOJADOS NO LLEVAN GARANTÍA! EL SOFTWARE COMO OFFICE SE ENVÍA POR URL Y EL USUARIO DEBE INSTALARLO Y NOTIFICAR PARA ACTIVARLO.";
                 const splitN = doc.splitTextToSize(noticeText, 180);
-                doc.text(splitN, 15, disclaimerYStart + 5);
+                doc.text(splitN, 15, discY + 4);
 
-                // 7. Dynamic Bottom Certification Logos
-                const certRowY = 270;
-                const footerY = 286;
-                const maxCertW = 22.75;
-                const maxCertH = 9.75;
-                const pageWidth = 180;
-                const marginLeft = 15;
+                // --- 8. FOOTER / CERT LOGOS (Fixed Bottom) ---
+                const certY = 282;
+                const footerY = 292;
+                
+                // Certification Logos
+                const maxCertW = 20;
+                const maxCertH = 8;
+                let startX = 15;
+                const gap = (180 - (BOTTOM_CERT_LOGOS.length * maxCertW)) / (BOTTOM_CERT_LOGOS.length - 1);
 
-                const drawDims = BOTTOM_CERT_LOGOS.map(logo => {
-                    const ratio = (logo.w && logo.h) ? (logo.w / logo.h) : 1;
-                    let dH = maxCertH;
-                    let dW = dH * ratio;
-                    if (dW > maxCertW) {
-                        dW = maxCertW;
-                        dH = dW / ratio;
-                    }
-                    return { dW, dH };
-                });
-
-                const totalLogoW = drawDims.reduce((acc, d) => acc + d.dW, 0);
-                const dynamicGap = (pageWidth - totalLogoW) / (BOTTOM_CERT_LOGOS.length + 1);
-
-                let startX = marginLeft + dynamicGap;
                 BOTTOM_CERT_LOGOS.forEach((logo, idx) => {
-                    const { dW, dH } = drawDims[idx];
+                    const ratio = (logo.w && logo.h) ? (logo.w / logo.h) : 1;
+                    let dW = maxCertH * ratio;
+                    if (dW > maxCertW) dW = maxCertW;
                     try {
-                        doc.addImage(logo.data, 'PNG', startX, certRowY + (maxCertH - dH) / 2, dW, dH);
-                    } catch (e) { }
-                    startX += dW + dynamicGap;
+                        doc.addImage(logo.data, 'PNG', startX, certY, dW, maxCertH);
+                    } catch (e) {}
+                    startX += maxCertW + gap;
                 });
 
-                doc.setFontSize(6.5);
+                doc.setFontSize(6);
                 doc.setFont("helvetica", "bold");
-                doc.text("ESPECIALISTAS EN TECNOLOGIA ROLDU SAS. DE C.V", 12, footerY);
+                doc.text("ESPECIALISTAS EN TECNOLOGIA ROLDU SAS. DE C.V", 15, footerY);
                 doc.setFont("helvetica", "normal");
-                doc.text("Visítanos en MacWave Sucursal Condesa\nSalvador Alvarado 72 oficina 208, Escandón. CDMX", 105, footerY, { align: "center" });
-                doc.text(`sitio web: https://macwave.com.mx\nmail: soporte@macwave.com.mx`, 198, footerY, { align: "right" });
+                doc.text("Salvador Alvarado 72 oficina 208, Escandón. CDMX", 105, footerY, { align: "center" });
+                doc.text(`https://macwave.com.mx | soporte@macwave.com.mx`, 195, footerY, { align: "right" });
 
                 const currentFolio = document.getElementById('quote-number').value;
                 

@@ -1201,7 +1201,7 @@
                         <label
                             style="display:block; font-size:12px; font-weight:800; margin-bottom:8px; color:#333;">¿Cómo
                             nos conociste?</label>
-                        <select id="t-unified-source" class="btn" onchange="updateFolioPreview()"
+                        <select id="t-unified-source" class="btn" onchange="updateFolioPreview(); toggleCalendarButtons();"
                             style="width:100%; text-align:left; background:rgba(255,255,255,0.4); border:1px solid #000; color:#000; margin-bottom:15px; font-weight:700;">
                             <option value="INTERNET">INTERNET</option>
                             <option value="GOOGLE MAPS">GOOGLE MAPS</option>
@@ -1209,13 +1209,54 @@
                         </select>
                         <input type="text" id="t-unified-name" class="btn"
                             style="width:100%; text-align:left; background:rgba(255,255,255,0.4); border:1px solid #000; color:#000; margin-bottom:15px;"
-                            placeholder="Nombre del cliente">
+                            placeholder="Nombre del cliente" oninput="toggleCalendarButtons()">
                         <input type="text" id="t-unified-phone" class="btn"
                             style="width:100%; text-align:left; background:rgba(255,255,255,0.4); border:1px solid #000; color:#000; margin-bottom:15px;"
-                            placeholder="WhatsApp (10 dígitos)">
-                        <input type="datetime-local" id="t-unified-date" class="btn"
-                            style="width:100%; text-align:left; background:rgba(255,255,255,0.4); border:1px solid #000; color:#000; margin-bottom:20px;"
-                            placeholder="Fecha de la visita">
+                            placeholder="WhatsApp (10 dígitos)" oninput="toggleCalendarButtons()">
+                        <div style="display: flex; gap: 8px; margin-bottom: 15px;">
+                            <!-- DATE INPUT WITH ICON -->
+                            <div style="flex: 1.5; position: relative;">
+                                <input type="date" id="t-unified-date" class="btn"
+                                    style="width: 100%; text-align:left; background:rgba(255,255,255,0.4); border:1px solid #000; color:#000; padding-right: 30px;"
+                                    oninput="toggleCalendarButtons()" onclick="this.showPicker()">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" 
+                                     style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); pointer-events: none; opacity: 0.6;">
+                                     <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line>
+                                </svg>
+                            </div>
+                            <!-- TIME INPUT WITH ICON -->
+                            <div style="flex: 1; position: relative;">
+                                <input type="time" id="t-unified-time" class="btn"
+                                    style="width: 100%; text-align:left; background:rgba(255,255,255,0.4); border:1px solid #000; color:#000; padding-right: 30px;"
+                                    oninput="toggleCalendarButtons()" onclick="this.showPicker()">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" 
+                                     style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); pointer-events: none; opacity: 0.6;">
+                                     <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
+                                </svg>
+                            </div>
+                        </div>
+                            
+                        <!-- CALENDAR EXPORT ACTIONS (Visible but styled as disabled until filled) -->
+                        <div id="calendar-actions" style="opacity: 0.3; pointer-events: none; transition: all 0.3s ease; display: flex; flex-direction: column; gap: 8px; margin-bottom: 20px; background: rgba(0,0,0,0.05); padding: 12px; border-radius: 12px; border: 1px dashed #999;">
+                            <p style="font-size: 10px; font-weight: 800; color: #ff6600; text-align: center; margin-bottom: 4px; text-transform: uppercase;">Añadir o Compartir Evento:</p>
+                            <div style="display: flex; gap: 6px;">
+                                <a id="btn-google-cal" href="#" target="_blank" class="btn" 
+                                   style="flex: 1; font-size: 10px; padding: 8px; height: auto; background: white; border: 1px solid #ccc; color: #444; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 4px; font-weight: 700;">
+                                   <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                                   GOOGLE
+                                </a>
+                                <button type="button" onclick="downloadICS()" class="btn" 
+                                   style="flex: 1; font-size: 10px; padding: 8px; height: auto; background: #000; border: 1px solid #000; color: #fff; display: flex; align-items: center; justify-content: center; gap: 4px; font-weight: 700;">
+                                   <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 19l-7-7 7-7M19 19l-7-7 7-7"></path></svg>
+                                   IPHONE
+                                </button>
+                                <button type="button" onclick="shareEvent()" class="btn" 
+                                   style="flex: 1; font-size: 10px; padding: 8px; height: auto; background: #006add; border: 1px solid #006add; color: #fff; display: flex; align-items: center; justify-content: center; gap: 4px; font-weight: 700;">
+                                   <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"></path><polyline points="16 6 12 2 8 6"></polyline><line x1="12" y1="2" x2="12" y2="15"></line></svg>
+                                   COMPARTIR
+                                </button>
+                            </div>
+                        </div>
                             
                         <div style="display: flex; flex-direction: column; align-items: center; margin-bottom: 20px;">
                             <a href="https://maps.app.goo.gl/PeSD75SSGMoCD4qZA" target="_blank" style="text-decoration: none; display: flex; flex-direction: column; align-items: center;">
@@ -1526,23 +1567,119 @@
             const details = encodeURIComponent(`Folio: ${folio}\nCliente: ${name}\nOrigen: ${source}\nWhatsApp: ${phone}\nSitio: Mac Wave T2`);
             
             // Format dates for Google Calendar (YYYYMMDDTHHMMSSZ)
-            const now = new Date();
-            const start = now.toISOString().replace(/-|:|\.\d+/g, '');
-            const end = new Date(now.getTime() + 60 * 60 * 1000).toISOString().replace(/-|:|\.\d+/g, '');
+            // If dateVal is provided, use it, otherwise use now.
+            const targetDate = dateVal ? new Date(dateVal) : new Date();
+            if (isNaN(targetDate.getTime())) return ''; // Invalid date
             
-            return `https://www.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=${start}/${end}&details=${details}`;
+            const startStr = targetDate.toISOString().replace(/-|:|\.\d+/g, '');
+            const endStr = new Date(targetDate.getTime() + 60 * 60 * 1000).toISOString().replace(/-|:|\.\d+/g, '');
+            
+            return `https://www.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=${startStr}/${endStr}&details=${details}`;
         }
+
+        window.downloadICS = function() {
+            const name = document.getElementById('t-unified-name').value || 'Cliente';
+            const phone = document.getElementById('t-unified-phone').value || '';
+            const dateVal = document.getElementById('t-unified-date').value;
+            const timeVal = document.getElementById('t-unified-time').value;
+            const source = document.getElementById('t-unified-source').value;
+            const folio = document.getElementById('t-unified-folio').innerText;
+
+            if (!dateVal || !timeVal) return alert("Por favor selecciona fecha y hora.");
+
+            const targetDate = new Date(`${dateVal}T${timeVal}`);
+            const endDate = new Date(targetDate.getTime() + 60 * 60 * 1000);
+
+            const formatDate = (d) => d.toISOString().replace(/-|:|\.\d+/g, '');
+
+            const icsContent = [
+                'BEGIN:VCALENDAR',
+                'VERSION:2.0',
+                'BEGIN:VEVENT',
+                `SUMMARY:TICKET: ${folio} - ${name}`,
+                `DTSTART:${formatDate(targetDate)}`,
+                `DTEND:${formatDate(endDate)}`,
+                `DESCRIPTION:Folio: ${folio}\\nCliente: ${name}\\nOrigen: ${source}\\nWhatsApp: ${phone}\\nSitio: Mac Wave T2`,
+                'LOCATION:Av. México Coyoacán 276\\, Sta Cruz Atoyac\\, CDMX',
+                'END:VEVENT',
+                'END:VCALENDAR'
+            ].join('\r\n');
+
+            const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
+            const url = window.URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.setAttribute('download', `Cita-MacWave-${folio}.ics`);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        };
+
+        window.shareEvent = async function() {
+            const name = document.getElementById('t-unified-name').value || 'Cliente';
+            const phone = document.getElementById('t-unified-phone').value || '';
+            const dateVal = document.getElementById('t-unified-date').value;
+            const timeVal = document.getElementById('t-unified-time').value;
+            const folio = document.getElementById('t-unified-folio').innerText;
+
+            if (!dateVal || !timeVal) return alert("Completa los datos para compartir.");
+
+            const shareText = `📅 NUEVA CITA - Mac Wave\n\nFolio: ${folio}\nCliente: ${name}\nWhatsApp: ${phone}\nFecha Correo: ${dateVal} ${timeVal}\n\nUbicación: Av. México Coyoacán 276, Sta Cruz Atoyac, CDMX`;
+
+            if (navigator.share) {
+                try {
+                    await navigator.share({
+                        title: `Cita: ${folio}`,
+                        text: shareText
+                    });
+                } catch (err) {
+                    console.log("Share cancelled or failed", err);
+                }
+            } else {
+                // Fallback: Copy to clipboard
+                navigator.clipboard.writeText(shareText);
+                alert("Datos copiados al portapapeles. ¡Pégalos donde quieras!");
+            }
+        };
+
+        window.toggleCalendarButtons = function() {
+            const name = document.getElementById('t-unified-name').value;
+            const phone = document.getElementById('t-unified-phone').value;
+            const dateVal = document.getElementById('t-unified-date').value;
+            const timeVal = document.getElementById('t-unified-time').value;
+            const calendarSection = document.getElementById('calendar-actions');
+
+            if (name && phone.length >= 10 && dateVal && timeVal) {
+                calendarSection.style.opacity = '1';
+                calendarSection.style.pointerEvents = 'auto';
+                
+                // Update Google Link
+                const folio = document.getElementById('t-unified-folio').innerText;
+                const source = document.getElementById('t-unified-source').value;
+                const googleBtn = document.getElementById('btn-google-cal');
+                if (googleBtn) {
+                    const combinedIso = `${dateVal}T${timeVal}`;
+                    googleBtn.href = generateGoogleCalendarLink(folio, name, source, phone, combinedIso);
+                }
+            } else {
+                calendarSection.style.opacity = '0.3';
+                calendarSection.style.pointerEvents = 'none';
+            }
+        };
 
         window.sendTicketAction = async function () {
             const nameInput = document.getElementById('t-unified-name');
             const phoneInput = document.getElementById('t-unified-phone');
             const dateInput = document.getElementById('t-unified-date');
+            const timeInput = document.getElementById('t-unified-time');
             const sourceInput = document.getElementById('t-unified-source');
             const folioDisplay = document.getElementById('t-unified-folio');
 
             const name = nameInput.value || 'Cliente';
             const phone = phoneInput.value;
             const dateVal = dateInput.value;
+            const timeVal = timeInput.value;
+            const combinedDate = `${dateVal}T${timeVal}`;
             const source = sourceInput.value;
             const folio = folioDisplay.innerText;
             const techPhone = '5535757364';
@@ -1580,11 +1717,11 @@
                 renderTicketsList();
 
                 // Open the new Ticket Badge Design in a new tab
-                const badgeUrl = `ticket-badge.html?name=${encodeURIComponent(name)}&folio=${encodeURIComponent(folio)}&source=${encodeURIComponent(source)}&phone=${encodeURIComponent(phone)}&date=${encodeURIComponent(dateVal)}`;
+                const badgeUrl = `ticket-badge.html?name=${encodeURIComponent(name)}&folio=${encodeURIComponent(folio)}&source=${encodeURIComponent(source)}&phone=${encodeURIComponent(phone)}&date=${encodeURIComponent(combinedDate)}`;
                 window.open(badgeUrl, '_blank');
 
                 // Generate Calendar Link
-                const calLink = generateGoogleCalendarLink(folio, name, source, phone, dateVal);
+                const calLink = generateGoogleCalendarLink(folio, name, source, phone, combinedDate);
 
                 // Admin notification
                 setTimeout(() => {
