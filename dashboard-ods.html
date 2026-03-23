@@ -1472,7 +1472,10 @@
             if (ticketRes.error) {
                 console.error("Tickets Load Error:", ticketRes.error);
             }
-            allTickets = ticketRes.data || [];
+            
+            // Apply frontend persistence ghost-delete filter
+            const deletedFolios = JSON.parse(localStorage.getItem('t800_deleted_folios') || '[]');
+            allTickets = (ticketRes.data || []).filter(t => !deletedFolios.includes(t.folio));
 
             // Refresh Current View
             if (currentView === 'list') {
@@ -2028,6 +2031,13 @@
                     console.warn("[T800] Supabase devolvió 0 filas afectadas. Es posible que el ticket no exista o RLS lo haya bloqueado, pero se limpiará localmente.");
                 }
 
+                // Add to local ghost list so they don't reappear on refresh if RLS blocked it
+                const ghostList = JSON.parse(localStorage.getItem('t800_deleted_folios') || '[]');
+                folios.forEach(f => {
+                    if (!ghostList.includes(f)) ghostList.push(f);
+                });
+                localStorage.setItem('t800_deleted_folios', JSON.stringify(ghostList));
+
                 // Success! Clean local memory robustly based on folio
                 allTickets = allTickets.filter(t => !folios.includes(t.folio));
                 
@@ -2056,6 +2066,13 @@
                 // Verify the backend actually deleted the row
                 if (count === 0) {
                     console.warn(`[T800] Supabase devolvió 0 rows affected para ${folio}. Borrando de la memoria local...`);
+                }
+
+                // Add to ghost list to hide on refresh
+                const ghostList = JSON.parse(localStorage.getItem('t800_deleted_folios') || '[]');
+                if (!ghostList.includes(folio)) {
+                    ghostList.push(folio);
+                    localStorage.setItem('t800_deleted_folios', JSON.stringify(ghostList));
                 }
 
                 // Sync local state unconditionally to avoid ghost rows locally
