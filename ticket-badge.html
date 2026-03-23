@@ -357,12 +357,21 @@
     </div>
 
     <!-- Tools -->
-    <div class="tools" data-html2canvas-ignore>
+    <div class="tools" data-html2canvas-ignore style="display: flex; flex-direction: column; gap: 10px;">
         <button id="wallet-btn" class="apple-wallet-button">
             <img class="apple-wallet-logo" src="images/wallet-logo.png" alt="Wallet Logo">
             <div class="button-text">
                 <span class="add-to">Add to</span>
                 <span class="apple-wallet">Apple Wallet</span>
+            </div>
+        </button>
+        <button id="calendar-btn" class="apple-wallet-button" style="background-color: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.4); backdrop-filter: blur(10px);">
+            <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" style="margin-right: 15px; margin-left: 5px;">
+                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line>
+            </svg>
+            <div class="button-text">
+                <span class="add-to" style="color: rgba(255,255,255,0.8);">Añadir a</span>
+                <span class="apple-wallet" style="color: #fff; font-size: 18px;">Calendario iPhone</span>
             </div>
         </button>
     </div>
@@ -440,6 +449,32 @@
         };
 
         document.getElementById('wallet-btn').addEventListener('click', () => captureAndExport('download'));
+
+        document.getElementById('calendar-btn').addEventListener('click', () => {
+            if (!rawDate) {
+                alert("Este ticket no tiene una fecha definida.");
+                return;
+            }
+
+            const startDate = new Date(rawDate);
+            if (isNaN(startDate)) {
+                alert("Fecha inválida.");
+                return;
+            }
+            const endDate = new Date(startDate.getTime() + 60 * 60 * 1000); // 1 hour
+
+            const formatDate = (date) => date.toISOString().replace(/-|:|\.\d+/g, '');
+
+            const icsContent = `BEGIN:VCALENDAR\nVERSION:2.0\nBEGIN:VEVENT\nSUMMARY:Cita MacWave - ${finalFolio} (${clientName.split(' ')[0]})\nDTSTART:${formatDate(startDate)}\nDTEND:${formatDate(endDate)}\nDESCRIPTION:Cita de servicio técnico agendada. Folio: ${finalFolio}.\nLOCATION:MacWave, Av. México Coyoacán 276, Sta Cruz Atoyac, CDMX\nEND:VEVENT\nEND:VCALENDAR`;
+
+            const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
+            const link = document.createElement('a');
+            link.href = window.URL.createObjectURL(blob);
+            link.setAttribute('download', `Cita_${finalFolio}.ics`);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        });
     </script>
 </body>
 </html>

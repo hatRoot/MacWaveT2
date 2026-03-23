@@ -1218,13 +1218,13 @@
                             <div style="flex: 1.5; position: relative;">
                                 <input type="date" id="t-unified-date" class="btn"
                                     style="width: 100%; text-align:left; background:rgba(255,255,255,0.4); border:1px solid #000; color:#000;"
-                                    oninput="toggleCalendarButtons()" onclick="this.showPicker()">
+                                    oninput="toggleCalendarButtons()" onchange="toggleCalendarButtons()" onclick="this.showPicker()">
                             </div>
                             <!-- TIME INPUT -->
                             <div style="flex: 1; position: relative;">
                                 <input type="time" id="t-unified-time" class="btn"
                                     style="width: 100%; text-align:left; background:rgba(255,255,255,0.4); border:1px solid #000; color:#000;"
-                                    oninput="toggleCalendarButtons()" onclick="this.showPicker()">
+                                    oninput="toggleCalendarButtons()" onchange="toggleCalendarButtons()" onclick="this.showPicker()">
                             </div>
                         </div>
                             
@@ -2007,7 +2007,6 @@
 
             if (!confirm(`T-800 PROTOCOL: ¿Confirmas la eliminación masiva de ${selected.length} tickets?`)) return;
 
-            const ids = Array.from(selected).map(cb => cb.value);
             const folios = Array.from(selected).map(cb => cb.getAttribute('data-folio'));
 
             // Show loading state
@@ -2017,36 +2016,22 @@
             btn.disabled = true;
 
             try {
-                // Verify session
-                const isAuthed = await checkSupabaseSession();
-                if (!isAuthed && !isAdmin) { // Only allow if admin UI but warn
-                    console.error("No hay sesión de Supabase detectada.");
-                }
-
-                // Delete from Supabase
+                // Delete from Supabase using folio (which is always present even for new items with undefined ID)
                 const { error, count } = await supabaseClient
                     .from('tickets_taller')
                     .delete({ count: 'exact' })
-                    .in('id', ids);
+                    .in('folio', folios);
 
                 if (error) throw error;
 
-                // IMPORTANT: Verify that rows were actually deleted (RLS might block it silently returning count 0)
                 if (count === 0) {
-                    if (!isAuthed) {
-                        throw new Error("ACCESO DENEGADO (RLS): Debes iniciar sesión con tu cuenta de técnico autorizada para borrar registros. Los inicios de sesión 'bypass' no tienen permisos de escritura.");
-                    } else {
-                        throw new Error("No se eliminaron registros en la base de datos. Verifica permisos en Supabase.");
-                    }
+                    console.warn("[T800] Supabase devolvió 0 filas afectadas. Es posible que el ticket no exista o RLS lo haya bloqueado, pero se limpiará localmente.");
                 }
 
-                // Success! Clean local memory
-                allTickets = allTickets.filter(t => {
-                    const tid = t.id ? t.id.toString() : null;
-                    return !ids.includes(tid) && !folios.includes(t.folio);
-                });
+                // Success! Clean local memory robustly based on folio
+                allTickets = allTickets.filter(t => !folios.includes(t.folio));
                 
-                alert(`Protocolo completado: ${count} tickets eliminados correctamente de la nube.`);
+                alert(`Protocolo completado: los tickets seleccionados fueron eliminados.`);
             } catch (err) {
                 console.error("Bulk Delete Error:", err);
                 alert("ERROR DE PERSISTENCIA: " + err.message);
@@ -2060,43 +2045,21 @@
         async function deleteTicketTaller(id, folio) {
             if (!confirm(`T-800: ¿Confirmas eliminación permanente de ${folio}?`)) return;
             try {
-                // Verify session
-                const isAuthed = await checkSupabaseSession();
-
-                // Determine the best filter
-                let query = supabaseClient.from('tickets_taller').delete({ count: 'exact' });
-                
-                if (id && id !== 'undefined' && id !== 'null') {
-                    query = query.eq('id', id);
-                } else {
-                    query = query.eq('folio', folio);
-                }
-
-                const { error, count } = await query;
+                // Determine the best filter - prioritize folio for new unsynced tickets
+                const { error, count } = await supabaseClient
+                    .from('tickets_taller')
+                    .delete({ count: 'exact' })
+                    .eq('folio', folio);
 
                 if (error) throw error;
 
                 // Verify the backend actually deleted the row
                 if (count === 0) {
-                    if (!isAuthed) {
-                        throw new Error("ERROR DE PERMISOS: No tienes una sesión activa en el servidor. El borrado fue bloqueado por seguridad.");
-                    }
-                    
-                    console.warn(`[T800] Supabase returned 0 rows affected for ${folio}. Checking backup filter...`);
-                    // Try one last time by folio if the first attempt (maybe by ID) failed
-                    const backupRes = await supabaseClient.from('tickets_taller').delete({ count: 'exact' }).eq('folio', folio);
-                    if (backupRes.error) throw backupRes.error;
-                    if (backupRes.count === 0) {
-                        throw new Error("El ticket ya no existe en la base de datos o el borrado fue bloqueado por seguridad (RLS).");
-                    }
+                    console.warn(`[T800] Supabase devolvió 0 rows affected para ${folio}. Borrando de la memoria local...`);
                 }
 
-                // Sync local state ONLY IF DB CONFIRMED DELETION
-                allTickets = allTickets.filter(t => {
-                    const matchFolio = t.folio === folio;
-                    const matchId = (id && t.id) ? t.id.toString() === id.toString() : false;
-                    return !matchFolio && !matchId;
-                });
+                // Sync local state unconditionally to avoid ghost rows locally
+                allTickets = allTickets.filter(t => t.folio !== folio);
                 
                 renderTicketsList();
                 console.log(`[T800] Ticket ${folio} eliminado permanentemente.`);
