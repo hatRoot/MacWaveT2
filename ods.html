@@ -1111,7 +1111,7 @@
 
             // Folio Auto-Increment — Format: MW-YYYYMMDD-NNNN
             const getNextFolio = (inc = false) => {
-                let num = parseInt(localStorage.getItem('quote_folio_counter') || '9471');
+                let num = parseInt(localStorage.getItem('quote_folio_counter') || '9481');
                 if (inc) {
                     num++;
                     localStorage.setItem('quote_folio_counter', num);
@@ -1132,7 +1132,7 @@
                         .limit(20); // Check recent ones in case of deletions or manual edits
 
                     if (data && data.length > 0) {
-                        let maxNum = 9470; // Start higher based on user feedback
+                        let maxNum = 9480; // Baseline: user last manual folio was 9480
                         data.forEach(item => {
                             if (item.folio && item.folio.includes('-')) {
                                 const parts = item.folio.split('-');
@@ -1942,10 +1942,16 @@
                 doc.text(`https://macwave.com.mx | soporte@macwave.com.mx`, 195, footerY, { align: "right" });
 
                 const currentFolio = document.getElementById('quote-number').value;
-                
-                // Save the PDF with the folio as filename
-                doc.save(`${currentFolio}.pdf`);
-                window.open(doc.output('bloburl'), '_blank');
+
+                // Abrir el PDF en una nueva pestaña con el nombre del folio como sugerencia
+                const pdfBlob = doc.output('blob');
+                const pdfFile = new File([pdfBlob], `${currentFolio}.pdf`, { type: 'application/pdf' });
+                const pdfUrl = URL.createObjectURL(pdfFile);
+                const newTab = window.open(pdfUrl, '_blank');
+                if (!newTab) {
+                    // Fallback si el navegador bloqueó la pestaña: descarga directa
+                    doc.save(`${currentFolio}.pdf`);
+                }
 
                 // Increment folio counter AFTER capturing it for current PDF/Supabase
                 // Then read the new (next) folio number and display it on the form
