@@ -1218,18 +1218,18 @@
                             <div style="flex: 1.5; position: relative;">
                                 <input type="date" id="t-unified-date" class="btn"
                                     style="width: 100%; text-align:left; background:rgba(255,255,255,0.4); border:1px solid #000; color:#000;"
-                                    oninput="toggleCalendarButtons()" onchange="toggleCalendarButtons()" onclick="this.showPicker()">
+                                    oninput="toggleCalendarButtons()" onchange="toggleCalendarButtons()" onclick="if(this.showPicker) this.showPicker(); else this.focus();">
                             </div>
                             <!-- TIME INPUT -->
                             <div style="flex: 1; position: relative;">
                                 <input type="time" id="t-unified-time" class="btn"
                                     style="width: 100%; text-align:left; background:rgba(255,255,255,0.4); border:1px solid #000; color:#000;"
-                                    oninput="toggleCalendarButtons()" onchange="toggleCalendarButtons()" onclick="this.showPicker()">
+                                    oninput="toggleCalendarButtons()" onchange="toggleCalendarButtons()" onclick="if(this.showPicker) this.showPicker(); else this.focus();">
                             </div>
                         </div>
                             
-                        <!-- CALENDAR EXPORT ACTIONS (Visible but styled as disabled until filled) -->
-                        <div id="calendar-actions" style="opacity: 0.3; pointer-events: none; transition: all 0.3s ease; display: flex; flex-direction: column; gap: 8px; margin-bottom: 20px; background: rgba(0,0,0,0.05); padding: 12px; border-radius: 12px; border: 1px dashed #999;">
+                        <!-- CALENDAR EXPORT ACTIONS (Always visible) -->
+                        <div id="calendar-actions" style="transition: all 0.3s ease; display: flex; flex-direction: column; gap: 8px; margin-bottom: 20px; background: rgba(0,0,0,0.05); padding: 12px; border-radius: 12px; border: 1px dashed #999;">
                             <p style="font-size: 10px; font-weight: 800; color: #ff6600; text-align: center; margin-bottom: 4px; text-transform: uppercase;">Añadir o Compartir Evento:</p>
                             <div style="display: flex; gap: 6px;">
                                 <a id="btn-google-cal" href="#" target="_blank" class="btn" 
@@ -1645,8 +1645,7 @@
             const calendarSection = document.getElementById('calendar-actions');
 
             if (name && dateVal && timeVal) {
-                calendarSection.style.opacity = '1';
-                calendarSection.style.pointerEvents = 'auto';
+                // Section is always active now, only update links
                 
                 // Update Google Link
                 const folio = document.getElementById('t-unified-folio').innerText;
@@ -1657,8 +1656,9 @@
                     googleBtn.href = generateGoogleCalendarLink(folio, name, source, phone, combinedIso);
                 }
             } else {
-                calendarSection.style.opacity = '0.3';
-                calendarSection.style.pointerEvents = 'none';
+                // Keep active but reset link
+                const googleBtn = document.getElementById('btn-google-cal');
+                if (googleBtn) googleBtn.href = "#";
             }
         };
 
@@ -1668,6 +1668,10 @@
             const name = document.getElementById('t-unified-name').value || 'Cliente';
             const folio = document.getElementById('t-unified-folio').innerText;
 
+            if (!name) {
+                alert("Por favor, ingresa el nombre del cliente.");
+                return;
+            }
             if (!dateInput || !timeInput) {
                 alert("Selecciona fecha y hora primero.");
                 return;
@@ -1697,6 +1701,10 @@
             const source = document.getElementById('t-unified-source').value;
             const phone = document.getElementById('t-unified-phone').value;
 
+            if (!name) {
+                alert("Por favor, ingresa el nombre del cliente.");
+                return;
+            }
             if (!dateInput || !timeInput) {
                 alert("Selecciona fecha y hora primero.");
                 return;
