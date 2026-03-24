@@ -2976,7 +2976,6 @@
                 }
             });
 
-            // Logout Handler
             const lBtn = document.getElementById('logout-btn-side');
             if (lBtn) {
                 lBtn.onclick = () => {
@@ -2984,6 +2983,18 @@
                     window.location.href = 'tecnicos.html';
                 };
             }
+
+            // Default date and time to today/now
+            const now = new Date();
+            const dateInput = document.getElementById('t-unified-date');
+            const timeInput = document.getElementById('t-unified-time');
+            if (dateInput && !dateInput.value) {
+                dateInput.value = now.toISOString().split('T')[0];
+            }
+            if (timeInput && !timeInput.value) {
+                timeInput.value = now.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
+            }
+            if (window.toggleCalendarButtons) window.toggleCalendarButtons();
         });
     </script>
 </body>
