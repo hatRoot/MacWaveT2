@@ -901,6 +901,13 @@
                                 style="width: 100%; height: 100px; padding: 12px; border-radius: 8px; background: rgba(255, 255, 255, 0.04); border: 1px solid var(--border); color: #fff; font-size: 0.9rem; resize: vertical;"></textarea>
                         </div>
 
+                        <div class="form-group" style="margin-top: 15px;">
+                            <label>Nota General del Proceso (Técnico)*</label>
+                            <textarea id="ods-general-note"
+                                placeholder="Escribe aquí el resumen del proceso técnico realizado..."
+                                style="width: 100%; height: 100px; padding: 12px; border-radius: 8px; background: rgba(255, 255, 255, 0.04); border: 1px solid var(--border); color: #fff; font-size: 0.9rem; resize: vertical;"></textarea>
+                        </div>
+
                         <div class="section-separator" style="background: rgba(255,255,255,0.15);"></div>
 
                         <div class="header-with-toggle" style="margin-top: 10px;">
@@ -1036,15 +1043,16 @@
                 if (!files || files.length === 0) return;
 
                 // Check for overall limit
-                if (window._allPhotos.length + files.length > 5) {
-                    alert("SISTEMA: Solo se permiten un máximo de 5 fotografías de evidencia por ODS.");
+                const MAX_PHOTOS = 30; // Increased from 5 to 30
+                if (window._allPhotos.length + files.length > MAX_PHOTOS) {
+                    alert(`SISTEMA: Solo se permiten un máximo de ${MAX_PHOTOS} fotografías de evidencia por ODS.`);
                     event.target.value = ''; // Reset input
                     return;
                 }
 
                 document.body.style.cursor = 'wait';
                 for (const file of files) {
-                    if (window._allPhotos.length >= 5) break;
+                    if (window._allPhotos.length >= MAX_PHOTOS) break;
 
                     try {
                         const dataUrl = await new Promise((resolve, reject) => {
@@ -1466,6 +1474,7 @@
                 const accountVal = document.getElementById('account-number').value;
                 const cardVal = document.getElementById('card-number').value;
                 const odsNotes = document.getElementById('ods-notes').value || '';
+                const generalNote = document.getElementById('ods-general-note').value || '';
                 const currency = 'MXN';
 
                 let total = 0;
@@ -1574,33 +1583,31 @@
                         </div>
                         ` : ''}
 
-                        <!-- PHOTO GALLERY / WATERMARK SECTION (5 FIXED SLOTS FULL WIDTH) -->
-                        <div class="ps-watermark" style="min-height: 100px; height: auto; padding: 12px 10px; display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; align-items: start; justify-items: center; position: relative; background: #fafafa; border: 1px dashed #ccc; border-radius: 8px; margin-top: 15px; overflow: visible;">
-                             ${[0,1,2,3,4].map(idx => {
-                                const p = (window._allPhotos || [])[idx];
-                                if (p) {
-                                    return `
-                                        <div style="width: 100%; max-width: 140px; background: white; border: 1px solid #eee; border-radius: 4px; padding: 4px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); text-align: center; display: flex; flex-direction: column; position: relative;">
-                                            <button onclick="window.removePhoto(${idx})" style="position: absolute; top: -6px; right: -6px; background: #FF453A; color: white; border: none; border-radius: 50%; width: 20px; height: 20px; font-size: 11px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 10; box-shadow: 0 2px 4px rgba(0,0,0,0.2);">×</button>
-                                            <div style="width: 100%; aspect-ratio: 1; display: flex; align-items: center; justify-content: center; overflow: hidden; border-radius: 3px; background: #000;">
-                                                <img src="${p.data}" style="width: 100%; height: 100%; object-fit: cover;">
-                                            </div>
-                                            <div style="margin-top: 4px; font-size: 7px; font-weight: 800; color: #ff6600; text-transform: uppercase; line-height: 1.1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${p.desc}</div>
-                                        </div>
-                                    `;
-                                } else {
-                                    return `
-                                        <div style="width: 100%; max-width: 140px; aspect-ratio: 1; border: 1px dashed #ccc; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: #fff; color: #ddd; font-size: 10px; font-weight: 900; opacity: 0.3;">
-                                            ${idx + 1}
-                                        </div>
-                                    `;
-                                }
-                             }).join('')}
+                        <!-- PHOTO GALLERY / WATERMARK SECTION (FLEXIBLE GRID) -->
+                        <div class="ps-watermark" style="min-height: 80px; height: auto; padding: 12px 10px; display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 10px; align-items: start; justify-items: center; position: relative; background: #fafafa; border: 1px dashed #ccc; border-radius: 8px; margin-top: 15px; overflow: visible;">
+                             ${(window._allPhotos || []).length > 0 ? (window._allPhotos || []).map((p, idx) => `
+                                <div style="width: 100%; max-width: 130px; background: white; border: 1px solid #eee; border-radius: 4px; padding: 4px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); text-align: center; display: flex; flex-direction: column; position: relative;">
+                                    <button onclick="window.removePhoto(${idx})" style="position: absolute; top: -6px; right: -6px; background: #FF453A; color: white; border: none; border-radius: 50%; width: 20px; height: 20px; font-size: 11px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 10; box-shadow: 0 2px 4px rgba(0,0,0,0.2);">×</button>
+                                    <div style="width: 100%; aspect-ratio: 1; display: flex; align-items: center; justify-content: center; overflow: hidden; border-radius: 3px; background: #000;">
+                                        <img src="${p.data}" style="width: 100%; height: 100%; object-fit: cover;">
+                                    </div>
+                                    <div style="margin-top: 4px; font-size: 7px; font-weight: 800; color: #ff6600; text-transform: uppercase; line-height: 1.1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${p.desc}</div>
+                                </div>
+                            `).join('') : `
+                                <div style="grid-column: 1 / -1; font-size: 10px; color: #ccc; font-weight: 700;">REGISTRO FOTOGRÁFICO DE EVIDENCIA</div>
+                            `}
                         </div>
+
+                        ${generalNote ? `
+                        <div style="margin-top: 15px; padding: 10px; border: 1px solid #ff6600; border-radius: 8px; font-size: 10px; color: #333; line-height: 1.4; background: #fffcf5;">
+                            <strong style="color: #ff6600; display: block; margin-bottom: 4px; text-transform: uppercase; font-size: 8px;">Nota General del Proceso:</strong>
+                            ${generalNote.replace(/\n/g, '<br>')}
+                        </div>
+                        ` : ''}
 
                         ${odsNotes ? `
                         <div style="margin-top: 15px; padding: 10px; border: 1px dashed #ccc; border-radius: 8px; font-size: 10px; color: #333; line-height: 1.4; background: #fafafa;">
-                            <strong style="color: #ff6600; display: block; margin-bottom: 4px; text-transform: uppercase; font-size: 8px;">Notas / Observaciones:</strong>
+                            <strong style="color: #666; display: block; margin-bottom: 4px; text-transform: uppercase; font-size: 8px;">Notas / Observaciones Iniciales:</strong>
                             ${odsNotes.replace(/\n/g, '<br>')}
                         </div>
                         ` : ''}
@@ -1686,6 +1693,7 @@
                 const deliveryTime = document.getElementById('delivery-time').value || 'POR DEFINIR';
                 const serialNumber = document.getElementById('serial-number').value || 'N/A';
                 const odsNotes = document.getElementById('ods-notes').value || '';
+                const generalNote = document.getElementById('ods-general-note').value || '';
 
                 const items = [];
                 let total = 0;
@@ -1840,27 +1848,29 @@
                     
                 }
 
-                // PHOTO GRID AREA (Always attempt to render if photos exist or concepts are OFF)
+                // PHOTO GRID AREA (Redesigned for up to 10 photos in two rows)
                 const showPhotos = window._allPhotos.length > 0 || !showConcepts;
                 if (showPhotos) {
-                    const gridH = 45; 
+                    const rowHeight = 45;
+                    const numPhotos = window._allPhotos.length;
+                    const rows = numPhotos > 5 ? 2 : 1;
+                    const gridH = rows * rowHeight; 
                     const gridY = showConcepts ? nextSectionY : bodyStartY;
                     
                     doc.setDrawColor(245, 245, 247);
                     doc.setLineWidth(0.1);
                     doc.roundedRect(15, gridY, 180, gridH, 2, 2, 'D');
                     
-                    // 5-Column Grid Slots (STRETCHED TO FULL WIDTH 180mm)
-                    // margin 15, width 180 -> range [15, 195]
-                    // (180 - 10 gap total) / 5 = 34mm each photo
                     const photoW = 34;
                     const gap = 2.5;
                     const startX = 15;
                     
-                    [0, 1, 2, 3, 4].forEach((idx) => {
-                        const p = (window._allPhotos || [])[idx];
-                        const cX = startX + (idx * (photoW + gap)) + 1; // +1 indent
-                        const cY = gridY + 3;
+                    for (let i = 0; i < (rows * 5); i++) {
+                        const rowIdx = Math.floor(i / 5);
+                        const colIdx = i % 5;
+                        const p = (window._allPhotos || [])[i];
+                        const cX = startX + (colIdx * (photoW + gap)) + 1;
+                        const cY = gridY + 3 + (rowIdx * rowHeight);
                         
                         if (p) {
                             try {
@@ -1870,16 +1880,30 @@
                                 doc.setFont("helvetica", "bold");
                                 doc.text(p.desc.substring(0, 20), cX + (photoW/2), cY + photoW + 3, { align: "center", maxWidth: photoW });
                             } catch(e) { console.error("Error adding image to PDF:", e); }
-                        } else {
+                        } else if (i < 5) { // Only show empty slots for the first row
                             doc.setDrawColor(240, 240, 240);
                             doc.setLineWidth(0.05);
                             doc.rect(cX, cY, photoW, photoW, 'D');
                             doc.setFontSize(6);
                             doc.setTextColor(230, 230, 230);
-                            doc.text(`${idx + 1}`, cX + (photoW/2), cY + (photoW/2), { align: "center" });
+                            doc.text(`${i + 1}`, cX + (photoW/2), cY + (photoW/2), { align: "center" });
                         }
-                    });
+                    }
                     nextSectionY = gridY + gridH + 5;
+                }
+
+                // --- 3.5 GENERAL PROCESS NOTE (TECHNICIAN) ---
+                if (generalNote) {
+                    doc.setFontSize(8);
+                    doc.setTextColor(255, 102, 0); // Brand Orange
+                    doc.setFont("helvetica", "bold");
+                    doc.text("NOTA GENERAL DEL PROCESO (TÉCNICO):", 15, nextSectionY);
+                    doc.setFontSize(7.5);
+                    doc.setTextColor(0, 0, 0);
+                    doc.setFont("helvetica", "normal");
+                    const splitGenNote = doc.splitTextToSize(generalNote, 180);
+                    doc.text(splitGenNote, 15, nextSectionY + 4);
+                    nextSectionY += (splitGenNote.length * 4) + 8;
                 }
 
                 // --- 4. NOTES / OBSERVATIONS (Fixed space or below body) ---
