@@ -2816,17 +2816,18 @@
                                     img.onload = () => {
                                         const canvas = document.createElement('canvas');
                                         const ctx = canvas.getContext('2d');
-                                        const MAX_WIDTH = 1200; const MAX_HEIGHT = 1200;
-                                        let width = img.width; let height = img.height;
-                                        if (width > height) { if (width > MAX_WIDTH) { height *= MAX_WIDTH / width; width = MAX_WIDTH; } }
-                                        else { if (height > MAX_HEIGHT) { width *= MAX_HEIGHT / height; height = MAX_HEIGHT; } }
-                                        canvas.width = width; canvas.height = height;
-                                        ctx.drawImage(img, 0, 0, width, height);
+                                        const SIZE = 1000;
+                                        canvas.width = SIZE;
+                                        canvas.height = SIZE;
+                                        const minDim = Math.min(img.width, img.height);
+                                        const sx = (img.width - minDim) / 2;
+                                        const sy = (img.height - minDim) / 2;
+                                        ctx.drawImage(img, sx, sy, minDim, minDim, 0, 0, SIZE, SIZE);
 
-                                        let quality = 0.7;
+                                        let quality = 0.8;
                                         let dataUrl = canvas.toDataURL('image/jpeg', quality);
-                                        if (dataUrl.length > 1000000) {
-                                            quality = 0.5;
+                                        if (dataUrl.length > 800000) {
+                                            quality = 0.6;
                                             dataUrl = canvas.toDataURL('image/jpeg', quality);
                                         }
                                         resolve(dataUrl);
@@ -3004,11 +3005,18 @@
                             img.onload = () => {
                                 const canvas = document.createElement('canvas');
                                 const ctx = canvas.getContext('2d');
+                                const SIZE = 1000;
+                                canvas.width = SIZE;
+                                canvas.height = SIZE;
+                                const minDim = Math.min(img.width, img.height);
+                                const sx = (img.width - minDim) / 2;
+                                const sy = (img.height - minDim) / 2;
+                                ctx.drawImage(img, sx, sy, minDim, minDim, 0, 0, SIZE, SIZE);
 
-                                let quality = 0.7;
+                                let quality = 0.8;
                                 let dataUrl = canvas.toDataURL('image/jpeg', quality);
-                                if (dataUrl.length > 1000000) {
-                                    quality = 0.5;
+                                if (dataUrl.length > 800000) {
+                                    quality = 0.6;
                                     dataUrl = canvas.toDataURL('image/jpeg', quality);
                                 }
                                 resolve(dataUrl);
