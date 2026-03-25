@@ -1054,28 +1054,19 @@
                                 img.onload = () => {
                                     const canvas = document.createElement('canvas');
                                     const ctx = canvas.getContext('2d');
-                                    const MAX_WIDTH = 1200;
-                                    const MAX_HEIGHT = 1200;
-                                    let width = img.width;
-                                    let height = img.height;
-
-                                    if (width > height) {
-                                        if (width > MAX_WIDTH) {
-                                            height *= MAX_WIDTH / width;
-                                            width = MAX_WIDTH;
-                                        }
-                                    } else {
-                                        if (height > MAX_HEIGHT) {
-                                            width *= MAX_HEIGHT / height;
-                                            height = MAX_HEIGHT;
-                                        }
-                                    }
-                                    canvas.width = width;
-                                    canvas.height = height;
-                                    ctx.drawImage(img, 0, 0, width, height);
-                                    resolve(canvas.toDataURL('image/jpeg', 0.7));
+                                    // FORCE SQUARE 800x800
+                                    const SIZE = 800;
+                                    canvas.width = SIZE;
+                                    canvas.height = SIZE;
+                                    
+                                    const minDim = Math.min(img.width, img.height);
+                                    const sourceX = (img.width - minDim) / 2;
+                                    const sourceY = (img.height - minDim) / 2;
+                                    
+                                    ctx.drawImage(img, sourceX, sourceY, minDim, minDim, 0, 0, SIZE, SIZE);
+                                    resolve(canvas.toDataURL('image/jpeg', 0.8));
                                 };
-                                img.onerror = () => reject(new Error('Formato de imagen inválido'));
+                                img.onerror = () => reject(new Error('Img Error'));
                                 img.src = e.target.result;
                             };
                             reader.onerror = () => reject(new Error('Error al leer el archivo'));
@@ -1584,22 +1575,22 @@
                         ` : ''}
 
                         <!-- PHOTO GALLERY / WATERMARK SECTION (5 FIXED SLOTS) -->
-                        <div class="ps-watermark" style="min-height: 120px; height: auto; padding: 10px; display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; align-items: start; justify-items: center; position: relative; background: #fafafa; border: 1px dashed #ccc; border-radius: 8px; margin-top: 15px; overflow: visible;">
+                        <div class="ps-watermark" style="min-height: 100px; height: auto; padding: 10px; display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; align-items: start; justify-items: center; position: relative; background: #fafafa; border: 1px dashed #ccc; border-radius: 8px; margin-top: 15px; overflow: visible;">
                              ${[0,1,2,3,4].map(idx => {
                                 const p = (window._allPhotos || [])[idx];
                                 if (p) {
                                     return `
-                                        <div style="width: 100%; max-width: 80px; background: white; border: 1px solid #eee; border-radius: 4px; padding: 3px; box-shadow: 0 1px 2px rgba(0,0,0,0.05); text-align: center; display: flex; flex-direction: column; position: relative; aspect-ratio: 1;">
-                                            <button onclick="window.removePhoto(${idx})" style="position: absolute; top: -5px; right: -5px; background: #FF453A; color: white; border: none; border-radius: 50%; width: 16px; height: 16px; font-size: 10px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 10; box-shadow: 0 1px 2px rgba(0,0,0,0.2);">×</button>
-                                            <div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; overflow: hidden; border-radius: 2px; background: #f9f9f9;">
+                                        <div style="width: 100%; max-width: 65px; background: white; border: 1px solid #eee; border-radius: 4px; padding: 2px; box-shadow: 0 1px 2px rgba(0,0,0,0.05); text-align: center; display: flex; flex-direction: column; position: relative;">
+                                            <button onclick="window.removePhoto(${idx})" style="position: absolute; top: -5px; right: -5px; background: #FF453A; color: white; border: none; border-radius: 50%; width: 14px; height: 14px; font-size: 8px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 10; box-shadow: 0 1px 2px rgba(0,0,0,0.2);">×</button>
+                                            <div style="width: 100%; aspect-ratio: 1; display: flex; align-items: center; justify-content: center; overflow: hidden; border-radius: 2px; background: #000;">
                                                 <img src="${p.data}" style="width: 100%; height: 100%; object-fit: cover;">
                                             </div>
-                                            <div style="position: absolute; bottom: 0; left: 0; right: 0; background: rgba(255,102,0,0.8); color: white; font-size: 5px; font-weight: 800; padding: 1px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; border-radius: 0 0 2px 2px;">${p.desc}</div>
+                                            <div style="margin-top: 2px; font-size: 6px; font-weight: 800; color: #ff6600; text-transform: uppercase; line-height: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${p.desc}</div>
                                         </div>
                                     `;
                                 } else {
                                     return `
-                                        <div style="width: 100%; max-width: 80px; aspect-ratio: 1; border: 1px dashed #ddd; border-radius: 4px; display: flex; align-items: center; justify-content: center; background: #fff; color: #eee; font-size: 10px; font-weight: bold;">
+                                        <div style="width: 100%; max-width: 65px; aspect-ratio: 1; border: 1px dashed #ddd; border-radius: 4px; display: flex; align-items: center; justify-content: center; background: #fff; color: #eee; font-size: 8px; font-weight: bold; text-transform: uppercase;">
                                             Slot ${idx + 1}
                                         </div>
                                     `;
