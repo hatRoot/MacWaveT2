@@ -87,7 +87,29 @@
             color: var(--mac-blue);
         }
 
-        /* Main Content Glass Area */
+        @media (max-width: 850px) {
+            .sidebar.hidden {
+                display: none !important;
+            }
+            
+            .mobile-toggle-btn {
+                display: flex !important;
+                align-items: center;
+                gap: 6px;
+                background: rgba(255, 255, 255, 0.05);
+                border: 1px solid var(--mac-border);
+                color: var(--mac-text);
+                padding: 6px 12px;
+                border-radius: 8px;
+                font-size: 11px;
+                font-weight: 600;
+                cursor: pointer;
+            }
+        }
+
+        .mobile-toggle-btn {
+            display: none;
+        }
         .app-main {
             flex-grow: 1;
             display: flex;
@@ -1901,6 +1923,14 @@
             }
         }
 
+        // --- Sidebar Toggle for Mobile ---
+        function toggleMobileSidebar() {
+            const sidebar = document.querySelector('.sidebar');
+            if (sidebar) {
+                sidebar.classList.toggle('hidden');
+            }
+        }
+
         // --- Navigation Controller ---
         function switchView(view) {
             console.log("Switching to view:", view);
@@ -2719,8 +2749,14 @@
             detailView.innerHTML = `
                 <div class="detail-header">
                     <div>
-                        <div class="status-pill" style="color: ${statusColor}; background: ${statusColor}1A; border-color: ${statusColor}4D; margin-bottom: 8px;">
-                            ${o.status || 'Recibido'}
+                        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;">
+                            <button class="mobile-toggle-btn" onclick="toggleMobileSidebar()">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
+                                LISTA
+                            </button>
+                            <div class="status-pill" style="color: ${statusColor}; background: ${statusColor}1A; border-color: ${statusColor}4D;">
+                                ${o.status || 'Recibido'}
+                            </div>
                         </div>
                         <h2 class="folio-title">${o.folio}</h2>
                         <div style="font-size: 13px; color: var(--mac-text-muted);">ID del Sistema: ${o.id}</div>
