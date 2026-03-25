@@ -1585,9 +1585,9 @@
                         ` : ''}
 
                         <!-- PHOTO GALLERY / WATERMARK SECTION -->
-                        <div class="ps-watermark" style="min-height: 250px; padding: 15px; display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; gap: 10px; align-items: stretch; justify-items: center; position: relative; background: #fafafa; border: 1px dashed #ccc; border-radius: 8px; margin-top: 15px;">
+                        <div class="ps-watermark" style="min-height: 200px; height: auto; padding: 15px; display: grid; grid-template-columns: 1fr 1fr; grid-auto-rows: auto; gap: 15px; align-items: start; justify-items: center; position: relative; background: #fafafa; border: 1px dashed #ccc; border-radius: 8px; margin-top: 15px; overflow: visible;">
                              ${window._allPhotos && window._allPhotos.length > 0 ? `
-                                ${window._allPhotos.slice(0, 4).map(p => `
+                                ${window._allPhotos.slice(0, 4).map((p, idx) => `
                                     <div style="width: 100%; max-width: 180px; background: white; border: 1px solid #eee; border-radius: 6px; padding: 6px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); text-align: center; display: flex; flex-direction: column; position: relative;">
                                         <button onclick="window.removePhoto(${idx})" style="position: absolute; top: -8px; right: -8px; background: #FF453A; color: white; border: none; border-radius: 50%; width: 20px; height: 20px; font-size: 12px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 10; box-shadow: 0 2px 4px rgba(0,0,0,0.2);">×</button>
                                         <div style="flex: 1; min-height: 80px; display: flex; align-items: center; justify-content: center; overflow: hidden; border-radius: 4px; background: #f0f0f0;">
@@ -1843,21 +1843,25 @@
                     doc.setTextColor(255, 102, 0);
                     doc.text(`$ ${total.toLocaleString('en-US', { minimumFractionDigits: 2 })}`, 195, nextSectionY, { align: "right" });
                     
-                    nextSectionY += 10;
-                } else {
-                    // PHOTO GRID AREA (Fixed size container 85-175mm)
+                }
+
+                // PHOTO GRID AREA (Always attempt to render if photos exist or concepts are OFF)
+                const showPhotos = window._allPhotos.length > 0 || !showConcepts;
+                if (showPhotos) {
                     const gridH = 90;
+                    const gridY = showConcepts ? nextSectionY : bodyStartY;
+                    
                     doc.setDrawColor(245, 245, 247);
                     doc.setLineWidth(0.1);
-                    doc.roundedRect(15, bodyStartY, 180, gridH, 4, 4, 'D');
+                    doc.roundedRect(15, gridY, 180, gridH, 4, 4, 'D');
                     
                     if (window._allPhotos.length > 0) {
-                        // 2x2 Grid Coordinates
+                        // 2x2 Grid Coordinates relative to gridY
                         const coords = [
-                            { x: 25, y: bodyStartY + 5 },
-                            { x: 115, y: bodyStartY + 5 },
-                            { x: 25, y: bodyStartY + 48 },
-                            { x: 115, y: bodyStartY + 48 }
+                            { x: 25, y: gridY + 5 },
+                            { x: 115, y: gridY + 5 },
+                            { x: 25, y: gridY + 48 },
+                            { x: 115, y: gridY + 48 }
                         ];
 
                         window._allPhotos.slice(0, 4).forEach((p, idx) => {
@@ -1874,9 +1878,9 @@
                         doc.setFontSize(35);
                         doc.setTextColor(240, 240, 240);
                         doc.setFont("helvetica", "bold");
-                        doc.text("macWave.com.mx", 105, bodyStartY + (gridH/2) + 5, { align: "center", angle: 15 });
+                        doc.text("macWave.com.mx", 105, gridY + (gridH/2) + 5, { align: "center", angle: 15 });
                     }
-                    nextSectionY = bodyStartY + gridH + 10;
+                    nextSectionY = gridY + gridH + 10;
                 }
 
                 // --- 4. NOTES / OBSERVATIONS (Fixed space or below body) ---
