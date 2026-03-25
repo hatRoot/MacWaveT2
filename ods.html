@@ -1983,16 +1983,17 @@
                 doc.text(`https://macwave.com.mx | soporte@macwave.com.mx`, 195, footerY, { align: "right" });
 
                 const currentFolio = document.getElementById('quote-number').value;
+                const fileName = `${currentFolio}.pdf`;
 
-                // Abrir el PDF en una nueva pestaña con el nombre del folio como sugerencia
-                const pdfBlob = doc.output('blob');
-                const pdfFile = new File([pdfBlob], `${currentFolio}.pdf`, { type: 'application/pdf' });
-                const pdfUrl = URL.createObjectURL(pdfFile);
-                const newTab = window.open(pdfUrl, '_blank');
-                if (!newTab) {
-                    // Fallback si el navegador bloqueó la pestaña: descarga directa
-                    doc.save(`${currentFolio}.pdf`);
-                }
+                // Descarga directa con el nombre correcto
+                doc.save(fileName);
+
+                // También intentar abrir en nueva pestaña para previsualización
+                try {
+                    const pdfBlob = doc.output('blob');
+                    const pdfUrl = URL.createObjectURL(pdfBlob);
+                    window.open(pdfUrl, '_blank');
+                } catch (e) { console.error("Error opening preview:", e); }
 
                 // Increment folio counter AFTER capturing it for current PDF/Supabase
                 // Then read the new (next) folio number and display it on the form
