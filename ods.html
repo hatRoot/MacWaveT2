@@ -314,7 +314,7 @@
             box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
             position: relative;
             color: #000;
-            padding: 28px 35px 28px 35px;
+            padding: 28px 35px 60px 35px;
             font-family: 'Helvetica', Arial, sans-serif;
             overflow: visible;
         }
@@ -1583,23 +1583,28 @@
                         </div>
                         ` : ''}
 
-                        <!-- PHOTO GALLERY / WATERMARK SECTION -->
-                        <div class="ps-watermark" style="min-height: 150px; height: auto; padding: 10px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; align-items: start; justify-items: center; position: relative; background: #fafafa; border: 1px dashed #ccc; border-radius: 8px; margin-top: 15px; overflow: visible;">
-                             ${window._allPhotos && window._allPhotos.length > 0 ? `
-                                ${window._allPhotos.slice(0, 5).map((p, idx) => `
-                                    <div style="width: 100%; max-width: 130px; background: white; border: 1px solid #eee; border-radius: 4px; padding: 4px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); text-align: center; display: flex; flex-direction: column; position: relative; aspect-ratio: 1/1.2;">
-                                        <button onclick="window.removePhoto(${idx})" style="position: absolute; top: -6px; right: -6px; background: #FF453A; color: white; border: none; border-radius: 50%; width: 18px; height: 18px; font-size: 12px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 10; box-shadow: 0 1px 2px rgba(0,0,0,0.2);">×</button>
-                                        <div style="flex: 1; aspect-ratio: 1; display: flex; align-items: center; justify-content: center; overflow: hidden; border-radius: 3px; background: #f9f9f9;">
-                                            <img src="${p.data}" style="width: 100%; height: 100%; object-fit: contain;">
+                        <!-- PHOTO GALLERY / WATERMARK SECTION (5 FIXED SLOTS) -->
+                        <div class="ps-watermark" style="min-height: 120px; height: auto; padding: 10px; display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; align-items: start; justify-items: center; position: relative; background: #fafafa; border: 1px dashed #ccc; border-radius: 8px; margin-top: 15px; overflow: visible;">
+                             ${[0,1,2,3,4].map(idx => {
+                                const p = (window._allPhotos || [])[idx];
+                                if (p) {
+                                    return `
+                                        <div style="width: 100%; max-width: 80px; background: white; border: 1px solid #eee; border-radius: 4px; padding: 3px; box-shadow: 0 1px 2px rgba(0,0,0,0.05); text-align: center; display: flex; flex-direction: column; position: relative; aspect-ratio: 1;">
+                                            <button onclick="window.removePhoto(${idx})" style="position: absolute; top: -5px; right: -5px; background: #FF453A; color: white; border: none; border-radius: 50%; width: 16px; height: 16px; font-size: 10px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 10; box-shadow: 0 1px 2px rgba(0,0,0,0.2);">×</button>
+                                            <div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; overflow: hidden; border-radius: 2px; background: #f9f9f9;">
+                                                <img src="${p.data}" style="width: 100%; height: 100%; object-fit: cover;">
+                                            </div>
+                                            <div style="position: absolute; bottom: 0; left: 0; right: 0; background: rgba(255,102,0,0.8); color: white; font-size: 5px; font-weight: 800; padding: 1px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; border-radius: 0 0 2px 2px;">${p.desc}</div>
                                         </div>
-                                        <div style="margin-top: 4px; font-size: 7px; font-weight: 800; color: #ff6600; text-transform: uppercase; line-height: 1.1; overflow-wrap: break-word;">${p.desc}</div>
-                                    </div>
-                                `).join('')}
-                             ` : `
-                                <div style="grid-column: span 3; display: flex; align-items: center; justify-content: center; width: 100%; height: 150px;">
-                                    <span style="font-size: 30px; font-weight: 900; color: rgba(0,0,0,0.02); transform: rotate(-15deg);">macWave.com.mx</span>
-                                </div>
-                             `}
+                                    `;
+                                } else {
+                                    return `
+                                        <div style="width: 100%; max-width: 80px; aspect-ratio: 1; border: 1px dashed #ddd; border-radius: 4px; display: flex; align-items: center; justify-content: center; background: #fff; color: #eee; font-size: 10px; font-weight: bold;">
+                                            Slot ${idx + 1}
+                                        </div>
+                                    `;
+                                }
+                             }).join('')}
                         </div>
 
                         ${odsNotes ? `
@@ -1847,53 +1852,46 @@
                 // PHOTO GRID AREA (Always attempt to render if photos exist or concepts are OFF)
                 const showPhotos = window._allPhotos.length > 0 || !showConcepts;
                 if (showPhotos) {
-                    const gridH = window._allPhotos.length > 3 ? 110 : 60; // Dynamic height for 1 or 2 rows
+                    const gridH = 45; // Compact single-row height
                     const gridY = showConcepts ? nextSectionY : bodyStartY;
                     
                     doc.setDrawColor(245, 245, 247);
                     doc.setLineWidth(0.1);
-                    doc.roundedRect(15, gridY, 180, gridH, 4, 4, 'D');
+                    doc.roundedRect(15, gridY, 180, gridH, 2, 2, 'D');
                     
-                    if (window._allPhotos.length > 0) {
-                        // 3-Column Grid Coordinates
-                        const coords = [
-                            { x: 20, y: gridY + 5 },
-                            { x: 80, y: gridY + 5 },
-                            { x: 140, y: gridY + 5 },
-                            { x: 20, y: gridY + 58 },
-                            { x: 80, y: gridY + 58 }
-                        ];
+                    // 5-Column Grid Slots (Always render 5)
+                    const coords = [
+                        { x: 18, y: gridY + 3 },
+                        { x: 54, y: gridY + 3 },
+                        { x: 90, y: gridY + 3 },
+                        { x: 126, y: gridY + 3 },
+                        { x: 162, y: gridY + 3 }
+                    ];
 
-                        window._allPhotos.slice(0, 5).forEach((p, idx) => {
-                            const c = coords[idx];
+                    [0, 1, 2, 3, 4].forEach((idx) => {
+                        const p = window._allPhotos[idx];
+                        const c = coords[idx];
+                        
+                        // Draw slot border
+                        doc.setDrawColor(240, 240, 240);
+                        doc.setLineWidth(0.1);
+                        doc.rect(c.x, c.y, 30, 30, 'D');
+
+                        if (p) {
                             try {
-                                const img = new Image();
-                                img.src = p.data;
-                                // Force Square Box 50x50
-                                let w = 50;
-                                let h = 50;
-                                const imgRatio = img.width / img.height;
-                                if (imgRatio > 1) { h = 50 / imgRatio; } else { w = 50 * imgRatio; }
-
-                                const offsetX = (50 - w) / 2;
-                                const offsetY = (50 - h) / 2;
-
-                                doc.addImage(p.data, 'JPEG', c.x + offsetX, c.y + offsetY, w, h, undefined, 'FAST');
-                                
-                                doc.setFontSize(7);
+                                doc.addImage(p.data, 'JPEG', c.x, c.y, 30, 30, undefined, 'FAST');
+                                doc.setFontSize(5);
                                 doc.setTextColor(50);
                                 doc.setFont("helvetica", "bold");
-                                const splitTitle = doc.splitTextToSize(p.desc, 50).slice(0, 2);
-                                doc.text(splitTitle, c.x + 25, c.y + 53, { align: "center" });
+                                doc.text(p.desc.substring(0, 18), c.x + 15, c.y + 33, { align: "center", maxWidth: 32 });
                             } catch(e) { console.error("Error adding image to PDF:", e); }
-                        });
-                    } else {
-                        doc.setFontSize(35);
-                        doc.setTextColor(240, 240, 240);
-                        doc.setFont("helvetica", "bold");
-                        doc.text("macWave.com.mx", 105, gridY + (gridH/2) + 5, { align: "center", angle: 15 });
-                    }
-                    nextSectionY = gridY + gridH + 10;
+                        } else {
+                            doc.setFontSize(6);
+                            doc.setTextColor(220, 220, 220);
+                            doc.text(`Slot ${idx + 1}`, c.x + 15, c.y + 15, { align: "center" });
+                        }
+                    });
+                    nextSectionY = gridY + gridH + 5;
                 }
 
                 // --- 4. NOTES / OBSERVATIONS (Fixed space or below body) ---
