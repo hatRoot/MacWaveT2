@@ -715,7 +715,7 @@
         }
 
         .ps-watermark {
-            height: 250px;
+            min-height: 150px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -723,7 +723,6 @@
             border-radius: 12px;
             margin: 20px 0;
             position: relative;
-            overflow: hidden;
             background: #fafafa;
         }
 
@@ -1037,15 +1036,15 @@
                 if (!files || files.length === 0) return;
 
                 // Check for overall limit
-                if (window._allPhotos.length + files.length > 4) {
-                    alert("SISTEMA: Solo se permiten un máximo de 4 fotografías de evidencia por ODS.");
+                if (window._allPhotos.length + files.length > 5) {
+                    alert("SISTEMA: Solo se permiten un máximo de 5 fotografías de evidencia por ODS.");
                     event.target.value = ''; // Reset input
                     return;
                 }
 
                 document.body.style.cursor = 'wait';
                 for (const file of files) {
-                    if (window._allPhotos.length >= 4) break;
+                    if (window._allPhotos.length >= 5) break;
 
                     try {
                         const dataUrl = await new Promise((resolve, reject) => {
@@ -1585,20 +1584,20 @@
                         ` : ''}
 
                         <!-- PHOTO GALLERY / WATERMARK SECTION -->
-                        <div class="ps-watermark" style="min-height: 200px; height: auto; padding: 15px; display: grid; grid-template-columns: 1fr 1fr; grid-auto-rows: auto; gap: 15px; align-items: start; justify-items: center; position: relative; background: #fafafa; border: 1px dashed #ccc; border-radius: 8px; margin-top: 15px; overflow: visible;">
+                        <div class="ps-watermark" style="min-height: 150px; height: auto; padding: 10px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; align-items: start; justify-items: center; position: relative; background: #fafafa; border: 1px dashed #ccc; border-radius: 8px; margin-top: 15px; overflow: visible;">
                              ${window._allPhotos && window._allPhotos.length > 0 ? `
-                                ${window._allPhotos.slice(0, 4).map((p, idx) => `
-                                    <div style="width: 100%; max-width: 180px; min-height: 120px; background: white; border: 1px solid #eee; border-radius: 6px; padding: 6px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); text-align: center; display: flex; flex-direction: column; position: relative;">
-                                        <button onclick="window.removePhoto(${idx})" style="position: absolute; top: -8px; right: -8px; background: #FF453A; color: white; border: none; border-radius: 50%; width: 22px; height: 22px; font-size: 14px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 10; box-shadow: 0 2px 4px rgba(0,0,0,0.2);">×</button>
-                                        <div style="flex: 1; min-height: 90px; display: flex; align-items: center; justify-content: center; overflow: hidden; border-radius: 4px; background: #f9f9f9;">
+                                ${window._allPhotos.slice(0, 5).map((p, idx) => `
+                                    <div style="width: 100%; max-width: 130px; background: white; border: 1px solid #eee; border-radius: 4px; padding: 4px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); text-align: center; display: flex; flex-direction: column; position: relative; aspect-ratio: 1/1.2;">
+                                        <button onclick="window.removePhoto(${idx})" style="position: absolute; top: -6px; right: -6px; background: #FF453A; color: white; border: none; border-radius: 50%; width: 18px; height: 18px; font-size: 12px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 10; box-shadow: 0 1px 2px rgba(0,0,0,0.2);">×</button>
+                                        <div style="flex: 1; aspect-ratio: 1; display: flex; align-items: center; justify-content: center; overflow: hidden; border-radius: 3px; background: #f9f9f9;">
                                             <img src="${p.data}" style="width: 100%; height: 100%; object-fit: contain;">
                                         </div>
-                                        <div style="margin-top: 6px; font-size: 8px; font-weight: 800; color: #ff6600; text-transform: uppercase; line-height: 1.2; word-break: break-all;">${p.desc}</div>
+                                        <div style="margin-top: 4px; font-size: 7px; font-weight: 800; color: #ff6600; text-transform: uppercase; line-height: 1.1; overflow-wrap: break-word;">${p.desc}</div>
                                     </div>
                                 `).join('')}
                              ` : `
-                                <div style="grid-column: span 2; grid-row: span 2; display: flex; align-items: center; justify-content: center; width: 100%; height: 100%;">
-                                    <span style="font-size: 35px; font-weight: 900; color: rgba(0,0,0,0.02); transform: rotate(-15deg);">macWave.com.mx</span>
+                                <div style="grid-column: span 3; display: flex; align-items: center; justify-content: center; width: 100%; height: 150px;">
+                                    <span style="font-size: 30px; font-weight: 900; color: rgba(0,0,0,0.02); transform: rotate(-15deg);">macWave.com.mx</span>
                                 </div>
                              `}
                         </div>
@@ -1848,7 +1847,7 @@
                 // PHOTO GRID AREA (Always attempt to render if photos exist or concepts are OFF)
                 const showPhotos = window._allPhotos.length > 0 || !showConcepts;
                 if (showPhotos) {
-                    const gridH = 90;
+                    const gridH = window._allPhotos.length > 3 ? 110 : 60; // Dynamic height for 1 or 2 rows
                     const gridY = showConcepts ? nextSectionY : bodyStartY;
                     
                     doc.setDrawColor(245, 245, 247);
@@ -1856,42 +1855,36 @@
                     doc.roundedRect(15, gridY, 180, gridH, 4, 4, 'D');
                     
                     if (window._allPhotos.length > 0) {
-                        // 2x2 Grid Coordinates relative to gridY
+                        // 3-Column Grid Coordinates
                         const coords = [
-                            { x: 25, y: gridY + 5 },
-                            { x: 115, y: gridY + 5 },
-                            { x: 25, y: gridY + 48 },
-                            { x: 115, y: gridY + 48 }
+                            { x: 20, y: gridY + 5 },
+                            { x: 80, y: gridY + 5 },
+                            { x: 140, y: gridY + 5 },
+                            { x: 20, y: gridY + 58 },
+                            { x: 80, y: gridY + 58 }
                         ];
 
-                        window._allPhotos.slice(0, 4).forEach((p, idx) => {
+                        window._allPhotos.slice(0, 5).forEach((p, idx) => {
                             const c = coords[idx];
                             try {
-                                // Add image maintaining aspect ratio within 70x35 box
                                 const img = new Image();
                                 img.src = p.data;
-                                let w = 70;
-                                let h = 35;
+                                // Force Square Box 50x50
+                                let w = 50;
+                                let h = 50;
                                 const imgRatio = img.width / img.height;
-                                const boxRatio = 70 / 35;
+                                if (imgRatio > 1) { h = 50 / imgRatio; } else { w = 50 * imgRatio; }
 
-                                if (imgRatio > boxRatio) {
-                                    h = 70 / imgRatio;
-                                } else {
-                                    w = 35 * imgRatio;
-                                }
-
-                                const offsetX = (70 - w) / 2;
-                                const offsetY = (35 - h) / 2;
+                                const offsetX = (50 - w) / 2;
+                                const offsetY = (50 - h) / 2;
 
                                 doc.addImage(p.data, 'JPEG', c.x + offsetX, c.y + offsetY, w, h, undefined, 'FAST');
                                 
                                 doc.setFontSize(7);
                                 doc.setTextColor(50);
                                 doc.setFont("helvetica", "bold");
-                                // Split text if too long to avoid cutting it off
-                                const splitTitle = doc.splitTextToSize(p.desc, 70).slice(0, 2);
-                                doc.text(splitTitle, c.x + 35, c.y + 39, { align: "center" });
+                                const splitTitle = doc.splitTextToSize(p.desc, 50).slice(0, 2);
+                                doc.text(splitTitle, c.x + 25, c.y + 53, { align: "center" });
                             } catch(e) { console.error("Error adding image to PDF:", e); }
                         });
                     } else {
