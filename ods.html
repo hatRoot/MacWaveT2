@@ -917,67 +917,28 @@
                                 <span class="slider"></span>
                             </label>
                         </div>
-                        
-                        <div id="bank-controls-wrapper" style="margin-top: 15px; display: none;">
-                            <div class="input-group">
-                                <label>Cuenta CLABE BBVA</label>
-                                <input type="text" id="clabe" placeholder="18 dígitos" value="012180015757364654">
-                            </div>
-                            <div class="input-group">
-                                <label>Número de Cuenta</label>
-                                <input type="text" id="account-number" placeholder="Ej. 1575736465" value="1575736465">
-                            </div>
-                            <div class="input-group">
-                                <label>Número de Tarjeta</label>
-                                <input type="text" id="card-number" placeholder="16 dígitos" value="4152 3141 3341 5757">
-                            </div>
-                        </div>
 
-                        </div>
-                        
-                        <div class="section-separator" style="background: rgba(255,255,255,0.15);"></div>
-
-                        <div class="header-with-toggle" style="margin-top: 10px;">
-                            <div class="section-title" style="margin-bottom: 0;">PERSONALIZAR TÉRMINOS (FOOTER)</div>
-                            <label class="switch">
-                                <input type="checkbox" id="toggle-custom-terms">
-                                <span class="slider"></span>
-                            </label>
-                        </div>
-
-                        <div id="custom-terms-wrapper" style="margin-top: 20px; display: none;">
-                            <div class="form-group">
-                                <label>Vigencia</label>
-                                <input type="text" id="term-vigencia" placeholder="Ej. 1 día para aceptación...">
-                            </div>
-                            <div class="form-group">
-                                <label>Garantía</label>
-                                <input type="text" id="term-garantia" placeholder="Ej. 31 días en el servicio...">
-                            </div>
-                            <div class="form-group" style="grid-column: span 1;">
-                                <label>Condiciones (Link)</label>
-                                <input type="text" id="term-condiciones" placeholder="Ej. El cliente acepta los términos...">
-                            </div>
-                            <div class="form-group">
-                                <label>Nota de Pago (Destacado)</label>
-                                <input type="text" id="term-pago" placeholder="Ej. PAGO ANTICIPADO DEL 100%...">
-                            </div>
-                            <div class="form-group">
-                                <label>Tiempo de Entrega (Complemento)</label>
-                                <input type="text" id="term-entrega" placeholder="Ej. ENTREGA TENTATIVA SEGÚN...">
+                        <div id="bank-controls-wrapper" style="margin-top: 20px; display: none;">
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label>CLABE</label>
+                                    <input type="text" id="clabe" placeholder="Ej. 012 180..." value="012 180015766935846">
+                                </div>
+                                <div class="form-group">
+                                    <label>CUENTA</label>
+                                    <input type="text" id="account-number" placeholder="Ej. 1576..." value="1576693584">
+                                </div>
+                                <div class="form-group">
+                                    <label>TARJETA</label>
+                                    <input type="text" id="card-number" placeholder="Ej. 4152..."
+                                        value="4152 3144 2988 0571">
+                                </div>
                             </div>
                         </div>
 
                         <button type="submit" class="btn btn-primary" style="margin-top: 30px; height: 50px;">GENERAR
                             ORDEN DE
                             SERVICIO PDF</button>
-
-                        <button type="button" id="btn-generate-ticket" class="btn" style="width: 100%; margin-top: 12px; height: 50px; background: #34c759; color: #fff; border: none; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 10px; cursor: pointer; transition: all 0.2s;">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M6 9V2h12v7M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2M6 14h12v8H6v-8z"/>
-                            </svg>
-                            GENERAR TICKET (IMPRIMIR)
-                        </button>
 
                         <div style="position: relative; width: 100%;">
                             <button type="button" class="btn btn-secondary"
@@ -1028,16 +989,6 @@
         const SUPABASE_URL = 'https://lifxtyhvgnxjjqgbzare.supabase.co';
         const SUPABASE_ANON_KEY = 'sb_publishable_7aBPXbWRwrltSuXtzsyg-g_L1Fu3rTT';
         window._sbClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-        
-        // Helpers to safely get/set element values without crashing
-        const getVal = (id, def = '') => {
-            const el = document.getElementById(id);
-            return el ? el.value : def;
-        };
-        const setVal = (id, val) => {
-            const el = document.getElementById(id);
-            if (el) el.value = val || '';
-        };
 
         document.addEventListener('DOMContentLoaded', () => {
             // Live Clock and User Display
@@ -1076,9 +1027,9 @@
                     const qrDiv = document.getElementById('preview-qr-canvas');
                     if (!qrDiv || typeof QRCode === 'undefined') return;
                     qrDiv.innerHTML = '';
-                    const folio = getVal('quote-number') || 'ODS';
-                    const client = getVal('client-name');
-                    const serial = getVal('serial-number');
+                    const folio = document.getElementById('quote-number').value || 'ODS';
+                    const client = document.getElementById('client-name').value || '';
+                    const serial = document.getElementById('serial-number').value || '';
                     const url = `https://macwave.com.mx/status-ods.html?folio=${encodeURIComponent(folio)}&cliente=${encodeURIComponent(client)}&serie=${encodeURIComponent(serial)}`;
                     new QRCode(qrDiv, { text: url, width: 70, height: 70, correctLevel: QRCode.CorrectLevel.M });
                 }, 50);
@@ -1111,8 +1062,8 @@
                                 img.onload = () => {
                                     const canvas = document.createElement('canvas');
                                     const ctx = canvas.getContext('2d');
-                                    // FORCE SQUARE 500x500 (Optimized for PDF size vs print quality)
-                                    const SIZE = 500;
+                                    // FORCE SQUARE 800x800
+                                    const SIZE = 800;
                                     canvas.width = SIZE;
                                     canvas.height = SIZE;
                                     
@@ -1121,7 +1072,7 @@
                                     const sourceY = (img.height - minDim) / 2;
                                     
                                     ctx.drawImage(img, sourceX, sourceY, minDim, minDim, 0, 0, SIZE, SIZE);
-                                    resolve(canvas.toDataURL('image/jpeg', 0.65));
+                                    resolve(canvas.toDataURL('image/jpeg', 0.8));
                                 };
                                 img.onerror = () => reject(new Error('Img Error'));
                                 img.src = e.target.result;
@@ -1252,17 +1203,17 @@
             // --- DATA PERSISTENCE LOGIC ---
             const saveFormData = () => {
                 const data = {
-                    client: getVal('client-name'),
-                    project: getVal('project-name'),
-                    serial: getVal('serial-number'),
-                    tech: getVal('tech-name'),
-                    date: getVal('quote-date'),
-                    folio: getVal('quote-number'),
-                    delivery: getVal('delivery-time'),
-                    clabe: getVal('clabe'),
-                    account: getVal('account-number'),
-                    card: getVal('card-number'),
-                    notes: getVal('ods-notes'),
+                    client: document.getElementById('client-name').value,
+                    project: document.getElementById('project-name').value,
+                    serial: document.getElementById('serial-number').value,
+                    tech: document.getElementById('tech-name').value,
+                    date: document.getElementById('quote-date').value,
+                    folio: document.getElementById('quote-number').value,
+                    delivery: document.getElementById('delivery-time').value,
+                    clabe: document.getElementById('clabe').value,
+                    account: document.getElementById('account-number').value,
+                    card: document.getElementById('card-number').value,
+                    notes: document.getElementById('ods-notes').value,
                     items: Array.from(document.querySelectorAll('.item-row')).map(row => ({
                         d: row.querySelector('.i-desc').value,
                         p: row.querySelector('.i-price').value,
@@ -1283,17 +1234,17 @@
                 }
                 try {
                     const data = JSON.parse(raw);
-                    setVal('client-name', data.client);
-                    setVal('project-name', data.project);
-                    setVal('serial-number', data.serial);
-                    setVal('tech-name', data.tech);
-                    setVal('quote-date', data.date);
-                    setVal('quote-number', data.folio || getNextFolio());
-                    setVal('delivery-time', data.delivery);
-                    setVal('clabe', data.clabe);
-                    setVal('account-number', data.account);
-                    setVal('card-number', data.card);
-                    setVal('ods-notes', data.notes);
+                    document.getElementById('client-name').value = data.client || '';
+                    document.getElementById('project-name').value = data.project || '';
+                    document.getElementById('serial-number').value = data.serial || '';
+                    document.getElementById('tech-name').value = data.tech || '';
+                    document.getElementById('quote-date').value = data.date || '';
+                    document.getElementById('quote-number').value = data.folio || getNextFolio();
+                    document.getElementById('delivery-time').value = data.delivery || '';
+                    document.getElementById('clabe').value = data.clabe || '';
+                    document.getElementById('account-number').value = data.account || '';
+                    document.getElementById('card-number').value = data.card || '';
+                    document.getElementById('ods-notes').value = data.notes || '';
 
                     if (data.items && data.items.length > 0) {
                         itemsContainer.innerHTML = '';
@@ -1339,11 +1290,14 @@
             // --- Reset Customer Fields on Load (Ensures cleanup after init) ---
             const resetFields = () => {
                 const fieldsToReset = ['client-name', 'project-name', 'serial-number', 'delivery-time', 'ods-notes'];
-                fieldsToReset.forEach(id => setVal(id, ''));
+                fieldsToReset.forEach(id => {
+                    const el = document.getElementById(id);
+                    if (el) el.value = '';
+                });
                 // Clear persistence
                 localStorage.removeItem('ods_temp_draft');
-                // New Folio
-                setVal('quote-number', getNextFolio());
+                // New Folio — read current without incrementing (next PDF will increment)
+                document.getElementById('quote-number').value = getNextFolio();
                 // Clear items and recreate initial empty rows
                 if (itemsContainer) {
                     itemsContainer.innerHTML = '';
@@ -1391,9 +1345,9 @@
                     const page = await pdf.getPage(1);
                     const textContent = await page.getTextContent();
 
-                    // Combine all text items into a single string
-                    // Normalizing: replace multiple spaces with single space to avoid regex failures
-                    const rawText = textContent.items.map(item => item.str).join(' ').replace(/\s+/g, ' ');
+                    // Combine all text items into a single string for easier regex/searching
+                    // We join with spaces to keep words separate
+                    const rawText = textContent.items.map(item => item.str).join(' ');
 
                     console.log("Extracted PDF Text:", rawText);
 
@@ -1411,39 +1365,39 @@
 
                     // 1. Folio: "ODS N° RPC-1234"
                     const folioMatch = rawText.match(/ODS N°\s*([A-Z0-9-]+)/i);
-                    if (folioMatch) setVal('quote-number', folioMatch[1].trim());
+                    if (folioMatch) document.getElementById('quote-number').value = folioMatch[1].trim();
 
                     // 2. Client: "Estimado(a) Sr: Juan Perez" -> looks for text after "Sr:" until "Oportunidad"
                     const clientMatch = rawText.match(/Estimado\(a\) Sr:\s*(.*?)\s*Oportunidad \/ Proyecto:/i);
-                    if (clientMatch) setVal('client-name', clientMatch[1].trim());
+                    if (clientMatch) document.getElementById('client-name').value = clientMatch[1].trim();
 
                     // 3. Project: "Oportunidad / Proyecto: Reparacion..."
                     const projectMatch = rawText.match(/Oportunidad \/ Proyecto:\s*(.*?)\s*Número de Serie/i);
-                    if (projectMatch) setVal('project-name', projectMatch[1].trim());
+                    if (projectMatch) document.getElementById('project-name').value = projectMatch[1].trim();
 
-                    // 4. Serial Number (More robust: look for 'Número de Serie del equipo :' and match until next major label)
-                    const serialMatch = rawText.match(/Número de Serie del equipo\s*:\s*(.*?)\s*(?:DESCRIPCIÓN|Fecha:|Vigencia|Técnico:|OBSERVACIONES|PAGO ANTICIPADO)/i);
-                    if (serialMatch) setVal('serial-number', serialMatch[1].trim());
+                    // 4. Serial Number
+                    const serialMatch = rawText.match(/Número de Serie del equipo :\s*(.*?)\s*DESCRIPCIÓN/i);
+                    if (serialMatch) document.getElementById('serial-number').value = serialMatch[1].trim();
 
                     // 5. Date: "Fecha: ............ 24/02/2026"
                     // The dots might be present or stripped, pdfjs often reads them as individual characters or spaces
                     const dateMatch = rawText.match(/Fecha:\s*(?:\.+)?\s*(\d{1,2}\/\d{1,2}\/\d{4})/i);
-                    if (dateMatch) setVal('quote-date', dateMatch[1].trim());
+                    if (dateMatch) document.getElementById('quote-date').value = dateMatch[1].trim();
 
                     // 6. Technician
                     const techMatch = rawText.match(/Técnico:\s*(?:\.+)?\s*([A-Za-z\s]+)\s*Moneda:/i);
-                    if (techMatch) setVal('tech-name', techMatch[1].trim());
+                    if (techMatch) document.getElementById('tech-name').value = techMatch[1].trim();
 
                     // 7. Delivery Time
                     const deliveryMatch = rawText.match(/Tiempo de entrega:\s*(.*?)\s*ENTREGA TENTATIVA/i);
-                    if (deliveryMatch) setVal('delivery-time', deliveryMatch[1].trim());
+                    if (deliveryMatch) document.getElementById('delivery-time').value = deliveryMatch[1].trim();
 
-                    // Note finding (Observaciones) - Support various labels used in previous versions
-                    const notesMatch = rawText.match(/(?:OBSERVACIONES|OBSERVACIONES \/ NOTAS DE LABORATORIO):\s*(.*?)\s*(?:\*\*\*Precios sujetos|Vigencia de la ODS)/i);
+                    // Note finding (Observaciones)
+                    const notesMatch = rawText.match(/OBSERVACIONES:\s*(.*?)\s*\*\*\*Precios sujetos/i);
                     if (notesMatch) {
-                        setVal('ods-notes', notesMatch[1].trim());
+                        document.getElementById('ods-notes').value = notesMatch[1].trim();
                     } else {
-                        setVal('ods-notes', '');
+                        document.getElementById('ods-notes').value = '';
                     }
 
                     // Extracting Items (This is the most complex part as it's a table)
@@ -1509,52 +1463,19 @@
             };
 
             function update() {
-                try {
-                const client = getVal('client-name');
-                const project = getVal('project-name');
-                const tech = getVal('tech-name');
-                const date = getVal('quote-date');
-                const folio = getVal('quote-number');
-                const deliveryTime = getVal('delivery-time') || 'POR DEFINIR';
-                const serialNumber = getVal('serial-number') || 'N/A';
-                const clabeVal = getVal('clabe');
-                const accountVal = getVal('account-number');
-                const cardVal = getVal('card-number');
-                const odsNotes = getVal('ods-notes');
-                const generalNote = getVal('ods-general-note');
+                const client = document.getElementById('client-name').value;
+                const project = document.getElementById('project-name').value;
+                const tech = document.getElementById('tech-name').value;
+                const date = document.getElementById('quote-date').value;
+                const folio = document.getElementById('quote-number').value;
+                const deliveryTime = document.getElementById('delivery-time').value || 'POR DEFINIR';
+                const serialNumber = document.getElementById('serial-number').value || 'N/A';
+                const clabeVal = document.getElementById('clabe').value;
+                const accountVal = document.getElementById('account-number').value;
+                const cardVal = document.getElementById('card-number').value;
+                const odsNotes = document.getElementById('ods-notes').value || '';
+                const generalNote = document.getElementById('ods-general-note').value || '';
                 const currency = 'MXN';
-
-                // --- Custom Terms Logic ---
-                const toggleCustomTerms = document.getElementById('toggle-custom-terms');
-                const customOn = toggleCustomTerms ? toggleCustomTerms.checked : false;
-                const termVigencia = customOn ? getVal('term-vigencia') : "1 día para aceptación de la misma.";
-                const termGarantia = customOn ? getVal('term-garantia') : "31 días en el servicio técnico, pregunta por tu garantía extendida a 100 días POR UN COSTO ADICIONAL.";
-                const termCondiciones = customOn ? getVal('term-condiciones') : "El cliente acepta los Términos y Condiciones publicados en macwave.com.mx/terminos.html.";
-                const termPago = customOn ? getVal('term-pago') : "PAGO ANTICIPADO DEL 100% PARA EL SERVICIO.";
-                const termEntregaSuff = customOn ? getVal('term-entrega') : "ENTREGA TENTATIVA SEGÚN DISPONIBILIDAD.";
-
-                // Save terms state to localStorage for persistence
-                if (toggleCustomTerms) {
-                    localStorage.setItem('ods_custom_terms', JSON.stringify({
-                        active: customOn,
-                        vigencia: getVal('term-vigencia'),
-                        garantia: getVal('term-garantia'),
-                        condiciones: getVal('term-condiciones'),
-                        pago: getVal('term-pago'),
-                        entrega: getVal('term-entrega')
-                    }));
-                }
-
-                // Enable/Disable Ticket Button
-                const btnTicket = document.getElementById('btn-generate-ticket');
-                const canPrint = client && serialNumber && serialNumber !== 'N/A' && (window._allPhotos || []).length > 0;
-                if (btnTicket) {
-                    btnTicket.disabled = !canPrint;
-                    btnTicket.style.opacity = canPrint ? '1' : '0.4';
-                    btnTicket.style.filter = canPrint ? 'none' : 'grayscale(1)';
-                    btnTicket.style.cursor = canPrint ? 'pointer' : 'not-allowed';
-                    btnTicket.title = canPrint ? 'Generar ticket compacto' : 'Completa Cliente, Serie y al menos 1 Foto para habilitar.';
-                }
 
                 let total = 0;
                 let itemsHtml = '';
@@ -1663,7 +1584,6 @@
                         ` : ''}
 
                         <!-- PHOTO GALLERY / WATERMARK SECTION (FLEXIBLE GRID) -->
-                        ${!(document.getElementById('toggle-concepts').checked && document.getElementById('toggle-bank').checked) ? `
                         <div class="ps-watermark" style="min-height: 80px; height: auto; padding: 12px 10px; display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 10px; align-items: start; justify-items: center; position: relative; background: #fafafa; border: 1px dashed #ccc; border-radius: 8px; margin-top: 15px; overflow: visible;">
                              ${(window._allPhotos || []).length > 0 ? (window._allPhotos || []).map((p, idx) => `
                                 <div style="width: 100%; max-width: 130px; background: white; border: 1px solid #eee; border-radius: 4px; padding: 4px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); text-align: center; display: flex; flex-direction: column; position: relative;">
@@ -1677,7 +1597,6 @@
                                 <div style="grid-column: 1 / -1; font-size: 10px; color: #ccc; font-weight: 700;">REGISTRO FOTOGRÁFICO DE EVIDENCIA</div>
                             `}
                         </div>
-                        ` : ''}
 
                         ${generalNote ? `
                         <div style="margin-top: 15px; padding: 10px; border: 1px solid #ff6600; border-radius: 8px; font-size: 10px; color: #333; line-height: 1.4; background: #fffcf5;">
@@ -1694,11 +1613,11 @@
                         ` : ''}
 
                         <div class="ps-terms">
-                            <p>Vigencia de la ODS : ${termVigencia}</p>
-                            <p>Garantía: ${termGarantia}</p>
-                            <p>Condiciones: ${termCondiciones}</p>
-                            <p style="font-size: 9px; font-weight: 900;">${termPago}</p>
-                            <p>Tiempo de entrega: ${deliveryTime} ${termEntregaSuff}</p>
+                            <p>Vigencia de la ODS : 1 día para aceptación de la misma.</p>
+                            <p>Garantía: 31 días en el servicio técnico, pregunta por tu garantía extendida a 100 días POR UN COSTO ADICIONAL.</p>
+                            <p>Condiciones: El cliente acepta los <a href="terminos.html" target="_blank" style="color: inherit; font-weight: bold;">Términos y Condiciones</a> publicados en macwave.com.mx/terminos.html.</p>
+                            <p style="font-size: 9px; font-weight: 900;">PAGO ANTICIPADO DEL 100% PARA EL SERVICIO.</p>
+                            <p>Tiempo de entrega: ${deliveryTime} ENTREGA TENTATIVA SEGÚN DISPONIBILIDAD.</p>
                         </div>
 
                         <div class="ps-bank-area">
@@ -1755,36 +1674,26 @@
                 
                 // Regenerate QR stably
                 generatePreviewQR();
-                } catch (err) {
-                    console.error("Preview update error:", err);
-                }
             }
 
             const executeGeneration = async () => {
-                try {
                 const { jsPDF } = window.jspdf;
-                // Optimization: Enable 'compress: true' to reduce file size via Flate compression
-                const doc = new jsPDF({
-                    orientation: 'p',
-                    unit: 'mm',
-                    format: 'a4',
-                    compress: true
-                });
+                const doc = new jsPDF('p', 'mm', 'a4');
 
-                const client = getVal('client-name');
-                const project = getVal('project-name');
-                const tech = getVal('tech-name');
-                const date = getVal('quote-date');
-                const folio = getVal('quote-number');
+                const client = document.getElementById('client-name').value;
+                const project = document.getElementById('project-name').value;
+                const tech = document.getElementById('tech-name').value;
+                const date = document.getElementById('quote-date').value;
+                const folio = document.getElementById('quote-number').value;
                 const currency = 'MXN';
-                const clabeVal = getVal('clabe');
-                const accountVal = getVal('account-number');
-                const cardVal = getVal('card-number');
+                const clabeVal = document.getElementById('clabe').value;
+                const accountVal = document.getElementById('account-number').value;
+                const cardVal = document.getElementById('card-number').value;
 
-                const deliveryTime = getVal('delivery-time') || 'POR DEFINIR';
-                const serialNumber = getVal('serial-number') || 'N/A';
-                const odsNotes = getVal('ods-notes');
-                const generalNote = getVal('ods-general-note');
+                const deliveryTime = document.getElementById('delivery-time').value || 'POR DEFINIR';
+                const serialNumber = document.getElementById('serial-number').value || 'N/A';
+                const odsNotes = document.getElementById('ods-notes').value || '';
+                const generalNote = document.getElementById('ods-general-note').value || '';
 
                 const items = [];
                 let total = 0;
@@ -1940,8 +1849,7 @@
                 }
 
                 // PHOTO GRID AREA (Redesigned for up to 10 photos in two rows)
-                // Logical Rule: If Concepts AND Bank are enabled, skip photos totally (it's a final quote)
-                const showPhotos = (!(showConcepts && showBank)) && (window._allPhotos.length > 0 || !showConcepts);
+                const showPhotos = window._allPhotos.length > 0 || !showConcepts;
                 if (showPhotos) {
                     const rowHeight = 45;
                     const numPhotos = window._allPhotos.length;
@@ -2013,27 +1921,20 @@
                     notesY += 5;
                 }
 
-                // --- 5. TERMS (Fixed Y 210mm) ---
+                // --- 5. TERMS (Fixed Y 215mm) ---
                 const termsY = 210;
-                const customOn = document.getElementById('toggle-custom-terms').checked;
-                const termV = customOn ? document.getElementById('term-vigencia').value : "1 día para aceptación de la misma.";
-                const termG = customOn ? document.getElementById('term-garantia').value : "31 días en el servicio técnico, pregunta por tu garantía extendida a 100 días POR UN COSTO ADICIONAL.";
-                const termC = customOn ? document.getElementById('term-condiciones').value : "El cliente acepta los Términos y Condiciones publicados en macwave.com.mx/terminos.html.";
-                const termP = customOn ? document.getElementById('term-pago').value : "PAGO ANTICIPADO DEL 100% PARA EL SERVICIO.";
-                const termE = customOn ? document.getElementById('term-entrega').value : "ENTREGA TENTATIVA SEGÚN DISPONIBILIDAD.";
-
                 doc.setFontSize(7.5);
                 doc.setTextColor(0, 0, 0); 
                 doc.setFont("helvetica", "bold");
-                doc.text(`Vigencia de la ODS : ${termV}`, 15, termsY);
-                doc.text(`Garantía: ${termG}`, 15, termsY + 5);
-                doc.text(`Condiciones: ${termC}`, 15, termsY + 11);
+                doc.text(`Vigencia de la ODS : 1 día para aceptación de la misma.`, 15, termsY);
+                doc.text("Garantía: 31 días en el servicio técnico, pregunta por tu garantía extendida a 100 días POR UN COSTO ADICIONAL.", 15, termsY + 5);
+                doc.text("Condiciones: El cliente acepta los términos y condiciones en macwave.com.mx/terminos.html", 15, termsY + 11);
                 doc.setFontSize(9);
                 doc.setTextColor(255, 102, 0);
-                doc.text(termP, 15, termsY + 17);
+                doc.text("PAGO ANTICIPADO DEL 100% PARA EL SERVICIO.", 15, termsY + 17);
                 doc.setFontSize(7.5);
                 doc.setTextColor(0, 0, 0);
-                doc.text(`Tiempo de entrega: ${deliveryTime} ${termE}`, 15, termsY + 23);
+                doc.text(`Tiempo de entrega: ${deliveryTime} ENTREGA TENTATIVA SEGÚN DISPONIBILIDAD.`, 15, termsY + 23);
 
                 // --- 6. BANK SECTION / QR (Fixed Y 240mm) ---
                 const bankY = 240;
@@ -2124,123 +2025,29 @@
                 document.getElementById('quote-number').value = getNextFolio(); // reads without incrementing again
 
                 // ── Auto-save ODS to Supabase ────────────────────────
-                try {
-                    await window._sbClient.from('ordenes_servicio').insert([{
-                        folio: currentFolio,
-                        cliente: getVal('client-name'),
-                        proyecto: getVal('project-name'),
-                        tecnico: getVal('tech-name'),
-                        serie: getVal('serial-number'),
-                        fecha: getVal('quote-date'),
-                        monto: total,
+                const odsData = {
+                    folio: currentFolio,
+                    cliente: document.getElementById('client-name').value || '',
+                    proyecto: document.getElementById('project-name').value || '',
+                    tecnico: document.getElementById('tech-name').value || '',
+                    serie: document.getElementById('serial-number').value || '',
+                    fecha: document.getElementById('quote-date').value || '',
+                    monto: total, // Use the total calculated in the submit handler
+                    status: 'Recibido',
+                    notas: JSON.stringify([{
+                        date: document.getElementById('quote-date').value || new Date().toLocaleDateString('es-MX', { day: '2-digit', month: '2-digit', year: 'numeric' }) + ' ' + new Date().toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit' }),
                         status: 'Recibido',
-                        notas: JSON.stringify([{
-                            date: getVal('quote-date') || new Date().toLocaleDateString('es-MX', { day: '2-digit', month: '2-digit', year: 'numeric' }) + ' ' + new Date().toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit' }),
-                            status: 'Recibido',
-                            text: getVal('ods-notes') || 'Ingreso a laboratorio.',
-                            img: null
-                        }])
-                    }]);
-                    console.log('ODS guardado en Supabase:', currentFolio);
+                        text: document.getElementById('ods-notes').value || 'Ingreso a laboratorio.',
+                        img: null
+                    }])
+                };
+                try {
+                    await window._sbClient.from('ordenes_servicio').insert([odsData]);
+                    console.log('ODS guardado en Supabase:', odsData.folio);
                 } catch (e) {
                     console.warn('No se pudo guardar ODS en Supabase:', e.message);
                 }
-                } catch (err) {
-                    console.error("PDF Generation error:", err);
-                    alert("Ocurrió un error al generar el PDF: " + err.message);
-                }
             };
-
-            const executeTicketGeneration = async () => {
-                const { jsPDF } = window.jspdf;
-                // Landscape A4 for 2-up tickets
-                const doc = new jsPDF({
-                    orientation: 'l',
-                    unit: 'mm',
-                    format: 'a4',
-                    compress: true
-                });
-
-                const folio = getVal('quote-number') || 'S/F';
-                const client = getVal('client-name') || 'N/A';
-                const project = getVal('project-name') || 'N/A';
-                const serial = getVal('serial-number') || 'N/A';
-                const date = getVal('quote-date') || '';
-                
-                const qrCanvas = document.querySelector('#preview-qr-canvas canvas');
-                const qrData = qrCanvas ? qrCanvas.toDataURL("image/png") : null;
-
-                const drawTicket = (startX) => {
-                    // 1. Header (Logo + Brand)
-                    const lW = 22;
-                    const lH = (RECOVERY_PRO_BADGE.h && RECOVERY_PRO_BADGE.w) ? ((RECOVERY_PRO_BADGE.h * lW) / RECOVERY_PRO_BADGE.w) : 7;
-                    const centerX = startX + 74.25; // Center of 148.5mm half
-                    
-                    doc.addImage(RECOVERY_PRO_BADGE.data, 'PNG', centerX - (lW/2), 15, lW, lH);
-                    doc.setFont("helvetica", "bold");
-                    doc.setFontSize(10);
-                    doc.setTextColor(51, 51, 51);
-                    doc.text("macWave.com.mx", centerX, 15 + lH + 4, { align: "center" });
-                    
-                    // 2. Folio (BADGE style)
-                    doc.setFillColor(255, 102, 0);
-                    doc.roundedRect(centerX - 25, 30, 50, 10, 2, 2, 'F');
-                    doc.setFontSize(16);
-                    doc.setTextColor(255, 255, 255);
-                    doc.text(folio, centerX, 37, { align: "center" });
-                    
-                    // 3. LARGE QR CODE (Central)
-                    if (qrData) {
-                        const qrSize = 65;
-                        doc.addImage(qrData, 'PNG', centerX - (qrSize/2), 45, qrSize, qrSize);
-                        doc.setFontSize(7);
-                        doc.setTextColor(150);
-                        doc.text("ESCANEAR PARA ESTATUS / GARANTÍA", centerX, 45 + qrSize + 4, { align: "center" });
-                    }
-                    
-                    // 4. Basic Data (Bottom)
-                    const dataY = 125;
-                    doc.setDrawColor(240);
-                    doc.line(startX + 20, dataY - 5, startX + 128.5, dataY - 5);
-                    
-                    doc.setFontSize(9);
-                    doc.setTextColor(100);
-                    doc.setFont("helvetica", "normal");
-                    
-                    const drawRow = (label, value, y) => {
-                        doc.setTextColor(150);
-                        doc.text(label, startX + 20, y);
-                        doc.setTextColor(0);
-                        doc.setFont("helvetica", "bold");
-                        doc.text(value.substring(0, 50), startX + 45, y);
-                        doc.setFont("helvetica", "normal");
-                    };
-                    
-                    drawRow("CLIENTE:", client, dataY);
-                    drawRow("EQUIPO:", project, dataY + 7);
-                    drawRow("SERIE:", serial, dataY + 14);
-                    drawRow("FECHA:", date, dataY + 21);
-                    
-                    // Footer branding
-                    doc.setFontSize(6);
-                    doc.setTextColor(200);
-                    doc.text("SOPORTE TÉCNICO ESPECIALIZADO APPLE", centerX, 200, { align: "center" });
-                    
-                    // Vertical Separator for cutting
-                    doc.setDrawColor(200);
-                    doc.setLineDash([2, 1], 0);
-                    doc.line(148.5, 0, 148.5, 210);
-                };
-
-                // Draw two tickets
-                drawTicket(0);
-                drawTicket(148.5);
-
-                doc.save(`TICKET-${folio}.pdf`);
-            };
-
-            const btnTicket = document.getElementById('btn-generate-ticket');
-            btnTicket.onclick = executeTicketGeneration;
 
             form.onsubmit = async (e) => {
                 e.preventDefault();
@@ -2252,13 +2059,28 @@
             // Role-based restrictions (standards can toggle BANK but not modify inputs)
             if (!isAdmin) {
                 // Disable inputs in bank config
-                document.querySelectorAll('#bank-controls-wrapper input, #custom-terms-wrapper input').forEach(input => {
+                document.querySelectorAll('#bank-controls-wrapper input').forEach(input => {
                     input.readOnly = true;
                     input.style.opacity = '0.7';
                     input.style.cursor = 'not-allowed';
                     input.title = "Solo administradores pueden modificar estos datos";
                 });
             }
+
+            // Listen for toggle change to hide/show controls
+            document.getElementById('toggle-concepts').addEventListener('change', (e) => {
+                const wrapper = document.getElementById('concepts-controls-wrapper');
+                wrapper.style.display = e.target.checked ? 'block' : 'none';
+                checkPhotosVisibility();
+                update();
+            });
+
+            document.getElementById('toggle-bank').addEventListener('change', (e) => {
+                const wrapper = document.getElementById('bank-controls-wrapper');
+                wrapper.style.display = e.target.checked ? 'block' : 'none';
+                checkPhotosVisibility();
+                update();
+            });
 
             function checkPhotosVisibility() {
                 const conceptsOff = !document.getElementById('toggle-concepts').checked;
@@ -2276,18 +2098,11 @@
             }
 
             // Attach all live-update listeners to regenerate preview
-            document.querySelectorAll('#quote-form input, #quote-form select, #toggle-concepts, #toggle-bank, #toggle-custom-terms, #ods-notes, #term-vigencia, #term-garantia, #term-condiciones, #term-pago, #term-entrega').forEach(el =>
-                el.addEventListener('input', update));
-            
-            document.querySelectorAll('#toggle-concepts, #toggle-bank, #toggle-custom-terms').forEach(el =>
-                el.addEventListener('change', () => {
-                   if(el.id === 'toggle-concepts') document.getElementById('concepts-controls-wrapper').style.display = el.checked ? 'block' : 'none';
-                   if(el.id === 'toggle-bank') document.getElementById('bank-controls-wrapper').style.display = el.checked ? 'block' : 'none';
-                   if(el.id === 'toggle-custom-terms') document.getElementById('custom-terms-wrapper').style.display = el.checked ? 'block' : 'none';
-                   checkPhotosVisibility();
-                   update();
-                }));
-
+            document.querySelectorAll('#quote-form input, #quote-form select, #toggle-concepts, #toggle-bank, #ods-notes').forEach(el =>
+                el.addEventListener('input', () => {
+                    update();
+                })
+            );
             // Initial QR and update
             setTimeout(generatePreviewQR, 200);
             checkPhotosVisibility();
