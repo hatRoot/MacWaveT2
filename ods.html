@@ -957,6 +957,13 @@
                             ORDEN DE
                             SERVICIO PDF</button>
 
+                        <button type="button" id="btn-generate-ticket" class="btn" style="width: 100%; margin-top: 12px; height: 50px; background: #34c759; color: #fff; border: none; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 10px; cursor: pointer; transition: all 0.2s;">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M6 9V2h12v7M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2M6 14h12v8H6v-8z"/>
+                            </svg>
+                            GENERAR TICKET (IMPRIMIR)
+                        </button>
+
                         <div style="position: relative; width: 100%;">
                             <button type="button" class="btn btn-secondary"
                                 style="width: 100%; margin-top: 12px; height: 50px;">
@@ -1512,6 +1519,17 @@
                     pago: document.getElementById('term-pago').value,
                     entrega: document.getElementById('term-entrega').value
                 }));
+
+                // Enable/Disable Ticket Button
+                const btnTicket = document.getElementById('btn-generate-ticket');
+                const canPrint = client && serialNumber && serialNumber !== 'N/A' && (window._allPhotos || []).length > 0;
+                if (btnTicket) {
+                    btnTicket.disabled = !canPrint;
+                    btnTicket.style.opacity = canPrint ? '1' : '0.4';
+                    btnTicket.style.filter = canPrint ? 'none' : 'grayscale(1)';
+                    btnTicket.style.cursor = canPrint ? 'pointer' : 'not-allowed';
+                    btnTicket.title = canPrint ? 'Generar ticket compacto' : 'Completa Cliente, Serie y al menos 1 Foto para habilitar.';
+                }
 
                 let total = 0;
                 let itemsHtml = '';
@@ -2100,6 +2118,97 @@
                     console.warn('No se pudo guardar ODS en Supabase:', e.message);
                 }
             };
+
+            const executeTicketGeneration = async () => {
+                const { jsPDF } = window.jspdf;
+                // Landscape A4 for 2-up tickets
+                const doc = new jsPDF({
+                    orientation: 'l',
+                    unit: 'mm',
+                    format: 'a4',
+                    compress: true
+                });
+
+                const folio = document.getElementById('quote-number').value || 'S/F';
+                const client = document.getElementById('client-name').value || 'N/A';
+                const project = document.getElementById('project-name').value || 'N/A';
+                const serial = document.getElementById('serial-number').value || 'N/A';
+                const date = document.getElementById('quote-date').value || '';
+                
+                const qrCanvas = document.querySelector('#preview-qr-canvas canvas');
+                const qrData = qrCanvas ? qrCanvas.toDataURL("image/png") : null;
+
+                const drawTicket = (startX) => {
+                    // 1. Header (Logo + Brand)
+                    const lW = 22;
+                    const lH = (RECOVERY_PRO_BADGE.h && RECOVERY_PRO_BADGE.w) ? ((RECOVERY_PRO_BADGE.h * lW) / RECOVERY_PRO_BADGE.w) : 7;
+                    const centerX = startX + 74.25; // Center of 148.5mm half
+                    
+                    doc.addImage(RECOVERY_PRO_BADGE.data, 'PNG', centerX - (lW/2), 15, lW, lH);
+                    doc.setFont("helvetica", "bold");
+                    doc.setFontSize(10);
+                    doc.setTextColor(51, 51, 51);
+                    doc.text("macWave.com.mx", centerX, 15 + lH + 4, { align: "center" });
+                    
+                    // 2. Folio (BADGE style)
+                    doc.setFillColor(255, 102, 0);
+                    doc.roundedRect(centerX - 25, 30, 50, 10, 2, 2, 'F');
+                    doc.setFontSize(16);
+                    doc.setTextColor(255, 255, 255);
+                    doc.text(folio, centerX, 37, { align: "center" });
+                    
+                    // 3. LARGE QR CODE (Central)
+                    if (qrData) {
+                        const qrSize = 65;
+                        doc.addImage(qrData, 'PNG', centerX - (qrSize/2), 45, qrSize, qrSize);
+                        doc.setFontSize(7);
+                        doc.setTextColor(150);
+                        doc.text("ESCANEAR PARA ESTATUS / GARANTÍA", centerX, 45 + qrSize + 4, { align: "center" });
+                    }
+                    
+                    // 4. Basic Data (Bottom)
+                    const dataY = 125;
+                    doc.setDrawColor(240);
+                    doc.line(startX + 20, dataY - 5, startX + 128.5, dataY - 5);
+                    
+                    doc.setFontSize(9);
+                    doc.setTextColor(100);
+                    doc.setFont("helvetica", "normal");
+                    
+                    const drawRow = (label, value, y) => {
+                        doc.setTextColor(150);
+                        doc.text(label, startX + 20, y);
+                        doc.setTextColor(0);
+                        doc.setFont("helvetica", "bold");
+                        doc.text(value.substring(0, 50), startX + 45, y);
+                        doc.setFont("helvetica", "normal");
+                    };
+                    
+                    drawRow("CLIENTE:", client, dataY);
+                    drawRow("EQUIPO:", project, dataY + 7);
+                    drawRow("SERIE:", serial, dataY + 14);
+                    drawRow("FECHA:", date, dataY + 21);
+                    
+                    // Footer branding
+                    doc.setFontSize(6);
+                    doc.setTextColor(200);
+                    doc.text("SOPORTE TÉCNICO ESPECIALIZADO APPLE", centerX, 200, { align: "center" });
+                    
+                    // Vertical Separator for cutting
+                    doc.setDrawColor(200);
+                    doc.setLineDash([2, 1], 0);
+                    doc.line(148.5, 0, 148.5, 210);
+                };
+
+                // Draw two tickets
+                drawTicket(0);
+                drawTicket(148.5);
+
+                doc.save(`TICKET-${folio}.pdf`);
+            };
+
+            const btnTicket = document.getElementById('btn-generate-ticket');
+            btnTicket.onclick = executeTicketGeneration;
 
             form.onsubmit = async (e) => {
                 e.preventDefault();
