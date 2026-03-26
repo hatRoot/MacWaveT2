@@ -918,21 +918,38 @@
                             </label>
                         </div>
 
-                        <div id="bank-controls-wrapper" style="margin-top: 20px; display: none;">
-                            <div class="form-grid">
-                                <div class="form-group">
-                                    <label>CLABE</label>
-                                    <input type="text" id="clabe" placeholder="Ej. 012 180..." value="012 180015766935846">
-                                </div>
-                                <div class="form-group">
-                                    <label>CUENTA</label>
-                                    <input type="text" id="account-number" placeholder="Ej. 1576..." value="1576693584">
-                                </div>
-                                <div class="form-group">
-                                    <label>TARJETA</label>
-                                    <input type="text" id="card-number" placeholder="Ej. 4152..."
-                                        value="4152 3144 2988 0571">
-                                </div>
+                        </div>
+                        
+                        <div class="section-separator" style="background: rgba(255,255,255,0.15);"></div>
+
+                        <div class="header-with-toggle" style="margin-top: 10px;">
+                            <div class="section-title" style="margin-bottom: 0;">PERSONALIZAR TÉRMINOS (FOOTER)</div>
+                            <label class="switch">
+                                <input type="checkbox" id="toggle-custom-terms">
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+
+                        <div id="custom-terms-wrapper" style="margin-top: 20px; display: none;">
+                            <div class="form-group">
+                                <label>Vigencia</label>
+                                <input type="text" id="term-vigencia" placeholder="Ej. 1 día para aceptación...">
+                            </div>
+                            <div class="form-group">
+                                <label>Garantía</label>
+                                <input type="text" id="term-garantia" placeholder="Ej. 31 días en el servicio...">
+                            </div>
+                            <div class="form-group" style="grid-column: span 1;">
+                                <label>Condiciones (Link)</label>
+                                <input type="text" id="term-condiciones" placeholder="Ej. El cliente acepta los términos...">
+                            </div>
+                            <div class="form-group">
+                                <label>Nota de Pago (Destacado)</label>
+                                <input type="text" id="term-pago" placeholder="Ej. PAGO ANTICIPADO DEL 100%...">
+                            </div>
+                            <div class="form-group">
+                                <label>Tiempo de Entrega (Complemento)</label>
+                                <input type="text" id="term-entrega" placeholder="Ej. ENTREGA TENTATIVA SEGÚN...">
                             </div>
                         </div>
 
@@ -1062,8 +1079,8 @@
                                 img.onload = () => {
                                     const canvas = document.createElement('canvas');
                                     const ctx = canvas.getContext('2d');
-                                    // FORCE SQUARE 800x800
-                                    const SIZE = 800;
+                                    // FORCE SQUARE 500x500 (Optimized for PDF size vs print quality)
+                                    const SIZE = 500;
                                     canvas.width = SIZE;
                                     canvas.height = SIZE;
                                     
@@ -1072,7 +1089,7 @@
                                     const sourceY = (img.height - minDim) / 2;
                                     
                                     ctx.drawImage(img, sourceX, sourceY, minDim, minDim, 0, 0, SIZE, SIZE);
-                                    resolve(canvas.toDataURL('image/jpeg', 0.8));
+                                    resolve(canvas.toDataURL('image/jpeg', 0.65));
                                 };
                                 img.onerror = () => reject(new Error('Img Error'));
                                 img.src = e.target.result;
@@ -1345,9 +1362,9 @@
                     const page = await pdf.getPage(1);
                     const textContent = await page.getTextContent();
 
-                    // Combine all text items into a single string for easier regex/searching
-                    // We join with spaces to keep words separate
-                    const rawText = textContent.items.map(item => item.str).join(' ');
+                    // Combine all text items into a single string
+                    // Normalizing: replace multiple spaces with single space to avoid regex failures
+                    const rawText = textContent.items.map(item => item.str).join(' ').replace(/\s+/g, ' ');
 
                     console.log("Extracted PDF Text:", rawText);
 
@@ -1375,8 +1392,8 @@
                     const projectMatch = rawText.match(/Oportunidad \/ Proyecto:\s*(.*?)\s*Número de Serie/i);
                     if (projectMatch) document.getElementById('project-name').value = projectMatch[1].trim();
 
-                    // 4. Serial Number
-                    const serialMatch = rawText.match(/Número de Serie del equipo :\s*(.*?)\s*DESCRIPCIÓN/i);
+                    // 4. Serial Number (More robust: look for 'Número de Serie del equipo :' and match until next major label)
+                    const serialMatch = rawText.match(/Número de Serie del equipo\s*:\s*(.*?)\s*(?:DESCRIPCIÓN|Fecha:|Vigencia|Técnico:|OBSERVACIONES|PAGO ANTICIPADO)/i);
                     if (serialMatch) document.getElementById('serial-number').value = serialMatch[1].trim();
 
                     // 5. Date: "Fecha: ............ 24/02/2026"
@@ -1392,8 +1409,8 @@
                     const deliveryMatch = rawText.match(/Tiempo de entrega:\s*(.*?)\s*ENTREGA TENTATIVA/i);
                     if (deliveryMatch) document.getElementById('delivery-time').value = deliveryMatch[1].trim();
 
-                    // Note finding (Observaciones)
-                    const notesMatch = rawText.match(/OBSERVACIONES:\s*(.*?)\s*\*\*\*Precios sujetos/i);
+                    // Note finding (Observaciones) - Support various labels used in previous versions
+                    const notesMatch = rawText.match(/(?:OBSERVACIONES|OBSERVACIONES \/ NOTAS DE LABORATORIO):\s*(.*?)\s*(?:\*\*\*Precios sujetos|Vigencia de la ODS)/i);
                     if (notesMatch) {
                         document.getElementById('ods-notes').value = notesMatch[1].trim();
                     } else {
@@ -1476,6 +1493,25 @@
                 const odsNotes = document.getElementById('ods-notes').value || '';
                 const generalNote = document.getElementById('ods-general-note').value || '';
                 const currency = 'MXN';
+
+                // --- Custom Terms Logic ---
+                const toggleCustomTerms = document.getElementById('toggle-custom-terms');
+                const customOn = toggleCustomTerms.checked;
+                const termVigencia = customOn ? document.getElementById('term-vigencia').value : "1 día para aceptación de la misma.";
+                const termGarantia = customOn ? document.getElementById('term-garantia').value : "31 días en el servicio técnico, pregunta por tu garantía extendida a 100 días POR UN COSTO ADICIONAL.";
+                const termCondiciones = customOn ? document.getElementById('term-condiciones').value : "El cliente acepta los Términos y Condiciones publicados en macwave.com.mx/terminos.html.";
+                const termPago = customOn ? document.getElementById('term-pago').value : "PAGO ANTICIPADO DEL 100% PARA EL SERVICIO.";
+                const termEntregaSuff = customOn ? document.getElementById('term-entrega').value : "ENTREGA TENTATIVA SEGÚN DISPONIBILIDAD.";
+
+                // Save terms state to localStorage for persistence
+                localStorage.setItem('ods_custom_terms', JSON.stringify({
+                    active: customOn,
+                    vigencia: document.getElementById('term-vigencia').value,
+                    garantia: document.getElementById('term-garantia').value,
+                    condiciones: document.getElementById('term-condiciones').value,
+                    pago: document.getElementById('term-pago').value,
+                    entrega: document.getElementById('term-entrega').value
+                }));
 
                 let total = 0;
                 let itemsHtml = '';
@@ -1584,6 +1620,7 @@
                         ` : ''}
 
                         <!-- PHOTO GALLERY / WATERMARK SECTION (FLEXIBLE GRID) -->
+                        ${!(document.getElementById('toggle-concepts').checked && document.getElementById('toggle-bank').checked) ? `
                         <div class="ps-watermark" style="min-height: 80px; height: auto; padding: 12px 10px; display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 10px; align-items: start; justify-items: center; position: relative; background: #fafafa; border: 1px dashed #ccc; border-radius: 8px; margin-top: 15px; overflow: visible;">
                              ${(window._allPhotos || []).length > 0 ? (window._allPhotos || []).map((p, idx) => `
                                 <div style="width: 100%; max-width: 130px; background: white; border: 1px solid #eee; border-radius: 4px; padding: 4px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); text-align: center; display: flex; flex-direction: column; position: relative;">
@@ -1597,6 +1634,7 @@
                                 <div style="grid-column: 1 / -1; font-size: 10px; color: #ccc; font-weight: 700;">REGISTRO FOTOGRÁFICO DE EVIDENCIA</div>
                             `}
                         </div>
+                        ` : ''}
 
                         ${generalNote ? `
                         <div style="margin-top: 15px; padding: 10px; border: 1px solid #ff6600; border-radius: 8px; font-size: 10px; color: #333; line-height: 1.4; background: #fffcf5;">
@@ -1613,11 +1651,11 @@
                         ` : ''}
 
                         <div class="ps-terms">
-                            <p>Vigencia de la ODS : 1 día para aceptación de la misma.</p>
-                            <p>Garantía: 31 días en el servicio técnico, pregunta por tu garantía extendida a 100 días POR UN COSTO ADICIONAL.</p>
-                            <p>Condiciones: El cliente acepta los <a href="terminos.html" target="_blank" style="color: inherit; font-weight: bold;">Términos y Condiciones</a> publicados en macwave.com.mx/terminos.html.</p>
-                            <p style="font-size: 9px; font-weight: 900;">PAGO ANTICIPADO DEL 100% PARA EL SERVICIO.</p>
-                            <p>Tiempo de entrega: ${deliveryTime} ENTREGA TENTATIVA SEGÚN DISPONIBILIDAD.</p>
+                            <p>Vigencia de la ODS : ${termVigencia}</p>
+                            <p>Garantía: ${termGarantia}</p>
+                            <p>Condiciones: ${termCondiciones}</p>
+                            <p style="font-size: 9px; font-weight: 900;">${termPago}</p>
+                            <p>Tiempo de entrega: ${deliveryTime} ${termEntregaSuff}</p>
                         </div>
 
                         <div class="ps-bank-area">
@@ -1678,7 +1716,13 @@
 
             const executeGeneration = async () => {
                 const { jsPDF } = window.jspdf;
-                const doc = new jsPDF('p', 'mm', 'a4');
+                // Optimization: Enable 'compress: true' to reduce file size via Flate compression
+                const doc = new jsPDF({
+                    orientation: 'p',
+                    unit: 'mm',
+                    format: 'a4',
+                    compress: true
+                });
 
                 const client = document.getElementById('client-name').value;
                 const project = document.getElementById('project-name').value;
@@ -1849,7 +1893,8 @@
                 }
 
                 // PHOTO GRID AREA (Redesigned for up to 10 photos in two rows)
-                const showPhotos = window._allPhotos.length > 0 || !showConcepts;
+                // Logical Rule: If Concepts AND Bank are enabled, skip photos totally (it's a final quote)
+                const showPhotos = (!(showConcepts && showBank)) && (window._allPhotos.length > 0 || !showConcepts);
                 if (showPhotos) {
                     const rowHeight = 45;
                     const numPhotos = window._allPhotos.length;
@@ -1921,20 +1966,27 @@
                     notesY += 5;
                 }
 
-                // --- 5. TERMS (Fixed Y 215mm) ---
+                // --- 5. TERMS (Fixed Y 210mm) ---
                 const termsY = 210;
+                const customOn = document.getElementById('toggle-custom-terms').checked;
+                const termV = customOn ? document.getElementById('term-vigencia').value : "1 día para aceptación de la misma.";
+                const termG = customOn ? document.getElementById('term-garantia').value : "31 días en el servicio técnico, pregunta por tu garantía extendida a 100 días POR UN COSTO ADICIONAL.";
+                const termC = customOn ? document.getElementById('term-condiciones').value : "El cliente acepta los Términos y Condiciones publicados en macwave.com.mx/terminos.html.";
+                const termP = customOn ? document.getElementById('term-pago').value : "PAGO ANTICIPADO DEL 100% PARA EL SERVICIO.";
+                const termE = customOn ? document.getElementById('term-entrega').value : "ENTREGA TENTATIVA SEGÚN DISPONIBILIDAD.";
+
                 doc.setFontSize(7.5);
                 doc.setTextColor(0, 0, 0); 
                 doc.setFont("helvetica", "bold");
-                doc.text(`Vigencia de la ODS : 1 día para aceptación de la misma.`, 15, termsY);
-                doc.text("Garantía: 31 días en el servicio técnico, pregunta por tu garantía extendida a 100 días POR UN COSTO ADICIONAL.", 15, termsY + 5);
-                doc.text("Condiciones: El cliente acepta los términos y condiciones en macwave.com.mx/terminos.html", 15, termsY + 11);
+                doc.text(`Vigencia de la ODS : ${termV}`, 15, termsY);
+                doc.text(`Garantía: ${termG}`, 15, termsY + 5);
+                doc.text(`Condiciones: ${termC}`, 15, termsY + 11);
                 doc.setFontSize(9);
                 doc.setTextColor(255, 102, 0);
-                doc.text("PAGO ANTICIPADO DEL 100% PARA EL SERVICIO.", 15, termsY + 17);
+                doc.text(termP, 15, termsY + 17);
                 doc.setFontSize(7.5);
                 doc.setTextColor(0, 0, 0);
-                doc.text(`Tiempo de entrega: ${deliveryTime} ENTREGA TENTATIVA SEGÚN DISPONIBILIDAD.`, 15, termsY + 23);
+                doc.text(`Tiempo de entrega: ${deliveryTime} ${termE}`, 15, termsY + 23);
 
                 // --- 6. BANK SECTION / QR (Fixed Y 240mm) ---
                 const bankY = 240;
@@ -2059,28 +2111,13 @@
             // Role-based restrictions (standards can toggle BANK but not modify inputs)
             if (!isAdmin) {
                 // Disable inputs in bank config
-                document.querySelectorAll('#bank-controls-wrapper input').forEach(input => {
+                document.querySelectorAll('#bank-controls-wrapper input, #custom-terms-wrapper input').forEach(input => {
                     input.readOnly = true;
                     input.style.opacity = '0.7';
                     input.style.cursor = 'not-allowed';
                     input.title = "Solo administradores pueden modificar estos datos";
                 });
             }
-
-            // Listen for toggle change to hide/show controls
-            document.getElementById('toggle-concepts').addEventListener('change', (e) => {
-                const wrapper = document.getElementById('concepts-controls-wrapper');
-                wrapper.style.display = e.target.checked ? 'block' : 'none';
-                checkPhotosVisibility();
-                update();
-            });
-
-            document.getElementById('toggle-bank').addEventListener('change', (e) => {
-                const wrapper = document.getElementById('bank-controls-wrapper');
-                wrapper.style.display = e.target.checked ? 'block' : 'none';
-                checkPhotosVisibility();
-                update();
-            });
 
             function checkPhotosVisibility() {
                 const conceptsOff = !document.getElementById('toggle-concepts').checked;
@@ -2098,11 +2135,18 @@
             }
 
             // Attach all live-update listeners to regenerate preview
-            document.querySelectorAll('#quote-form input, #quote-form select, #toggle-concepts, #toggle-bank, #ods-notes').forEach(el =>
-                el.addEventListener('input', () => {
-                    update();
-                })
-            );
+            document.querySelectorAll('#quote-form input, #quote-form select, #toggle-concepts, #toggle-bank, #toggle-custom-terms, #ods-notes, #term-vigencia, #term-garantia, #term-condiciones, #term-pago, #term-entrega').forEach(el =>
+                el.addEventListener('input', update));
+            
+            document.querySelectorAll('#toggle-concepts, #toggle-bank, #toggle-custom-terms').forEach(el =>
+                el.addEventListener('change', () => {
+                   if(el.id === 'toggle-concepts') document.getElementById('concepts-controls-wrapper').style.display = el.checked ? 'block' : 'none';
+                   if(el.id === 'toggle-bank') document.getElementById('bank-controls-wrapper').style.display = el.checked ? 'block' : 'none';
+                   if(el.id === 'toggle-custom-terms') document.getElementById('custom-terms-wrapper').style.display = el.checked ? 'block' : 'none';
+                   checkPhotosVisibility();
+                   update();
+                }));
+
             // Initial QR and update
             setTimeout(generatePreviewQR, 200);
             checkPhotosVisibility();
