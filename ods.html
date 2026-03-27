@@ -59,6 +59,39 @@
             --mac-input-bg: #2C2C2E;
         }
 
+        .ps-dot-row {
+            display: flex;
+            align-items: baseline;
+            justify-content: space-between;
+            margin-bottom: 2px;
+        }
+        .ps-dot-label {
+            flex-shrink: 0;
+            padding-right: 4px;
+        }
+        .ps-dot-dots {
+            flex-grow: 1;
+            border-bottom: 1.5px dotted #ccc;
+            height: 10px;
+            margin: 0 4px;
+        }
+        .ps-dot-value {
+            flex-shrink: 0;
+            padding-left: 4px;
+            font-weight: bold;
+            text-align: right;
+            min-width: 80px;
+        }
+        
+        .bank-input-readonly {
+            background: rgba(255, 255, 255, 0.05) !important;
+            color: #888 !important;
+            cursor: not-allowed !important;
+        }
+        .bank-input-tarjeta-restricted {
+            border: 1px solid rgba(255, 59, 48, 0.3) !important;
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -398,9 +431,10 @@
 
         .ps-dot-value {
             font-weight: bold;
-            min-width: 35px;
-            /* Reduced to bring values closer to dots */
-            text-align: left;
+            min-width: 85px;
+            /* Wider so it matches the input width better */
+            text-align: right;
+            color: #000;
         }
 
         .ps-client-area {
@@ -849,8 +883,8 @@
                                 <input type="text" id="quote-number" placeholder="Ej. RPC-9999">
                             </div>
                             <div class="form-group">
-                                <label>Tiempo de entrega</label>
-                                <input type="text" id="delivery-time" placeholder="Ej. 15 de Marzo de 2026">
+                                <label for="delivery-time">Tiempo de Entrega / Entrega Estimada:</label>
+                                <input type="datetime-local" id="delivery-time" style="width: 100%; height: 50px;">
                             </div>
                         </div>
 
@@ -901,12 +935,6 @@
                                 style="width: 100%; height: 100px; padding: 12px; border-radius: 8px; background: rgba(255, 255, 255, 0.04); border: 1px solid var(--border); color: #fff; font-size: 0.9rem; resize: vertical;"></textarea>
                         </div>
 
-                        <div class="form-group" style="margin-top: 15px;">
-                            <label>Nota General del Proceso (Técnico)*</label>
-                            <textarea id="ods-general-note"
-                                placeholder="Escribe aquí el resumen del proceso técnico realizado..."
-                                style="width: 100%; height: 100px; padding: 12px; border-radius: 8px; background: rgba(255, 255, 255, 0.04); border: 1px solid var(--border); color: #fff; font-size: 0.9rem; resize: vertical;"></textarea>
-                        </div>
 
                         <div class="section-separator" style="background: rgba(255,255,255,0.15);"></div>
 
@@ -995,11 +1023,10 @@
             const updateHeaderInfo = () => {
                 const clockEl = document.getElementById('live-clock');
                 const userEl = document.getElementById('active-user-display');
-                
+                const now = new Date();
+
                 if (clockEl) {
-                    const now = new Date();
-                    clockEl.textContent = now.toLocaleString('es-MX', { 
-                        day: '2-digit', month: '2-digit', year: 'numeric',
+                    clockEl.textContent = now.toLocaleTimeString('es-MX', { 
                         hour: '2-digit', minute: '2-digit', second: '2-digit',
                         hour12: false 
                     });
@@ -1007,8 +1034,19 @@
                 
                 if (userEl) {
                     const fullUser = sessionStorage.getItem('macwave_user') || 'Técnico';
-                    const shortName = fullUser.split('.')[0].split('@')[0]; // Extract "joel" from "joel.duran" or email
+                    const shortName = fullUser.split('.')[0].split('@')[0];
                     userEl.textContent = `TÉCNICO: ${shortName}`;
+                }
+
+                // Initialize quote-date if empty
+                const dateInput = document.getElementById('quote-date');
+                if (dateInput && !dateInput.value) {
+                    const day = String(now.getDate()).padStart(2, '0');
+                    const month = String(now.getMonth() + 1).padStart(2, '0');
+                    const year = now.getFullYear();
+                    const hours = String(now.getHours()).padStart(2, '0');
+                    const minutes = String(now.getMinutes()).padStart(2, '0');
+                    dateInput.value = `${day}/${month}/${year} ${hours}:${minutes}`;
                 }
             };
             
@@ -1468,13 +1506,23 @@
                 const tech = document.getElementById('tech-name').value;
                 const date = document.getElementById('quote-date').value;
                 const folio = document.getElementById('quote-number').value;
-                const deliveryTime = document.getElementById('delivery-time').value || 'POR DEFINIR';
+                const rawDelivery = document.getElementById('delivery-time').value;
+                const formatDate = (val) => {
+                    if (!val) return '';
+                    if (val.includes('T')) {
+                        try {
+                            const d = new Date(val);
+                            return d.toLocaleString('es-MX', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' }).replace(',', '');
+                        } catch(e) { return val; }
+                    }
+                    return val;
+                };
+                const deliveryTime = formatDate(rawDelivery) || 'POR DEFINIR';
                 const serialNumber = document.getElementById('serial-number').value || 'N/A';
                 const clabeVal = document.getElementById('clabe').value;
                 const accountVal = document.getElementById('account-number').value;
                 const cardVal = document.getElementById('card-number').value;
                 const odsNotes = document.getElementById('ods-notes').value || '';
-                const generalNote = document.getElementById('ods-general-note').value || '';
                 const currency = 'MXN';
 
                 let total = 0;
@@ -1541,17 +1589,17 @@
                                 <div class="ps-meta-data">
                                     <div class="ps-dot-row">
                                         <span class="ps-dot-label">Fecha:</span>
-                                        <span class="ps-dot-dots">............</span>
+                                        <span class="ps-dot-dots"></span>
                                         <span class="ps-dot-value">${date}</span>
                                     </div>
                                     <div class="ps-dot-row">
                                         <span class="ps-dot-label">Técnico:</span>
-                                        <span class="ps-dot-dots">..........</span>
+                                        <span class="ps-dot-dots"></span>
                                         <span class="ps-dot-value">${tech}</span>
                                     </div>
                                     <div class="ps-dot-row" style="opacity: 0.8">
                                         <span class="ps-dot-label">Moneda:</span>
-                                        <span class="ps-dot-dots">.....</span>
+                                        <span class="ps-dot-dots"></span>
                                         <span class="ps-dot-value" style="font-weight: bold">${currency}</span>
                                     </div>
                                 </div>
@@ -1584,7 +1632,8 @@
                         ` : ''}
 
                         <!-- PHOTO GALLERY / WATERMARK SECTION (FLEXIBLE GRID) -->
-                        <div class="ps-watermark" style="min-height: 80px; height: auto; padding: 12px 10px; display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 10px; align-items: start; justify-items: center; position: relative; background: #fafafa; border: 1px dashed #ccc; border-radius: 8px; margin-top: 15px; overflow: visible;">
+                        ${(!document.getElementById('toggle-concepts').checked && !document.getElementById('toggle-bank').checked) ? `
+                        <div class="ps-watermark" style="min-height: 80px; height: auto; padding: 12px 10px; display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; align-items: start; justify-items: center; position: relative; background: #fafafa; border: 1px dashed #ccc; border-radius: 8px; margin-top: 15px; overflow: visible;">
                              ${(window._allPhotos || []).length > 0 ? (window._allPhotos || []).map((p, idx) => `
                                 <div style="width: 100%; max-width: 130px; background: white; border: 1px solid #eee; border-radius: 4px; padding: 4px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); text-align: center; display: flex; flex-direction: column; position: relative;">
                                     <button onclick="window.removePhoto(${idx})" style="position: absolute; top: -6px; right: -6px; background: #FF453A; color: white; border: none; border-radius: 50%; width: 20px; height: 20px; font-size: 11px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 10; box-shadow: 0 2px 4px rgba(0,0,0,0.2);">×</button>
@@ -1597,13 +1646,8 @@
                                 <div style="grid-column: 1 / -1; font-size: 10px; color: #ccc; font-weight: 700;">REGISTRO FOTOGRÁFICO DE EVIDENCIA</div>
                             `}
                         </div>
-
-                        ${generalNote ? `
-                        <div style="margin-top: 15px; padding: 10px; border: 1px solid #ff6600; border-radius: 8px; font-size: 10px; color: #333; line-height: 1.4; background: #fffcf5;">
-                            <strong style="color: #ff6600; display: block; margin-bottom: 4px; text-transform: uppercase; font-size: 8px;">Nota General del Proceso:</strong>
-                            ${generalNote.replace(/\n/g, '<br>')}
-                        </div>
                         ` : ''}
+
 
                         ${odsNotes ? `
                         <div style="margin-top: 15px; padding: 10px; border: 1px dashed #ccc; border-radius: 8px; font-size: 10px; color: #333; line-height: 1.4; background: #fafafa;">
@@ -1696,7 +1740,6 @@
                 const deliveryTime = document.getElementById('delivery-time').value || 'POR DEFINIR';
                 const serialNumber = document.getElementById('serial-number').value || 'N/A';
                 const odsNotes = document.getElementById('ods-notes').value || '';
-                const generalNote = document.getElementById('ods-general-note').value || '';
 
                 const items = [];
                 let total = 0;
@@ -1745,32 +1788,33 @@
                 doc.text(`ODS N° ${folio}`, 198, 15, { align: "right" });
 
                 doc.setTextColor(0, 0, 0);
-                doc.setFontSize(10);
+                doc.setFontSize(8);
                 const mY = 32;
-                const labelX = 150; // Moved left slightly
+                const labelX = 145; 
                 const valueX = 198;
+                const dotXStart = labelX + 15;
 
-                doc.setFontSize(9);
-                doc.setFont("helvetica", "normal");
-                doc.setTextColor(0, 0, 0);
+                const drawDotRow = (label, value, y) => {
+                    doc.setFont("helvetica", "normal");
+                    doc.setTextColor(0, 0, 0);
+                    doc.text(label, labelX, y);
+                    
+                    // Draw dots accurately
+                    doc.setDrawColor(200, 200, 200);
+                    doc.setLineWidth(0.1);
+                    doc.setLineDash([0.5, 0.5], 0);
+                    // Calculate dot line end
+                    const valWidth = doc.getTextWidth(value);
+                    doc.line(labelX + doc.getTextWidth(label) + 2, y - 1, valueX - valWidth - 2, y - 1);
+                    doc.setLineDash([], 0); // reset
 
-                // Row 1: Fecha
-                doc.setFont("helvetica", "normal");
-                doc.text("Fecha:", labelX, mY);
-                doc.setFont("helvetica", "bold");
-                doc.text(date, valueX, mY, { align: "right" });
+                    doc.setFont("helvetica", "bold");
+                    doc.text(value, valueX, y, { align: "right" });
+                };
 
-                // Row 2: Técnico
-                doc.setFont("helvetica", "normal");
-                doc.text("Técnico:", labelX, mY + 6);
-                doc.setFont("helvetica", "bold");
-                doc.text(tech, valueX, mY + 6, { align: "right" });
-
-                // Row 3: Moneda
-                doc.setFont("helvetica", "normal");
-                doc.text("Moneda:", labelX, mY + 12);
-                doc.setFont("helvetica", "bold");
-                doc.text(currency, valueX, mY + 12, { align: "right" });
+                drawDotRow("Fecha:", date, mY);
+                drawDotRow("Técnico:", tech, mY + 6);
+                drawDotRow("Moneda:", currency, mY + 12);
 
                 // --- 2. Client Info (Fixed Space 55-85mm) ---
                 const clientY = 55;
@@ -1851,8 +1895,8 @@
                     
                 }
 
-                // PHOTO GRID AREA (Redesigned for up to 10 photos in two rows)
-                const showPhotos = window._allPhotos.length > 0 || !showConcepts;
+                // PHOTO GRID AREA (Only show if both Conceptos and Bank are OFF)
+                const showPhotos = !showConcepts && !showBank;
                 if (showPhotos) {
                     const rowHeight = 45;
                     const numPhotos = window._allPhotos.length;
@@ -1895,19 +1939,6 @@
                     nextSectionY = gridY + gridH + 5;
                 }
 
-                // --- 3.5 GENERAL PROCESS NOTE (TECHNICIAN) ---
-                if (generalNote) {
-                    doc.setFontSize(8);
-                    doc.setTextColor(255, 102, 0); // Brand Orange
-                    doc.setFont("helvetica", "bold");
-                    doc.text("NOTA GENERAL DEL PROCESO (TÉCNICO):", 15, nextSectionY);
-                    doc.setFontSize(7.5);
-                    doc.setTextColor(0, 0, 0);
-                    doc.setFont("helvetica", "normal");
-                    const splitGenNote = doc.splitTextToSize(generalNote, 180);
-                    doc.text(splitGenNote, 15, nextSectionY + 4);
-                    nextSectionY += (splitGenNote.length * 4) + 8;
-                }
 
                 // --- 4. NOTES / OBSERVATIONS (Fixed space or below body) ---
                 let notesY = nextSectionY;
@@ -2058,13 +2089,14 @@
 
 
 
-            // Role-based restrictions (standards can toggle BANK but not modify inputs)
             if (!isAdmin) {
                 // Disable inputs in bank config
                 document.querySelectorAll('#bank-controls-wrapper input').forEach(input => {
                     input.readOnly = true;
-                    input.style.opacity = '0.7';
-                    input.style.cursor = 'not-allowed';
+                    input.classList.add('bank-input-readonly');
+                    if (input.id === 'card-number') {
+                        input.classList.add('bank-input-tarjeta-restricted');
+                    }
                     input.title = "Solo administradores pueden modificar estos datos";
                 });
             }
