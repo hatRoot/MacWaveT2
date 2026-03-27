@@ -1062,8 +1062,8 @@
                                 img.onload = () => {
                                     const canvas = document.createElement('canvas');
                                     const ctx = canvas.getContext('2d');
-                                    // FORCE SQUARE 800x800
-                                    const SIZE = 800;
+                                    // FORCE SQUARE 600x600 for smaller PDF size
+                                    const SIZE = 600;
                                     canvas.width = SIZE;
                                     canvas.height = SIZE;
                                     
@@ -1072,7 +1072,7 @@
                                     const sourceY = (img.height - minDim) / 2;
                                     
                                     ctx.drawImage(img, sourceX, sourceY, minDim, minDim, 0, 0, SIZE, SIZE);
-                                    resolve(canvas.toDataURL('image/jpeg', 0.8));
+                                    resolve(canvas.toDataURL('image/jpeg', 0.75));
                                 };
                                 img.onerror = () => reject(new Error('Img Error'));
                                 img.src = e.target.result;
@@ -1678,7 +1678,10 @@
 
             const executeGeneration = async () => {
                 const { jsPDF } = window.jspdf;
-                const doc = new jsPDF('p', 'mm', 'a4');
+                const doc = new jsPDF('p', 'mm', 'a4', true); // Enabled compression
+                const currentFolio = document.getElementById('quote-number').value;
+                const fileName = `${currentFolio}.pdf`;
+                doc.setProperties({ title: currentFolio });
 
                 const client = document.getElementById('client-name').value;
                 const project = document.getElementById('project-name').value;
@@ -2006,8 +2009,7 @@
                 doc.text("Salvador Alvarado 72 oficina 208, Escandón. CDMX", 105, footerY, { align: "center" });
                 doc.text(`https://macwave.com.mx | soporte@macwave.com.mx`, 195, footerY, { align: "right" });
 
-                const currentFolio = document.getElementById('quote-number').value;
-                const fileName = `${currentFolio}.pdf`;
+                // Increment folio counter AFTER capturing it for current PDF/Supabase
 
                 // Descarga directa con el nombre correcto
                 doc.save(fileName);
