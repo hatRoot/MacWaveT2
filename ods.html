@@ -1100,8 +1100,8 @@
                                 img.onload = () => {
                                     const canvas = document.createElement('canvas');
                                     const ctx = canvas.getContext('2d');
-                                    // FORCE SQUARE 600x600 for smaller PDF size
-                                    const SIZE = 600;
+                                    // FORCE SQUARE 400x400 for smaller PDF size
+                                    const SIZE = 400;
                                     canvas.width = SIZE;
                                     canvas.height = SIZE;
                                     
@@ -1110,7 +1110,7 @@
                                     const sourceY = (img.height - minDim) / 2;
                                     
                                     ctx.drawImage(img, sourceX, sourceY, minDim, minDim, 0, 0, SIZE, SIZE);
-                                    resolve(canvas.toDataURL('image/jpeg', 0.75));
+                                    resolve(canvas.toDataURL('image/jpeg', 0.4));
                                 };
                                 img.onerror = () => reject(new Error('Img Error'));
                                 img.src = e.target.result;
