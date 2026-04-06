@@ -4,6 +4,15 @@ RewriteCond %{HTTPS} off [OR]
 RewriteCond %{HTTP_HOST} ^www\. [NC]
 RewriteRule ^(.*)$ https://macwave.com.mx/$1 [L,R=301]
 
-# Optimization for Indexing
+# --- URLs limpias sin .html ---
+# Sirve /bateria-macbook-cdmx como bateria-macbook-cdmx.html
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME}.html -f
+RewriteRule ^(.+)$ $1.html [L]
+
+# Página de inicio
 DirectoryIndex index.html
+
+# 404 real — NO redirigir a index (eso confundía a Google)
 ErrorDocument 404 /index.html
