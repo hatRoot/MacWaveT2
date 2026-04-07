@@ -435,13 +435,14 @@ h3 {
 
 /* Botones CTA */
 .cta-button {
-    padding: 10px 20px;
+    padding: 8px 20px;
     border-radius: var(--border-radius-lg);
     font-weight: var(--font-weight-semibold);
     text-align: center;
     cursor: pointer;
     transition: all 0.3s ease;
     border: none;
+    text-decoration: none !important;
 }
 
 .cta-button.primary {
@@ -472,7 +473,7 @@ h3 {
     border-radius: 30px;
     text-transform: uppercase;
     font-size: 0.8rem;
-    padding: 10px 20px;
+    padding: 8px 16px;
 }
 
 .header-cta.neon-green {
@@ -515,7 +516,7 @@ h3 {
 }
 
 .large-cta {
-    padding: 15px 30px;
+    padding: 12px 24px;
     font-size: 1.1em;
     margin-top: 40px;
 }
@@ -1307,8 +1308,8 @@ h3 {
         justify-content: center !important;
         gap: 12px !important;
         width: 100% !important;
-        padding: 20px 20px !important;
-        font-size: 1.15rem !important;
+        padding: 10px 20px !important;
+        font-size: 1rem !important;
         font-weight: 700 !important;
         background: linear-gradient(135deg, #5E5CE6 0%, #0A84FF 100%) !important;
         /* Vibrant Blurple gradient */
@@ -3733,8 +3734,8 @@ details.modern-accordion[open] {
     right: 30px;
     background-color: #25d366;
     color: #fff;
-    width: 60px;
-    height: 60px;
+    width: 50px;
+    height: 50px;
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -3752,8 +3753,8 @@ details.modern-accordion[open] {
 }
 
 .floating-wa-btn svg {
-    width: 32px;
-    height: 32px;
+    width: 28px;
+    height: 28px;
 }
 
 @media (max-width: 768px) {

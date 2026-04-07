@@ -220,7 +220,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         confirmContainer.style.display = 'block';
                         noSelectionMsg.style.display = 'none';
 
-                        const message = `Hola me ayudas ? quiero un diagnostico Urgente para mi dispositivo Apple`;
+                        const message = `Hola me ayudas a reparar mi Mac?`;
                         whatsappBtn.href = `https://wa.me/525535757364?text=${encodeURIComponent(message)}`;
                     }
 
