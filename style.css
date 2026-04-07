@@ -1,3 +1,47 @@
+/* Performance Optimizations */
+* {
+    box-sizing: border-box;
+}
+
+/* CSS Containment for better performance */
+.header-container,
+.main-nav,
+.footer-grid,
+.cta-section,
+.service-row {
+    contain: layout style paint;
+}
+
+/* Optimize animations */
+.cta-button,
+.nav-link,
+.floating-wa-btn {
+    backface-visibility: hidden;
+    transform: translateZ(0);
+    will-change: transform;
+}
+
+/* Optimize images */
+img {
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
+}
+
+/* Reduce repaints for scroll */
+body {
+    overflow-x: hidden;
+}
+
+/* Loading optimization */
+.lazy-load {
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.lazy-load.loaded {
+    opacity: 1;
+}
+
 /* Variables para colores y tipografía estilo Apple/Tesla premium */
 :root {
     --primary-bg: #1A1A1C;
@@ -4093,7 +4137,97 @@ html, body {
     }
 }
 
-/* iPhone Pro / Plus (390-430px range — same grid adjustments as above) */
+/* iPhone-specific optimizations */
+@supports (-webkit-touch-callout: none) {
+  /* iPhone Safari specific styles */
+  .cta-button,
+  .floating-wa-btn {
+    -webkit-tap-highlight-color: rgba(255, 102, 0, 0.3);
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select: none;
+  }
+  
+  /* Fix iPhone viewport issues */
+  body {
+    -webkit-text-size-adjust: 100%;
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  /* Optimize scrolling on iPhone */
+  .main-content {
+    -webkit-overflow-scrolling: touch;
+    scroll-behavior: smooth;
+  }
+}
+
+/* iPhone notch and safe area support */
+@supports (padding: max(0px)) {
+  .header-container {
+    padding-left: max(1rem, env(safe-area-inset-left));
+    padding-right: max(1rem, env(safe-area-inset-right));
+    padding-top: max(1rem, env(safe-area-inset-top));
+  }
+  
+  .floating-wa-btn {
+    bottom: max(20px, env(safe-area-inset-bottom));
+    right: max(20px, env(safe-area-inset-right));
+  }
+}
+
+/* iPhone Pro Max optimizations */
+@media only screen 
+  and (device-width: 428px) 
+  and (device-height: 926px) 
+  and (-webkit-device-pixel-ratio: 3) {
+  
+  .hero-title {
+    font-size: 2.8rem !important;
+    line-height: 1.1 !important;
+  }
+  
+  .cta-section {
+    padding: 60px 20px !important;
+  }
+  
+  .service-row {
+    padding: 20px !important;
+  }
+}
+
+/* iPhone 12/13/14 optimizations */
+@media only screen 
+  and (device-width: 390px) 
+  and (device-height: 844px) 
+  and (-webkit-device-pixel-ratio: 3) {
+  
+  .hero-title {
+    font-size: 2.6rem !important;
+  }
+  
+  .nav-link {
+    padding: 8px 12px !important;
+    font-size: 0.9rem !important;
+  }
+}
+
+/* iPhone SE optimizations */
+@media only screen 
+  and (device-width: 375px) 
+  and (device-height: 667px) 
+  and (-webkit-device-pixel-ratio: 2) {
+  
+  .hero-title {
+    font-size: 2.2rem !important;
+  }
+  
+  .header-actions .cta-button {
+    padding: 6px 12px !important;
+    font-size: 0.8rem !important;
+  }
+}
+
+/* iPhone Pro / Plus (390-430px range -- same grid adjustments as above) */
 @media (max-width: 430px) {
     .trust-grid,
     .coverage-grid {

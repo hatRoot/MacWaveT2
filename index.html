@@ -27,11 +27,31 @@
  <meta charset="UTF-8">
  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 
- <title>Reparación Mac Nivel Componente CDMX | Baterías MacBook</title>
+ <!-- Preconnect for performance -->
+ <link rel="preconnect" href="https://fonts.googleapis.com">
+ <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+ <link rel="preconnect" href="https://www.googletagmanager.com">
+ <link rel="preconnect" href="https://www.google-analytics.com">
+ 
+ <!-- DNS Prefetch for external resources -->
+ <link rel="dns-prefetch" href="//wa.me">
+ <link rel="dns-prefetch" href="//facebook.com">
+ <link rel="dns-prefetch" href="//instagram.com">
+ 
+ <!-- Critical CSS Inline -->
+ <style>
+ :root{--primary-bg:#1A1A1C;--secondary-bg:#2C2C2E;--text-primary:#FFFFFF;--accent-orange:#FF6600;--font-family-base:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}.sr-only{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important}body{font-family:var(--font-family-base);margin:0;background:var(--primary-bg);color:var(--text-primary);line-height:1.6}
+ </style>
+
+ <!-- Optimize font loading -->
+ <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+ <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"></noscript>
+
+ <title>Reparación Mac Nivel Componente CDMX | Baterías MacBook | 18 Años Garantía</title>
 
  <!-- Essential Meta Tags -->
  <meta name="description"
- content="Baterías para MacBook Pro y Air con 2 años de garantía en CDMX. Reparación Mac a nivel componente: tarjeta lógica, mac mojada, iMac. 18 años de experiencia. Diagnóstico sin costo. macWave México.">
+ content="✅ Reparación Mac a nivel componente en CDMX. Baterías MacBook con 2 años garantía. Tarjeta lógica, mac mojada, iMac. 18 años experiencia. Diagnóstico sin costo. Servicio mismo día. macWave México.">
 
  <!-- Conversion & Business Meta -->
  <meta name="contact" content="55-3575-7364">
@@ -48,7 +68,23 @@
  <link rel="alternate" hreflang="es-MX" href="https://macwave.com.mx/">
  <link rel="alternate" hreflang="x-default" href="https://macwave.com.mx/">
 
- <!-- Consolidate all Structured Data (JSON-LD) into a single @graph block at the bottom of head for cleanliness -->
+ <!-- Open Graph优化 -->
+ <meta property="og:title" content="Reparación Mac Nivel Componente CDMX | Baterías MacBook | 18 Años">
+ <meta property="og:description" content="✅ Reparación Mac experta en CDMX. Baterías con 2 años garantía. Tarjeta lógica, mac mojada. 18 años experiencia. Diagnóstico sin costo.">
+ <meta property="og:url" content="https://macwave.com.mx/">
+ <meta property="og:type" content="website">
+ <meta property="og:image" content="https://macwave.com.mx/images/og-image.jpg">
+ <meta property="og:image:width" content="1200">
+ <meta property="og:image:height" content="630">
+ <meta property="og:locale" content="es_MX">
+ <meta property="og:site_name" content="macWave México">
+ 
+ <!-- Twitter Card优化 -->
+ <meta name="twitter:card" content="summary_large_image">
+ <meta name="twitter:title" content="Reparación Mac Nivel Componente CDMX | Baterías MacBook">
+ <meta name="twitter:description" content="✅ Reparación Mac experta. Baterías con 2 años garantía. 18 años experiencia. Diagnóstico sin costo.">
+ <meta name="twitter:image" content="https://macwave.com.mx/images/og-image.jpg">
+ <meta name="twitter:site" content="@macwave_mx">
 
 
  <!-- Favicon -->
@@ -1507,7 +1543,59 @@
 
 
 
- <script src="script.js?v=25.0.0"></script>
+ <!-- Core Web Vitals Monitoring -->
+ <script>
+ // Monitor Core Web Vitals
+ function reportWebVitals(metric) {
+   gtag('event', metric.name, {
+     'event_category': 'Web Vitals',
+     'event_label': metric.id,
+     'value': Math.round(metric.value),
+     'non_interaction': true
+   });
+ }
+
+ // Lazy load performance monitoring
+ if ('PerformanceObserver' in window) {
+   const observer = new PerformanceObserver((list) => {
+     for (const entry of list.getEntries()) {
+       if (entry.entryType === 'largest-contentful-paint') {
+         reportWebVitals({name: 'LCP', value: entry.startTime, id: 'largest-contentful-paint'});
+       }
+       if (entry.entryType === 'first-input') {
+         reportWebVitals({name: 'FID', value: entry.processingStart - entry.startTime, id: 'first-input-delay'});
+       }
+       if (entry.entryType === 'layout-shift') {
+         if (!entry.hadRecentInput) {
+           reportWebVitals({name: 'CLS', value: entry.value, id: 'cumulative-layout-shift'});
+         }
+       }
+     }
+   });
+   observer.observe({entryTypes: ['largest-contentful-paint', 'first-input', 'layout-shift']});
+ }
+
+ // Optimize font loading
+ document.fonts.ready.then(function() {
+   document.documentElement.classList.add('fonts-loaded');
+ });
+ </script>
+
+ <!-- Optimized JavaScript Loading -->
+ <script src="script.js?v=25.0.0" defer></script>
+
+ <!-- Service Worker for Caching (Progressive Web App) -->
+ <script>
+ if ('serviceWorker' in navigator) {
+   window.addEventListener('load', function() {
+     navigator.serviceWorker.register('/sw.js').then(function(registration) {
+       console.log('SW registered: ', registration);
+     }).catch(function(registrationError) {
+       console.log('SW registration failed: ', registrationError);
+     });
+   });
+ }
+ </script>
 </body>
 
 
