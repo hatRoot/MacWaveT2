@@ -1406,7 +1406,16 @@ h3 {
         box-shadow: 0 4px 10px rgba(94, 92, 230, 0.4) !important;
     }
 
-    /* Hamburger Button - Clean & Robust */
+    /* Mobile Header Layout - Grid for perfect alignment */
+    .header-content {
+        display: grid !important;
+        grid-template-columns: 50px 1fr 50px !important;
+        align-items: center !important;
+        padding: 10px 20px !important;
+        width: 100% !important;
+    }
+
+    /* Hamburger Button - Clean, Standard Margins, No Red */
     .mobile-menu-toggle {
         display: flex !important;
         flex-direction: column;
@@ -1414,29 +1423,27 @@ h3 {
         align-items: center;
         width: 44px;
         height: 44px;
-        background: rgba(255, 255, 255, 0.1) !important;
+        background: rgba(0, 0, 0, 0.5) !important;
+        backdrop-filter: blur(10px);
         border: 1px solid rgba(255, 255, 255, 0.2) !important;
-        border-radius: 8px;
+        border-radius: 10px;
         cursor: pointer;
         z-index: 1001;
-        position: absolute !important;
-        left: 15px;
-        top: 50%;
-        transform: translateY(-50%);
-        transition: all 0.3s ease;
-        padding: 0;
+        position: relative !important; /* Back to relative to respect grid margins */
+        left: 0 !important;
+        top: 0 !important;
+        transform: none !important;
         flex-shrink: 0;
     }
     
     .mobile-menu-toggle span {
         display: block;
-        width: 26px;
-        height: 3px;
+        width: 24px;
+        height: 2px;
         background: #ffffff !important;
-        border-radius: 3px;
+        border-radius: 2px;
         margin: 3px 0;
         transition: all 0.3s ease;
-        box-shadow: 0 1px 2px rgba(0,0,0,0.5);
     }
 
     body.menu-active .mobile-menu-toggle {
@@ -1444,24 +1451,31 @@ h3 {
         visibility: hidden !important;
     }
 
-    /* Logo Centering on Mobile */
+    /* Logo - Perfectly Centered in Grid */
     .logo {
-        margin: 0 auto !important;
+        grid-column: 2;
+        margin: 0 !important;
         display: flex !important;
         justify-content: center !important;
         align-items: center !important;
-        order: 1 !important;
-        flex: 0 1 auto !important; 
-        max-width: 65% !important;
+        flex: none !important;
+        width: 100%;
     }
 
-    /* Hide WhatsApp Button on Mobile ONLY */
+    /* Dummy spacer for grid balance */
+    .header-content::after {
+        content: '';
+        width: 50px;
+        grid-column: 3;
+    }
+
+    /* Hide WhatsApp CTA on Mobile ONLY */
     .header-actions {
         display: none !important;
     }
 
     .logo-brand {
-        font-size: 1.2rem !important;
+        font-size: 1.1rem !important;
     }
 
     .logo-subtext {
