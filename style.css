@@ -140,9 +140,11 @@ body {
     padding: 0;
 }
 
-.nav-checkmark {
-    display: none;
+.mobile-nav-check {
+    display: none !important;
 }
+
+
 
 
 body {
@@ -1237,12 +1239,14 @@ h3 {
         align-items: center !important;
     }
 
-    .main-nav .nav-checkmark {
+    .main-nav .mobile-nav-check::after {
+        content: '✓' !important;
         display: inline !important;
         color: #30D158 !important;
         margin-left: 10px !important;
         font-weight: bold !important;
     }
+
 
     
     .main-nav .nav-link::before {
