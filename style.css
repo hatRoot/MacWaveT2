@@ -1406,16 +1406,18 @@ h3 {
         box-shadow: 0 4px 10px rgba(94, 92, 230, 0.4) !important;
     }
 
-    /* Mobile Header Layout - Grid for perfect alignment */
+    /* Mobile Header Layout - Centered Group */
     .header-content {
-        display: grid !important;
-        grid-template-columns: 50px 1fr 50px !important;
+        display: flex !important;
+        flex-direction: row !important;
+        justify-content: center !important;
         align-items: center !important;
+        gap: 20px !important;
         padding: 10px 20px !important;
         width: 100% !important;
     }
 
-    /* Hamburger Button - Clean, Standard Margins, No Red */
+    /* Hamburger Button - Centered next to Logo */
     .mobile-menu-toggle {
         display: flex !important;
         flex-direction: column;
@@ -1429,11 +1431,10 @@ h3 {
         border-radius: 10px;
         cursor: pointer;
         z-index: 1001;
-        position: relative !important; /* Back to relative to respect grid margins */
-        left: 0 !important;
-        top: 0 !important;
-        transform: none !important;
+        position: relative !important;
+        margin: 0 !important;
         flex-shrink: 0;
+        order: 1 !important;
     }
     
     .mobile-menu-toggle span {
@@ -1451,22 +1452,14 @@ h3 {
         visibility: hidden !important;
     }
 
-    /* Logo - Perfectly Centered in Grid */
+    /* Logo - Centered next to Toggle */
     .logo {
-        grid-column: 2;
         margin: 0 !important;
         display: flex !important;
         justify-content: center !important;
         align-items: center !important;
         flex: none !important;
-        width: 100%;
-    }
-
-    /* Dummy spacer for grid balance */
-    .header-content::after {
-        content: '';
-        width: 50px;
-        grid-column: 3;
+        order: 2 !important;
     }
 
     /* Hide WhatsApp CTA on Mobile ONLY */
