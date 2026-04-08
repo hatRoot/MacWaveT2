@@ -1149,9 +1149,9 @@ h3 {
         box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5) !important;
     }
 
-    /* The glowing top title inside the menu - Enhanced with reparaciones colors */
+    /* The glowing top title inside the menu - Enhanced with a human-friendly greeting */
     .main-nav::before {
-        content: '¿Cuál es tu objetivo?';
+        content: 'Elije el servicio que hoy deseas realizar';
         display: block !important;
         font-size: 2.2rem !important;
         font-weight: 800 !important;
@@ -1228,7 +1228,18 @@ h3 {
         transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
         position: relative !important;
         overflow: hidden !important;
-        display: inline-block !important;
+        display: flex !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+    }
+    
+    .main-nav .nav-link::after {
+        content: '✓' !important;
+        font-weight: 800 !important;
+        color: #30D158 !important; /* Premium Apple Green */
+        margin-left: 15px !important;
+        font-size: 1.1rem !important;
+        opacity: 0.8 !important;
     }
     
     .main-nav .nav-link::before {
