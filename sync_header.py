@@ -35,4 +35,4 @@ def replace_header(target_files):
             
         print(f"Updated header in {filename}")
 
-replace_header(['reparaciones.html', 'empresas.html', 'software.html', 'upgrades.html'])
+replace_header(['reparaciones.html', 'empresas.html', 'software.html', 'upgrades.html', 'bateria-macbook-cdmx.html', 'mac-mojada-cdmx.html'])

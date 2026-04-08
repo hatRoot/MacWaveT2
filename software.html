@@ -124,10 +124,14 @@
 <body class="software-page">
  <header class="main-header">
  <div class="container header-content">
+
+ <!-- Hamburguesa móvil -->
  <button class="mobile-menu-toggle" id="mobile-menu-toggle" aria-label="Abrir menú"
  onclick="toggleMobileMenu(event)">
  <span></span><span></span><span></span>
  </button>
+
+ <!-- IZQUIERDA: Logo -->
  <div class="logo">
  <a href="index.html" class="logo-link">
  <img src="./images/logo_dashboard_white.png" alt="Logo Mac Wave T2" class="logo-img">
@@ -138,12 +142,17 @@
  </div>
  </a>
  </div>
- <nav class="main-nav">
+
+ <!-- CENTRO: 3 enlaces -->
+ <nav class="main-nav" style="flex:1; display:flex; justify-content:center; gap:8px;">
  <button class="mobile-nav-close" onclick="toggleMobileMenu(event)" aria-label="Cerrar menú">✕</button>
- <a href="reparaciones.html" class="nav-link">Reparaciones <span style="color:#30D158; margin-left:10px;">✓</span></a>
- <a href="empresas.html" class="nav-link">Empresas <span style="color:#30D158; margin-left:10px;">✓</span></a>
- <a href="software.html" class="nav-link">Software <span style="color:#30D158; margin-left:10px;">✓</span></a>
+ <a href="reparaciones.html" class="nav-link">Reparaciones<span class="nav-checkmark">✓</span></a>
+ <a href="empresas.html" class="nav-link">Empresas<span class="nav-checkmark">✓</span></a>
+ <a href="software.html" class="nav-link">Software<span class="nav-checkmark">✓</span></a>
  </nav>
+
+
+ <!-- DERECHA: Botón WhatsApp -->
  <div class="header-actions">
  <a href="https://wa.me/525535757364?text=Hola%20me%20ayudas%20a%20reparar%20mi%20Mac%3F"
  target="_blank" rel="noopener noreferrer" class="cta-button header-cta"
