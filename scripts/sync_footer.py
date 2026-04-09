@@ -39,4 +39,4 @@ def replace_footer(target_files):
             
         print(f"Updated footer in {filename}")
 
-replace_footer(['reparaciones.html', 'empresas.html', 'software.html', 'upgrades.html', 'terminos.html', 'tecnicos.html', 'status-ods.html', 'dashboard-ods.html'])
+replace_footer(['reparaciones.html', 'empresas.html', 'software.html', 'upgrades.html', 'terminos.html', 'tecnicos.html', 'status-ods.html', 'dashboard-ods.html', 'bateria-macbook-cdmx.html', 'mac-mojada-cdmx.html'])
