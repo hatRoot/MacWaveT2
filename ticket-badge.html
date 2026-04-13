@@ -386,103 +386,129 @@
 
  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
  <script>
- // Read url params
- const urlParams = new URLSearchParams(window.location.search);
- let clientName = urlParams.get('name') || 'Invitado';
- const rawFolio = urlParams.get('folio') || 'G-000000-253';
- const phone = urlParams.get('phone') || '';
- const rawDate = urlParams.get('date') || '';
- const source = (urlParams.get('source') || '').toUpperCase();
+  // --- Data Decoding Logic ---
+  const urlParams = new URLSearchParams(window.location.search);
+  let name, folio, phone, date, source;
 
- // Determine Folio Prefix logic based on source
- let prefix = 'G'; 
- if (source.includes('INTERNET')) prefix = 'I';
- if (source.includes('RECOMENDAC')) prefix = 'R';
+  // Try to read from token first (Encoded)
+  const token = urlParams.get('token');
+  if (token) {
+    try {
+      // Decode Base64 safely handle special chars
+      const decodedData = JSON.parse(decodeURIComponent(escape(atob(token))));
+      name = decodedData.name || 'Invitado';
+      folio = decodedData.folio || 'G-000000-000';
+      phone = decodedData.phone || '';
+      date = decodedData.date || '';
+      source = (decodedData.source || '').toUpperCase();
+    } catch (e) {
+      console.error("Token decoding failed:", e);
+    }
+  }
 
- let processedFolio = rawFolio;
- if (/^[A-Z]-/.test(processedFolio)) {
- processedFolio = processedFolio.substring(2);
- }
- const finalFolio = `${prefix}-${processedFolio}`;
+  // Fallback to individual params if token fails or isn't present
+  if (!name) {
+    name = urlParams.get('name') || 'Invitado';
+    folio = urlParams.get('folio') || 'G-000000-000';
+    phone = urlParams.get('phone') || '';
+    date = urlParams.get('date') || '';
+    source = (urlParams.get('source') || '').toUpperCase();
+  }
 
- document.getElementById('client-name-display').innerText = clientName.split(' ')[0]; 
- document.getElementById('folio-display').innerText = finalFolio;
+  // Determine Folio Prefix logic based on source
+  let prefix = 'G'; 
+  if (source.includes('INTERNET')) prefix = 'I';
+  if (source.includes('RECOMENDAC')) prefix = 'R';
 
- // Date formatting
- let displayDate = 'Fecha no definida';
- if (rawDate) {
- const dateObj = new Date(rawDate);
- if (!isNaN(dateObj)) {
- displayDate = dateObj.toLocaleDateString('es-MX', { 
- weekday: 'long', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' 
- });
- displayDate = displayDate.charAt(0).toUpperCase() + displayDate.slice(1);
- } else {
- displayDate = rawDate;
- }
- } else {
- displayDate = new Date().toLocaleDateString('es-MX', { 
- weekday: 'short', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' 
- });
- }
- document.getElementById('date-display').innerText = displayDate;
+  let processedFolio = folio;
+  if (/^[A-Z]-/.test(processedFolio)) {
+    processedFolio = processedFolio.substring(2);
+  }
+  const finalFolio = `${prefix}-${processedFolio}`;
 
- // QR Code
- document.getElementById('qr-image').src = "https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://maps.app.goo.gl/PeSD75SSGMoCD4qZA&color=222222";
+  document.getElementById('client-name-display').innerText = name.split(' ')[0]; 
+  document.getElementById('folio-display').innerText = finalFolio;
 
- // Capture
- const captureAndExport = async (action) => {
- const captureArea = document.getElementById('capture-area');
- const tools = document.querySelector('.tools');
- tools.style.display = 'none';
+  // Date formatting
+  let displayDate = 'Fecha no definida';
+  if (date) {
+    const dateObj = new Date(date);
+    if (!isNaN(dateObj)) {
+      displayDate = dateObj.toLocaleDateString('es-MX', { 
+        weekday: 'long', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' 
+      });
+      displayDate = displayDate.charAt(0).toUpperCase() + displayDate.slice(1);
+    } else {
+      displayDate = date;
+    }
+  } else {
+    displayDate = new Date().toLocaleDateString('es-MX', { 
+      weekday: 'short', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' 
+    });
+  }
+  document.getElementById('date-display').innerText = displayDate;
 
- try {
- const canvas = await html2canvas(captureArea, {
- scale: 2,
- backgroundColor: null,
- useCORS: true
- });
+  // QR Code
+  document.getElementById('qr-image').src = "https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://maps.app.goo.gl/PeSD75SSGMoCD4qZA&color=222222";
 
- canvas.toBlob(async (blob) => {
- const link = document.createElement('a');
- link.download = `Ticket_MacWave_${finalFolio}.png`;
- link.href = URL.createObjectURL(blob);
- link.click();
- URL.revokeObjectURL(link.href);
- }, 'image/png');
- } catch (err) {
- console.error("HTML2Canvas Error:", err);
- }
- tools.style.display = 'flex';
- };
+  // Capture
+  const captureAndExport = async (action) => {
+    const captureArea = document.getElementById('capture-area');
+    const tools = document.querySelector('.tools');
+    const originalToolsDisplay = tools.style.display;
+    tools.style.display = 'none';
 
- document.getElementById('wallet-btn').addEventListener('click', () => captureAndExport('download'));
+    try {
+      const canvas = await html2canvas(captureArea, {
+        scale: 3, // Higher resolution for Wallet/Photos
+        backgroundColor: null,
+        useCORS: true,
+        logging: false
+      });
 
- document.getElementById('calendar-btn').addEventListener('click', () => {
- if (!rawDate) {
- alert("Este ticket no tiene una fecha definida.");
- return;
- }
+      canvas.toBlob(async (blob) => {
+        const link = document.createElement('a');
+        link.download = `Ticket_MacWave_${finalFolio}.png`;
+        link.href = URL.createObjectURL(blob);
+        link.click();
+        URL.revokeObjectURL(link.href);
+        if (action === 'wallet') {
+          alert("✓ Ticket generado en alta resolución.\nGuárdalo en tu Carrete o Archivos para mostrarlo en el taller.");
+        }
+      }, 'image/png');
+    } catch (err) {
+      console.error("HTML2Canvas Error:", err);
+    }
+    tools.style.display = originalToolsDisplay || 'flex';
+  };
 
- const startDate = new Date(rawDate);
- if (isNaN(startDate)) {
- alert("Fecha inválida.");
- return;
- }
- const endDate = new Date(startDate.getTime() + 60 * 60 * 1000); // 1 hour
+  document.getElementById('wallet-btn').addEventListener('click', () => captureAndExport('wallet'));
 
- const formatDate = (date) => date.toISOString().replace(/-|:|\.\d+/g, '');
+  document.getElementById('calendar-btn').addEventListener('click', () => {
+    if (!date) {
+      alert("Este ticket no tiene una fecha definida.");
+      return;
+    }
 
- const icsContent = `BEGIN:VCALENDAR\nVERSION:2.0\nBEGIN:VEVENT\nSUMMARY:Cita MacWave - ${finalFolio} (${clientName.split(' ')[0]})\nDTSTART:${formatDate(startDate)}\nDTEND:${formatDate(endDate)}\nDESCRIPTION:Cita de servicio técnico agendada. Folio: ${finalFolio}.\nLOCATION:MacWave, Av. México Coyoacán 276, Sta Cruz Atoyac, CDMX\nEND:VEVENT\nEND:VCALENDAR`;
+    const startDate = new Date(date);
+    if (isNaN(startDate)) {
+      alert("Fecha inválida.");
+      return;
+    }
+    const endDate = new Date(startDate.getTime() + 60 * 60 * 1000); // 1 hour
 
- const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
- const link = document.createElement('a');
- link.href = window.URL.createObjectURL(blob);
- link.setAttribute('download', `Cita_${finalFolio}.ics`);
- document.body.appendChild(link);
- link.click();
- document.body.removeChild(link);
- });
+    const formatDate = (date) => date.toISOString().replace(/-|:|\.\d+/g, '');
+
+    const icsContent = `BEGIN:VCALENDAR\nVERSION:2.0\nPRODID:-//macWave//Appointment//ES\nBEGIN:VEVENT\nSUMMARY:🛠️ Cita MacWave - ${finalFolio}\nDTSTART:${formatDate(startDate)}\nDTEND:${formatDate(endDate)}\nDESCRIPTION:Hola ${name}, te esperamos para reparar tu equipo Mac. Folio: ${finalFolio}. Ubicación: Av. México Coyoacán 276.\nLOCATION:MacWave, Av. México Coyoacán 276, Sta Cruz Atoyac, CDMX\nEND:VEVENT\nEND:VCALENDAR`;
+
+    const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
+    const link = document.createElement('a');
+    link.href = window.URL.createObjectURL(blob);
+    link.setAttribute('download', `Cita_MacWave_${finalFolio}.ics`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  });
  </script>
 </body>
 </html>
