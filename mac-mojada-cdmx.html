@@ -6,20 +6,20 @@
  <meta charset="UTF-8">
  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 
- <title>Reparación Mac Nivel Componente CDMX | Mac Mojada Limpieza Ultrasónica</title>
+ <title>Reparación de Mac Mojada en CDMX | Limpieza Ultrasónica Garantizada</title>
 
- <meta name="description" content="¿Se te cayó café o agua en tu Mac? Apágala ya y llámanos. Somos especialistas en rescatar Mac mojada en CDMX: limpieza ultrasónica y reparación nivel componente. Diagnóstico sin costo. Cuanto antes actúes, mayor es la probabilidad de rescate.">
- <meta name="keywords" content="mac mojada cdmx, macbook mojada, macbook con agua, macbook con café, reparacion mac mojada polanco, rescatar macbook liquido, limpieza ultrasónica macbook cdmx, reparacion tarjeta logica mojada, mac no enciende liquido">
+ <meta name="description" content="¿Mac mojada o con café? Somos expertos en reparación de tarjetas lógicas MacBook en CDMX. Limpieza ultrasónica y micro-soldadura. Diagnóstico gratuito hoy mismo en Polanco y Santa Fe.">
+ <meta name="keywords" content="mac mojada cdmx, macbook mojada, macbook con agua, macbook con café, reparacion mac mojada polanco, reparacion macbook liquido, limpieza ultrasónica macbook cdmx, reparacion tarjeta logica mojada, mac no enciende liquido">
  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
  <meta name="author" content="macWave México">
  <meta name="geo.region" content="MX-CMX">
 
  <!-- Open Graph -->
  <meta property="og:type" content="website">
- <meta property="og:title" content="Mac Mojada CDMX La Rescatamos | macWave México">
+ <meta property="og:title" content="Especialistas en Reparación Mac Mojada CDMX | macWave México">
  <meta property="og:description" content="¿Café o agua en tu MacBook? No la enciendas. Llámanos ya. Limpieza ultrasónica y reparación nivel componente. Diagnóstico sin costo.">
  <meta property="og:url" content="https://macwave.com.mx/mac-mojada-cdmx">
- <meta property="og:image" content="https://macwave.com.mx/images/mac_mojada_solucion.png">
+ <meta property="og:image" content="https://macwave.com.mx/images/mac_mojada_solucion.jpg">
  <meta property="og:site_name" content="macWave México">
 
  <!-- Structured Data -->
@@ -35,7 +35,7 @@
  "url": "https://macwave.com.mx"
  },
  "areaServed": "Ciudad de México",
- "description": "Servicio de urgencia para Mac o MacBook con daño por líquidos. Limpieza ultrasónica y reparación de tarjeta lógica a nivel componente. Mayor probabilidad de rescate cuanto antes actúes.",
+ "description": "Servicio de urgencia para Mac o MacBook con daño por líquidos. Limpieza ultrasónica y reparación de tarjeta lógica a nivel componente. Mayor probabilidad de éxito en la reparación cuanto antes actúes.",
  "serviceType": "Reparación de MacBook mojada"
  }
  </script>
@@ -198,26 +198,50 @@
  .solution-image-wrapper img { width:100%; height:460px; object-fit:cover; display:block; }
 
  .process-steps {
- max-width: 760px; margin: 0 auto 60px;
- display: flex; flex-direction: column; gap: 0;
- }
- .step {
- display: flex; gap: 20px; align-items: flex-start;
- padding: 28px 0;
- border-bottom: 1px solid rgba(255,255,255,0.06);
- text-align: left;
- }
- .step:last-child { border-bottom: none; }
- .step-num {
- width: 42px; height: 42px; flex-shrink: 0;
- background: rgba(0,156,223,0.2);
- border: 1px solid rgba(0,156,223,0.4);
- border-radius: 50%;
- display: flex; align-items:center; justify-content:center;
- font-size: 1rem; font-weight: 800; color: #009CDF;
- }
- .step-content h3 { font-size: 1.05rem; font-weight: 700; color:#fff; margin-bottom:6px; }
- .step-content p { font-size:0.9rem; color:#888; line-height:1.55; }
+  max-width: 1000px; margin: 0 auto 60px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 24px;
+  padding: 0 20px;
+  }
+  .step {
+  display: flex; flex-direction: column; gap: 20px; align-items: flex-start;
+  padding: 32px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 24px;
+  text-align: left;
+  transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+  position: relative;
+  overflow: hidden;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  }
+  .step:hover {
+  transform: translateY(-8px);
+  background: rgba(0, 113, 227, 0.08);
+  border-color: rgba(0, 113, 227, 0.5);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.6), 0 0 30px rgba(0, 113, 227, 0.2);
+  }
+  
+  .step-num {
+  width: 52px; height: 52px; flex-shrink: 0;
+  background: linear-gradient(135deg, #0071e3 0%, #34aadc 100%);
+  border: none;
+  border-radius: 14px;
+  display: flex; align-items:center; justify-content:center;
+  font-size: 1.5rem; font-weight: 900; color: #fff;
+  box-shadow: 0 8px 20px rgba(0, 113, 227, 0.4);
+  margin-bottom: 8px;
+  }
+  .step-content h3 { 
+  font-size: 1.3rem; font-weight: 800; color:#fff; margin-bottom:12px;
+  letter-spacing: -0.01em;
+  text-shadow: 0 0 15px rgba(0, 113, 227, 0.3);
+  }
+  .step-content p { 
+  font-size:0.95rem; color:#b0b0b5; line-height:1.6; 
+  }
 
  /* SO WHAT SECTION */
  .so-what {
@@ -254,7 +278,69 @@
  .cta-wa-button:hover { transform:translateY(-3px); box-shadow:0 14px 40px rgba(37,211,102,0.5); }
  .cta-note { margin-top:20px; font-size:0.8rem; color:#555; }
 
- @media (max-width: 768px) {
+  /* TRUST GRID FUTURISTIC */
+  .trust-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 30px;
+    max-width: 1100px;
+    margin: 100px auto;
+    padding: 0 20px;
+  }
+  .trust-card {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(0, 113, 227, 0.15);
+    border-radius: 24px;
+    padding: 40px 30px;
+    text-align: center;
+    transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+    position: relative;
+    overflow: hidden;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
+  .trust-card:hover {
+    background: rgba(0, 113, 227, 0.1);
+    border-color: #0071e3;
+    transform: translateY(-12px);
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6), 0 0 30px rgba(0, 113, 227, 0.3);
+  }
+  .trust-icon {
+    font-size: 3rem;
+    margin-bottom: 25px;
+    display: block;
+    filter: drop-shadow(0 0 15px rgba(0, 113, 227, 0.6));
+    animation: drift 4s ease-in-out infinite;
+  }
+  @keyframes drift {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }
+  .trust-card h4 {
+    font-size: 1.35rem;
+    font-weight: 800;
+    color: #fff;
+    margin-bottom: 15px;
+    letter-spacing: -0.01em;
+    text-transform: uppercase;
+    text-shadow: 0 0 10px rgba(0, 113, 227, 0.3);
+  }
+  .trust-card p {
+    font-size: 0.95rem;
+    color: #b0b0b5;
+    line-height: 1.7;
+    margin: 0;
+  }
+  .trust-card::after {
+    content: "";
+    position: absolute; bottom: 0; left: 0; width: 100%; height: 3px;
+    background: linear-gradient(90deg, transparent, #0071e3, transparent);
+    transform: scaleX(0);
+    transition: transform 0.6s ease;
+  }
+  .trust-card:hover::after { transform: scaleX(1); }
+
+  @media (max-width: 768px) {
  .pain-image-wrapper img, .solution-image-wrapper img { height: 280px; }
  .cta-section { padding: 40px 20px; margin: 40px 16px 0; border-radius: 16px; }
  .timer-warning { gap: 10px; }
@@ -304,16 +390,6 @@
  <a href="software.html" class="nav-link" style="--i:3">Software</a>
  </div>
 
- <div class="mobile-nav-footer">
- <a href="status-ods.html" class="status-pill">
- <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/><path d="M7.5 3a.5.5 0 0 1 .5.5v5.21l3.247 1.856a.5.5 0 0 1-.494.868l-3.5-2A.5.5 0 0 1 7 9V3.5a.5.5 0 0 1 .5-.5z"/></svg>
- ¿Cómo va mi reparación?
- </a>
- <a href="https://wa.me/525535757364?text=Hola%20me%20ayudas%20a%20reparar%20mi%20Mac%3F" class="wa-pill">
- <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M13.601 2.326A7.854 7.854 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.933 7.933 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.898 7.898 0 0 0 13.6 2.326z"/></svg>
- Contacto WhatsApp
- </a>
- </div>
  </div>
  </nav>
 
@@ -343,25 +419,22 @@
  <!-- DOLOR -->
  <section class="pain-section">
  <div class="pain-badge">⚡ Emergencia</div>
- <h1 class="pain-title">
- Se te cayó el café<br>encima de tu Mac.
- <span class="accent">Ya no enciende.</span>
- </h1>
+  <h1 class="pain-title">Reparación de Mac Mojada en CDMX | <span class="accent">Limpieza Ultrasónica</span></h1>
  <p class="pain-subtitle">
  Es el peor momento. Años de trabajo, fotos, proyectos todo en riesgo. Y el tiempo corre: cada minuto que pasa, la corrosión avanza dentro de tu tarjeta lógica.
  </p>
 
  <div class="pain-image-wrapper">
- <img src="./images/mac_mojada_dolor.png" alt="MacBook Pro con café derramado encima - daño por líquido" loading="eager">
+ <img src="./images/mac_mojada_dolor.jpg" alt="MacBook Pro con café derramado encima - daño por líquido" loading="eager">
  <div class="pain-overlay">
- <div class="pain-caption">⏱️ El tiempo es crítico cada hora sin atención reduce tus posibilidades de rescate</div>
+ <div class="pain-caption">⏱️ El tiempo es crítico cada hora sin atención reduce tus posibilidades de reparación con éxito</div>
  </div>
  </div>
 
  <div class="timer-warning">
  <div class="timer-card">
  <div class="num">0-24h</div>
- <div class="label">Posibilidad de rescate alta</div>
+ <div class="label">Posibilidad de reparación alta</div>
  </div>
  <div class="timer-card">
  <div class="num">1-3 días</div>
@@ -379,7 +452,7 @@
  <section class="solution-section">
  <div class="solution-badge">🔬 Laboratorio especializado</div>
  <h2 class="solution-title">
- La rescatamos.<br>
+ La reparamos.<br>
  <span class="accent">Limpieza ultrasónica + reparación nivel componente.</span>
  </h2>
  <p class="solution-subtitle">
@@ -387,15 +460,21 @@
  </p>
 
  <div class="solution-image-wrapper">
- <img src="./images/mac_mojada_solucion.png" alt="Técnico en laboratorio realizando limpieza ultrasónica de tarjeta lógica MacBook en macWave" loading="lazy">
+ <img src="./images/mac_mojada_solucion.jpg" alt="Técnico en laboratorio realizando limpieza ultrasónica de tarjeta lógica MacBook en macWave" loading="lazy">
  </div>
+
+  <div style="margin-top: 80px; margin-bottom: 40px;">
+    <h3 style="font-size: 1.5rem; font-weight: 800; color: #0071e3; letter-spacing: 0.1em; text-transform: uppercase; text-shadow: 0 0 10px rgba(0, 113, 227, 0.3);">
+      Protocolo de reparación técnica
+    </h3>
+  </div>
 
  <div class="process-steps">
  <div class="step">
  <div class="step-num">1</div>
  <div class="step-content">
  <h3>Recepción con diagnóstico inmediato</h3>
- <p>Desde que llega tu Mac, la revisamos en menos de 2 horas. Te decimos exactamente qué dañó el líquido y cuánto cuesta el rescate sin sorpresas.</p>
+ <p>Desde que llega tu Mac, la revisamos en menos de 2 horas. Te decimos exactamente qué dañó el líquido y cuánto cuesta la reparación sin sorpresas.</p>
  </div>
  </div>
  <div class="step">
@@ -427,6 +506,23 @@
  </p>
  </div>
 
+<section class="trust-grid"> 
+<div class="trust-card"> 
+<span class="trust-icon">⏱️</span> 
+<h4>18 Años Reparando Apple</h4> 
+<p>Más de una década enfrentando fallas complejas que otros centros rechazan con éxito técnico garantizado.</p> 
+</div> 
+<div class="trust-card"> 
+<span class="trust-icon">💎</span> 
+<h4>Técnicos Certificados</h4> 
+<p>Capacitación constante y equipo de laboratorio de grado industrial para cirugías electrónicas de precisión.</p> 
+</div> 
+<div class="trust-card"> 
+<span class="trust-icon">🎯</span> 
+<h4>Garantía de Satisfacción</h4> 
+<p>Transparencia total, sin cargos ocultos y con el respaldo real de una garantía por escrito de MacWave.</p> 
+</div> 
+</section>
  <!-- CTA -->
  <div class="cta-section">
  <h2>¿Tu Mac se mojó?</h2>
@@ -536,7 +632,6 @@
  </div>
  </div>
 
- </div>
  <div class="footer-col">
  <h4>Legal</h4>
  <ul>
