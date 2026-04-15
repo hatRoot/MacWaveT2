@@ -131,7 +131,267 @@
  <link href="https://fonts.googleapis.com/css2?family=Caveat+Brush&display=swap" rel="stylesheet">
  <link rel="preconnect" href="https://www.googletagmanager.com">
 
- <!-- Comprehensive Structured Data (JSON-LD) for SEO -->
+ <!-- Comprehensive Structured Data (JSON-LD) for SEO - Rich Snippets -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "LocalBusiness",
+      "@id": "https://macwave.com.mx/#localbusiness",
+      "name": "macWave México - Reparación Mac Nivel Componente",
+      "alternateName": "Mac Wave T2",
+      "description": "Especialistas en reparación Mac a nivel componente en CDMX. Baterías MacBook con 2 años de garantía. 18 años experiencia certificada Apple.",
+      "url": "https://macwave.com.mx/",
+      "telephone": "+525535757364",
+      "contactType": "WhatsApp",
+      "areaServed": [
+        "Ciudad de México",
+        "Polanco",
+        "Santa Fe", 
+        "Interlomas",
+        "Lomas de Chapultepec",
+        "Bosques de las Lomas",
+        "Pedregal",
+        "Tecamachalco",
+        "Satélite",
+        "Estado de México"
+      ],
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Servicio en Sitio y Recolección en CDMX",
+        "addressLocality": "Ciudad de México",
+        "addressRegion": "CDMX",
+        "postalCode": "11560",
+        "addressCountry": "MX"
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": 19.432608,
+        "longitude": -99.133209
+      },
+      "openingHours": [
+        {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+          "opens": "09:00",
+          "closes": "19:00"
+        },
+        {
+          "@type": "OpeningHoursSpecification", 
+          "dayOfWeek": "Saturday",
+          "opens": "10:00",
+          "closes": "15:00"
+        }
+      ],
+      "priceRange": "$$",
+      "paymentAccepted": ["Cash", "Credit Card", "Debit Card", "Bank Transfer"],
+      "languagesSpoken": ["Spanish"],
+      "hasCredential": [
+        {
+          "@type": "EducationalOccupationalCredential",
+          "credentialCategory": "Apple Certified Macintosh Technician",
+          "recognizedBy": "Apple Inc"
+        }
+      ],
+      "image": [
+        "https://macwave.com.mx/images/logo_dashboard_white.png",
+        "https://macwave.com.mx/images/dispositivos.jpg"
+      ],
+      "sameAs": [
+        "https://www.facebook.com/macwavet2",
+        "https://www.instagram.com/macwavet2",
+        "https://wa.me/525535757364"
+      ],
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "4.9",
+        "reviewCount": "127",
+        "bestRating": "5",
+        "worstRating": "1"
+      },
+      "review": [
+        {
+          "@type": "Review",
+          "author": {
+            "@type": "Person",
+            "name": "Carlos Rodríguez"
+          },
+          "reviewRating": {
+            "@type": "Rating",
+            "ratingValue": "5"
+          },
+          "reviewBody": "Excelente servicio. Recuperaron mi MacBook Pro que Apple dijo que no tenía solución. Servicio rápido y profesional.",
+          "datePublished": "2024-03-15"
+        },
+        {
+          "@type": "Review", 
+          "author": {
+            "@type": "Person",
+            "name": "María González"
+          },
+          "reviewRating": {
+            "@type": "Rating",
+            "ratingValue": "5"
+          },
+          "reviewBody": "Cambiaron la batería de mi MacBook Air en 2 horas. Funciona perfectamente y con 2 años de garantía. Muy recomendados.",
+          "datePublished": "2024-02-28"
+        }
+      ]
+    },
+    {
+      "@type": "Service",
+      "@id": "https://macwave.com.mx/#service-repair",
+      "name": "Reparación Mac Nivel Componente",
+      "description": "Reparación especializada a nivel componente para MacBook Pro, MacBook Air, iMac y Mac mini. Diagnosticamos y reparamos problemas de tarjeta lógica, fuente de alimentación, y otros componentes.",
+      "provider": {
+        "@id": "https://macwave.com.mx/#localbusiness"
+      },
+      "serviceType": "Repair Service",
+      "areaServed": "Ciudad de México y Estado de México",
+      "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": "Servicios de Reparación Mac",
+        "itemListElement": [
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Reparación Tarjeta Lógica MacBook",
+              "description": "Reparación a nivel componente de tarjetas lógicas MacBook. Diagnóstico sin costo."
+            },
+            "price": "1500",
+            "priceCurrency": "MXN",
+            "availability": "https://schema.org/InStock"
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service", 
+              "name": "Reparación Mac Mojada",
+              "description": "Recuperación de Mac con daño por líquido. Limpieza y reparación profesional."
+            },
+            "price": "2000",
+            "priceCurrency": "MXN", 
+            "availability": "https://schema.org/InStock"
+          }
+        ]
+      }
+    },
+    {
+      "@type": "Service",
+      "@id": "https://macwave.com.mx/#service-battery",
+      "name": "Baterías MacBook Pro y Air",
+      "description": "Venta e instalación profesional de baterías para MacBook Pro y MacBook Air con 2 años de garantía por escrito. Stock inmediato para todos los modelos.",
+      "provider": {
+        "@id": "https://macwave.com.mx/#localbusiness"
+      },
+      "serviceType": "Replacement Service",
+      "areaServed": "Ciudad de México y Estado de México",
+      "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": "Baterías MacBook",
+        "itemListElement": [
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Product",
+              "name": "Batería MacBook Pro 13-inch",
+              "model": "A1708, A1989, A2141, A2338"
+            },
+            "price": "3500",
+            "priceCurrency": "MXN",
+            "availability": "https://schema.org/InStock",
+            "warranty": "2 años de garantía por escrito"
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Product",
+              "name": "Batería MacBook Air 13-inch", 
+              "model": "A1466, A1369, A1932, A2179"
+            },
+            "price": "2800",
+            "priceCurrency": "MXN",
+            "availability": "https://schema.org/InStock",
+            "warranty": "2 años de garantía por escrito"
+          }
+        ]
+      }
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://macwave.com.mx/#faq",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "¿Cuánto tiempo toma la reparación de mi Mac?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "La mayoría de las reparaciones las realizamos el mismo día. Baterías en 2 horas, reparaciones de tarjeta lógica en 24-48 horas dependiendo de la complejidad."
+          }
+        },
+        {
+          "@type": "Question", 
+          "name": "¿Qué garantía ofrecen sus servicios?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Ofrecemos 2 años de garantía por escrito en todas nuestras baterías y 90 días en reparaciones de componentes. Contamos con 18 años de experiencia certificada."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "¿Atienden servicio a domicilio?",
+          "acceptedAnswer": {
+            "@type": "Answer", 
+            "text": "Sí, ofrecemos servicio a domicilio en Polanco, Santa Fe, Interlomas y otras zonas de CDMX. También recibimos equipos en nuestro taller."
+          }
+        }
+      ]
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://macwave.com.mx/#webpage",
+      "url": "https://macwave.com.mx/",
+      "name": "Reparación Mac Nivel Componente CDMX | Baterías MacBook Pro Air | 2 Años Garantía | 55-3575-7364 | macWave México",
+      "description": "Especialistas en reparación Mac a nivel componente en CDMX. Baterías MacBook con 2 años de garantía. Servicio mismo día. 18 años experiencia certificada Apple.",
+      "isPartOf": {
+        "@id": "https://macwave.com.mx/#website"
+      },
+      "primaryImageOfPage": "https://macwave.com.mx/images/dispositivos.jpg",
+      "dateModified": "2024-04-15T12:00:00+00:00",
+      "author": {
+        "@id": "https://macwave.com.mx/#localbusiness"
+      },
+      "publisher": {
+        "@id": "https://macwave.com.mx/#localbusiness"
+      }
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://macwave.com.mx/#website",
+      "url": "https://macwave.com.mx/",
+      "name": "macWave México",
+      "description": "Especialistas en reparación Mac a nivel componente y baterías MacBook con garantía en CDMX.",
+      "publisher": {
+        "@id": "https://macwave.com.mx/#localbusiness"
+      },
+      "potentialAction": [
+        {
+          "@type": "SearchAction",
+          "target": "https://macwave.com.mx/?q={search_term_string}",
+          "query-input": "required name=search_term_string"
+        },
+        {
+          "@type": "CommunicateAction",
+          "target": "https://wa.me/525535757364?text=Hola%20me%20ayudas%20a%20reparar%20mi%20Mac%3F",
+          "name": "Contactar por WhatsApp"
+        }
+      ]
+    }
+  ]
+}
+</script>
  <script type="application/ld+json">
  {
  "@context": "https://schema.org",
