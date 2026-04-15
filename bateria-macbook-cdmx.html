@@ -23,17 +23,36 @@
  <meta property="og:image" content="https://macwave.com.mx/images/bateria_solucion.jpg">
  <meta property="og:site_name" content="macWave México">
 
- <!-- Structured Data -->
- "offers": {
- "@type": "Offer",
- "availability": "https://schema.org/InStock",
- "priceSpecification": {
- "@type": "PriceSpecification",
- "priceCurrency": "MXN"
- }
- }
- }
- </script>
+  <!-- Structured Data (Sincronizado con Index) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "LocalBusiness",
+        "name": "macWave México - Especialistas en Baterías MacBook",
+        "@id": "https://macwave.com.mx/#localbusiness",
+        "url": "https://macwave.com.mx/",
+        "telephone": "+525535757364",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "Servicio en Sitio y Recolección en CDMX",
+          "addressLocality": "Ciudad de México",
+          "addressRegion": "CDMX",
+          "postalCode": "11560",
+          "addressCountry": "MX"
+        }
+      },
+      {
+        "@type": "Service",
+        "name": "Cambio de Batería MacBook Pro y Air",
+        "provider": { "@id": "https://macwave.com.mx/#localbusiness" },
+        "description": "Venta e instalación express de baterías para MacBook en CDMX con 2 años de garantía por escrito.",
+        "areaServed": "Ciudad de México"
+      }
+    ]
+  }
+  </script>
 
  <!-- Favicon -->
  <link rel="icon" type="image/png" href="https://www.macwave.com.mx/images/favicon1.png">
@@ -402,7 +421,7 @@
 
  <!-- IZQUIERDA: Logo -->
  <div class="logo">
- <a href="index.html" class="logo-link">
+ <a href="index" class="logo-link">
  <img src="./images/logo_dashboard_white.png" alt="Logo Mac Wave T2" class="logo-img">
  <div class="logo-text-container">
  <span class="logo-brand"><strong>macWave</strong> <span
@@ -418,9 +437,9 @@
  
  <div class="mobile-menu-content">
  <div class="mobile-nav-links">
- <a href="reparaciones.html" class="nav-link" style="--i:1">Reparaciones</a>
- <a href="empresas.html" class="nav-link" style="--i:2">Empresas</a>
- <a href="software.html" class="nav-link" style="--i:3">Software</a>
+ <a href="reparaciones" class="nav-link" style="--i:1">Reparaciones</a>
+ <a href="empresas" class="nav-link" style="--i:2">Empresas</a>
+ <a href="software" class="nav-link" style="--i:3">Software</a>
  </div>
 
  </div>
@@ -626,9 +645,9 @@
  <h4>Navegación</h4>
  <ul>
  <li><a href="#soluciones">Soluciones</a></li>
- <li><a href="empresas.html">Para Empresas</a></li>
- <li><a href="software.html">Licencias Software</a></li>
- <li><a href="reparaciones.html">Reparaciones</a></li>
+ <li><a href="empresas">Para Empresas</a></li>
+ <li><a href="software">Licencias Software</a></li>
+ <li><a href="reparaciones">Reparaciones</a></li>
  </ul>
  </div>
 
