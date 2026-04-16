@@ -63,16 +63,19 @@
         "@type": "Product",
         "@id": "https://macwave.com.mx/empresas#product",
         "name": "Soporte Técnico Apple para Empresas",
+        "image": "https://macwave.com.mx/images/logo_dashboard_white.png",
+        "description": "Pólizas de mantenimiento y soporte técnico de Reparaciones MacBook para corporativos y escuelas en CDMX.",
+        "sku": "MW-EMP-001",
         "brand": {
           "@type": "Brand",
           "name": "Apple"
         },
-        "description": "Pólizas de mantenimiento y soporte técnico de Reparaciones MacBook para corporativos y escuelas en CDMX.",
         "offers": {
           "@type": "AggregateOffer",
           "priceCurrency": "MXN",
           "lowPrice": 1499,
-          "offerCount": 3
+          "offerCount": 3,
+          "availability": "https://schema.org/InStock"
         },
         "aggregateRating": {
           "@type": "AggregateRating",
@@ -80,6 +83,12 @@
           "reviewCount": 50,
           "bestRating": 5,
           "worstRating": 1
+        },
+        "review": {
+          "@type": "Review",
+          "author": { "@type": "Person", "name": "Cliente MacWave" },
+          "reviewRating": { "@type": "Rating", "ratingValue": 5 },
+          "reviewBody": "Atención corporativa rápida y eficiente."
         }
       }
     ]

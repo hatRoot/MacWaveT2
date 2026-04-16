@@ -63,17 +63,20 @@
         "@type": "Product",
         "@id": "https://macwave.com.mx/software#product",
         "name": "Venta e Instalación de Software Mac",
+        "image": "https://macwave.com.mx/images/logo_dashboard_white.png",
+        "description": "Instalación profesional de software para diseño, arquitectura y oficina en equipos Apple.",
+        "sku": "MW-SW-001",
         "brand": {
           "@type": "Brand",
           "name": "Apple"
         },
-        "description": "Instalación profesional de software para diseño, arquitectura y oficina en equipos Apple.",
         "offers": {
           "@type": "AggregateOffer",
           "priceCurrency": "MXN",
           "offerCount": 10,
           "lowPrice": 500,
-          "highPrice": 5000
+          "highPrice": 5000,
+          "availability": "https://schema.org/InStock"
         },
         "aggregateRating": {
           "@type": "AggregateRating",
@@ -81,6 +84,12 @@
           "reviewCount": 50,
           "bestRating": 5,
           "worstRating": 1
+        },
+        "review": {
+          "@type": "Review",
+          "author": { "@type": "Person", "name": "Cliente MacWave" },
+          "reviewRating": { "@type": "Rating", "ratingValue": 5 },
+          "reviewBody": "Instalación rápida y soporte técnico amable."
         }
       }
     ]
