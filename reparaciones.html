@@ -90,7 +90,8 @@
         },
         {
           "@type": "Product",
-          "@id": "https://macwave.com.mx/reparaciones#product",
+          "@id": "https://macwave.com.mx/reparaciones#mac-repair-v3",
+          "mainEntityOfPage": { "@id": "https://macwave.com.mx/reparaciones#webpage" },
           "name": "Reparación Especializada Mac CDMX",
           "image": "https://macwave.com.mx/images/logo_dashboard_white.png",
           "description": "Reparación técnica de tarjetas lógicas, pantallas, teclados y baterías para MacBook Pro, Air e iMac con 2 años de garantía.",
@@ -98,6 +99,13 @@
           "brand": {
             "@type": "Brand",
             "name": "Apple"
+          },
+          "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": 5,
+            "reviewCount": 50,
+            "bestRating": 5,
+            "worstRating": 1
           },
           "offers": {
             "@type": "AggregateOffer",
@@ -107,7 +115,6 @@
             "offerCount": 20,
             "availability": "https://schema.org/InStock"
           },
-          "aggregateRating": { "@id": "https://macwave.com.mx/#rating" },
           "review": {
             "@type": "Review",
             "author": { "@type": "Person", "name": "Cliente MacWave" },
