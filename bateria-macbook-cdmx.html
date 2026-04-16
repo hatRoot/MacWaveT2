@@ -23,17 +23,18 @@
  <meta property="og:image" content="https://macwave.com.mx/images/bateria_solucion.jpg">
  <meta property="og:site_name" content="macWave México">
 
-  <!-- Structured Data (Sincronizado con Index) -->
+  <!-- Structured   <!-- Structured Data (JSON-LD) for SEO -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@graph": [
       {
         "@type": "LocalBusiness",
-        "name": "macWave México - Especialistas en Baterías MacBook",
         "@id": "https://macwave.com.mx/#localbusiness",
+        "name": "macWave México - Especialistas en Baterías MacBook",
         "url": "https://macwave.com.mx/",
         "telephone": "+525535757364",
+        "image": "https://macwave.com.mx/images/logo_dashboard_white.png",
         "address": {
           "@type": "PostalAddress",
           "streetAddress": "Servicio en Sitio y Recolección en CDMX",
@@ -44,14 +45,44 @@
         }
       },
       {
+        "@type": "WebPage",
+        "@id": "https://macwave.com.mx/bateria-macbook-cdmx#webpage",
+        "url": "https://macwave.com.mx/bateria-macbook-cdmx",
+        "name": "Cambio de Batería MacBook CDMX | 2 Años de Garantía | macWave",
+        "description": "¿Batería MacBook inflada o agotada? Cambiamos tu batería hoy mismo con 2 años de garantía por escrito en CDMX.",
+        "isPartOf": { "@id": "https://macwave.com.mx/#website" }
+      },
+      {
+        "@type": "BreadcrumbList",
+        "@id": "https://macwave.com.mx/bateria-macbook-cdmx#breadcrumb",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "item": {
+              "@id": "https://macwave.com.mx/",
+              "name": "Inicio"
+            }
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "item": {
+              "@id": "https://macwave.com.mx/bateria-macbook-cdmx",
+              "name": "Baterías MacBook"
+            }
+          }
+        ]
+      },
+      {
         "@type": "Service",
+        "@id": "https://macwave.com.mx/bateria-macbook-cdmx#service",
         "name": "Cambio de Batería MacBook Pro y Air",
         "provider": { "@id": "https://macwave.com.mx/#localbusiness" },
         "description": "Venta e instalación express de baterías para MacBook en CDMX con 2 años de garantía por escrito.",
         "areaServed": "Ciudad de México"
       }
     ]
-  }
   </script>
 
  <!-- Favicon -->
@@ -421,7 +452,7 @@
 
  <!-- IZQUIERDA: Logo -->
  <div class="logo">
- <a href="index" class="logo-link">
+ <a href="/" class="logo-link">
  <img src="./images/logo_dashboard_white.png" alt="Logo Mac Wave T2" class="logo-img">
  <div class="logo-text-container">
  <span class="logo-brand"><strong>macWave</strong> <span
@@ -622,7 +653,7 @@
 
  <!-- Botones de acceso interno en el footer -->
  <div style="margin-top: 24px; display: flex; flex-direction: column; gap: 10px;">
- <a href="status-ods.html"
+ <a href="status-ods"
  style="display: inline-flex; align-items: center; gap: 8px; padding: 9px 16px; border-radius: 8px; background: rgba(255, 204, 0, 0.1); color: #ffcc00; border: 1px solid rgba(255, 204, 0, 0.3); font-size: 0.82rem; font-weight: 600; text-decoration: none; width: fit-content;">
  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor"
  viewBox="0 0 16 16">
@@ -632,7 +663,7 @@
  </svg>
  ¿Cómo va tu reparación?
  </a>
- <a href="tecnicos.html"
+ <a href="tecnicos"
  style="display: inline-flex; align-items: center; gap: 8px; padding: 9px 16px; border-radius: 8px; background: rgba(255, 107, 0, 0.1); color: #ff6b00; border: 1px solid rgba(255, 107, 0, 0.3); font-size: 0.82rem; font-weight: 600; text-decoration: none; width: fit-content;">
  <span
  style="width:8px; height:8px; border-radius:50%; background:#ff6b00; display:inline-block;"></span>
@@ -677,9 +708,9 @@
  <div class="footer-col">
  <h4>Legal</h4>
  <ul>
- <li><a href="terminos.html" style="color: inherit; text-decoration: none;">Aviso de Privacidad</a>
+ <li><a href="terminos" style="color: inherit; text-decoration: none;">Aviso de Privacidad</a>
  </li>
- <li><a href="terminos.html" style="color: inherit; text-decoration: none;">Términos y
+ <li><a href="terminos" style="color: inherit; text-decoration: none;">Términos y
  Condiciones</a></li>
  </ul>
  </div>

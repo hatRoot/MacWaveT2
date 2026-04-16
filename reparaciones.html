@@ -26,16 +26,17 @@
     <meta property="og:site_name" content="macWave México">
 
     <!-- Structured Data (Sincronizado con Index) -->
+    <!-- Structured Data (JSON-LD) for SEO -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@graph": [
         {
           "@type": "LocalBusiness",
+          "@id": "https://macwave.com.mx/#localbusiness",
           "name": "macWave México - Reparación Mac Nivel Componente",
           "image": "https://macwave.com.mx/images/logo_dashboard_white.png",
           "description": "Especialistas en reparación Mac a nivel componente en CDMX. Más de 18 años de éxito rescatando equipos que otros dan por perdidos. Baterías con 2 años de garantía.",
-          "@id": "https://macwave.com.mx/#localbusiness",
           "url": "https://macwave.com.mx/",
           "telephone": "+525535757364",
           "priceRange": "$$",
@@ -50,7 +51,38 @@
           "areaServed": ["Polanco", "Interlomas", "Santa Fe", "Bosques de las Lomas", "Lomas de Chapultepec", "CDMX"]
         },
         {
+          "@type": "WebPage",
+          "@id": "https://macwave.com.mx/reparaciones#webpage",
+          "url": "https://macwave.com.mx/reparaciones",
+          "name": "Reparación Mac Nivel Componente CDMX | macWave",
+          "description": "Servicio técnico Mac especializado en CDMX. Reparación de tarjetas lógicas, pantallas y baterías con garantía de hasta 2 años.",
+          "isPartOf": { "@id": "https://macwave.com.mx/#website" }
+        },
+        {
+          "@type": "BreadcrumbList",
+          "@id": "https://macwave.com.mx/reparaciones#breadcrumb",
+          "itemListElement": [
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "item": {
+                "@id": "https://macwave.com.mx/",
+                "name": "Inicio"
+              }
+            },
+            {
+              "@type": "ListItem",
+              "position": 2,
+              "item": {
+                "@id": "https://macwave.com.mx/reparaciones",
+                "name": "Reparaciones"
+              }
+            }
+          ]
+        },
+        {
           "@type": "Service",
+          "@id": "https://macwave.com.mx/reparaciones#service",
           "name": "Reparación Especializada Mac CDMX",
           "provider": { "@id": "https://macwave.com.mx/#localbusiness" },
           "description": "Reparación de tarjetas lógicas, pantallas, teclados y baterías para MacBook Pro, Air e iMac.",
@@ -806,7 +838,7 @@
 
                 <!-- Botones de acceso interno en el footer -->
                 <div style="margin-top: 24px; display: flex; flex-direction: column; gap: 10px;">
-                    <a href="status-ods.html"
+                    <a href="status-ods"
                         style="display: inline-flex; align-items: center; gap: 8px; padding: 9px 16px; border-radius: 8px; background: rgba(255, 204, 0, 0.1); color: #ffcc00; border: 1px solid rgba(255, 204, 0, 0.3); font-size: 0.82rem; font-weight: 600; text-decoration: none; width: fit-content;">
                         <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor"
                             viewBox="0 0 16 16">
@@ -816,7 +848,7 @@
                         </svg>
                         ¿Cómo va tu reparación?
                     </a>
-                    <a href="tecnicos.html"
+                    <a href="tecnicos"
                         style="display: inline-flex; align-items: center; gap: 8px; padding: 9px 16px; border-radius: 8px; background: rgba(255, 107, 0, 0.1); color: #ff6b00; border: 1px solid rgba(255, 107, 0, 0.3); font-size: 0.82rem; font-weight: 600; text-decoration: none; width: fit-content;">
                         <span
                             style="width:8px; height:8px; border-radius:50%; background:#ff6b00; display:inline-block;"></span>
@@ -873,9 +905,9 @@
         <div class="footer-col">
             <h4>Legal</h4>
             <ul>
-                <li><a href="terminos.html" style="color: inherit; text-decoration: none;">Aviso de Privacidad</a>
+                <li><a href="terminos" style="color: inherit; text-decoration: none;">Aviso de Privacidad</a>
                 </li>
-                <li><a href="terminos.html" style="color: inherit; text-decoration: none;">Términos y
+                <li><a href="terminos" style="color: inherit; text-decoration: none;">Términos y
                         Condiciones</a></li>
             </ul>
         </div>
