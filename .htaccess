@@ -4,7 +4,10 @@ RewriteCond %{HTTPS} off [OR]
 RewriteCond %{HTTP_HOST} ^www\. [NC]
 RewriteRule ^(.*)$ https://macwave.com.mx/$1 [L,R=301]
 
-# --- URLs limpias sin .html ---
+# 301 Redirect .html requests to clean URLs (SEO)
+RewriteCond %{THE_REQUEST} ^[A-Z]{3,9}\ /(.+)\.html\ HTTP/
+RewriteRule ^(.+)\.html$ /$1 [R=301,L]
+
 # Sirve /bateria-macbook-cdmx como bateria-macbook-cdmx.html
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
