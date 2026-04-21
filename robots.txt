@@ -7,7 +7,7 @@ Disallow: /admin/
 Disallow: /includes/
 Disallow: /tmp/
 Disallow: /bin/
-Disallow: /coticaciones/
+Disallow: /cotizaciones/
 Disallow: /clientes/
 Disallow: /html_sidebar/
 Disallow: /dashboard-ods.html
@@ -23,7 +23,7 @@ Disallow: /admin/
 Disallow: /includes/
 Disallow: /tmp/
 Disallow: /bin/
-Disallow: /coticaciones/
+Disallow: /cotizaciones/
 Disallow: /clientes/
 Disallow: /html_sidebar/
 Disallow: /dashboard-ods.html

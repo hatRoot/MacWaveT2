@@ -18,4 +18,5 @@ RewriteRule ^(.+)$ $1.html [L]
 DirectoryIndex index.html
 
 # 404 real — NO redirigir a index (eso confundía a Google)
-ErrorDocument 404 /index.html
+# ErrorDocument 404 /index.html
+# NOTA: Soft 404 eliminado — causaba que Google viera páginas inexistentes como 200
