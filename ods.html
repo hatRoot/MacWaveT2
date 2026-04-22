@@ -5,10 +5,10 @@
  <meta charset="UTF-8">
  <meta name="viewport" content="width=device-width, initial-scale=1.0">
  <meta name="robots" content="noindex, nofollow, noarchive">
- <title>DASHBOARD</title>
+ <title>Generador de ODS | macWave T2</title>
 
  <meta name="description"
- content="Mac Wave T2 - Especialistas en reparación de MacBook Pro, Air y equipos fuera de garantía. Actualizaciones, servicios empresariales y recuperación de datos en CDMX y EdoMex.">
+ content="Herramienta interna de generación de Órdenes de Servicio para el laboratorio macWave T2.">
  <meta name="keywords"
  content="reparación mac, soporte tecnico apple, reparacion macbook, logic board, recuperar datos macbook, apple repair, cdmx, macbook mojada">
  <meta name="author" content="Mac Wave T2">
@@ -783,7 +783,7 @@
  <!-- Windows Vista Aero Sidebar Navigation -->
  <aside class="app-sidebar">
  <div class="sidebar-brand" style="margin-bottom: 32px; display: flex; align-items: center; gap: 12px;">
- <img src="./images/logo_dashboard_white.png"
+  <img src="./images/logo_dashboard_white.png" alt="Logo macWave T2"
  style="width: 44px; border-radius: 4px; filter: drop-shadow(0 0 8px rgba(255,255,255,0.2));">
  <div style="font-size: 16px; font-weight: 800; color: #fff; letter-spacing: -0.5px;">DASHBOARD</div>
  </div>
@@ -796,7 +796,7 @@
  </svg>
  Reparaciones (ODS)
  </button>
- <button class="nav-item active" onclick="window.location.href='ods.html'">
+ <button class="nav-item active" onclick="window.location.href="ods"">
  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
  <path d="M12 5v14M5 12h14" />
  </svg>
@@ -833,7 +833,7 @@
 
  <nav class="nav-group" style="margin-top:auto;">
  <button class="nav-item" style="color: var(--mac-red);" id="logout-btn-side"
- onclick="sessionStorage.clear(); window.location.href='tecnicos.html';">
+ onclick="sessionStorage.clear(); window.location.href="tecnicos";">
  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
  <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9" />
  </svg>
@@ -1578,11 +1578,13 @@
  <div class="ps-content">
  <div class="ps-header">
  <div class="ps-logo-col" style="text-align: center;">
- <img src="./images/logo_dashboard_white.png" class="ps-logo" style="width: 50px; height: 50px; border-radius: 8px; margin-bottom: 2px;">
+ <img src="./images/logo_dashboard_white.png" class="ps-logo" alt="Logo macWave" style="width: 50px; height: 50px; border-radius: 8px; margin-bottom: 2px;">
+
  <div style="font-size: 9px; font-weight: 700; color: #1d1d1f; line-height: 1;">macWave.com.mx</div>
  </div>
  <div class="ps-title-col" style="padding-left: 20px;">
- <h1 style="font-size: 16px;">Laboratorio de reparación de computadoras Apple</h1>
+ <h2 style="font-size: 16px;">Laboratorio de reparación de computadoras Apple</h2>
+
  <p>Apple Certified Device Support 2025</p>
  </div>
  <div class="ps-meta-col">
@@ -1639,7 +1641,8 @@
  <div style="width: 100%; max-width: 130px; background: white; border: 1px solid #eee; border-radius: 4px; padding: 4px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); text-align: center; display: flex; flex-direction: column; position: relative;">
  <button onclick="window.removePhoto(${idx})" style="position: absolute; top: -6px; right: -6px; background: #FF453A; color: white; border: none; border-radius: 50%; width: 20px; height: 20px; font-size: 11px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 10; box-shadow: 0 2px 4px rgba(0,0,0,0.2);">×</button>
  <div style="width: 100%; aspect-ratio: 1; display: flex; align-items: center; justify-content: center; overflow: hidden; border-radius: 3px; background: #000;">
- <img src="${p.data}" style="width: 100%; height: 100%; object-fit: cover;">
+ <img src="${p.data}" alt="Evidencia de daño" style="width: 100%; height: 100%; object-fit: cover;">
+
  </div>
  <div style="margin-top: 4px; font-size: 7px; font-weight: 800; color: #ff6600; text-transform: uppercase; line-height: 1.1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${p.desc}</div>
  </div>
@@ -1660,7 +1663,7 @@
  <div class="ps-terms">
  <p>Vigencia de la ODS : 1 día para aceptación de la misma.</p>
  <p>Garantía: 31 días en el servicio técnico, pregunta por tu garantía extendida a 100 días POR UN COSTO ADICIONAL.</p>
- <p>Condiciones: El cliente acepta los <a href="terminos.html" target="_blank" style="color: inherit; font-weight: bold;">Términos y Condiciones</a> publicados en macwave.com.mx/terminos.html.</p>
+ <p>Condiciones: El cliente acepta los <a href="terminos" target="_blank" style="color: inherit; font-weight: bold;">Términos y Condiciones</a> publicados en macwave.com.mx/terminos.html.</p>
  <p style="font-size: 9px; font-weight: 900;">PAGO ANTICIPADO DEL 100% PARA EL SERVICIO.</p>
  <p>Tiempo de entrega: ${deliveryTime} ENTREGA TENTATIVA SEGÚN DISPONIBILIDAD.</p>
  </div>
@@ -1698,7 +1701,8 @@
  <div class="ps-apple-pro-container">
  ${BOTTOM_CERT_LOGOS.map(logo => `
  <div class="ps-apple-pro-icon">
- <img src="${logo.data}">
+ <img src="${logo.data}" alt="Logo partner">
+
  </div>
  `).join('')}
  </div>

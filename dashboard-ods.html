@@ -5,7 +5,8 @@
  <meta charset="UTF-8">
  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
  <meta name="robots" content="noindex, nofollow, noarchive">
- <title>DASHBOARD</title>
+ <title>Dashboard ODS | macWave T2</title>
+ <meta name="description" content="Dashboard interno para la gestión de órdenes de servicio de macWave T2.">
 
  <!-- Apple Web App Experience -->
  <meta name="apple-mobile-web-app-capable" content="yes">
@@ -1034,7 +1035,7 @@
  <!-- Windows Vista Aero Sidebar Navigation -->
  <aside class="app-sidebar">
  <div class="sidebar-brand" style="margin-bottom: 32px; display: flex; align-items: center; gap: 12px;">
- <img src="./images/logo_dashboard_white.png"
+ <img src="./images/logo_dashboard_white.png" alt="Logo macWave T2"
  style="width: 44px; border-radius: 4px; filter: drop-shadow(0 0 8px rgba(255,255,255,0.2));">
  <div style="font-size: 16px; font-weight: 800; color: #fff; letter-spacing: -0.5px;">DASHBOARD</div>
  </div>
@@ -1269,7 +1270,8 @@
  style="display: none; height: 100%; padding: 40px; overflow-y: auto; flex-direction: column;">
  <div style="max-width: 800px; margin: 0 auto; width: 100%;">
  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
- <h1 style="font-size: 32px; font-weight: 800; margin: 0;">Ajustes de Sistema</h1>
+ <h2 style="font-size: 32px; font-weight: 800; margin: 0;">Ajustes de Sistema</h2>
+
  <div id="session-status-badge" style="display: flex; align-items: center; gap: 8px; font-size: 11px; background: rgba(255,255,255,0.05); padding: 6px 12px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1);">
  <div id="session-dot" style="width: 8px; height: 8px; border-radius: 50%; background: #8E8E93;"></div>
  <span id="session-text" style="color: var(--mac-text-muted); font-weight: 600;">CONSULTANDO DB...</span>
@@ -1320,6 +1322,7 @@
  <!-- LEFT: THE GOLDEN TICKET GENERATOR -->
  <div class="golden-ticket" style="flex-shrink: 0;">
  <h1 class="ticket-main-title" style="font-size: 38px; font-weight: 900; margin-bottom: 25px;">
+  <span style="display: block; font-size: 14px; text-transform: uppercase; letter-spacing: 4px; color: #6b7280; margin-bottom: 8px;">Orden de Servicio Técnico</span>
  SERVICIO TÉCNICO</h1>
 
  <div class="folio-box">
@@ -1424,7 +1427,8 @@
  <div
  style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
  <div style="display: flex; align-items: center; gap: 15px;">
- <h1 class="folio-title" style="margin: 0;">Historial de Tickets</h1>
+ <h2 class="folio-title" style="margin: 0;">Historial de Tickets</h2>
+
  <button id="btn-bulk-delete" class="btn" onclick="deleteSelectedTickets()" 
  style="display: none; background: var(--mac-red); color: white; border: none; padding: 5px 12px; font-size: 11px; font-weight: 800; border-radius: 6px; cursor: pointer; align-items: center; gap: 5px;">
  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
@@ -2804,7 +2808,8 @@
  <div class="timeline-date">${ev.date}</div>
  <div class="timeline-status" style="color: ${evColor}">${ev.status}</div>
  ${ev.text && !ev.text.startsWith('Cambio de estatus vía Tablero') ? `<div class="timeline-note">${ev.text.replace(/\\n/g, '<br>')}</div>` : ''}
- ${ev.img ? `<img src="${ev.img}" class="timeline-img">` : ''}
+ ${ev.img ? `<img src="${ev.img}" class="timeline-img" alt="Evidencia de servicio">` : ''}
+
  </div>
  `;
  }).join('') || '<div style="font-size:12px; color:var(--mac-text-muted);">Sin historial registrado.</div>';
@@ -2823,7 +2828,8 @@
  ${photos && photos.length > 0 ? `
  ${photos.map(p => `
  <div style="position: relative; aspect-ratio: 1; overflow: hidden; border-radius: 4px; border: 1px solid var(--mac-border); background: #111;">
- <img src="${p.img}" style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s; cursor: zoom-in;" onclick="window.open(this.src)" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
+ <img src="${p.img}" alt="Foto de equipo" style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s; cursor: zoom-in;" onclick="window.open(this.src)" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
+
  <button onclick="window.deleteGalleryPhoto('${o.id}', ${p.idx}, event)" style="position: absolute; top: 3px; right: 3px; background: rgba(0,0,0,0.6); color: white; border: none; border-radius: 4px; cursor: pointer; padding: 2px 6px; font-size: 9px;">X</button>
  </div>
  `).join('')}
@@ -3156,7 +3162,7 @@
  slot.style.borderColor = 'var(--mac-border)';
  slot.innerText = '';
  slot.innerHTML = `
- <img src="${dataUrl}" style="width: 100%; height: 100%; object-fit: cover;">
+ <img src="${dataUrl}" alt="Vista previa de evidencia" style="width: 100%; height: 100%; object-fit: cover;">
  <button type="button" onclick="window.removeSelectedPhoto(${i})" style="position: absolute; top: 1px; right: 1px; background: rgba(255, 69, 58, 0.9); color: white; border: none; border-radius: 50%; width: 14px; height: 14px; font-size: 9px; cursor: pointer; display: flex; align-items: center; justify-content: center;">×</button>
  `;
  } catch (err) {
