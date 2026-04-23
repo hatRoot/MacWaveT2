@@ -1412,9 +1412,7 @@
       <button id="btn-shorten-link" class="btn" style="height: 48px; border-color: var(--mac-blue); color: var(--mac-blue); font-size: 12px;">ACORTAR PARA WA</button>
     </div>
   </div>
-
- <div style="margin-top:20px; font-weight:900; font-size:14px; color:#444; letter-spacing:1px; text-transform:uppercase;">macWave.com.mx</div>
- <script>
+  <script>
  document.getElementById('btn-send-unified-ticket')?.addEventListener('click', () => {
  // Logic to be added in the main script block
  if (window.sendTicketAction) window.sendTicketAction();
@@ -1930,8 +1928,8 @@
   const badgeUrl = `ticket-badge.html?name=${encodeURIComponent(name)}&folio=${encodeURIComponent(folio)}&source=${encodeURIComponent(source)}&phone=${encodeURIComponent(phone)}&date=${encodeURIComponent(combinedDate)}`;
   if (badgeTab) badgeTab.location.href = badgeUrl;
 
-  // Generate Link based on Supabase ID (Much shorter than token)
-  let bestLink = `${window.location.origin}${window.location.pathname.replace('dashboard-ods.html', '')}ticket-badge.html?id=${data[0].id}`;
+  // Generate Link based on Supabase ID
+  let bestLink = `${window.location.origin}/ticket-badge.html?id=${data[0].id}`;
 
   // Show copy button area
   const shareArea = document.getElementById('client-share-area');
@@ -1998,14 +1996,32 @@
     }
   }
 
-  // Utility to shorten URLs via TinyURL (Free API)
+  // Utility to shorten URLs via goo.su API
   async function shortenUrl(longUrl) {
     try {
-      // Use a proxy-free approach since TinyURL's API is simple and CORS-friendly for simple GETs sometimes, 
-      // but usually needs a fetch. 
-      const response = await fetch(`https://tinyurl.com/api-create.php?url=${encodeURIComponent(longUrl)}`);
+      // Nota: Reemplaza "TU_API_TOKEN_AQUI" con tu API token real de goo.su
+      const apiToken = "TU_API_TOKEN_AQUI"; 
+      if (apiToken === "TU_API_TOKEN_AQUI") {
+          alert("Para usar goo.su, debes poner tu API Token en el código (búscalo en los ajustes de tu cuenta de goo.su). Por ahora usaremos el enlace largo.");
+          return longUrl;
+      }
+      
+      const response = await fetch('https://goo.su/api/links/create', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-goo-api-token': apiToken
+        },
+        body: JSON.stringify({ url: longUrl })
+      });
+      
       if (response.ok) {
-        return await response.text();
+        const data = await response.json();
+        if (data.successful && data.short_url) {
+            return data.short_url;
+        }
+      } else {
+        console.error("Goo.su API error:", await response.text());
       }
     } catch (e) {
       console.error("Link shortening failed:", e);
