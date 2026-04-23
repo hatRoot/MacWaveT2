@@ -174,9 +174,9 @@ pages_data = [
         "schema_name": "Reparación Especializada de Laptops Gamer Serie Alta",
         "schema_desc": "Mantenimiento, des-corrosión y microelectrónica de placas base en Laptops de altas prestaciones Alienware, Asus ROG, Lenovo Legion y MSI.",
         "schema_sku": "MW-GAM-HV",
-        "hero_badge": "👾 Potencia tus FPS, no fallas de placa",
-        "hero_h1": "¿La bestia <span>dejó de dar video, no enciende o tiene Thermal Throttling?</span>",
-        "hero_sub": "Sabemos que no dejarás un equipo de $50,000 MXN en manos de cualquiera en la Plaza. El nivel componente de Apple aplicado a monstruos Gamer (Alienware, ASUS, MSI, Razer).",
+        "hero_badge": "👾 Restaura el rendimiento gráfico de tu equipo",
+        "hero_h1": "¿Tu equipo de alto rendimiento <span>presenta fallos de video, no enciende o sufre sobrecalentamiento?</span>",
+        "hero_sub": "Sabemos que tu estación de trabajo o equipo especializado es una inversión crítica. Aplicamos estándares de ingeniería a nivel componente para equipos de gama alta (Alienware, ASUS, MSI, Razer, Workstations).",
         "hero_bg_style": "linear-gradient(135deg, #1f0122 0%, #0d0d0d 50%, #001a1a 100%)",
         "hero_symptoms": """
             <span class="symptom-tag">Parpadea el teclado pero no da imagen</span>
