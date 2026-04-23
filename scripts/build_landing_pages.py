@@ -375,7 +375,7 @@ pages_data = [
         "schema_desc": "Reparaciones quirúrgicas de sobremesas All-In-One iMac. Eliminación de fallas de alto voltaje, recableado interno y sellado hermético OEM.",
         "schema_sku": "MW-REP-IMC",
         "hero_badge": "🏛️ Las bestias de Apple en buenas manos",
-        "hero_h1": "¿Problemas de poder, pantallazo negro o ruido en <span>tu máquina principal de diseño iMac?</span>",
+        "hero_h1": "Servicio Técnico Premium para iMac: <span>Restaura tu Estación de Trabajo</span>",
         "hero_sub": "Las pesadas iMac conllevan riesgos de altos voltajes AC y fuentes de poder peligrosas. Somos uno de los pocos talleres que desarma, sella y repara iMacs.",
         "hero_bg_style": "linear-gradient(135deg, #001f3f 0%, #0d0d0d 50%, #001f3f 100%)",
         "hero_symptoms": """
