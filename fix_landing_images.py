@@ -11,7 +11,7 @@ pairs = {
     "reparacion-flexgate-macbook.html": ("reparacionmac1.jpeg", "imac.png"),
     "reparacion-corto-logica-mac.html": ("macbook-logic-board.jpg", "mac_board_repair.png"),
     "reflow-gpu-mac.html": ("circuito_bronce.jpg", "mac-repair-logic.jpg"),
-    "reparacion-imac-cdmx.html": ("imac-repair.png", "imac_repair_solution.png"),
+    "reparacion-imac-cdmx.html": ("imac_repair_broken.png", "imac_repair_solution.png"),
     "reparacion-laptops-gamer-cdmx.html": ("multimarca.jpg", "dispositivos.jpg")
 }
 
