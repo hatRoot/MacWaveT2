@@ -34,8 +34,8 @@ def audit_seo(html_files):
             issues.append(f"Multiple <h1> tags ({len(h1s)})")
             
         # Check for Canonical
-        if re.search(r'<link rel="canonical"', content, re.IGNORECASE):
-            issues.append("Contains <link rel=\"canonical\"> (User requested removal)")
+        if not re.search(r'<link rel="canonical"', content, re.IGNORECASE):
+            issues.append("Missing <link rel=\"canonical\">")
             
         # Check for JSON-LD
         if not re.search(r'<script type="application/ld\+json">', content, re.IGNORECASE):
