@@ -1,22 +1,66 @@
-# Force HTTPS and remove WWW (Apex Domain)
+# ============================================
+# MACWAVE.COM.MX - CONFIGURACIÓN OPTIMIZADA
+# ============================================
+
+# ============================================
+# COMPRESIÓN GZIP / BROTLI
+# ============================================
+<IfModule mod_deflate.c>
+    SetOutputFilter DEFLATE
+    AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css
+    AddOutputFilterByType DEFLATE application/javascript application/json
+    AddOutputFilterByType DEFLATE image/svg+xml
+    
+    SetEnvIfNoCase Request_URI \.(?:gif|jpe?g|png|webp)$ no-gzip dont-vary
+</IfModule>
+
+# ============================================
+# BROWSER CACHING
+# ============================================
+<IfModule mod_expires.c>
+    ExpiresActive On
+    ExpiresByType image/jpeg "access plus 1 month"
+    ExpiresByType image/png "access plus 1 month"
+    ExpiresByType image/webp "access plus 1 month"
+    ExpiresByType text/css "access plus 1 week"
+    ExpiresByType application/javascript "access plus 1 week"
+    ExpiresByType text/html "access plus 1 day"
+</IfModule>
+
+# ============================================
+# HEADERS DE SEGURIDAD
+# ============================================
+<IfModule mod_headers.c>
+    Header always set X-XSS-Protection "1; mode=block"
+    Header always set X-Frame-Options "SAMEORIGIN"
+    Header always set X-Content-Type-Options "nosniff"
+    Header always set Referrer-Policy "strict-origin-when-cross-origin"
+    
+    <FilesMatch "\.(css|js|png|jpg|jpeg|gif|ico|svg)$">
+        Header set Cache-Control "max-age=604800, public"
+    </FilesMatch>
+</IfModule>
+
+# ============================================
+# HTTPS Y URL LIMPIAS
+# ============================================
 RewriteEngine On
 RewriteCond %{HTTPS} off [OR]
 RewriteCond %{HTTP_HOST} ^www\. [NC]
 RewriteRule ^(.*)$ https://macwave.com.mx/$1 [L,R=301]
 
-# 301 Redirect .html requests to clean URLs (SEO)
 RewriteCond %{THE_REQUEST} ^[A-Z]{3,9}\ /(.+)\.html\ HTTP/
 RewriteRule ^(.+)\.html$ /$1 [R=301,L]
 
-# Sirve /bateria-macbook-cdmx como bateria-macbook-cdmx.html
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_FILENAME}.html -f
 RewriteRule ^(.+)$ $1.html [L]
 
-# Página de inicio
 DirectoryIndex index.html
 
-# 404 real — NO redirigir a index (eso confundía a Google)
+# ============================================
+# 404 REAL (NO redirigir a index)
+# ============================================
 # ErrorDocument 404 /index.html
 # NOTA: Soft 404 eliminado — causaba que Google viera páginas inexistentes como 200
