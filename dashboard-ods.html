@@ -3041,11 +3041,12 @@
  <textarea id="inp-new-text" class="form-control" placeholder="Describe los avances, piezas pedidas o finalización del servicio..."></textarea>
  </div>
  <div class="form-group" style="margin-bottom: 16px;">
- <label>Evidencia Fotográfica (Opcional - Selecciona múltiples)</label>
+ <label>Evidencia Fotográfica (Máx 10 fotos - 50KB c/u)</label>
  <button type="button" onclick="document.getElementById('inp-new-img').click()" style="background: var(--mac-blue); color: white; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; font-size: 14px; display: flex; align-items: center; gap: 8px; margin-bottom: 10px;">
- <span style="font-size: 18px;">📁</span> Seleccionar Fotos
+ <span style="font-size: 18px;">📁</span> Seleccionar Fotos (máx 10)
  </button>
  <input type="file" id="inp-new-img" accept="image/*" multiple style="display: none;" onchange="window.previewNewPhotos(event)">
+ <div id="photo-limit-warning" style="color: var(--mac-orange); font-size: 12px; display: none; margin-bottom: 8px;">⚠️ Máximo 10 fotos. Selecciona las más importantes.</div>
  <div id="new-img-preview-wrapper" style="display: none; margin-top: 10px;">
  <div id="new-img-preview" style="display: grid; grid-template-columns: repeat(10, 1fr); gap: 4px;"></div>
  <button type="button" onclick="window.clearPhotoSelection()" style="background: transparent; border: 1px solid var(--mac-red); color: var(--mac-red); font-size: 10px; padding: 4px 8px; border-radius: 4px; margin-top: 8px; cursor: pointer;">Limpiar Selección</button>
@@ -3145,18 +3146,19 @@
  }
 
  if (fileInput.files && fileInput.files.length > 0) {
- // Procesar fotos con manejo de errores individual
+ // Procesar fotos con manejo de errores individual - MÁX 10 FOTOS
  let processedCount = 0;
  let errorCount = 0;
+ const maxPhotos = Math.min(fileInput.files.length, 10);
  
- for(let i = 0; i < fileInput.files.length; i++) {
+ for(let i = 0; i < maxPhotos; i++) {
  const file = fileInput.files[i];
  try {
  // Actualizar texto del botón con progreso
- btn.innerText = `Comprimiendo foto ${i + 1} de ${fileInput.files.length}...`;
+ btn.innerText = `Comprimiendo foto ${i + 1} de ${maxPhotos}...`;
  
- // Usar compresión agresiva para guardar en base de datos (máx 200KB)
- const base64Img = await window.compressImage(file, 1200, 1200, 200);
+ // Usar compresión ULTRA agresiva para guardar en base de datos (máx 50KB)
+ const base64Img = await window.compressImage(file, 800, 800, 50);
  processedCount++;
 
  if(i === 0) {
@@ -3208,6 +3210,7 @@
  window.previewNewPhotos = function(event) {
  const wrapper = document.getElementById('new-img-preview-wrapper');
  const container = document.getElementById('new-img-preview');
+ const warning = document.getElementById('photo-limit-warning');
  const files = event.target.files;
  
  if(!files || files.length === 0) {
@@ -3215,9 +3218,17 @@
  return;
  }
 
+ // Validar límite de 10 fotos
+ if (files.length > 10) {
+ warning.style.display = 'block';
+ warning.innerText = `⚠️ Seleccionaste ${files.length} fotos. Solo se subirán las primeras 10.`;
+ } else {
+ warning.style.display = 'none';
+ }
+
  wrapper.style.display = 'block';
  container.innerHTML = '';
- const fileList = Array.from(files);
+ const fileList = Array.from(files).slice(0, 10); // Solo las primeras 10
  
  // Mostrar preview simple sin compresión pesada
  fileList.forEach((file, i) => {
@@ -3294,17 +3305,18 @@
  const dateStr = now.toLocaleDateString('es-MX', { day: '2-digit', month: '2-digit', year: 'numeric' }) + ' ' +
  now.toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit' });
  
- // Procesar fotos con manejo de errores individual
+ // Procesar fotos con manejo de errores individual - MÁX 10 FOTOS
  let processedCount = 0;
  let errorCount = 0;
+ const maxFiles = Math.min(files.length, 10);
  
- for(let i=0; i<files.length; i++) {
- progressText.innerText = `Procesando foto ${i + 1} de ${files.length}...`;
+ for(let i=0; i<maxFiles; i++) {
+ progressText.innerText = `Procesando foto ${i + 1} de ${maxFiles}...`;
  const file = files[i];
  
  try {
- // Usar compresión agresiva para galería (máx 150KB)
- const base64Img = await window.compressImage(file, 1200, 1200, 150);
+ // Usar compresión ULTRA agresiva para galería (máx 50KB)
+ const base64Img = await window.compressImage(file, 800, 800, 50);
  hist.push({ date: dateStr, status: ods.status || 'Recibido', text: '', img: base64Img });
  processedCount++;
  } catch (imgErr) {
