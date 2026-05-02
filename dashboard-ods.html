@@ -3378,13 +3378,21 @@ window.uploadSelectedPhotos = async function() {
 
  window.clearPhotoSelection = function() {
  const input = document.getElementById('inp-new-img');
+ const uploadBtn = document.getElementById('btn-upload-photos');
+ const statusDiv = document.getElementById('photo-status');
+ 
  input.value = '';
+ window.uploadedPhotoUrls = [];
  document.getElementById('new-img-preview-wrapper').style.display = 'none';
  document.getElementById('new-img-preview').innerHTML = '';
+ uploadBtn.style.display = 'none';
+ uploadBtn.disabled = false;
+ uploadBtn.innerHTML = '<span style="font-size: 18px;">☁️</span> Subir Fotos';
+ uploadBtn.style.background = 'var(--mac-green)';
+ statusDiv.style.display = 'none';
  };
- }
 
- window.deleteGalleryPhoto = async function(odsId, noteIdx, e) {
+window.deleteGalleryPhoto = async function(odsId, noteIdx, e) {
  if(e) {
  e.stopPropagation();
  }
