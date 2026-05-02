@@ -3055,37 +3055,11 @@
  }
 
  if (fileInput.files && fileInput.files.length > 0) {
+ // Sin límite de fotos - procesar todas
  for(let i = 0; i < fileInput.files.length; i++) {
  const file = fileInput.files[i];
- const base64Img = await new Promise((resolve, reject) => {
- const reader = new FileReader();
- reader.onload = (e) => {
- const img = new Image();
- img.onload = () => {
- const canvas = document.createElement('canvas');
- const ctx = canvas.getContext('2d');
- const SIZE = 1000;
- canvas.width = SIZE;
- canvas.height = SIZE;
- const minDim = Math.min(img.width, img.height);
- const sx = (img.width - minDim) / 2;
- const sy = (img.height - minDim) / 2;
- ctx.drawImage(img, sx, sy, minDim, minDim, 0, 0, SIZE, SIZE);
-
- let quality = 0.8;
- let dataUrl = canvas.toDataURL('image/jpeg', quality);
- if (dataUrl.length > 800000) {
- quality = 0.6;
- dataUrl = canvas.toDataURL('image/jpeg', quality);
- }
- resolve(dataUrl);
- };
- img.onerror = () => reject(new Error('Formato inválido'));
- img.src = e.target.result;
- };
- reader.onerror = () => reject(new Error('Error de lectura'));
- reader.readAsDataURL(file);
- });
+ // Usar compresión agresiva para guardar en base de datos (máx 200KB)
+ const base64Img = await compressImage(file, 1200, 1200, 200);
 
  if(i === 0) {
  newHistorial.push({ date: dateStr, status: newStatus, text: text, img: base64Img });
@@ -3119,7 +3093,60 @@
  }
  };
 
- window.previewNewPhotos = async function(event) {
+ // Función de compresión agresiva de imágenes
+async function compressImage(file, maxWidth = 1200, maxHeight = 1200, maxSizeKB = 200) {
+ return new Promise((resolve, reject) => {
+ const reader = new FileReader();
+ reader.onload = (e) => {
+ const img = new Image();
+ img.onload = () => {
+ let width = img.width;
+ let height = img.height;
+ 
+ // Redimensionar si es necesario
+ if (width > maxWidth || height > maxHeight) {
+ const ratio = Math.min(maxWidth / width, maxHeight / height);
+ width = width * ratio;
+ height = height * ratio;
+ }
+ 
+ const canvas = document.createElement('canvas');
+ canvas.width = width;
+ canvas.height = height;
+ const ctx = canvas.getContext('2d');
+ ctx.drawImage(img, 0, 0, width, height);
+ 
+ // Compresión agresiva para llegar a maxSizeKB
+ let quality = 0.6;
+ let dataUrl = canvas.toDataURL('image/jpeg', quality);
+ 
+ // Si sigue siendo grande, reducir calidad progresivamente
+ while (dataUrl.length > maxSizeKB * 1024 && quality > 0.1) {
+ quality -= 0.1;
+ dataUrl = canvas.toDataURL('image/jpeg', quality);
+ }
+ 
+ // Si aún es muy grande, reducir dimensiones a la mitad
+ if (dataUrl.length > maxSizeKB * 1024) {
+ const smallCanvas = document.createElement('canvas');
+ smallCanvas.width = width * 0.5;
+ smallCanvas.height = height * 0.5;
+ const smallCtx = smallCanvas.getContext('2d');
+ smallCtx.drawImage(img, 0, 0, width * 0.5, height * 0.5);
+ dataUrl = smallCanvas.toDataURL('image/jpeg', 0.5);
+ }
+ 
+ resolve(dataUrl);
+ };
+ img.onerror = reject;
+ img.src = e.target.result;
+ };
+ reader.onerror = reject;
+ reader.readAsDataURL(file);
+ });
+}
+
+window.previewNewPhotos = async function(event) {
  const wrapper = document.getElementById('new-img-preview-wrapper');
  const container = document.getElementById('new-img-preview');
  container.innerHTML = '';
@@ -3130,19 +3157,13 @@
  return;
  }
 
- if (files.length > 30) {
-  alert("SISTEMA: Solo se permiten un máximo de 30 fotografías por actualización.");
-  event.target.value = '';
-  wrapper.style.display = 'none';
-  return;
- }
-
+ // Sin límite de fotos - ilimitado
  wrapper.style.display = 'block';
  const fileList = Array.from(files);
  
- // Clear and recreate slots
+ // Crear slots dinámicamente según cantidad de archivos
  container.innerHTML = '';
- for (let i = 0; i < 30; i++) {
+ for (let i = 0; i < fileList.length; i++) {
  const slot = document.createElement('div');
  slot.id = `dash-slot-${i}`;
  slot.style.cssText = 'aspect-ratio: 1; border-radius: 4px; border: 1px dashed #444; background: #111; position: relative; width: 100%; display: flex; align-items: center; justify-content: center; color: #333; font-size: 10px;';
@@ -3150,32 +3171,14 @@
  container.appendChild(slot);
  }
 
+ // Procesar cada imagen con compresión
  for (let i = 0; i < fileList.length; i++) {
  const file = fileList[i];
  try {
- const dataUrl = await new Promise((resolve, reject) => {
- const reader = new FileReader();
- reader.onload = (e) => {
- const img = new Image();
- img.onload = () => {
- const canvas = document.createElement('canvas');
- const ctx = canvas.getContext('2d');
- const SIZE = 400; // Preview size
- canvas.width = SIZE;
- canvas.height = SIZE;
- const minDim = Math.min(img.width, img.height);
- const sX = (img.width - minDim) / 2;
- const sY = (img.height - minDim) / 2;
- ctx.drawImage(img, sX, sY, minDim, minDim, 0, 0, SIZE, SIZE);
- resolve(canvas.toDataURL('image/jpeg', 0.7));
- };
- img.src = e.target.result;
- };
- reader.onerror = reject;
- reader.readAsDataURL(file);
- });
-
+ const dataUrl = await compressImage(file, 800, 800, 150); // Preview más pequeño
+ 
  const slot = document.getElementById(`dash-slot-${i}`);
+ if (slot) {
  slot.style.borderStyle = 'solid';
  slot.style.borderColor = 'var(--mac-border)';
  slot.innerText = '';
@@ -3183,8 +3186,9 @@
  <img src="${dataUrl}" alt="Vista previa de evidencia" style="width: 100%; height: 100%; object-fit: cover;">
  <button type="button" onclick="window.removeSelectedPhoto(${i})" style="position: absolute; top: 1px; right: 1px; background: rgba(255, 69, 58, 0.9); color: white; border: none; border-radius: 50%; width: 14px; height: 14px; font-size: 9px; cursor: pointer; display: flex; align-items: center; justify-content: center;">×</button>
  `;
+ }
  } catch (err) {
- console.error("Error reading file:", err);
+ console.error("Error procesando archivo:", err);
  }
  }
  };
@@ -3250,31 +3254,8 @@
  progressText.innerText = `Procesando foto ${i + 1} de ${files.length}...`;
  const file = files[i];
  
- const base64Img = await new Promise((resolve, reject) => {
- const reader = new FileReader();
- reader.onload = (e) => {
- const img = new Image();
- img.onload = () => {
- const canvas = document.createElement('canvas');
- const ctx = canvas.getContext('2d');
- const SIZE = 800; // Slightly smaller for stability on mobile
- canvas.width = SIZE;
- canvas.height = SIZE;
- const minDim = Math.min(img.width, img.height);
- const sx = (img.width - minDim) / 2;
- const sy = (img.height - minDim) / 2;
- ctx.drawImage(img, sx, sy, minDim, minDim, 0, 0, SIZE, SIZE);
-
- let quality = 0.7;
- let dataUrl = canvas.toDataURL('image/jpeg', quality);
- resolve(dataUrl);
- };
- img.onerror = () => reject(new Error('Imagen inválida'));
- img.src = e.target.result;
- };
- reader.onerror = () => reject(new Error('Error al leer archivo'));
- reader.readAsDataURL(file);
- });
+ // Usar compresión agresiva para galería (máx 150KB)
+ const base64Img = await compressImage(file, 1200, 1200, 150);
  
  hist.push({ date: dateStr, status: ods.status || 'Recibido', text: '', img: base64Img });
  }
