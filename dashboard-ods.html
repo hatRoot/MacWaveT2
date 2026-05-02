@@ -1549,13 +1549,26 @@
  const _sbKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxpZnh0eWh2Z254ampxZ2J6YXJlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE3MzAzNTgsImV4cCI6MjA4NzMwNjM1OH0.YCOLJUZaw5LNAyDyNrzhlJJJeUltRadrnjC1oNUCgFI';
  const supabaseClient = window.supabase.createClient(_sbUrl, _sbKey);
 
- // Función global de compresión de imágenes
- window.compressImage = function(file, maxWidth = 1200, maxHeight = 1200, maxSizeKB = 200) {
+ // Función global de compresión de imágenes - con manejo de errores robusto
+ window.compressImage = async function(file, maxWidth = 1200, maxHeight = 1200, maxSizeKB = 200) {
  return new Promise((resolve, reject) => {
+ // Validar que sea imagen
+ if (!file.type.startsWith('image/')) {
+ reject(new Error('El archivo no es una imagen: ' + file.name));
+ return;
+ }
+ 
+ // Validar tamaño máximo inicial (50MB)
+ if (file.size > 50 * 1024 * 1024) {
+ reject(new Error('Archivo muy grande (máx 50MB): ' + file.name));
+ return;
+ }
+ 
  const reader = new FileReader();
  reader.onload = (e) => {
  const img = new Image();
  img.onload = () => {
+ try {
  let width = img.width;
  let height = img.height;
  
@@ -1586,11 +1599,11 @@
  attempts++;
  }
  
- // Si sigue siendo muy grande, reducir dimensiones
+ // Si sigue siendo muy grande, reducir dimensiones drásticamente
  if (dataUrl.length > maxSizeKB * 1024) {
  const smallCanvas = document.createElement('canvas');
- smallCanvas.width = Math.floor(width * 0.6);
- smallCanvas.height = Math.floor(height * 0.6);
+ smallCanvas.width = Math.floor(width * 0.5);
+ smallCanvas.height = Math.floor(height * 0.5);
  const smallCtx = smallCanvas.getContext('2d');
  smallCtx.fillStyle = '#000';
  smallCtx.fillRect(0, 0, smallCanvas.width, smallCanvas.height);
@@ -1598,12 +1611,27 @@
  dataUrl = smallCanvas.toDataURL('image/jpeg', 0.5);
  }
  
+ // Si aún es muy grande, reducir más
+ if (dataUrl.length > maxSizeKB * 1024) {
+ const tinyCanvas = document.createElement('canvas');
+ tinyCanvas.width = Math.floor(width * 0.3);
+ tinyCanvas.height = Math.floor(height * 0.3);
+ const tinyCtx = tinyCanvas.getContext('2d');
+ tinyCtx.fillStyle = '#000';
+ tinyCtx.fillRect(0, 0, tinyCanvas.width, tinyCanvas.height);
+ tinyCtx.drawImage(img, 0, 0, tinyCanvas.width, tinyCanvas.height);
+ dataUrl = tinyCanvas.toDataURL('image/jpeg', 0.4);
+ }
+ 
  resolve(dataUrl);
+ } catch (err) {
+ reject(new Error('Error procesando imagen: ' + err.message));
+ }
  };
- img.onerror = () => reject(new Error('Error al cargar imagen'));
+ img.onerror = () => reject(new Error('No se pudo cargar la imagen: ' + file.name));
  img.src = e.target.result;
  };
- reader.onerror = () => reject(new Error('Error al leer archivo'));
+ reader.onerror = () => reject(new Error('Error leyendo archivo: ' + file.name));
  reader.readAsDataURL(file);
  });
  };
@@ -3014,7 +3042,10 @@
  </div>
  <div class="form-group" style="margin-bottom: 16px;">
  <label>Evidencia Fotográfica (Opcional - Selecciona múltiples)</label>
- <input type="file" id="inp-new-img" accept="image/*" multiple class="form-control" style="padding: 6px;" onchange="window.previewNewPhotos(event)">
+ <button type="button" onclick="document.getElementById('inp-new-img').click()" style="background: var(--mac-blue); color: white; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; font-size: 14px; display: flex; align-items: center; gap: 8px; margin-bottom: 10px;">
+ <span style="font-size: 18px;">📁</span> Seleccionar Fotos
+ </button>
+ <input type="file" id="inp-new-img" accept="image/*" multiple style="display: none;" onchange="window.previewNewPhotos(event)">
  <div id="new-img-preview-wrapper" style="display: none; margin-top: 10px;">
  <div id="new-img-preview" style="display: grid; grid-template-columns: repeat(10, 1fr); gap: 4px;"></div>
  <button type="button" onclick="window.clearPhotoSelection()" style="background: transparent; border: 1px solid var(--mac-red); color: var(--mac-red); font-size: 10px; padding: 4px 8px; border-radius: 4px; margin-top: 8px; cursor: pointer;">Limpiar Selección</button>
@@ -3114,17 +3145,39 @@
  }
 
  if (fileInput.files && fileInput.files.length > 0) {
- // Sin límite de fotos - procesar todas
+ // Procesar fotos con manejo de errores individual
+ let processedCount = 0;
+ let errorCount = 0;
+ 
  for(let i = 0; i < fileInput.files.length; i++) {
  const file = fileInput.files[i];
+ try {
+ // Actualizar texto del botón con progreso
+ btn.innerText = `Comprimiendo foto ${i + 1} de ${fileInput.files.length}...`;
+ 
  // Usar compresión agresiva para guardar en base de datos (máx 200KB)
  const base64Img = await window.compressImage(file, 1200, 1200, 200);
+ processedCount++;
 
  if(i === 0) {
  newHistorial.push({ date: dateStr, status: newStatus, text: text, img: base64Img });
  } else {
  newHistorial.push({ date: dateStr, status: newStatus, text: '', img: base64Img });
  }
+ } catch (imgErr) {
+ console.error('Error con imagen', i, imgErr);
+ errorCount++;
+ // Continuar con la siguiente imagen
+ }
+ }
+ 
+ // Mostrar resumen si hubo errores
+ if (errorCount > 0) {
+ console.warn(`⚠️ ${errorCount} imagen(es) no se pudieron procesar`);
+ }
+ if (processedCount === 0) {
+ // Si ninguna imagen se procesó, agregar entrada sin imagen
+ newHistorial.push({ date: dateStr, status: newStatus, text: text, img: null });
  }
  } else {
  newHistorial.push({ date: dateStr, status: newStatus, text: text, img: null });
@@ -3241,14 +3294,29 @@
  const dateStr = now.toLocaleDateString('es-MX', { day: '2-digit', month: '2-digit', year: 'numeric' }) + ' ' +
  now.toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit' });
  
+ // Procesar fotos con manejo de errores individual
+ let processedCount = 0;
+ let errorCount = 0;
+ 
  for(let i=0; i<files.length; i++) {
  progressText.innerText = `Procesando foto ${i + 1} de ${files.length}...`;
  const file = files[i];
  
+ try {
  // Usar compresión agresiva para galería (máx 150KB)
  const base64Img = await window.compressImage(file, 1200, 1200, 150);
- 
  hist.push({ date: dateStr, status: ods.status || 'Recibido', text: '', img: base64Img });
+ processedCount++;
+ } catch (imgErr) {
+ console.error('Error con imagen de galería', i, imgErr);
+ errorCount++;
+ // Continuar con la siguiente imagen
+ }
+ }
+ 
+ // Mostrar resumen si hubo errores
+ if (errorCount > 0) {
+ console.warn(`⚠️ ${errorCount} imagen(es) de galería no se pudieron procesar`);
  }
  
  progressText.innerText = "Guardando en la nube...";
