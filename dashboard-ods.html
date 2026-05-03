@@ -2952,25 +2952,51 @@
  }).join('') || '<div style="font-size:12px; color:var(--mac-text-muted);">Sin historial registrado.</div>';
 
  const photos = historial.map((h, idx) => ({ img: h.img, idx: idx })).filter(item => item.img);
+ // Variable global para fotos seleccionadas pero no subidas
+ window.pendingPhotos = [];
+
  const galleryHtml = `
  <div class="card" style="margin-top: 20px; border-color: var(--mac-blue);">
  <div class="card-title" style="display: flex; justify-content: space-between; align-items: center; color: var(--mac-blue);">
- <span>Galería de Evidencias (${photos.length})</span>
- <div style="display: flex; gap: 8px;">
- <button onclick="document.getElementById('gallery-upload-${o.id}').click()" style="background: var(--mac-blue); color: #fff; border: none; width: 28px; height: 28px; border-radius: 50%; font-size: 18px; cursor: pointer; display: flex; align-items: center; justify-content: center; line-height: 1;" title="Añadir fotos">+</button>
+ <span>📸 Gestión de Fotos</span>
  </div>
- <input type="file" id="gallery-upload-${o.id}" multiple accept="image/*" style="display: none;" onchange="window.uploadGalleryPhotos(event, '${o.id}')">
+ 
+ <!-- Botones de acción -->
+ <div style="display: flex; gap: 8px; margin-bottom: 15px; flex-wrap: wrap;">
+ <button type="button" onclick="document.getElementById('gallery-upload-${o.id}').click()" style="background: var(--mac-blue); color: white; border: none; padding: 10px 16px; border-radius: 6px; cursor: pointer; font-size: 13px; display: flex; align-items: center; gap: 6px; flex: 1; min-width: 140px;">
+ <span style="font-size: 16px;">📁</span> Seleccionar Fotos
+ </button>
+ <button type="button" id="btn-upload-gallery-${o.id}" onclick="window.uploadGalleryToStorage('${o.id}')" style="background: var(--mac-green); color: white; border: none; padding: 10px 16px; border-radius: 6px; cursor: pointer; font-size: 13px; display: none; align-items: center; gap: 6px; flex: 1; min-width: 140px;">
+ <span style="font-size: 16px;">☁️</span> Subir Fotos
+ </button>
+ <button type="button" onclick="window.clearGallerySelection('${o.id}')" style="background: transparent; border: 1px solid var(--mac-red); color: var(--mac-red); padding: 10px 16px; border-radius: 6px; cursor: pointer; font-size: 13px; display: flex; align-items: center; gap: 6px;">
+ <span style="font-size: 16px;">🗑️</span> Eliminar Todas
+ </button>
  </div>
- <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin-top: 15px;">
+ 
+ <!-- Status -->
+ <div id="gallery-status-${o.id}" style="color: var(--mac-green); font-size: 12px; display: none; margin-bottom: 10px; padding: 8px; background: rgba(48, 209, 88, 0.1); border-radius: 4px;"></div>
+ 
+ <!-- Input file oculto -->
+ <input type="file" id="gallery-upload-${o.id}" multiple accept="image/*" style="display: none;" onchange="window.previewGalleryPhotos(event, '${o.id}')">
+ 
+ <!-- Preview de fotos seleccionadas (pendientes) -->
+ <div id="gallery-pending-${o.id}" style="display: none; margin-bottom: 15px;">
+ <div style="font-size: 11px; color: var(--mac-text-muted); margin-bottom: 8px;">📸 Fotos listas para subir:</div>
+ <div id="gallery-pending-grid-${o.id}" style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px;"></div>
+ </div>
+ 
+ <!-- Fotos ya subidas -->
+ <div style="font-size: 11px; color: var(--mac-text-muted); margin-bottom: 8px;">☁️ Fotos en la nube (${photos.length}):</div>
+ <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px;">
  ${photos && photos.length > 0 ? `
  ${photos.map(p => `
  <div style="position: relative; aspect-ratio: 1; overflow: hidden; border-radius: 4px; border: 1px solid var(--mac-border); background: #111;">
  <img src="${p.img}" alt="Foto de equipo" style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s; cursor: zoom-in;" onclick="window.open(this.src)" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
-
- <button onclick="window.deleteGalleryPhoto('${o.id}', ${p.idx}, event)" style="position: absolute; top: 3px; right: 3px; background: rgba(0,0,0,0.6); color: white; border: none; border-radius: 4px; cursor: pointer; padding: 2px 6px; font-size: 9px;">X</button>
+ <button onclick="window.deleteGalleryPhoto('${o.id}', ${p.idx}, event)" style="position: absolute; top: 3px; right: 3px; background: rgba(255, 69, 58, 0.9); color: white; border: none; border-radius: 4px; cursor: pointer; padding: 2px 6px; font-size: 9px;">×</button>
  </div>
  `).join('')}
- ` : '<p style="color: #666; font-size: 11px; grid-column: span 5; text-align: center; padding: 10px;">Sin fotos en la galería.</p>'}
+ ` : '<p style="color: #666; font-size: 11px; grid-column: span 5; text-align: center; padding: 20px;">No hay fotos subidas. Selecciona fotos para comenzar.</p>'}
  </div>
  </div>
  `;
@@ -3072,24 +3098,7 @@
  <label>Anotaciones (Visibles en el Status de Cliente)</label>
  <textarea id="inp-new-text" class="form-control" placeholder="Describe los avances, piezas pedidas o finalización del servicio..."></textarea>
  </div>
- <div class="form-group" style="margin-bottom: 16px;">
- <label>Evidencia Fotográfica (Ilimitadas - Se guardan en la nube)</label>
- <div style="display: flex; gap: 10px; margin-bottom: 10px;">
- <button type="button" onclick="document.getElementById('inp-new-img').click()" style="background: var(--mac-blue); color: white; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; font-size: 14px; display: flex; align-items: center; gap: 8px; flex: 1;">
- <span style="font-size: 18px;">📁</span> Seleccionar Fotos
- </button>
- <button type="button" id="btn-upload-photos" onclick="window.uploadSelectedPhotos()" style="background: var(--mac-green); color: white; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; font-size: 14px; display: none; align-items: center; gap: 8px;">
- <span style="font-size: 18px;">☁️</span> Subir Fotos
- </button>
- </div>
- <input type="file" id="inp-new-img" accept="image/*" multiple style="display: none;" onchange="window.previewNewPhotos(event)">
- <div id="photo-status" style="color: var(--mac-green); font-size: 12px; display: none; margin-bottom: 8px;"></div>
- <div id="new-img-preview-wrapper" style="display: none; margin-top: 10px;">
- <div id="new-img-preview" style="display: grid; grid-template-columns: repeat(10, 1fr); gap: 4px;"></div>
- <button type="button" onclick="window.clearPhotoSelection()" style="background: transparent; border: 1px solid var(--mac-red); color: var(--mac-red); font-size: 10px; padding: 4px 8px; border-radius: 4px; margin-top: 8px; cursor: pointer;">Limpiar Selección</button>
- </div>
- </div>
- <button class="btn btn-primary" id="btn-add-event" style="width: 100%; justify-content: center; background: var(--mac-green); border-color: var(--mac-green);">Actualizar Historial</button>
+ <button class="btn btn-primary" id="btn-add-event" style="width: 100%; justify-content: center; background: var(--mac-green); border-color: var(--mac-green); margin-top: 10px;">Actualizar Historial</button>
  </div>
  </div>
 
@@ -3252,145 +3261,216 @@
  }
  };
 
- // Variable global para almacenar las URLs de fotos subidas
-window.uploadedPhotoUrls = [];
+ // ========== NUEVA GALERÍA DE FOTOS ==========
 
-window.previewNewPhotos = function(event) {
- const wrapper = document.getElementById('new-img-preview-wrapper');
- const container = document.getElementById('new-img-preview');
- const uploadBtn = document.getElementById('btn-upload-photos');
- const statusDiv = document.getElementById('photo-status');
+// Variable global para fotos pendientes de subir
+window.pendingPhotos = [];
+
+// Mostrar preview de fotos seleccionadas
+window.previewGalleryPhotos = function(event, odsId) {
  const files = event.target.files;
+ if (!files || files.length === 0) return;
  
- if(!files || files.length === 0) {
- wrapper.style.display = 'none';
+ // Agregar a pendingPhotos
+ for (let i = 0; i < files.length; i++) {
+ window.pendingPhotos.push({
+ file: files[i],
+ id: Date.now() + '_' + i,
+ odsId: odsId
+ });
+ }
+ 
+ // Mostrar contenedor de pendientes
+ const pendingDiv = document.getElementById(`gallery-pending-${odsId}`);
+ const pendingGrid = document.getElementById(`gallery-pending-grid-${odsId}`);
+ const uploadBtn = document.getElementById(`btn-upload-gallery-${odsId}`);
+ 
+ pendingDiv.style.display = 'block';
+ uploadBtn.style.display = 'flex';
+ 
+ // Renderizar preview
+ window.renderPendingPhotos(odsId);
+ 
+ // Limpiar input para permitir seleccionar mismos archivos
+ event.target.value = '';
+};
+
+// Renderizar fotos pendientes en el grid
+window.renderPendingPhotos = function(odsId) {
+ const pendingGrid = document.getElementById(`gallery-pending-grid-${odsId}`);
+ const uploadBtn = document.getElementById(`btn-upload-gallery-${odsId}`);
+ const pendingDiv = document.getElementById(`gallery-pending-${odsId}`);
+ 
+ // Filtrar solo las de esta ODS
+ const odsPhotos = window.pendingPhotos.filter(p => p.odsId === odsId);
+ 
+ if (odsPhotos.length === 0) {
+ pendingDiv.style.display = 'none';
  uploadBtn.style.display = 'none';
  return;
  }
-
- // Mostrar botón de subir
- uploadBtn.style.display = 'flex';
- statusDiv.style.display = 'none';
- wrapper.style.display = 'block';
- container.innerHTML = '';
- const fileList = Array.from(files);
  
- // Mostrar preview simple sin compresión pesada
- fileList.forEach((file, i) => {
+ pendingGrid.innerHTML = '';
+ 
+ odsPhotos.forEach((photo, index) => {
  const reader = new FileReader();
  reader.onload = (e) => {
  const slot = document.createElement('div');
- slot.id = `dash-slot-${i}`;
- slot.style.cssText = 'aspect-ratio: 1; border-radius: 4px; border: 1px solid var(--mac-border); background: #111; position: relative; width: 100%; display: flex; align-items: center; justify-content: center; overflow: hidden;';
+ slot.style.cssText = 'position: relative; aspect-ratio: 1; overflow: hidden; border-radius: 4px; border: 1px solid var(--mac-border); background: #111;';
  slot.innerHTML = `
  <img src="${e.target.result}" style="width: 100%; height: 100%; object-fit: cover;">
- <div id="photo-status-${i}" style="position: absolute; bottom: 2px; left: 2px; right: 2px; background: rgba(0,0,0,0.7); color: var(--mac-green); font-size: 8px; text-align: center; padding: 2px; border-radius: 2px; display: none;">Listo</div>
- <button type="button" onclick="window.removeSelectedPhoto(${i})" style="position: absolute; top: 2px; right: 2px; background: rgba(255, 69, 58, 0.9); color: white; border: none; border-radius: 50%; width: 20px; height: 20px; font-size: 12px; cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 10;">×</button>
+ <div id="pending-status-${photo.id}" style="position: absolute; bottom: 2px; left: 2px; right: 2px; background: rgba(0,0,0,0.7); color: var(--mac-green); font-size: 8px; text-align: center; padding: 2px; border-radius: 2px; display: none;">Listo</div>
+ <button type="button" onclick="window.removePendingPhoto('${photo.id}')" style="position: absolute; top: 2px; right: 2px; background: rgba(255, 69, 58, 0.9); color: white; border: none; border-radius: 50%; width: 20px; height: 20px; font-size: 12px; cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 10;">×</button>
  `;
- container.appendChild(slot);
+ pendingGrid.appendChild(slot);
  };
- reader.onerror = () => console.error('Error leyendo archivo:', file.name);
- reader.readAsDataURL(file);
+ reader.readAsDataURL(photo.file);
  });
 };
 
-// Función para subir fotos seleccionadas a Storage
-window.uploadSelectedPhotos = async function() {
- const fileInput = document.getElementById('inp-new-img');
- const uploadBtn = document.getElementById('btn-upload-photos');
- const statusDiv = document.getElementById('photo-status');
- 
- if (!fileInput.files || fileInput.files.length === 0) {
+// Eliminar una foto del preview
+window.removePendingPhoto = function(photoId) {
+ window.pendingPhotos = window.pendingPhotos.filter(p => p.id !== photoId);
+ // Re-renderizar todas las galerías afectadas
+ const odsId = window.currentSelectedId;
+ if (odsId) {
+ window.renderPendingPhotos(odsId);
+ }
+};
+
+// Eliminar todas las fotos seleccionadas
+window.clearGallerySelection = function(odsId) {
+ if (window.pendingPhotos.length === 0) {
  alert('No hay fotos seleccionadas');
  return;
  }
  
- // Obtener ODS actual
- const odsId = window.currentSelectedId || document.querySelector('.ods-item.active')?.dataset?.id;
- if (!odsId) {
- alert('Error: No se encontró la orden de servicio');
+ if (!confirm(`¿Eliminar ${window.pendingPhotos.length} foto(s) seleccionadas?`)) return;
+ 
+ window.pendingPhotos = window.pendingPhotos.filter(p => p.odsId !== odsId);
+ 
+ const pendingDiv = document.getElementById(`gallery-pending-${odsId}`);
+ const pendingGrid = document.getElementById(`gallery-pending-grid-${odsId}`);
+ const uploadBtn = document.getElementById(`btn-upload-gallery-${odsId}`);
+ const statusDiv = document.getElementById(`gallery-status-${odsId}`);
+ 
+ pendingDiv.style.display = 'none';
+ pendingGrid.innerHTML = '';
+ uploadBtn.style.display = 'none';
+ uploadBtn.disabled = false;
+ uploadBtn.innerHTML = '<span style="font-size: 16px;">☁️</span> Subir Fotos';
+ uploadBtn.style.background = 'var(--mac-green)';
+ statusDiv.style.display = 'none';
+};
+
+// Subir fotos a Supabase Storage
+window.uploadGalleryToStorage = async function(odsId) {
+ const odsPhotos = window.pendingPhotos.filter(p => p.odsId === odsId);
+ 
+ if (odsPhotos.length === 0) {
+ alert('No hay fotos seleccionadas');
  return;
  }
  
+ const uploadBtn = document.getElementById(`btn-upload-gallery-${odsId}`);
+ const statusDiv = document.getElementById(`gallery-status-${odsId}`);
+ 
  uploadBtn.disabled = true;
- uploadBtn.innerHTML = '<span style="font-size: 18px;">⏳</span> Subiendo...';
+ uploadBtn.innerHTML = '<span style="font-size: 16px;">⏳</span> Subiendo...';
  statusDiv.style.display = 'block';
  statusDiv.style.color = 'var(--mac-yellow)';
- statusDiv.innerText = `Subiendo 0 de ${fileInput.files.length} fotos...`;
+ statusDiv.innerText = `Comprimiendo y subiendo 0 de ${odsPhotos.length} fotos...`;
  
- window.uploadedPhotoUrls = [];
+ const ods = allODS.find(o => o.id === odsId);
+ let hist = JSON.parse(ods.notas || '[]');
+ const now = new Date();
+ const dateStr = now.toLocaleDateString('es-MX', { day: '2-digit', month: '2-digit', year: 'numeric' }) + ' ' +
+ now.toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit' });
+ 
  let uploadedCount = 0;
  let errorCount = 0;
  
- for (let i = 0; i < fileInput.files.length; i++) {
- const file = fileInput.files[i];
+ for (let i = 0; i < odsPhotos.length; i++) {
+ const photo = odsPhotos[i];
  try {
- statusDiv.innerText = `Subiendo foto ${i + 1} de ${fileInput.files.length}...`;
+ statusDiv.innerText = `Subiendo foto ${i + 1} de ${odsPhotos.length}...`;
+ 
+ // Comprimir al máximo y subir a Storage
+ const compressedBlob = await window.compressImageToBlob(photo.file, 800, 800, 0.5);
+ const timestamp = Date.now();
+ const fileName = `${odsId}/${timestamp}_${i}.jpg`;
  
  // Subir a Storage
- const url = await window.uploadPhotoToStorage(file, odsId, i);
- window.uploadedPhotoUrls.push(url);
+ const { data, error } = await supabaseClient.storage
+ .from('ods-photos')
+ .upload(fileName, compressedBlob, {
+ contentType: 'image/jpeg',
+ upsert: true
+ });
+ 
+ if (error) throw error;
+ 
+ // Obtener URL pública
+ const { data: urlData } = supabaseClient.storage
+ .from('ods-photos')
+ .getPublicUrl(fileName);
+ 
+ // Agregar al historial
+ hist.push({ 
+ date: dateStr, 
+ status: ods.status || 'Recibido', 
+ text: '', 
+ img: urlData.publicUrl 
+ });
+ 
  uploadedCount++;
  
- // Mostrar check en la miniatura
- const statusBadge = document.getElementById(`photo-status-${i}`);
+ // Mostrar check
+ const statusBadge = document.getElementById(`pending-status-${photo.id}`);
  if (statusBadge) {
  statusBadge.style.display = 'block';
- statusBadge.innerText = '✓ Subida';
+ statusBadge.innerText = '✓';
  }
  } catch (err) {
  console.error('Error subiendo foto', i, err);
  errorCount++;
- const statusBadge = document.getElementById(`photo-status-${i}`);
+ const statusBadge = document.getElementById(`pending-status-${photo.id}`);
  if (statusBadge) {
  statusBadge.style.display = 'block';
  statusBadge.style.color = 'var(--mac-red)';
- statusBadge.innerText = '✗ Error';
+ statusBadge.innerText = '✗';
  }
  }
  }
  
+ // Guardar en base de datos
  if (uploadedCount > 0) {
+ statusDiv.innerText = 'Guardando en base de datos...';
+ const newNotas = JSON.stringify(hist);
+ ods.notas = newNotas;
+ 
+ const { error } = await supabaseClient.from('ordenes_servicio')
+ .update({ notas: newNotas })
+ .eq('id', odsId);
+ 
+ if (error) throw error;
+ 
+ // Limpiar pendientes
+ window.pendingPhotos = window.pendingPhotos.filter(p => p.odsId !== odsId);
+ 
  statusDiv.style.color = 'var(--mac-green)';
- statusDiv.innerText = `✓ ${uploadedCount} foto(s) subidas. Ahora dale "Actualizar Historial" para guardarlas.`;
- uploadBtn.innerHTML = '<span style="font-size: 18px;">✓</span> Fotos Subidas';
- uploadBtn.style.background = 'var(--mac-green)';
+ statusDiv.innerText = `✓ ${uploadedCount} foto(s) subidas exitosamente`;
+ uploadBtn.innerHTML = '<span style="font-size: 16px;">✓</span> Completado';
+ 
+ // Refrescar vista
+ renderDetail(ods);
  } else {
  statusDiv.style.color = 'var(--mac-red)';
  statusDiv.innerText = 'Error: No se pudo subir ninguna foto';
  uploadBtn.disabled = false;
- uploadBtn.innerHTML = '<span style="font-size: 18px;">☁️</span> Reintentar Subir';
+ uploadBtn.innerHTML = '<span style="font-size: 16px;">☁️</span> Reintentar';
  }
 };
-
- window.removeSelectedPhoto = function(index) {
- const input = document.getElementById('inp-new-img');
- const dt = new DataTransfer();
- const files = input.files;
- 
- for (let i = 0; i < files.length; i++) {
- if (i !== index) dt.items.add(files[i]);
- }
- 
- input.files = dt.files;
- window.previewNewPhotos({ target: input });
- };
-
- window.clearPhotoSelection = function() {
- const input = document.getElementById('inp-new-img');
- const uploadBtn = document.getElementById('btn-upload-photos');
- const statusDiv = document.getElementById('photo-status');
- 
- input.value = '';
- window.uploadedPhotoUrls = [];
- document.getElementById('new-img-preview-wrapper').style.display = 'none';
- document.getElementById('new-img-preview').innerHTML = '';
- uploadBtn.style.display = 'none';
- uploadBtn.disabled = false;
- uploadBtn.innerHTML = '<span style="font-size: 18px;">☁️</span> Subir Fotos';
- uploadBtn.style.background = 'var(--mac-green)';
- statusDiv.style.display = 'none';
- };
 
 window.deleteGalleryPhoto = async function(odsId, noteIdx, e) {
  if(e) {
@@ -3413,62 +3493,6 @@ window.deleteGalleryPhoto = async function(odsId, noteIdx, e) {
  }
  };
 
- window.uploadGalleryPhotos = async function(event, odsId) {
- const files = event.target.files;
- if(!files || files.length === 0) return;
- 
- const overlay = document.getElementById('upload-progress-overlay');
- const progressText = document.getElementById('upload-progress-text');
- const ods = allODS.find(o => o.id === odsId);
- 
- try {
- overlay.style.display = 'flex';
- let hist = JSON.parse(ods.notas || '[]');
- const now = new Date();
- const dateStr = now.toLocaleDateString('es-MX', { day: '2-digit', month: '2-digit', year: 'numeric' }) + ' ' +
- now.toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit' });
- 
- // Procesar fotos con manejo de errores individual - MÁX 10 FOTOS
- let processedCount = 0;
- let errorCount = 0;
- const maxFiles = Math.min(files.length, 10);
- 
- for(let i=0; i<maxFiles; i++) {
- progressText.innerText = `Procesando foto ${i + 1} de ${maxFiles}...`;
- const file = files[i];
- 
- try {
- // Usar compresión ULTRA agresiva para galería (máx 50KB)
- const base64Img = await window.compressImage(file, 800, 800, 50);
- hist.push({ date: dateStr, status: ods.status || 'Recibido', text: '', img: base64Img });
- processedCount++;
- } catch (imgErr) {
- console.error('Error con imagen de galería', i, imgErr);
- errorCount++;
- // Continuar con la siguiente imagen
- }
- }
- 
- // Mostrar resumen si hubo errores
- if (errorCount > 0) {
- console.warn(`⚠️ ${errorCount} imagen(es) de galería no se pudieron procesar`);
- }
- 
- progressText.innerText = "Guardando en la nube...";
- const newNotas = JSON.stringify(hist);
- ods.notas = newNotas;
- const { error } = await supabaseClient.from('ordenes_servicio').update({notas: newNotas}).eq('id', odsId);
- if(error) throw error;
- 
- renderDetail(ods);
- } catch(e) {
- console.error("Upload error:", e);
- alert('Error al subir fotos: ' + e.message);
- } finally {
- overlay.style.display = 'none';
- event.target.value = ''; // Allow selecting same files again
- }
- };
 
  window.calculateBalance = function () {
  const montoTotal = parseFloat(document.getElementById('inp-monto')?.value) || 0;
