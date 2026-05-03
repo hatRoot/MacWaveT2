@@ -2939,28 +2939,136 @@
  </div>
  ` : ''}
 
- ${galleryHtml}
+ <style>
+.photo-slot {
+ aspect-ratio: 1;
+ border-radius: 6px;
+ border: 2px dashed #444;
+ background: #1a1a1a;
+ position: relative;
+ display: flex;
+ align-items: center;
+ justify-content: center;
+ transition: all 0.2s ease;
+ overflow: hidden;
+ min-height: 60px;
+}
+.photo-slot.ready {
+ border-style: solid;
+ border-color: var(--mac-green);
+ box-shadow: 0 0 0 1px var(--mac-green);
+}
+.photo-slot.uploaded {
+ border-color: var(--mac-blue);
+ opacity: 0.8;
+}
+.photo-slot.failed {
+ border-color: var(--mac-red);
+ opacity: 0.6;
+}
+.slot-number {
+ position: absolute;
+ top: 4px;
+ left: 4px;
+ background: rgba(0,0,0,0.7);
+ color: #fff;
+ font-size: 10px;
+ padding: 2px 6px;
+ border-radius: 3px;
+ font-weight: bold;
+ z-index: 5;
+}
+.slot-status {
+ font-size: 14px;
+}
+.slot-remove {
+ position: absolute;
+ top: 4px;
+ right: 4px;
+ background: rgba(255, 69, 58, 0.9);
+ color: white;
+ width: 18px;
+ height: 18px;
+ border-radius: 50%;
+ display: flex;
+ align-items: center;
+ justify-content: center;
+ font-size: 12px;
+ cursor: pointer;
+ opacity: 0;
+ transition: opacity 0.2s;
+ z-index: 10;
+ border: none;
+}
+.photo-slot:hover .slot-remove {
+ opacity: 1;
+}
+.progress-bar-container {
+ background: #333;
+ height: 4px;
+ border-radius: 2px;
+ overflow: hidden;
+ margin-top: 12px;
+}
+.progress-bar-fill {
+ background: var(--mac-green);
+ height: 100%;
+ width: 0%;
+ transition: width 0.3s;
+}
+</style>
 
- <div class="card" style="border-color: var(--mac-green);">
- <div class="card-title" style="color: var(--mac-green);">Registrar Avance</div>
- <div class="form-group" style="margin-bottom: 12px;">
- <label>Nuevo Estatus</label>
- <select id="inp-new-status" class="form-control">
- ${statusOptions}
- </select>
+<div class="form-group" style="margin-bottom: 12px;">
+<label>Nuevo Estatus</label>
+<select id="inp-new-status" class="form-control">
+${statusOptions}
+</select>
+</div>
+<div class="form-group" style="margin-bottom: 12px;">
+<label>Anotaciones (Visibles en el Status de Cliente)</label>
+<textarea id="inp-new-text" class="form-control" placeholder="Describe los avances, piezas pedidas o finalización del servicio..."></textarea>
+</div>
+
+<!-- PhotoFlow Module -->
+<div class="form-group photo-module" style="margin-bottom: 16px;">
+<label>📸 Evidencia Fotográfica <span id="photo-counter" style="color: var(--mac-text-muted); font-size: 11px;">(0 seleccionadas)</span></label>
+
+<!-- Botón Principal -->
+<button type="button" id="btn-select-photos" style="width: 100%; margin-bottom: 10px; background: var(--mac-blue); border: none; padding: 12px; border-radius: 6px; color: white; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 14px;">
+ <span style="font-size: 18px;">📁</span> Seleccionar Fotos (Ilimitadas)
+</button>
+<input type="file" id="inp-new-img" accept="image/*,image/webp,image/png,image/jpeg" multiple style="display: none;">
+
+<!-- Grid de Preview Numerado -->
+<div id="photo-queue-container" style="display: none; margin-top: 12px;">
+ <div style="font-size: 11px; color: var(--mac-text-muted); margin-bottom: 8px;">
+ Vista previa (pasa el mouse para eliminar):
  </div>
- <div class="form-group" style="margin-bottom: 12px;">
- <label>Anotaciones (Visibles en el Status de Cliente)</label>
- <textarea id="inp-new-text" class="form-control" placeholder="Describe los avances, piezas pedidas o finalización del servicio..."></textarea>
+ <div id="photo-queue-grid" style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; max-height: 300px; overflow-y: auto;">
+ <!-- Slots se generan dinámicamente -->
  </div>
- <div class="form-group" style="margin-bottom: 16px;">
- <label>Evidencia Fotográfica (Opcional - Selecciona múltiples)</label>
- <input type="file" id="inp-new-img" accept="image/*" multiple class="form-control" style="padding: 6px;" onchange="window.previewNewPhotos(event)">
- <div id="new-img-preview-wrapper" style="display: none; margin-top: 10px;">
- <div id="new-img-preview" style="display: grid; grid-template-columns: repeat(10, 1fr); gap: 4px;"></div>
- <button type="button" onclick="window.clearPhotoSelection()" style="background: transparent; border: 1px solid var(--mac-red); color: var(--mac-red); font-size: 10px; padding: 4px 8px; border-radius: 4px; margin-top: 8px; cursor: pointer;">Limpiar Selección</button>
+
+ <!-- Barra de Progreso -->
+ <div id="upload-progress" style="display: none;">
+ <div class="progress-bar-container">
+ <div id="upload-progress-bar" class="progress-bar-fill"></div>
+ </div>
+ <div id="upload-progress-text" style="font-size: 10px; color: var(--mac-text-muted); margin-top: 4px; text-align: center;">
+ Listo para subir
  </div>
  </div>
+
+ <!-- Controles -->
+ <div style="display: flex; gap: 8px; margin-top: 12px;">
+ <button type="button" id="btn-clear-photos" style="flex: 1; background: transparent; border: 1px solid var(--mac-red); color: var(--mac-red); padding: 10px; border-radius: 6px; cursor: pointer; font-size: 12px;">
+ 🗑️ Limpiar Todo
+ </button>
+ <button type="button" id="btn-upload-photos" style="flex: 2; background: var(--mac-green); color: white; border: none; padding: 10px; border-radius: 6px; cursor: pointer; font-size: 12px; display: none;">
+ ☁️ Subir <span id="upload-count">0</span> Fotos
+ </button>
+ </div>
+</div>
+</div>
  <button class="btn btn-primary" id="btn-add-event" style="width: 100%; justify-content: center; background: var(--mac-green); border-color: var(--mac-green);">Actualizar Historial</button>
  </div>
  </div>
@@ -3119,96 +3227,386 @@
  }
  };
 
- window.previewNewPhotos = async function(event) {
- const wrapper = document.getElementById('new-img-preview-wrapper');
- const container = document.getElementById('new-img-preview');
- container.innerHTML = '';
- const files = event.target.files;
- 
- if(!files || files.length === 0) {
- wrapper.style.display = 'none';
- return;
- }
+// ========== PHOTOFLOW V2 - SISTEMA DE GESTIÓN DE FOTOS ==========
 
- if (files.length > 30) {
-  alert("SISTEMA: Solo se permiten un máximo de 30 fotografías por actualización.");
-  event.target.value = '';
-  wrapper.style.display = 'none';
-  return;
- }
+window.PhotoFlow = {
+ queue: [],
+ maxConcurrent: 3,
+ isProcessing: false,
 
- wrapper.style.display = 'block';
- const fileList = Array.from(files);
- 
- // Clear and recreate slots
- container.innerHTML = '';
- for (let i = 0; i < 30; i++) {
+ init() {
+ const selectBtn = document.getElementById('btn-select-photos');
+ const fileInput = document.getElementById('inp-new-img');
+
+ if (selectBtn) selectBtn.onclick = () => fileInput?.click();
+ if (fileInput) fileInput.onchange = (e) => this.handleSelection(e.target.files);
+
+ const clearBtn = document.getElementById('btn-clear-photos');
+ const uploadBtn = document.getElementById('btn-upload-photos');
+
+ if (clearBtn) clearBtn.onclick = () => this.clearQueue();
+ if (uploadBtn) uploadBtn.onclick = () => this.startUpload();
+ },
+
+ async handleSelection(files) {
+ if (!files || !files.length) return;
+
+ // Agregar a cola
+ const startIndex = this.queue.length;
+ Array.from(files).forEach((file, i) => {
+ this.queue.push({
+ file,
+ id: `photo-${Date.now()}-${startIndex + i}`,
+ index: startIndex + i + 1,
+ status: 'pending'
+ });
+ });
+
+ // UI: Mostrar contenedor
+ const container = document.getElementById('photo-queue-container');
+ const uploadBtn = document.getElementById('btn-upload-photos');
+ const counter = document.getElementById('photo-counter');
+
+ if (container) container.style.display = 'block';
+ if (uploadBtn) uploadBtn.style.display = 'block';
+ if (counter) counter.textContent = `(${this.queue.length} seleccionadas)`;
+
+ document.getElementById('upload-count').textContent = this.queue.length;
+
+ // Renderizar slots
+ await this.renderSlots();
+
+ // Generar thumbnails en paralelo (throttled)
+ await this.generateThumbnails();
+ },
+
+ async renderSlots() {
+ const grid = document.getElementById('photo-queue-grid');
+ if (!grid) return;
+
+ grid.innerHTML = '';
+
+ this.queue.forEach(item => {
  const slot = document.createElement('div');
- slot.id = `dash-slot-${i}`;
- slot.style.cssText = 'aspect-ratio: 1; border-radius: 4px; border: 1px dashed #444; background: #111; position: relative; width: 100%; display: flex; align-items: center; justify-content: center; color: #333; font-size: 10px;';
- slot.innerText = i + 1;
- container.appendChild(slot);
- }
+ slot.id = item.id;
+ slot.className = 'photo-slot';
+ slot.innerHTML = `
+ <div class="slot-number">${item.index}</div>
+ <div class="slot-status">⏳</div>
+ <button type="button" class="slot-remove" onclick="PhotoFlow.removeItem('${item.id}')">×</button>
+ `;
+ grid.appendChild(slot);
+ });
+ },
 
- for (let i = 0; i < fileList.length; i++) {
- const file = fileList[i];
- try {
- const dataUrl = await new Promise((resolve, reject) => {
+ async generateThumbnails() {
+ const batchSize = this.maxConcurrent;
+
+ for (let i = 0; i < this.queue.length; i += batchSize) {
+ const batch = this.queue.slice(i, i + batchSize);
+ await Promise.all(batch.map(item => this.createThumbnail(item)));
+ }
+ },
+
+ createThumbnail(item) {
+ return new Promise((resolve) => {
  const reader = new FileReader();
  reader.onload = (e) => {
  const img = new Image();
  img.onload = () => {
  const canvas = document.createElement('canvas');
  const ctx = canvas.getContext('2d');
- const SIZE = 400; // Preview size
- canvas.width = SIZE;
- canvas.height = SIZE;
+ const size = 200;
+ canvas.width = size;
+ canvas.height = size;
+
  const minDim = Math.min(img.width, img.height);
- const sX = (img.width - minDim) / 2;
- const sY = (img.height - minDim) / 2;
- ctx.drawImage(img, sX, sY, minDim, minDim, 0, 0, SIZE, SIZE);
- resolve(canvas.toDataURL('image/jpeg', 0.7));
+ const sx = (img.width - minDim) / 2;
+ const sy = (img.height - minDim) / 2;
+ ctx.drawImage(img, sx, sy, minDim, minDim, 0, 0, size, size);
+
+ item.thumbnail = canvas.toDataURL('image/jpeg', 0.6);
+
+ const slot = document.getElementById(item.id);
+ if (slot) {
+ slot.style.backgroundImage = `url(${item.thumbnail})`;
+ slot.style.backgroundSize = 'cover';
+ slot.classList.add('ready');
+ const status = slot.querySelector('.slot-status');
+ if (status) status.textContent = '✓';
+ }
+
+ resolve();
  };
+ img.src = e.target.result;
+ };
+ reader.readAsDataURL(item.file);
+ });
+ },
+
+ removeItem(id) {
+ const index = this.queue.findIndex(item => item.id === id);
+ if (index === -1) return;
+
+ this.queue.splice(index, 1);
+
+ // Re-indexar
+ this.queue.forEach((item, i) => {
+ item.index = i + 1;
+ item.id = `photo-${Date.now()}-${i}`;
+ });
+
+ this.renderSlots();
+ this.updateStats();
+
+ if (this.queue.length === 0) {
+ this.clearQueue();
+ }
+ },
+
+ clearQueue() {
+ if (!this.queue.length) return;
+ if (!confirm(`¿Eliminar ${this.queue.length} fotos seleccionadas?`)) return;
+
+ this.queue = [];
+ const container = document.getElementById('photo-queue-container');
+ const grid = document.getElementById('photo-queue-grid');
+ const uploadBtn = document.getElementById('btn-upload-photos');
+ const progress = document.getElementById('upload-progress');
+ const counter = document.getElementById('photo-counter');
+ const fileInput = document.getElementById('inp-new-img');
+
+ if (container) container.style.display = 'none';
+ if (grid) grid.innerHTML = '';
+ if (uploadBtn) {
+ uploadBtn.style.display = 'none';
+ uploadBtn.disabled = false;
+ uploadBtn.innerHTML = '☁️ Subir <span id="upload-count">0</span> Fotos';
+ }
+ if (progress) progress.style.display = 'none';
+ if (counter) counter.textContent = '(0 seleccionadas)';
+ if (fileInput) fileInput.value = '';
+
+ document.getElementById('upload-count').textContent = '0';
+ },
+
+ updateStats() {
+ const counter = document.getElementById('photo-counter');
+ const uploadCount = document.getElementById('upload-count');
+ if (counter) counter.textContent = `(${this.queue.length} seleccionadas)`;
+ if (uploadCount) uploadCount.textContent = this.queue.length;
+ },
+
+ async startUpload() {
+ const odsId = window.currentSelectedId;
+ if (!odsId) {
+ alert('Error: No se identificó la orden de servicio');
+ return;
+ }
+
+ const uploadBtn = document.getElementById('btn-upload-photos');
+ const progressDiv = document.getElementById('upload-progress');
+ const progressBar = document.getElementById('upload-progress-bar');
+ const progressText = document.getElementById('upload-progress-text');
+
+ if (uploadBtn) uploadBtn.disabled = true;
+ if (uploadBtn) uploadBtn.textContent = '⏳ Procesando...';
+ if (progressDiv) progressDiv.style.display = 'block';
+
+ const ods = window.allODS?.find(o => o.id === odsId);
+ if (!ods) {
+ alert('Error: ODS no encontrada');
+ return;
+ }
+
+ let hist = [];
+ try {
+ hist = JSON.parse(ods.notas || '[]');
+ if (!Array.isArray(hist)) hist = [];
+ } catch (e) {
+ hist = [];
+ }
+
+ const now = new Date();
+ const dateStr = now.toLocaleDateString('es-MX', { day: '2-digit', month: '2-digit', year: 'numeric' }) + ' ' +
+ now.toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit' });
+
+ const photoUrls = [];
+ const total = this.queue.length;
+ let completed = 0;
+
+ // Procesar en chunks de 3
+ const chunkSize = 3;
+
+ for (let i = 0; i < this.queue.length; i += chunkSize) {
+ const chunk = this.queue.slice(i, i + chunkSize);
+
+ if (progressText) {
+ progressText.textContent = `Comprimiendo y subiendo ${i + 1}-${Math.min(i + chunkSize, total)} de ${total}...`;
+ }
+
+ const results = await Promise.allSettled(
+ chunk.map(async (item) => {
+ try {
+ // Comprimir
+ const compressed = await this.compressImage(item.file);
+
+ // Generar nombre único
+ const timestamp = Date.now();
+ const fileName = `ods_${odsId}/${timestamp}_${item.index}.webp`;
+
+ // Subir a Storage
+ const { data, error } = await supabaseClient.storage
+ .from('ods-photos')
+ .upload(fileName, compressed, {
+ contentType: 'image/webp',
+ upsert: false
+ });
+
+ if (error) throw error;
+
+ // Obtener URL pública
+ const { data: publicUrl } = supabaseClient.storage
+ .from('ods-photos')
+ .getPublicUrl(fileName);
+
+ // Actualizar UI
+ const slot = document.getElementById(item.id);
+ if (slot) {
+ slot.classList.add('uploaded');
+ const status = slot.querySelector('.slot-status');
+ if (status) status.textContent = '☁️';
+ }
+
+ return publicUrl.publicUrl;
+ } catch (err) {
+ console.error('Error subiendo foto:', err);
+
+ const slot = document.getElementById(item.id);
+ if (slot) {
+ slot.classList.add('failed');
+ const status = slot.querySelector('.slot-status');
+ if (status) {
+ status.textContent = '✗';
+ status.style.color = 'var(--mac-red)';
+ }
+ }
+
+ throw err;
+ }
+ })
+ );
+
+ results.forEach(result => {
+ if (result.status === 'fulfilled') {
+ photoUrls.push(result.value);
+ }
+ });
+
+ completed += chunk.length;
+ if (progressBar) {
+ progressBar.style.width = `${(completed / total) * 100}%`;
+ }
+ }
+
+ // Guardar en base de datos
+ if (photoUrls.length > 0) {
+ if (progressText) progressText.textContent = 'Guardando metadatos...';
+
+ const newEntry = {
+ date: dateStr,
+ status: document.getElementById('inp-new-status')?.value || ods.status,
+ text: document.getElementById('inp-new-text')?.value || '',
+ photos: photoUrls
+ };
+
+ hist.push(newEntry);
+
+ const newNotas = JSON.stringify(hist);
+ const { error } = await supabaseClient
+ .from('ordenes_servicio')
+ .update({ notas: newNotas })
+ .eq('id', odsId);
+
+ if (error) throw error;
+
+ ods.notas = newNotas;
+ const idx = window.allODS?.findIndex(x => x.id === odsId);
+ if (idx > -1 && window.allODS) window.allODS[idx].notas = newNotas;
+
+ // Limpiar cola
+ this.queue = [];
+
+ if (progressText) {
+ progressText.textContent = `✓ ${photoUrls.length} de ${total} fotos subidas`;
+ progressText.style.color = 'var(--mac-green)';
+ }
+ if (uploadBtn) {
+ uploadBtn.textContent = '✓ Completado';
+ uploadBtn.style.background = 'var(--mac-green)';
+ }
+
+ // Refrescar vista
+ setTimeout(() => {
+ if (window.renderDetail) window.renderDetail(ods);
+ }, 800);
+ } else {
+ if (progressText) {
+ progressText.textContent = 'Error: No se pudo subir ninguna foto';
+ progressText.style.color = 'var(--mac-red)';
+ }
+ if (uploadBtn) {
+ uploadBtn.disabled = false;
+ uploadBtn.textContent = '☁️ Reintentar';
+ }
+ }
+ },
+
+ compressImage(file) {
+ return new Promise((resolve, reject) => {
+ const reader = new FileReader();
+ reader.onload = (e) => {
+ const img = new Image();
+ img.onload = () => {
+ const canvas = document.createElement('canvas');
+ const ctx = canvas.getContext('2d');
+
+ let { width, height } = img;
+ const maxDim = 1200;
+
+ if (width > maxDim || height > maxDim) {
+ const ratio = Math.min(maxDim / width, maxDim / height);
+ width = Math.floor(width * ratio);
+ height = Math.floor(height * ratio);
+ }
+
+ canvas.width = width;
+ canvas.height = height;
+ ctx.drawImage(img, 0, 0, width, height);
+
+ // WebP con calidad 0.5 (agresivo pero óptimo)
+ canvas.toBlob((blob) => {
+ if (!blob) {
+ reject(new Error('Compresión fallida'));
+ return;
+ }
+ resolve(blob);
+ }, 'image/webp', 0.5);
+ };
+ img.onerror = reject;
  img.src = e.target.result;
  };
  reader.onerror = reject;
  reader.readAsDataURL(file);
  });
+ }
+};
 
- const slot = document.getElementById(`dash-slot-${i}`);
- slot.style.borderStyle = 'solid';
- slot.style.borderColor = 'var(--mac-border)';
- slot.innerText = '';
- slot.innerHTML = `
- <img src="${dataUrl}" alt="Vista previa de evidencia" style="width: 100%; height: 100%; object-fit: cover;">
- <button type="button" onclick="window.removeSelectedPhoto(${i})" style="position: absolute; top: 1px; right: 1px; background: rgba(255, 69, 58, 0.9); color: white; border: none; border-radius: 50%; width: 14px; height: 14px; font-size: 9px; cursor: pointer; display: flex; align-items: center; justify-content: center;">×</button>
- `;
- } catch (err) {
- console.error("Error reading file:", err);
- }
- }
- };
-
- window.removeSelectedPhoto = function(index) {
- const input = document.getElementById('inp-new-img');
- const dt = new DataTransfer();
- const files = input.files;
- 
- for (let i = 0; i < files.length; i++) {
- if (i !== index) dt.items.add(files[i]);
- }
- 
- input.files = dt.files;
- window.previewNewPhotos({ target: input });
- };
-
- window.clearPhotoSelection = function() {
- const input = document.getElementById('inp-new-img');
- input.value = '';
- document.getElementById('new-img-preview-wrapper').style.display = 'none';
- document.getElementById('new-img-preview').innerHTML = '';
- };
- }
+// Inicializar PhotoFlow cuando el DOM esté listo
+document.addEventListener('DOMContentLoaded', () => {
+ window.PhotoFlow.init();
+});
+}
 
  window.deleteGalleryPhoto = async function(odsId, noteIdx, e) {
  if(e) {
