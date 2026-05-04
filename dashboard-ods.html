@@ -1565,6 +1565,8 @@
  let allODS = [];
  let allTickets = [];
  let currentSelectedId = null;
+ /** Misma orden que lista/kanban; PhotoFlow debe leer desde window.*/
+ window.currentSelectedId = null;
  let currentView = 'list'; // 'list' or 'kanban'
 
  const userRole = sessionStorage.getItem('macwave_user');
@@ -2740,6 +2742,7 @@
 
  function openODSFromKanban(id) {
  currentSelectedId = id;
+ window.currentSelectedId = id;
  const ods = allODS.find(o => o.id === id);
  switchView('list');
  renderDetail(ods);
@@ -2779,6 +2782,7 @@
  `;
  item.onclick = () => {
  currentSelectedId = o.id;
+ window.currentSelectedId = o.id;
  renderSidebar(document.getElementById('search-input').value);
  renderDetail(o);
  };
@@ -2791,6 +2795,9 @@
  });
 
  function renderDetail(o) {
+ currentSelectedId = o.id;
+ window.currentSelectedId = o.id;
+
  const isJoel = sessionStorage.getItem('macwave_user') === 'joel.duran.mendoza@me.com' || sessionStorage.getItem('macwave_user') === 'joel';
  const detailView = document.getElementById('detail-view');
  const statusColor = getStatusColor(o.status);
@@ -3146,6 +3153,7 @@ ${statusOptions}
 
  allODS = allODS.filter(x => x.id !== o.id);
  currentSelectedId = null;
+ window.currentSelectedId = null;
  renderSidebar(document.getElementById('search-input').value);
  document.getElementById('detail-view').innerHTML = `<div class="empty-selection"><h3>Orden Eliminada</h3></div>`;
  } catch (e) {
@@ -3379,7 +3387,7 @@ uploadBtn.style.background = 'var(--mac-green)';
  },
 
  async startUpload() {
- const odsId = window.currentSelectedId;
+ const odsId = window.currentSelectedId || currentSelectedId;
  if (!odsId) {
  alert('Error: No se identificó la orden de servicio');
  return;
