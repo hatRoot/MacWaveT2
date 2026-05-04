@@ -664,14 +664,27 @@
  <div style="color: var(--muted); font-size: 0.75rem;">${ev.date}</div>
  </div>
  </div>
- ${ev.text && !ev.text.startsWith('Cambio de estatus vía Tablero') ? `<div style="font-size: 0.88rem; color: #E0E0E6; line-height: 1.5;">${ev.text.replace(/\\n/g, '<br>')}</div>` : ''}
- ${ev.img ? `<div style="margin-top: 12px;"><img src="${ev.img}" style="max-width: 100%; border-radius: 8px; border: 1px solid var(--border);" alt="Evidencia Técnica"></div>` : ''}
+${ev.text && !ev.text.startsWith('Cambio de estatus vía Tablero') ? `<div style="font-size: 0.88rem; color: #E0E0E6; line-height: 1.5;">${ev.text.replace(/\\n/g, '<br>')}</div>` : ''}
+${(() => {
+const evPhotos = [];
+if (ev.img) evPhotos.push(ev.img);
+if (Array.isArray(ev.photos)) evPhotos.push(...ev.photos.filter(Boolean));
+if (!evPhotos.length) return '';
+return `<div style="margin-top: 12px; display:grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 8px;">
+${evPhotos.map((p, idx) => `<img src="${p}" style="width:100%; height:120px; object-fit:cover; border-radius: 8px; border: 1px solid var(--border);" alt="Evidencia Técnica ${idx + 1}">`).join('')}
+</div>`;
+})()}
  </div>
  </div>
  `;
  }).join('');
 
- const photos = historial.filter(h => h.img).map(h => h.img);
+const photos = historial.flatMap(h => {
+const list = [];
+if (h.img) list.push(h.img);
+if (Array.isArray(h.photos)) list.push(...h.photos.filter(Boolean));
+return list;
+});
  const galleryHtml = photos.length > 0 ? `
  <div style="margin-top: 40px; padding-top: 30px; border-top: 1px solid rgba(255,255,255,0.05);">
  <div class="tracker-title" style="margin-bottom: 20px; color: #fff; font-size: 1.1rem; letter-spacing: 1px;">EVIDENCIAS FOTOGRÁFICAS</div>
