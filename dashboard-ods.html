@@ -3034,7 +3034,7 @@ ${statusOptions}
 <label>📸 Evidencia Fotográfica <span id="photo-counter" style="color: var(--mac-text-muted); font-size: 11px;">(0 seleccionadas)</span></label>
 
 <!-- Botón Principal -->
-<button type="button" id="btn-select-photos" style="width: 100%; margin-bottom: 10px; background: var(--mac-blue); border: none; padding: 12px; border-radius: 6px; color: white; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 14px;">
+<button type="button" id="btn-select-photos" onclick="document.getElementById('inp-new-img')?.click()" style="width: 100%; margin-bottom: 10px; background: var(--mac-blue); border: none; padding: 12px; border-radius: 6px; color: white; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 14px;">
  <span style="font-size: 18px;">📁</span> Seleccionar Fotos (Ilimitadas)
 </button>
 <input type="file" id="inp-new-img" accept="image/*,image/webp,image/png,image/jpeg" multiple style="display: none;">
@@ -3069,7 +3069,7 @@ ${statusOptions}
  </div>
 </div>
 </div>
- <button class="btn btn-primary" id="btn-add-event" style="width: 100%; justify-content: center; background: var(--mac-green); border-color: var(--mac-green);">Actualizar Historial</button>
+ <button type="button" class="btn btn-primary" id="btn-add-event" style="width: 100%; justify-content: center; background: var(--mac-green); border-color: var(--mac-green);">Actualizar Historial</button>
  </div>
  </div>
 
@@ -3235,8 +3235,15 @@ window.PhotoFlow = {
  isProcessing: false,
 
  init() {
+ this.queue = [];
+ this.isProcessing = false;
  const selectBtn = document.getElementById('btn-select-photos');
  const fileInput = document.getElementById('inp-new-img');
+ if (fileInput) fileInput.value = '';
+ const pq = document.getElementById('photo-queue-container');
+ if (pq) pq.style.display = 'none';
+ const pc = document.getElementById('photo-counter');
+ if (pc) pc.textContent = '(0 seleccionadas)';
 
  if (selectBtn) selectBtn.onclick = () => fileInput?.click();
  if (fileInput) fileInput.onchange = (e) => this.handleSelection(e.target.files);
@@ -3602,10 +3609,8 @@ window.PhotoFlow = {
  }
 };
 
-// Inicializar PhotoFlow cuando el DOM esté listo
-document.addEventListener('DOMContentLoaded', () => {
+ // DOMContentLoaded ya pasó al cargar la página; al renderizar el detalle hay que enlazar controles ahora.
  window.PhotoFlow.init();
-});
 }
 
  window.deleteGalleryPhoto = async function(odsId, noteIdx, e) {
