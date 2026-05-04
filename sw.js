@@ -1,11 +1,11 @@
 // Service Worker for macWave Mexico - Performance & Caching
-const CACHE_NAME = 'macwave-v1.2.0';
+const CACHE_NAME = 'macwave-v1.2.1';
 const urlsToCache = [
   '/',
   '/style.css?v=26.2.0',
   '/script.js?v=26.2.0',
   '/images/favicon1.png',
-  '/images/og-image.jpg',
+  '/images/dispositivos.jpg',
   'https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap'
 ];
 
