@@ -107,6 +107,36 @@
  font-weight: 600;
  cursor: pointer;
  }
+
+.item-subtitle {
+white-space: normal;
+overflow: visible;
+text-overflow: clip;
+word-break: break-word;
+}
+
+.detail-header {
+padding: 16px;
+flex-direction: column;
+align-items: flex-start;
+gap: 10px;
+}
+
+.detail-content {
+padding: 16px;
+grid-template-columns: 1fr;
+gap: 16px;
+}
+
+.detail-header > div:last-child {
+width: 100%;
+display: flex;
+gap: 8px;
+}
+
+.detail-header > div:last-child .btn {
+flex: 1;
+}
  }
 
  .mobile-toggle-btn {
@@ -403,6 +433,14 @@
  margin-bottom: 4px;
  display: flex;
  justify-content: space-between;
+gap: 8px;
+}
+
+.item-title span:first-child {
+min-width: 0;
+overflow: hidden;
+text-overflow: ellipsis;
+white-space: nowrap;
  }
 
  .item-subtitle {
@@ -895,6 +933,7 @@
  letter-spacing: -1px;
  color: #ffffff;
  margin-bottom: 4px;
+word-break: break-word;
  }
 
  .kanban-card:active {
@@ -2543,8 +2582,11 @@
  const board = document.getElementById('kanban-board');
  board.innerHTML = '';
 
- // Get unique statuses in order from CONFIG, excluding 'Nota General'
- const statuses = Object.keys(STATUS_CONFIG).filter(s => s !== 'Nota General');
+// Include configured statuses plus any custom status present in DB
+const configuredStatuses = Object.keys(STATUS_CONFIG).filter(s => s !== 'Nota General');
+const dynamicStatuses = [...new Set(allODS.map(o => (o.status || 'Recibido')).filter(Boolean))]
+ .filter(s => s !== 'Nota General' && !configuredStatuses.includes(s));
+const statuses = [...configuredStatuses, ...dynamicStatuses];
 
  statuses.forEach(status => {
  const columnODS = allODS.filter(o => (o.status || 'Recibido') === status);
@@ -2759,6 +2801,12 @@
  (o.cliente || '').toLowerCase().includes(q) ||
  (o.serie || '').toLowerCase().includes(q);
  });
+
+filtered.sort((a, b) => {
+ const ad = new Date(a.created_at || a.fecha || 0).getTime();
+ const bd = new Date(b.created_at || b.fecha || 0).getTime();
+ return bd - ad;
+});
 
  if (filtered.length === 0) {
  listContainer.innerHTML = '<div style="padding: 20px; text-align: center; color: var(--mac-text-muted); font-size: 12px;">No hay resultados</div>';
@@ -3741,6 +3789,13 @@ if(hist[noteIdx]) {
  timeInput.value = now.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
  }
  if (window.toggleCalendarButtons) window.toggleCalendarButtons();
+
+// Refresh periódicamente para mostrar ODS nuevas sin recargar manualmente.
+if (!window.__mwRefreshInterval) {
+ window.__mwRefreshInterval = setInterval(() => {
+ if (!document.hidden) loadData();
+ }, 30000);
+}
  });
  </script>
 </body>
