@@ -3406,7 +3406,8 @@ if (!this.queue.length) {
  if (uploadBtn) uploadBtn.textContent = '⏳ Procesando...';
  if (progressDiv) progressDiv.style.display = 'block';
 
- const ods = window.allODS?.find(o => o.id === odsId);
+ const odsSource = (Array.isArray(window.allODS) && window.allODS.length) ? window.allODS : allODS;
+ const ods = odsSource?.find(o => o.id === odsId);
  if (!ods) {
  alert('Error: ODS no encontrada');
  return;
@@ -3524,8 +3525,12 @@ contentType: 'image/jpeg',
  if (error) throw error;
 
  ods.notas = newNotas;
- const idx = window.allODS?.findIndex(x => x.id === odsId);
- if (idx > -1 && window.allODS) window.allODS[idx].notas = newNotas;
+ const idxLocal = allODS.findIndex(x => x.id === odsId);
+ if (idxLocal > -1) allODS[idxLocal].notas = newNotas;
+ if (Array.isArray(window.allODS)) {
+ const idxWindow = window.allODS.findIndex(x => x.id === odsId);
+ if (idxWindow > -1) window.allODS[idxWindow].notas = newNotas;
+ }
 
  // Limpiar cola
  this.queue = [];
