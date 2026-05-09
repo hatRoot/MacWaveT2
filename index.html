@@ -87,6 +87,110 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="mobile-web-app-capable" content="yes">
 
+  <!-- Schema.org JSON-LD - LocalBusiness + WebSite + SearchAction -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebSite",
+        "@id": "https://macwave.com.mx/#website",
+        "url": "https://macwave.com.mx/",
+        "name": "macWave México - Reparación Mac Nivel Componente",
+        "description": "Especialistas en reparación Mac a nivel componente en CDMX. 18 años de experiencia, 2 años de garantía.",
+        "publisher": { "@id": "https://macwave.com.mx/#localbusiness" },
+        "potentialAction": {
+          "@type": "SearchAction",
+          "target": {
+            "@type": "EntryPoint",
+            "urlTemplate": "https://macwave.com.mx/?s={search_term_string}"
+          },
+          "query-input": "required name=search_term_string"
+        }
+      },
+      {
+        "@type": "LocalBusiness",
+        "@id": "https://macwave.com.mx/#localbusiness",
+        "name": "macWave México",
+        "alternateName": "Mac Wave T2",
+        "url": "https://macwave.com.mx/",
+        "logo": "https://macwave.com.mx/images/logo_dashboard_white.png",
+        "image": [
+          "https://macwave.com.mx/images/dispositivos.jpg",
+          "https://macwave.com.mx/images/bateria_solucion.jpg"
+        ],
+        "description": "Especialistas en reparación Mac a nivel componente en CDMX. Baterías con 2 años de garantía por escrito. Servicio mismo día.",
+        "telephone": "+525535757364",
+        "email": "contacto@macwave.com.mx",
+        "priceRange": "$$",
+        "currenciesAccepted": "MXN",
+        "paymentAccepted": "Efectivo, Transferencia, Tarjeta de crédito/debito",
+        "areaServed": {
+          "@type": "Place",
+          "name": "Ciudad de México y área metropolitana"
+        },
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "Servicio a Domicilio y Recolección en CDMX",
+          "addressLocality": "Ciudad de México",
+          "addressRegion": "CDMX",
+          "postalCode": "11560",
+          "addressCountry": "MX"
+        },
+        "geo": {
+          "@type": "GeoCoordinates",
+          "latitude": "19.432608",
+          "longitude": "-99.133209"
+        },
+        "openingHoursSpecification": [
+          {
+            "@type": "OpeningHoursSpecification",
+            "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+            "opens": "09:00",
+            "closes": "20:00"
+          },
+          {
+            "@type": "OpeningHoursSpecification",
+            "dayOfWeek": "Saturday",
+            "opens": "10:00",
+            "closes": "16:00"
+          }
+        ],
+        "sameAs": [
+          "https://www.facebook.com/macwavemx",
+          "https://www.instagram.com/macwavemx",
+          "https://wa.me/525535757364"
+        ],
+        "hasOfferCatalog": {
+          "@type": "OfferCatalog",
+          "name": "Servicios de Reparación Mac",
+          "itemListElement": [
+            { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Cambio de Batería MacBook" } },
+            { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Reparación de Tarjeta Lógica" } },
+            { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Cambio de Teclado MacBook" } },
+            { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Mac Mojada - Urgencia" } },
+            { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Reparación Flexgate" } }
+          ]
+        }
+      },
+      {
+        "@type": "BreadcrumbList",
+        "@id": "https://macwave.com.mx/#breadcrumb",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "item": {
+              "@id": "https://macwave.com.mx/",
+              "name": "Inicio"
+            }
+          }
+        ]
+      }
+    ]
+  }
+  </script>
+
   <!-- Performance Optimization: Preload Critical Assets -->
   <link rel="preload" href="./images/logo_dashboard_white.png" as="image">
   <link rel="preload" href="./images/dispositivos.jpg" as="image">
