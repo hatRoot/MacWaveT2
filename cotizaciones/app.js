@@ -228,7 +228,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 <div style="margin-top: 10px; font-size: 7.5px; display: flex; justify-content: space-between; align-items: flex-end; color: #444; position: relative;">
                     <div style="width: 33%;"><strong>ESPECIALISTAS EN TECNOLOGIA ROLDU SAS. DE C.V</strong></div>
-                    <div style="width: 33%; text-align: center;">Visitanos en sucursal Condesa<br>Salvador Alvarado 72 oficina 208, Escandon. cdmx</div>
+                    <div style="width: 33%; text-align: center;"></div>
                     <div style="width: 33%; text-align: right;"><strong>sitio web : https://macWave.com.mx</strong><br><strong>mail: contabilidad@macWave.com.mx</strong></div>
                     
                     <div style="position: absolute; right: 0; bottom: 35px; text-align: center;">
@@ -524,7 +524,7 @@ document.addEventListener('DOMContentLoaded', () => {
             doc.setTextColor(...BLACK);
             doc.setFontSize(fSize(7));
             doc.setFont("helvetica", "normal");
-            doc.text("ESPECIALISTAS EN TECNOLOGIA ROLDU SAS. DE C.V\nVisítanos en sucursal Condesa\nSalvador Alvarado 72 oficina 208, Escandón. cdmx", 15, footerY);
+            doc.text("ESPECIALISTAS EN TECNOLOGIA ROLDU SAS. DE C.V", 15, footerY);
 
             doc.setFont("helvetica", "bold");
             doc.text("sitio web : https://macWave.com.mx\nmail: contabilidad@macWave.com.mx", 195, footerY, { align: 'right' });
