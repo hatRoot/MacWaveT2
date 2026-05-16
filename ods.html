@@ -2076,7 +2076,7 @@
  date: document.getElementById('quote-date').value || new Date().toLocaleDateString('es-MX', { day: '2-digit', month: '2-digit', year: 'numeric' }) + ' ' + new Date().toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit' }),
  status: 'Recibido',
  text: document.getElementById('ods-notes').value || 'Ingreso a laboratorio.',
- img: null
+ img: (window._allPhotos && window._allPhotos.length > 0) ? window._allPhotos[0].data : null, photos: (window._allPhotos && window._allPhotos.length > 0) ? window._allPhotos.map(p => p.data) : []
  }])
  };
  try {

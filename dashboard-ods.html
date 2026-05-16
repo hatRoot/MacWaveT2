@@ -3211,6 +3211,8 @@ ${statusOptions}
 
  document.getElementById('btn-add-event').onclick = async function () {
  const btn = this;
+  if (window.PhotoFlow && window.PhotoFlow.queue.length > 0) { return window.PhotoFlow.startUpload(); }
+
  const newStatus = document.getElementById('inp-new-status').value;
  const text = document.getElementById('inp-new-text').value;
  const fileInput = document.getElementById('inp-new-img');
