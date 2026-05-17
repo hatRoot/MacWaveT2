@@ -79,7 +79,7 @@ document.addEventListener('DOMContentLoaded', () => {
         row.innerHTML = `
             <input type="text" class="item-desc" placeholder="Descripción" value="${item.desc}">
             <input type="number" class="item-price" placeholder="Precio" value="${item.price}" step="0.01">
-            <input type="number" class="item-qty" placeholder="Cant." value="${item.qty}" min="1">
+            <input type="number" class="item-qty" placeholder="Cant." value="${item.qty}" min="1" step="0.01">
             <button type="button" class="remove-btn">✕</button>
         `;
 

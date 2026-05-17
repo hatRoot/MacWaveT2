@@ -1304,7 +1304,7 @@
  div.className = 'item-row';
  div.innerHTML = `
  <input type="text" class="i-desc" value="${item.d}" placeholder="Concepto de Servicio o Producto..." list="catalog-list-data">
- <input type="number" class="i-price" value="${item.p}" placeholder="0.00" style="text-align: right;">
+ <input type="number" class="i-price" value="${item.p}" placeholder="0.00" step="0.01" style="text-align: right;">
  <input type="number" class="i-qty" value="${item.q}" min="0" step="1" style="text-align: center;">
  <button type="button" class="remove-btn">✕</button>
  `;
