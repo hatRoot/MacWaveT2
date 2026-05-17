@@ -588,17 +588,34 @@ white-space: nowrap;
  outline: none;
  transition: border 0.2s;
  }
-
- .form-control:focus {
+.form-control:focus {
  border-color: var(--mac-blue);
  }
 
- textarea.form-control {
- resize: vertical;
- min-height: 80px;
- }
+  textarea.form-control {
+  resize: vertical;
+  min-height: 80px;
+  }
 
- /* Financial Field */
+  /* Compact detail form overrides */
+  .info-section .form-control {
+  padding: 8px 12px;
+  font-size: 13px;
+  }
+  .info-section .form-group label {
+  font-size: 10px;
+  margin-bottom: 2px;
+  margin-top: 4px;
+  }
+  .info-section .card {
+  padding: 16px;
+  }
+  .info-section .form-grid {
+  gap: 12px;
+  grid-template-columns: 1fr 1fr 1fr;
+  }
+
+  /* Financial Field */
  .price-input {
  position: relative;
  }
@@ -1122,7 +1139,7 @@ word-break: break-word;
  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
  <circle cx="12" cy="12" r="3" />
  <path
- d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-2 2 2 2 0 01-2-2v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 01-2-2 2 2 0 012-2h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 012-2 2 2 0 012 2v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 012 2 2 2 0 01-2 2h-.09a1.65 1.65 0 00-1.51 1z" />
+ d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-2 2 2 2 0 01-2-2v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 01-2-2 2 2 0 012-2h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 012-2 2 2 0 012 2v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010-2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 012 2 2 2 0 01-2 2h-.09a1.65 1.65 0 00-1.51 1z" />
  </svg>
  Ajustes
  </button>
@@ -1242,10 +1259,8 @@ word-break: break-word;
  <option value="Hardware">Hardware/Pieza</option>
  <option value="Software">Software</option>
  </select>
- <input type="number" id="cat-costo" class="modal-input" placeholder="Costo Prov ($)"
- style="flex: 1; margin: 0;">
- <input type="number" id="cat-precio" class="modal-input" placeholder="Precio Público ($)"
- style="flex: 1; margin: 0;">
+ <input type="number" id="cat-costo" class="modal-input" placeholder="Costo Prov ($)" step="0.01" style="flex: 1; margin: 0;">
+ <input type="number" id="cat-precio" class="modal-input" placeholder="Precio Público ($)" step="0.01" style="flex: 1; margin: 0;">
  <button class="nav-item"
  style="background: var(--mac-blue); color: white; width: max-content; margin: 0; padding: 0 30px;"
  onclick="addCatalogItem()">+ Gurdar en Catálogo</button>
@@ -1295,7 +1310,7 @@ word-break: break-word;
  <label
  style="color: #fff; font-size: 14px; font-weight: 600; margin-bottom: 8px; display: block;">Comisión
  de Tarjeta %</label>
- <input type="number" id="conf-comision" class="modal-input" value="3.5"
+ <input type="number" id="conf-comision" class="modal-input" value="3.5" step="0.01"
  style="margin-bottom: 40px; background: rgba(0,0,0,0.5);">
 
  <button class="nav-item"
@@ -2847,10 +2862,26 @@ filtered.sort((a, b) => {
  window.currentSelectedId = o.id;
 
  const isJoel = sessionStorage.getItem('macwave_user') === 'joel.duran.mendoza@me.com' || sessionStorage.getItem('macwave_user') === 'joel';
- const detailView = document.getElementById('detail-view');
- const statusColor = getStatusColor(o.status);
+  const detailView = document.getElementById('detail-view');
+  const statusColor = getStatusColor(o.status);
 
- let historial = [];
+  let parsedCliente = o.cliente || '';
+  let parsedPhone = '';
+  if (parsedCliente.includes(' | Tel: ')) {
+  const parts = parsedCliente.split(' | Tel: ');
+  parsedCliente = parts[0];
+  parsedPhone = parts[1];
+  }
+
+  let parsedProyecto = o.proyecto || '';
+  let parsedPin = '';
+  if (parsedProyecto.includes(' | PIN: ')) {
+  const parts = parsedProyecto.split(' | PIN: ');
+  parsedProyecto = parts[0];
+  parsedPin = parts[1];
+  }
+
+  let historial = [];
  try {
  historial = JSON.parse(o.notas || '[]');
  if (!Array.isArray(historial)) throw new Error('Not array');
@@ -2955,15 +2986,23 @@ const photos = historial.flatMap((h, noteIdx) => {
  <div class="form-grid">
  <div class="form-group" style="grid-column: span 2;">
  <label>Cliente</label>
- <input type="text" id="inp-cliente" class="form-control" value="${o.cliente || ''}" placeholder="Nombre del cliente">
+ <input type="text" id="inp-cliente" class="form-control" value="${parsedCliente}" placeholder="Nombre del cliente">
  </div>
  <div class="form-group">
+ <label>Teléfono</label>
+ <input type="text" id="inp-telefono" class="form-control" value="${parsedPhone}" placeholder="Ej. 55 1234 5678">
+ </div>
+ <div class="form-group" style="grid-column: span 2;">
  <label>Proyecto / Equipo</label>
- <input type="text" id="inp-proyecto" class="form-control" value="${o.proyecto || ''}" placeholder="Ej. MacBook Pro A2338">
+ <input type="text" id="inp-proyecto" class="form-control" value="${parsedProyecto}" placeholder="Ej. MacBook Pro A2338">
+ </div>
+ <div class="form-group">
+ <label>Contraseña / PIN</label>
+ <input type="text" id="inp-pin" class="form-control" value="${parsedPin}" placeholder="Opcional">
  </div>
  <div class="form-group">
  <label>Número de Serie</label>
- <input type="text" id="inp-serie" class="form-control" value="${o.serie || ''}" style="font-family: monospace;" placeholder="C02...">
+ <input type="text" id="inp-serie" class="form-control" value="${o.serie || ''}" placeholder="Ej. C02CG123DC78">
  </div>
  <div class="form-group">
  <label>Técnico Asignado</label>
@@ -2973,7 +3012,7 @@ const photos = historial.flatMap((h, noteIdx) => {
  <label>Fecha de Entrada</label>
  <input type="text" id="inp-fecha" class="form-control" value="${o.fecha || ''}">
  </div>
- <div class="form-group" style="grid-column: span 2;">
+ <div class="form-group" style="grid-column: span 3;">
  <label>Monto de ODS / Venta</label>
  <div class="price-input">
  <input type="number" id="inp-monto" class="form-control" value="${o.monto || '0'}" step="0.01">
@@ -3163,14 +3202,22 @@ ${statusOptions}
 
  try {
  const monto = parseFloat(document.getElementById('inp-monto').value) || 0;
- const meta = {
- cliente: document.getElementById('inp-cliente').value,
- proyecto: document.getElementById('inp-proyecto').value,
- tecnico: document.getElementById('inp-tecnico').value,
- serie: document.getElementById('inp-serie').value,
- fecha: document.getElementById('inp-fecha').value,
- monto: monto
- };
+  const baseCliente = document.getElementById('inp-cliente').value;
+  const tel = document.getElementById('inp-telefono').value;
+  const finalCliente = tel ? `${baseCliente} | Tel: ${tel}` : baseCliente;
+
+  const baseProyecto = document.getElementById('inp-proyecto').value;
+  const pin = document.getElementById('inp-pin').value;
+  const finalProyecto = pin ? `${baseProyecto} | PIN: ${pin}` : baseProyecto;
+
+  const meta = {
+  cliente: finalCliente,
+  proyecto: finalProyecto,
+  tecnico: document.getElementById('inp-tecnico').value,
+  serie: document.getElementById('inp-serie').value,
+  fecha: document.getElementById('inp-fecha').value,
+  monto: monto
+  };
 
  // Finance columns (cost_pieces, cost_supplies, venta_hw) removed as they don't exist in Supabase schema
 
