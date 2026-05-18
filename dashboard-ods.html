@@ -3483,218 +3483,191 @@ uploadBtn.style.background = 'var(--mac-green)';
  if (uploadCount) uploadCount.textContent = this.queue.length;
  },
 
- async startUpload() {
- const odsId = window.currentSelectedId || currentSelectedId;
- if (!odsId) {
- alert('Error: No se identificó la orden de servicio');
- return;
- }
-if (!this.queue.length) {
- alert('Primero selecciona al menos una foto.');
- return;
-}
+  async startUpload() {
+    const odsId = window.currentSelectedId || currentSelectedId;
+    if (!odsId) {
+      alert('Error: No se identificó la orden de servicio');
+      return;
+    }
+    if (!this.queue.length) {
+      alert('Primero selecciona al menos una foto.');
+      return;
+    }
 
- const uploadBtn = document.getElementById('btn-upload-photos');
- const progressDiv = document.getElementById('upload-progress');
- const progressBar = document.getElementById('upload-progress-bar');
- const progressText = document.getElementById('upload-progress-text');
+    const uploadBtn = document.getElementById('btn-upload-photos');
+    const progressDiv = document.getElementById('upload-progress');
+    const progressBar = document.getElementById('upload-progress-bar');
+    const progressText = document.getElementById('upload-progress-text');
 
- if (uploadBtn) uploadBtn.disabled = true;
- if (uploadBtn) uploadBtn.textContent = '⏳ Procesando...';
- if (progressDiv) progressDiv.style.display = 'block';
+    if (uploadBtn) uploadBtn.disabled = true;
+    if (uploadBtn) uploadBtn.textContent = '⏳ Procesando...';
+    if (progressDiv) progressDiv.style.display = 'block';
 
- const odsSource = (Array.isArray(window.allODS) && window.allODS.length) ? window.allODS : allODS;
- const ods = odsSource?.find(o => o.id === odsId);
- if (!ods) {
- alert('Error: ODS no encontrada');
- return;
- }
+    const odsSource = (Array.isArray(window.allODS) && window.allODS.length) ? window.allODS : allODS;
+    const ods = odsSource?.find(o => o.id === odsId);
+    if (!ods) {
+      alert('Error: ODS no encontrada');
+      return;
+    }
 
- let hist = [];
- try {
- hist = JSON.parse(ods.notas || '[]');
- if (!Array.isArray(hist)) hist = [];
- } catch (e) {
- hist = [];
- }
+    let hist = [];
+    try {
+      hist = JSON.parse(ods.notas || '[]');
+      if (!Array.isArray(hist)) hist = [];
+    } catch (e) {
+      hist = [];
+    }
 
- const now = new Date();
- const dateStr = now.toLocaleDateString('es-MX', { day: '2-digit', month: '2-digit', year: 'numeric' }) + ' ' +
- now.toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit' });
+    const now = new Date();
+    const dateStr = now.toLocaleDateString('es-MX', { day: '2-digit', month: '2-digit', year: 'numeric' }) + ' ' +
+      now.toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit' });
 
- const photoUrls = [];
- const total = this.queue.length;
- let completed = 0;
+    const photoUrls = [];
+    const total = this.queue.length;
+    let completed = 0;
 
- // Procesar en chunks de 3
- const chunkSize = 3;
+    for (let i = 0; i < this.queue.length; i++) {
+      const item = this.queue[i];
+      if (progressText) {
+        progressText.textContent = `Procesando y comprimiendo foto ${i + 1} de ${total}...`;
+      }
 
- for (let i = 0; i < this.queue.length; i += chunkSize) {
- const chunk = this.queue.slice(i, i + chunkSize);
+      try {
+        // Comprimir y obtener Base64 Data URL
+        const base64Img = await this.compressImage(item.file);
+        photoUrls.push(base64Img);
 
- if (progressText) {
- progressText.textContent = `Comprimiendo y subiendo ${i + 1}-${Math.min(i + chunkSize, total)} de ${total}...`;
- }
+        // Actualizar UI del slot
+        const slot = document.getElementById(item.id);
+        if (slot) {
+          slot.classList.add('ready');
+          slot.classList.add('uploaded');
+          const status = slot.querySelector('.slot-status');
+          if (status) status.textContent = '✓';
+        }
+      } catch (err) {
+        console.error('Error procesando foto:', err);
+        const slot = document.getElementById(item.id);
+        if (slot) {
+          slot.classList.add('failed');
+          const status = slot.querySelector('.slot-status');
+          if (status) {
+            status.textContent = '✗';
+            status.style.color = 'var(--mac-red)';
+          }
+        }
+      }
 
- const results = await Promise.allSettled(
- chunk.map(async (item) => {
- try {
- // Comprimir
- const compressed = await this.compressImage(item.file);
+      completed++;
+      if (progressBar) {
+        progressBar.style.width = `${(completed / total) * 100}%`;
+      }
+    }
 
- // Generar nombre único
- const timestamp = Date.now();
-const fileName = `ods_${odsId}/${timestamp}_${item.index}.jpg`;
+    // Guardar en base de datos
+    if (photoUrls.length > 0) {
+      if (progressText) progressText.textContent = 'Guardando en base de datos...';
 
- // Subir a Storage
- const { data, error } = await supabaseClient.storage
- .from('ods-photos')
-.upload(fileName, compressed, {
-contentType: 'image/jpeg',
- upsert: false
- });
+      const newStatus = document.getElementById('inp-new-status')?.value || ods.status;
 
- if (error) throw error;
+      const newEntry = {
+        date: dateStr,
+        status: newStatus,
+        text: document.getElementById('inp-new-text')?.value || '',
+        photos: photoUrls
+      };
 
- // Obtener URL pública
- const { data: publicUrl } = supabaseClient.storage
- .from('ods-photos')
- .getPublicUrl(fileName);
+      hist.push(newEntry);
 
- // Actualizar UI
- const slot = document.getElementById(item.id);
- if (slot) {
- slot.classList.add('uploaded');
- const status = slot.querySelector('.slot-status');
- if (status) status.textContent = '☁️';
- }
+      const newNotas = JSON.stringify(hist);
+      const { error } = await supabaseClient
+        .from('ordenes_servicio')
+        .update({ 
+          notas: newNotas,
+          status: newStatus
+        })
+        .eq('id', odsId);
 
- return publicUrl.publicUrl;
- } catch (err) {
- console.error('Error subiendo foto:', err);
+      if (error) throw error;
 
- const slot = document.getElementById(item.id);
- if (slot) {
- slot.classList.add('failed');
- const status = slot.querySelector('.slot-status');
- if (status) {
- status.textContent = '✗';
- status.style.color = 'var(--mac-red)';
- }
- }
+      ods.notas = newNotas;
+      ods.status = newStatus;
 
- throw err;
- }
- })
- );
+      const idxLocal = allODS.findIndex(x => x.id === odsId);
+      if (idxLocal > -1) {
+        allODS[idxLocal].notas = newNotas;
+        allODS[idxLocal].status = newStatus;
+      }
+      if (Array.isArray(window.allODS)) {
+        const idxWindow = window.allODS.findIndex(x => x.id === odsId);
+        if (idxWindow > -1) {
+          window.allODS[idxWindow].notas = newNotas;
+          window.allODS[idxWindow].status = newStatus;
+        }
+      }
 
- results.forEach(result => {
- if (result.status === 'fulfilled') {
- photoUrls.push(result.value);
- }
- });
+      // Limpiar cola
+      this.queue = [];
 
- completed += chunk.length;
- if (progressBar) {
- progressBar.style.width = `${(completed / total) * 100}%`;
- }
- }
+      if (progressText) {
+        progressText.textContent = `✓ ${photoUrls.length} de ${total} fotos guardadas`;
+        progressText.style.color = 'var(--mac-green)';
+      }
+      if (uploadBtn) {
+        uploadBtn.innerHTML = '✓ Guardado';
+        uploadBtn.style.background = 'var(--mac-green)';
+      }
 
- // Guardar en base de datos
- if (photoUrls.length > 0) {
- if (progressText) progressText.textContent = 'Guardando metadatos...';
+      // Refrescar vista y listado lateral
+      renderSidebar(document.getElementById('search-input').value);
+      setTimeout(() => {
+        if (window.renderDetail) window.renderDetail(ods);
+      }, 800);
+    } else {
+      if (progressText) {
+        progressText.textContent = 'Error: No se pudo procesar ninguna foto';
+        progressText.style.color = 'var(--mac-red)';
+      }
+      if (uploadBtn) {
+        uploadBtn.disabled = false;
+        uploadBtn.innerHTML = '⬆ Reintentar';
+      }
+    }
+  },
 
- const newEntry = {
- date: dateStr,
- status: document.getElementById('inp-new-status')?.value || ods.status,
- text: document.getElementById('inp-new-text')?.value || '',
- photos: photoUrls
- };
+  compressImage(file) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const img = new Image();
+        img.onload = () => {
+          const canvas = document.createElement('canvas');
+          const ctx = canvas.getContext('2d');
 
- hist.push(newEntry);
+          let { width, height } = img;
+          const maxDim = 900;
 
- const newNotas = JSON.stringify(hist);
- const { error } = await supabaseClient
- .from('ordenes_servicio')
- .update({ notas: newNotas })
- .eq('id', odsId);
+          if (width > maxDim || height > maxDim) {
+            const ratio = Math.min(maxDim / width, maxDim / height);
+            width = Math.floor(width * ratio);
+            height = Math.floor(height * ratio);
+          }
 
- if (error) throw error;
+          canvas.width = width;
+          canvas.height = height;
+          ctx.drawImage(img, 0, 0, width, height);
 
- ods.notas = newNotas;
- const idxLocal = allODS.findIndex(x => x.id === odsId);
- if (idxLocal > -1) allODS[idxLocal].notas = newNotas;
- if (Array.isArray(window.allODS)) {
- const idxWindow = window.allODS.findIndex(x => x.id === odsId);
- if (idxWindow > -1) window.allODS[idxWindow].notas = newNotas;
- }
-
- // Limpiar cola
- this.queue = [];
-
- if (progressText) {
- progressText.textContent = `✓ ${photoUrls.length} de ${total} fotos subidas`;
- progressText.style.color = 'var(--mac-green)';
- }
-if (uploadBtn) {
-uploadBtn.innerHTML = '✓ Subido';
-uploadBtn.style.background = 'var(--mac-green)';
-}
-
- // Refrescar vista
- setTimeout(() => {
- if (window.renderDetail) window.renderDetail(ods);
- }, 800);
- } else {
- if (progressText) {
- progressText.textContent = 'Error: No se pudo subir ninguna foto';
- progressText.style.color = 'var(--mac-red)';
- }
- if (uploadBtn) {
- uploadBtn.disabled = false;
-uploadBtn.innerHTML = '⬆ Reintentar';
- }
- }
- },
-
- compressImage(file) {
- return new Promise((resolve, reject) => {
- const reader = new FileReader();
- reader.onload = (e) => {
- const img = new Image();
- img.onload = () => {
- const canvas = document.createElement('canvas');
- const ctx = canvas.getContext('2d');
-
- let { width, height } = img;
-const maxDim = 900;
-
- if (width > maxDim || height > maxDim) {
- const ratio = Math.min(maxDim / width, maxDim / height);
- width = Math.floor(width * ratio);
- height = Math.floor(height * ratio);
- }
-
- canvas.width = width;
- canvas.height = height;
- ctx.drawImage(img, 0, 0, width, height);
-
-// JPG agresivo para minimizar peso sin romper legibilidad
- canvas.toBlob((blob) => {
- if (!blob) {
- reject(new Error('Compresión fallida'));
- return;
- }
- resolve(blob);
-}, 'image/jpeg', 0.35);
- };
- img.onerror = reject;
- img.src = e.target.result;
- };
- reader.onerror = reject;
- reader.readAsDataURL(file);
- });
- }
+          // JPG de compresión 0.35 para minimizar peso de Base64 sin perder detalles técnicos
+          let dataUrl = canvas.toDataURL('image/jpeg', 0.35);
+          resolve(dataUrl);
+        };
+        img.onerror = reject;
+        img.src = e.target.result;
+      };
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
+    });
+  }
 };
 
  // DOMContentLoaded ya pasó al cargar la página; al renderizar el detalle hay que enlazar controles ahora.

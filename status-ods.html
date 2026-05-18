@@ -518,7 +518,7 @@ word-break: break-word;
  <h1
  style="font-size: 1.4rem; font-weight: 900; letter-spacing: -0.5px; color: #fff; margin: 0; line-height: 1;">
  mac<span>Wave</span> <span style="font-weight: 300;">México</span></h1>
- <div style="font-size: 0.7rem; color: var(--muted); margin-top: 2px;">Para tu equipo fuera de garantía
+ <div style="font-size: 0.7rem; color: var(--muted); margin-top: 2px;">Para tu dispositivo Apple fuera de garantía
  </div>
  </div>
  </a>
@@ -652,10 +652,8 @@ word-break: break-word;
  }
  }
 
- // Reverse to show newest on top
- historial.reverse();
-
- const timelineHtml = historial.map((ev, i) => {
+  // Show newest on top without mutating the original chronological order
+  const timelineHtml = historial.slice().reverse().map((ev, i) => {
  const isLatest = i === 0;
  let evColor, evBg;
 
