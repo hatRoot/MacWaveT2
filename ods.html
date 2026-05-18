@@ -1954,9 +1954,9 @@
  doc.setFont("helvetica", "bold");
  doc.text("OBSERVACIONES / NOTAS DE LABORATORIO:", 15, notesY);
  doc.setFont("helvetica", "normal");
- const splitNotes = doc.splitTextToSize(odsNotes, 180).slice(0, 4); // Limit to 4 lines
+ const splitNotes = doc.splitTextToSize(odsNotes, 180);
  doc.text(splitNotes, 15, notesY + 4);
- notesY += 20; // Fixed jump for notes
+ notesY += 6 + (splitNotes.length * 3.5); // Dynamic height based on actual content
  } else {
  notesY += 5;
  }

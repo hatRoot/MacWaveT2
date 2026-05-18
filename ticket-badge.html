@@ -393,8 +393,8 @@
  <div class="badge-instruction">Escanea el mapa</div>
  <img id="qr-image" src="" alt="QR">
  <div class="badge-address">
- Av. México Coyoacán 276<br>
- Sta Cruz Atoyac, Benito Juárez, CDMX.
+ Servicio a Domicilio y Recolección<br>
+ CDMX y Zona Metropolitana
  </div>
 
  <div class="badge-tech">
@@ -589,7 +589,7 @@
 
     const formatDate = (date) => date.toISOString().replace(/-|:|\.\d+/g, '');
 
-    const icsContent = `BEGIN:VCALENDAR\nVERSION:2.0\nPRODID:-//macWave//Appointment//ES\nBEGIN:VEVENT\nSUMMARY:🛠️ Cita MacWave - ${window.finalFolioValue}\nDTSTART:${formatDate(startDate)}\nDTEND:${formatDate(endDate)}\nDESCRIPTION:Hola ${window.clientNameValue}, te esperamos para reparar tu equipo Mac. Folio: ${window.finalFolioValue}. Ubicación: Av. México Coyoacán 276.\nLOCATION:MacWave, Av. México Coyoacán 276, Sta Cruz Atoyac, CDMX\nEND:VEVENT\nEND:VCALENDAR`;
+    const icsContent = `BEGIN:VCALENDAR\nVERSION:2.0\nPRODID:-//macWave//Appointment//ES\nBEGIN:VEVENT\nSUMMARY:🛠️ Cita MacWave - ${window.finalFolioValue}\nDTSTART:${formatDate(startDate)}\nDTEND:${formatDate(endDate)}\nDESCRIPTION:Hola ${window.clientNameValue}, te esperamos para reparar tu equipo Mac. Folio: ${window.finalFolioValue}. Servicio a Domicilio CDMX.\nLOCATION:Servicio a Domicilio CDMX - macWave.com.mx\nEND:VEVENT\nEND:VCALENDAR`;
 
     const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
     const link = document.createElement('a');

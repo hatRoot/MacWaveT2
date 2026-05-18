@@ -1442,14 +1442,10 @@ word-break: break-word;
  </div>
  
  <div style="display: flex; flex-direction: column; align-items: center; margin-bottom: 20px;">
- <a href="https://maps.app.goo.gl/PeSD75SSGMoCD4qZA" target="_blank" style="text-decoration: none; display: flex; flex-direction: column; align-items: center;">
- <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://maps.app.goo.gl/PeSD75SSGMoCD4qZA" alt="QR Taller" style="width: 100px; height: 100px; margin-bottom: 10px; border-radius: 8px; border: 1px solid #ccc;">
  <div style="font-size: 11px; font-weight: 700; color: #333; text-align: center; line-height: 1.4;">
- <strong>Av. México Coyoacán 276</strong><br>
- Sta Cruz Atoyac, Benito Juárez, CDMX.<br>
- <em style="color: var(--mac-blue);">Escanea o da click para abrir en Google Maps</em>
+ <strong>Servicio a Domicilio y Recolección CDMX</strong><br>
+ <em style="color: var(--mac-blue);">macWave.com.mx</em>
  </div>
- </a>
  </div>
  </div>
 
@@ -1550,6 +1546,47 @@ word-break: break-word;
  <button class="btn btn-primary" id="btn-save-quick-ods" onclick="saveQuickODS()">Crear Orden</button>
  </div>
  </div>
+ </div>
+
+ <!-- Edit Timeline Event Modal -->
+ <div class="modal-overlay" id="edit-event-modal" style="display: none;">
+   <div class="modal-card" style="width: 480px;">
+     <h3 style="margin-bottom: 12px; font-size: 18px; color: var(--mac-blue);">✏️ Editar Secuencia de Reparación</h3>
+     <p style="font-size: 12px; color: var(--mac-text-muted); margin-bottom: 15px;">Modifica los detalles del evento seleccionado. Si deseas cambiar las imágenes de la galería, utiliza la galería general.</p>
+     
+     <input type="hidden" id="edit-event-ods-id">
+     <input type="hidden" id="edit-event-idx">
+     
+     <div class="form-group" style="margin-bottom: 15px;">
+       <label style="font-size: 12px; color: var(--mac-text-muted); display: block; margin-bottom: 5px;">Fecha del Evento</label>
+       <input type="text" id="edit-event-date" class="form-control" style="background: var(--mac-input-bg); border: 1px solid var(--mac-border); color: #fff; width: 100%; border-radius: 6px; padding: 8px;">
+     </div>
+     
+     <div class="form-group" style="margin-bottom: 15px;">
+       <label style="font-size: 12px; color: var(--mac-text-muted); display: block; margin-bottom: 5px;">Estatus del Evento</label>
+       <select id="edit-event-status" class="form-control" style="background: var(--mac-input-bg); border: 1px solid var(--mac-border); color: #fff; width: 100%; border-radius: 6px; padding: 8px;">
+         <option value="Recibido">Recibido</option>
+         <option value="Diagnóstico">Diagnóstico</option>
+         <option value="Presupuesto">Presupuesto</option>
+         <option value="Espera de piezas">Espera de piezas</option>
+         <option value="En reparación">En reparación</option>
+         <option value="Equipo reparado">Equipo reparado</option>
+         <option value="Equipo sin reparar">Equipo sin reparar</option>
+         <option value="Equipo entregado">Equipo entregado</option>
+         <option value="Nota General">Nota General</option>
+       </select>
+     </div>
+     
+     <div class="form-group" style="margin-bottom: 20px;">
+       <label style="font-size: 12px; color: var(--mac-text-muted); display: block; margin-bottom: 5px;">Anotaciones / Detalles</label>
+       <textarea id="edit-event-text" class="form-control" rows="5" style="background: var(--mac-input-bg); border: 1px solid var(--mac-border); color: #fff; width: 100%; border-radius: 6px; padding: 8px; resize: vertical; font-family: inherit; font-size: 13px;" placeholder="Detalles del avance de reparación..."></textarea>
+     </div>
+     
+     <div style="display: flex; gap: 10px; justify-content: flex-end;">
+       <button class="btn" onclick="document.getElementById('edit-event-modal').style.display='none'; document.getElementById('edit-event-modal').classList.remove('active');" style="background: #2c2c2e; border: 1px solid var(--mac-border); color: #fff; padding: 8px 16px; border-radius: 6px; cursor: pointer;">Cancelar</button>
+       <button class="btn btn-primary" onclick="window.saveTimelineEventEdit()" style="background: var(--mac-blue); color: #fff; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-weight: bold;">💾 Guardar Cambios</button>
+     </div>
+   </div>
  </div>
 
  <!-- Ticket Modal -->
@@ -1800,7 +1837,7 @@ word-break: break-word;
  `DTSTART:${formatDate(targetDate)}`,
  `DTEND:${formatDate(endDate)}`,
  `DESCRIPTION:Folio: ${folio}\\nCliente: ${name}\\nOrigen: ${source}\\nWhatsApp: ${phone}\\nSitio: Mac Wave T2`,
- 'LOCATION:Av. México Coyoacán 276\\, Sta Cruz Atoyac\\, CDMX',
+ 'LOCATION:Servicio a Domicilio y Recolección CDMX - macWave.com.mx',
  'END:VEVENT',
  'END:VCALENDAR'
  ].join('\r\n');
@@ -1824,7 +1861,7 @@ word-break: break-word;
 
  if (!dateVal || !timeVal) return alert("Completa los datos para compartir.");
 
- const shareText = `📅 NUEVA CITA - Mac Wave\n\nFolio: ${folio}\nCliente: ${name}\nWhatsApp: ${phone}\nFecha Correo: ${dateVal} ${timeVal}\n\nUbicación: Av. México Coyoacán 276, Sta Cruz Atoyac, CDMX`;
+ const shareText = `📅 NUEVA CITA - Mac Wave\n\nFolio: ${folio}\nCliente: ${name}\nWhatsApp: ${phone}\nFecha Correo: ${dateVal} ${timeVal}\n\n🌐 macWave.com.mx | Servicio a Domicilio CDMX`;
 
  if (navigator.share) {
  try {
@@ -1887,7 +1924,7 @@ word-break: break-word;
 
  const formatDate = (date) => date.toISOString().replace(/-|:|\.\d+/g, '');
 
- const icsContent = `BEGIN:VCALENDAR\nVERSION:2.0\nBEGIN:VEVENT\nSUMMARY:Cita MacWave - ${folio} (${name})\nDTSTART:${formatDate(startDate)}\nDTEND:${formatDate(endDate)}\nDESCRIPTION:Cita de servicio técnico agendada. Folio: ${folio}.\nLOCATION:MacWave, Av. México Coyoacán 276, Sta Cruz Atoyac, CDMX\nEND:VEVENT\nEND:VCALENDAR`;
+ const icsContent = `BEGIN:VCALENDAR\nVERSION:2.0\nBEGIN:VEVENT\nSUMMARY:Cita MacWave - ${folio} (${name})\nDTSTART:${formatDate(startDate)}\nDTEND:${formatDate(endDate)}\nDESCRIPTION:Cita de servicio técnico agendada. Folio: ${folio}.\nLOCATION:Servicio a Domicilio CDMX - macWave.com.mx\nEND:VEVENT\nEND:VCALENDAR`;
 
  const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
  const link = document.createElement('a');
@@ -1920,7 +1957,7 @@ word-break: break-word;
 
  const shareData = {
  title: `Cita MacWave - ${folio}`,
- text: `🎟️ TICKET CREADO: ${folio}\nCliente: ${name}\n\n📍 Ubicación: Av. México Coyoacán 276, CDMX\n📅 Agendar en calendario cruzado:\n`,
+ text: `🎟️ TICKET CREADO: ${folio}\nCliente: ${name}\n\n🌐 macWave.com.mx | Servicio a Domicilio CDMX\n📅 Agendar en calendario cruzado:\n`,
  url: gCalLink
  };
 
@@ -2907,23 +2944,32 @@ filtered.sort((a, b) => {
  evColor = '#30D158';
  }
  }
- return `
- <div class="timeline-item" style="--item-color: ${evColor};">
- <div class="timeline-date">${ev.date}</div>
- <div class="timeline-status" style="color: ${evColor}">${ev.status}</div>
- ${ev.text && !ev.text.startsWith('Cambio de estatus vía Tablero') ? `<div class="timeline-note">${ev.text.replace(/\\n/g, '<br>')}</div>` : ''}
- ${(() => {
- const evPhotos = [];
- if (ev.img) evPhotos.push(ev.img);
- if (Array.isArray(ev.photos)) evPhotos.push(...ev.photos.filter(Boolean));
- if (!evPhotos.length) return '';
- return `<div style="display:grid; grid-template-columns: repeat(auto-fill, minmax(110px,1fr)); gap:8px; margin-top:10px;">
- ${evPhotos.map((img, idx) => `<img src="${img}" class="timeline-img" style="margin:0; width:100%; height:110px; object-fit:cover;" alt="Evidencia de servicio ${idx + 1}">`).join('')}
- </div>`;
- })()}
+  const originalIdx = arr.length - 1 - i;
+  return `
+  <div class="timeline-item" style="--item-color: ${evColor}; position: relative; margin-bottom: 24px;">
+  <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 6px;">
+    <div>
+      <div class="timeline-date">${ev.date}</div>
+      <div class="timeline-status" style="color: ${evColor}">${ev.status}</div>
+    </div>
+    <div style="display: flex; gap: 6px; margin-top: -2px;">
+      <button onclick="window.editTimelineEvent('${o.id}', ${originalIdx})" style="background: none; border: none; color: var(--mac-blue); cursor: pointer; font-size: 11px; padding: 2px 6px; border-radius: 4px; display: inline-flex; align-items: center; gap: 3px; background: rgba(10, 132, 255, 0.1); font-weight: bold;" title="Editar anotación">✏️ Editar</button>
+      <button onclick="window.deleteTimelineEvent('${o.id}', ${originalIdx})" style="background: none; border: none; color: var(--mac-red); cursor: pointer; font-size: 11px; padding: 2px 6px; border-radius: 4px; display: inline-flex; align-items: center; gap: 3px; background: rgba(255, 69, 58, 0.1); font-weight: bold;" title="Eliminar evento">🗑️ Borrar</button>
+    </div>
+  </div>
+  ${ev.text ? `<div class="timeline-note">${ev.text.replace(/\\n/g, '<br>')}</div>` : ''}
+  ${(() => {
+  const evPhotos = [];
+  if (ev.img) evPhotos.push(ev.img);
+  if (Array.isArray(ev.photos)) evPhotos.push(...ev.photos.filter(Boolean));
+  if (!evPhotos.length) return '';
+  return `<div style="display:grid; grid-template-columns: repeat(auto-fill, minmax(110px,1fr)); gap:8px; margin-top:10px;">
+  ${evPhotos.map((img, idx) => `<img src="${img}" class="timeline-img" style="margin:0; width:100%; height:110px; object-fit:cover;" alt="Evidencia de servicio ${idx + 1}">`).join('')}
+  </div>`;
+  })()}
 
- </div>
- `;
+  </div>
+  `;
  }).join('') || '<div style="font-size:12px; color:var(--mac-text-muted);">Sin historial registrado.</div>';
 
 const photos = historial.flatMap((h, noteIdx) => {
