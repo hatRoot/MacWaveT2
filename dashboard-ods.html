@@ -3221,13 +3221,6 @@ ${statusOptions}
 
  if (isJoel) setTimeout(() => window.calculateBalance(), 100);
  // Bind Event Listeners
-  // Bind bottom save button to top save button click
-  
-  if (bottomSave) {
-    bottomSave.onclick = function () {
-      document.getElementById('btn-save-meta').click();
-    };
-  }
 
  document.getElementById('btn-save-meta').onclick = async function () {
  const btn = this;
