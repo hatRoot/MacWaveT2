@@ -3109,9 +3109,31 @@ const photos = historial.flatMap((h, noteIdx) => {
  z-index: 10;
  border: none;
 }
-.photo-slot:hover .slot-remove {
- opacity: 1;
+.slot-remove {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  background: #ff3b30;
+  color: white;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  z-index: 10;
+  border: none;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+  opacity: 1; /* Siempre visible */
+  transition: transform 0.1s ease;
 }
+.slot-remove:hover {
+  transform: scale(1.15);
+}
+
 .progress-bar-container {
  background: #333;
  height: 4px;
@@ -3139,46 +3161,50 @@ ${statusOptions}
 </div>
 
 <!-- PhotoFlow Module -->
-<div class="form-group photo-module" style="margin-bottom: 16px;">
-<label>📸 Evidencia Fotográfica <span id="photo-counter" style="color: var(--mac-text-muted); font-size: 11px;">(0 seleccionadas)</span></label>
+<div class="form-group photo-module" style="margin-bottom: 16px; background: rgba(255,255,255,0.02); padding: 15px; border-radius: 10px; border: 1px solid var(--mac-border);">
+  <label style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; font-weight: 600;">
+    <span>📸 Fotos de Evidencia</span>
+    <span id="photo-counter" style="color: var(--mac-text-muted); font-size: 11px;">(0 seleccionadas)</span>
+  </label>
 
-<!-- Botón Principal -->
-<button type="button" id="btn-select-photos" onclick="document.getElementById('inp-new-img')?.click()" style="min-width: 120px; margin-bottom: 10px; background: #2c2c2e; border: 1px solid var(--mac-border); padding: 8px 12px; border-radius: 8px; color: #fff; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 6px; font-size: 12px; font-weight: 700;">
- <span style="font-size: 14px;">📁</span> Seleccionar
-</button>
-<input type="file" id="inp-new-img" accept="image/*,image/webp,image/png,image/jpeg" multiple style="display: none;">
+  <!-- Botón de Control Principal -->
+  <button type="button" id="btn-select-photos" onclick="document.getElementById('inp-new-img')?.click()" style="width: 100%; height: 50px; background: #2c2c2e; border: 2px dashed #444; border-radius: 8px; color: #fff; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 8px; font-size: 14px; font-weight: 700; transition: all 0.2s ease;">
+    <span style="font-size: 18px;">📷</span> Subir fotos de evidencia
+  </button>
+  <input type="file" id="inp-new-img" accept="image/*,image/webp,image/png,image/jpeg" multiple style="display: none;">
 
-<!-- Grid de Preview Numerado -->
-<div id="photo-queue-container" style="display: none; margin-top: 12px;">
- <div style="font-size: 11px; color: var(--mac-text-muted); margin-bottom: 8px;">
- Vista previa (pasa el mouse para eliminar):
- </div>
- <div id="photo-queue-grid" style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; max-height: 300px; overflow-y: auto;">
- <!-- Slots se generan dinámicamente -->
- </div>
+  <!-- Grid de Preview Numerado -->
+  <div id="photo-queue-container" style="display: none; margin-top: 12px;">
+    <div style="display: flex; justify-content: space-between; align-items: center; font-size: 11px; color: var(--mac-text-muted); margin-bottom: 8px;">
+      <span>Vista previa de fotos seleccionadas:</span>
+      <button type="button" id="btn-clear-photos" style="background: none; border: none; color: var(--mac-red); cursor: pointer; font-size: 11px; display: inline-flex; align-items: center; gap: 3px; font-weight: 600;">🗑️ Limpiar selección</button>
+    </div>
+    <div id="photo-queue-grid" style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; max-height: 300px; overflow-y: auto; padding: 2px;">
+      <!-- Slots se generan dinámicamente -->
+    </div>
 
- <!-- Barra de Progreso -->
- <div id="upload-progress" style="display: none;">
- <div class="progress-bar-container">
- <div id="upload-progress-bar" class="progress-bar-fill"></div>
- </div>
- <div id="upload-progress-text" style="font-size: 10px; color: var(--mac-text-muted); margin-top: 4px; text-align: center;">
- Listo para subir
- </div>
- </div>
-
- <!-- Controles -->
-<div style="display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap;">
- <button type="button" id="btn-clear-photos" style="flex: 1; background: transparent; border: 1px solid var(--mac-red); color: var(--mac-red); padding: 10px; border-radius: 6px; cursor: pointer; font-size: 12px;">
- 🗑️ Limpiar Todo
- </button>
-<button type="button" id="btn-upload-photos" style="min-width: 110px; background: var(--mac-green); color: #04260d; border: 1px solid #1ea74a; padding: 8px 12px; border-radius: 8px; cursor: pointer; font-size: 12px; font-weight: 800;">
- ⬆ Subir (<span id="upload-count">0</span>)
- </button>
- </div>
+    <!-- Barra de Progreso -->
+    <div id="upload-progress" style="display: none; margin-top: 12px;">
+      <div class="progress-bar-container">
+        <div id="upload-progress-bar" class="progress-bar-fill"></div>
+      </div>
+      <div id="upload-progress-text" style="font-size: 10px; color: var(--mac-text-muted); margin-top: 4px; text-align: center;">
+        Listo para subir
+      </div>
+    </div>
+  </div>
 </div>
+
+<!-- Panel de Control de Acciones al Final del Formulario -->
+<div style="display: flex; gap: 10px; margin-top: 20px;">
+  <button type="button" class="btn" id="btn-add-event" style="flex: 1.2; justify-content: center; height: 46px; background: var(--mac-green); border: none; color: #04260d; font-weight: 800; font-size: 14px; border-radius: 8px; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; box-shadow: 0 4px 12px rgba(48,209,88,0.25);">
+    ⬆ Subir
+  </button>
+  <button type="button" class="btn" id="btn-save-meta-bottom" style="flex: 1; justify-content: center; height: 46px; background: #2c2c2e; border: 1px solid var(--mac-border); color: #fff; font-weight: 700; font-size: 14px; border-radius: 8px; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; transition: all 0.2s;">
+    💾 Guardar Cambios
+  </button>
 </div>
- <button type="button" class="btn btn-primary" id="btn-add-event" style="width: 100%; justify-content: center; background: var(--mac-green); border-color: var(--mac-green);">Actualizar Historial</button>
+
  </div>
  </div>
 
@@ -3195,6 +3221,14 @@ ${statusOptions}
 
  if (isJoel) setTimeout(() => window.calculateBalance(), 100);
  // Bind Event Listeners
+  // Bind bottom save button to top save button click
+  const bottomSave = document.getElementById('btn-save-meta-bottom');
+  if (bottomSave) {
+    bottomSave.onclick = function () {
+      document.getElementById('btn-save-meta').click();
+    };
+  }
+
  document.getElementById('btn-save-meta').onclick = async function () {
  const btn = this;
  btn.innerText = 'Guardando...';
@@ -3328,7 +3362,7 @@ window.PhotoFlow = {
  if (fileInput) fileInput.onchange = (e) => this.handleSelection(e.target.files);
 
  const clearBtn = document.getElementById('btn-clear-photos');
- const uploadBtn = document.getElementById('btn-upload-photos');
+ const uploadBtn = document.getElementById('btn-upload-photos') || document.getElementById('btn-add-event');
 
  if (clearBtn) clearBtn.onclick = () => this.clearQueue();
  if (uploadBtn) uploadBtn.onclick = () => this.startUpload();
@@ -3351,7 +3385,7 @@ window.PhotoFlow = {
 
  // UI: Mostrar contenedor
  const container = document.getElementById('photo-queue-container');
- const uploadBtn = document.getElementById('btn-upload-photos');
+ const uploadBtn = document.getElementById('btn-upload-photos') || document.getElementById('btn-add-event');
  const counter = document.getElementById('photo-counter');
 
  if (container) container.style.display = 'block';
@@ -3446,18 +3480,18 @@ window.PhotoFlow = {
  this.updateStats();
 
  if (this.queue.length === 0) {
- this.clearQueue();
+ this.clearQueue(true);
  }
  },
 
- clearQueue() {
+ clearQueue(silent = false) {
  if (!this.queue.length) return;
- if (!confirm(`¿Eliminar ${this.queue.length} fotos seleccionadas?`)) return;
+ if (!silent && !confirm(`¿Eliminar ${this.queue.length} fotos seleccionadas?`)) return;
 
  this.queue = [];
  const container = document.getElementById('photo-queue-container');
  const grid = document.getElementById('photo-queue-grid');
- const uploadBtn = document.getElementById('btn-upload-photos');
+ const uploadBtn = document.getElementById('btn-upload-photos') || document.getElementById('btn-add-event');
  const progress = document.getElementById('upload-progress');
  const counter = document.getElementById('photo-counter');
  const fileInput = document.getElementById('inp-new-img');
@@ -3494,7 +3528,7 @@ uploadBtn.style.background = 'var(--mac-green)';
       return;
     }
 
-    const uploadBtn = document.getElementById('btn-upload-photos');
+    const uploadBtn = document.getElementById('btn-upload-photos') || document.getElementById('btn-add-event');
     const progressDiv = document.getElementById('upload-progress');
     const progressBar = document.getElementById('upload-progress-bar');
     const progressText = document.getElementById('upload-progress-text');
