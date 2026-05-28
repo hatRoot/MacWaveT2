@@ -59,6 +59,10 @@ RewriteRule ^(.+)$ $1.html [L]
 
 DirectoryIndex index.html
 
+# Portal OPS — rutas limpias hacia login técnico
+RewriteRule ^ops/?$ /tecnicos [R=302,L]
+RewriteRule ^ops/login/?$ /tecnicos [R=302,L]
+
 # ============================================
 # 404 REAL (NO redirigir a index)
 # ============================================

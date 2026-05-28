@@ -64,22 +64,26 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const handleHeaderScroll = (scrollPos) => {
             const threshold = 80;
+            const isClonedHeader = header.classList.contains('cloned-header');
             tickerHeight = ticker ? ticker.offsetHeight : 0;
             const tickerThreshold = tickerHeight;
-            
-            // Handle Ticker & Header Position
-            if (scrollPos > tickerThreshold) {
-                header.style.top = '0px';
-                if (ticker) ticker.style.transform = `translateY(-${tickerHeight}px)`;
-            } else {
-                header.style.top = `${tickerHeight - scrollPos}px`;
-                if (ticker) ticker.style.transform = `translateY(-${scrollPos}px)`;
+
+            // Ticker sync solo aplica al header oscuro fijo (main-header), no al menú clonado
+            if (!isClonedHeader && ticker) {
+                if (scrollPos > tickerThreshold) {
+                    header.style.top = '0px';
+                    ticker.style.transform = `translateY(-${tickerHeight}px)`;
+                } else {
+                    header.style.top = `${tickerHeight - scrollPos}px`;
+                    ticker.style.transform = `translateY(-${scrollPos}px)`;
+                }
+            } else if (isClonedHeader) {
+                header.style.top = '';
             }
 
             // Handle Shrink Effect
             if (scrollPos > threshold && !header.classList.contains('header-scrolled')) {
                 header.classList.add('header-scrolled');
-                // Optional: update padding if shrink is very significant
             } else if (scrollPos <= threshold && header.classList.contains('header-scrolled')) {
                 header.classList.remove('header-scrolled');
             }
@@ -119,6 +123,43 @@ document.addEventListener('DOMContentLoaded', () => {
     const closeModalBtn = document.getElementById('close-modal');
     const durationBtns = document.querySelectorAll('.duration-btn');
 
+    // ============================================================
+    // MODAL: Lista de Servicios (Imagen)
+    // ============================================================
+    const servicesListBtn = document.getElementById('services-list-btn');
+    const servicesListModal = document.getElementById('services-list-modal');
+    const closeServicesListModalBtn = document.getElementById('close-services-list-modal');
+
+    function openServicesListModal(e) {
+        if (e) e.preventDefault();
+        if (!servicesListModal) return;
+        servicesListModal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeServicesListModal() {
+        if (!servicesListModal) return;
+        servicesListModal.classList.remove('active');
+        document.body.style.overflow = '';
+    }
+
+    if (servicesListBtn) {
+        servicesListBtn.addEventListener('click', openServicesListModal);
+        servicesListBtn.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') openServicesListModal(e);
+        });
+    }
+
+    if (closeServicesListModalBtn) {
+        closeServicesListModalBtn.addEventListener('click', closeServicesListModal);
+    }
+
+    if (servicesListModal) {
+        servicesListModal.addEventListener('click', (e) => {
+            if (e.target === servicesListModal) closeServicesListModal();
+        });
+    }
+
     // Helper to open modal
     function openModal(e) {
         e.preventDefault();
@@ -154,6 +195,13 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
+
+    // ESC cierra ambos modales si están abiertos
+    document.addEventListener('keydown', (e) => {
+        if (e.key !== 'Escape') return;
+        if (servicesListModal && servicesListModal.classList.contains('active')) closeServicesListModal();
+        if (modal && modal.classList.contains('active')) closeModal();
+    });
 
     // Duration Selection Logic
     durationBtns.forEach(btn => {
@@ -360,6 +408,78 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Start slide rotation
         startAutoplay();
+
+        // ============================================================
+        // LIGHTBOX — abre imagen al hacer clic en el slider
+        // ============================================================
+        const lightbox        = document.getElementById('sliderLightbox');
+        const lightboxImg     = document.getElementById('lightboxImg');
+        const lightboxClose   = document.getElementById('lightboxClose');
+        const lightboxPrev    = document.getElementById('lightboxPrev');
+        const lightboxNext    = document.getElementById('lightboxNext');
+        const lightboxCounter = document.getElementById('lightboxCounter');
+
+        // Collect image sources from slides
+        const slideImages = Array.from(slides).map(s => {
+            const img = s.querySelector('img');
+            return { src: img ? img.src : '', alt: img ? img.alt : '' };
+        });
+
+        function openLightbox(index) {
+            if (!lightbox) return;
+            const total = slideImages.length;
+            const safeIdx = ((index % total) + total) % total;
+            lightboxImg.src = slideImages[safeIdx].src;
+            lightboxImg.alt = slideImages[safeIdx].alt;
+            if (lightboxCounter) lightboxCounter.textContent = `${safeIdx + 1} / ${total}`;
+            lightbox._currentIdx = safeIdx;
+            lightbox.classList.add('open');
+            document.body.style.overflow = 'hidden';
+            stopAutoplay();
+        }
+
+        function closeLightbox() {
+            if (!lightbox) return;
+            lightbox.classList.remove('open');
+            document.body.style.overflow = '';
+            startAutoplay();
+        }
+
+        function lightboxGoTo(delta) {
+            openLightbox((lightbox._currentIdx || 0) + delta);
+        }
+
+        // Click on slider to open lightbox
+        const sliderRight = document.querySelector('.cloned-slider-right');
+        if (sliderRight) {
+            sliderRight.addEventListener('click', () => openLightbox(currentSlide));
+        }
+
+        if (lightboxClose) lightboxClose.addEventListener('click', closeLightbox);
+
+        if (lightboxPrev) lightboxPrev.addEventListener('click', (e) => {
+            e.stopPropagation();
+            lightboxGoTo(-1);
+        });
+
+        if (lightboxNext) lightboxNext.addEventListener('click', (e) => {
+            e.stopPropagation();
+            lightboxGoTo(1);
+        });
+
+        // Close on backdrop click
+        if (lightbox) {
+            lightbox.addEventListener('click', (e) => {
+                if (e.target === lightbox) closeLightbox();
+            });
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (!lightbox || !lightbox.classList.contains('open')) return;
+            if (e.key === 'Escape')      closeLightbox();
+            if (e.key === 'ArrowLeft')   lightboxGoTo(-1);
+            if (e.key === 'ArrowRight')  lightboxGoTo(1);
+        });
     }
 });
-
