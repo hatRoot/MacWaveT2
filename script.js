@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const targetElement = document.querySelector(targetId);
 
             if (targetElement) {
-                const header = document.querySelector('.main-header');
+                const header = document.querySelector('.main-header, .cloned-header');
                 const headerHeight = header ? header.offsetHeight : 0;
 
                 window.scrollTo({
@@ -42,7 +42,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Dynamic Header (Fixed positioning & Shrink on scroll)
-    const header = document.querySelector('.main-header');
+    const header = document.querySelector('.main-header, .cloned-header');
     const ticker = document.querySelector('.emergency-ticker');
     
     if (header) {
@@ -50,8 +50,14 @@ document.addEventListener('DOMContentLoaded', () => {
         let headerHeight = header.offsetHeight;
         
         // Dynamic padding to avoid content jumping
-        document.body.style.paddingTop = `${tickerHeight + headerHeight}px`;
-        document.documentElement.style.scrollPaddingTop = `${tickerHeight + headerHeight}px`;
+        const isFixedHeader = header.classList.contains('main-header');
+        if (isFixedHeader) {
+            document.body.style.paddingTop = `${tickerHeight + headerHeight}px`;
+            document.documentElement.style.scrollPaddingTop = `${tickerHeight + headerHeight}px`;
+        } else {
+            document.body.style.paddingTop = '0px';
+            document.documentElement.style.scrollPaddingTop = `${headerHeight}px`;
+        }
 
         let lastKnownScrollPosition = 0;
         let ticking = false;
@@ -97,8 +103,13 @@ document.addEventListener('DOMContentLoaded', () => {
         window.addEventListener('resize', () => {
              tickerHeight = ticker ? ticker.offsetHeight : 0;
              headerHeight = header.offsetHeight;
-             document.body.style.paddingTop = `${tickerHeight + headerHeight}px`;
-             document.documentElement.style.scrollPaddingTop = `${tickerHeight + headerHeight}px`;
+             if (isFixedHeader) {
+                 document.body.style.paddingTop = `${tickerHeight + headerHeight}px`;
+                 document.documentElement.style.scrollPaddingTop = `${tickerHeight + headerHeight}px`;
+             } else {
+                 document.body.style.paddingTop = '0px';
+                 document.documentElement.style.scrollPaddingTop = `${headerHeight}px`;
+             }
              handleHeaderScroll(window.scrollY);
         });
     }
@@ -263,4 +274,92 @@ document.addEventListener('DOMContentLoaded', () => {
             renderCalendar(displayDate);
         });
     }
+
+    // ==========================================================
+    // CLONED HOME PAGE IMAGE SLIDER LOGIC (ACSP HIGH FIDELITY)
+    // ==========================================================
+    const slides = document.querySelectorAll('.cloned-slide');
+    const dots = document.querySelectorAll('.cloned-slider-dot');
+    const prevBtn = document.getElementById('slider-prev-btn');
+    const nextBtn = document.getElementById('slider-next-btn');
+
+    if (slides.length > 0) {
+        let currentSlide = 0;
+        let slideInterval = null;
+
+        function showSlide(index) {
+            // Remove active class from current slide and dot
+            slides[currentSlide].classList.remove('active');
+            if (dots[currentSlide]) {
+                dots[currentSlide].classList.remove('active');
+            }
+
+            // Set new current slide
+            currentSlide = index;
+
+            // Handle wrap-around bounds
+            if (currentSlide >= slides.length) {
+                currentSlide = 0;
+            }
+            if (currentSlide < 0) {
+                currentSlide = slides.length - 1;
+            }
+
+            // Add active class to new slide and dot
+            slides[currentSlide].classList.add('active');
+            if (dots[currentSlide]) {
+                dots[currentSlide].classList.add('active');
+            }
+        }
+
+        function nextSlide() {
+            showSlide(currentSlide + 1);
+        }
+
+        function prevSlide() {
+            showSlide(currentSlide - 1);
+        }
+
+        function startAutoplay() {
+            stopAutoplay();
+            slideInterval = setInterval(nextSlide, 5000);
+        }
+
+        function stopAutoplay() {
+            if (slideInterval) {
+                clearInterval(slideInterval);
+                slideInterval = null;
+            }
+        }
+
+        // Attach Event Listeners to Arrows
+        if (prevBtn) {
+            prevBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                prevSlide();
+                startAutoplay(); // Reset autoplay timer on interaction
+            });
+        }
+
+        if (nextBtn) {
+            nextBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                nextSlide();
+                startAutoplay(); // Reset autoplay timer on interaction
+            });
+        }
+
+        // Attach Event Listeners to Indicator Dots
+        dots.forEach((dot, idx) => {
+            dot.addEventListener('click', (e) => {
+                e.preventDefault();
+                showSlide(idx);
+                startAutoplay(); // Reset autoplay timer on interaction
+            });
+        });
+
+        // Start slide rotation
+        startAutoplay();
+    }
 });
+
