@@ -1,0 +1,34 @@
+# ========================================
+# Migración Tailwind CSS - Archivos locales
+# NO subir a GitHub ni producción
+# ========================================
+
+# Dependencias de Node
+node_modules/
+package-lock.json
+yarn.lock
+
+# Playwright: navegadores, reportes, capturas
+playwright-report/
+test-results/
+.playwright/
+
+# Capturas de pantalla de comparación
+screenshots/
+
+# Archivos de respaldo de migración
+index-original.html
+index-tw-preview.html
+index-cdn-test.html
+index-test-baseline.html
+
+# macOS
+.DS_Store
+
+# Archivos de caché
+.cache/
+*.log
+
+# Variables de entorno
+.env
+.env.local

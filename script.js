@@ -482,4 +482,5 @@ document.addEventListener('DOMContentLoaded', () => {
             if (e.key === 'ArrowRight')  lightboxGoTo(1);
         });
     }
+
 });
