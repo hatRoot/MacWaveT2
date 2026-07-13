@@ -1,0 +1,90 @@
+/** @type {import('tailwindcss').Config} */
+module.exports = {
+  content: [
+    './index.html',
+    './reparaciones.html',
+    './empresas.html',
+    './software.html',
+    './casos-reales.html',
+    './terminos.html',
+    './upgrades.html',
+    './actualizar-mac-os-vieja.html',
+    './bateria-macbook-cdmx.html',
+    './bateria-pantalla-iphone-express.html',
+    './cambio-bateria-macbook-pro-air.html',
+    './cambio-teclado-macbook-cdmx.html',
+    './mac-mojada-cdmx.html',
+    './mac-mojada-urgencia.html',
+    './mantenimiento-macbook-cdmx.html',
+    './reflow-gpu-mac.html',
+    './reparacion-corto-logica-mac.html',
+    './reparacion-flexgate-macbook.html',
+    './reparacion-imac-cdmx.html',
+    './reparacion-laptops-gamer-cdmx.html',
+    './dashboard-ods.html',
+    './tecnicos.html',
+    './ods.html',
+    './status-ods.html',
+    './ticket-badge.html',
+    './partials/*.html',
+    './cotizaciones/**/*.html',
+  ],
+  theme: {
+    extend: {
+      colors: {
+        // Brand Colors based on existing CSS variables
+        primary: {
+          bg: '#1A1A1C',
+          DEFAULT: '#1A1A1C',
+        },
+        secondary: {
+          bg: '#2C2C2E',
+          DEFAULT: '#2C2C2E',
+        },
+        tertiary: {
+          bg: '#3A3A3C',
+          DEFAULT: '#3A3A3C',
+        },
+        accent: {
+          orange: '#FF6600',
+          bronze: '#C87533',
+          blue: '#0A84FF',
+          green: '#30D158',
+          red: '#FF453A',
+        },
+        text: {
+          primary: '#FFFFFF',
+          secondary: '#E0E0E6',
+          muted: '#B0B0B5',
+        },
+      },
+      fontFamily: {
+        sans: [
+          '-apple-system',
+          'BlinkMacSystemFont',
+          '"Segoe UI"',
+          'Roboto',
+          'Helvetica',
+          'Arial',
+          'sans-serif',
+          '"Apple Color Emoji"',
+          '"Segoe UI Emoji"',
+          '"Segoe UI Symbol"',
+        ],
+      },
+      borderRadius: {
+        'lg': '12px',
+        'md': '8px',
+        'sm': '6px',
+      },
+      fontWeight: {
+        light: '300',
+        regular: '400',
+        medium: '500',
+        semibold: '600',
+        bold: '700',
+      },
+    },
+  },
+  plugins: [],
+}
