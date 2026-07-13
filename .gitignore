@@ -32,3 +32,12 @@ index-test-baseline.html
 # Variables de entorno
 .env
 .env.local
+
+# Archivos temporales y scratch
+scratch/
+legacy/
+*.py
+check_images.py
+fix_json.js
+fix_landing_images.py
+prueba.txt
