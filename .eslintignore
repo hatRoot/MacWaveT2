@@ -1,0 +1,20 @@
+# Legacy — indentación 4 espacios, no migrar en esta fase
+script.js
+logo_const.js
+cotizaciones/
+sw.js
+
+# OPS — sistema separado
+dashboard-ods.html
+ods.html
+status-ods.html
+tecnicos.html
+ticket-badge.html
+js/dashboard/
+js/ops-shared.js
+js/supabase-config.js
+
+# Archivos generados
+dist/
+node_modules/
+screenshots/

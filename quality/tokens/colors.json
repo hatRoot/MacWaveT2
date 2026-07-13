@@ -1,0 +1,35 @@
+{
+  "$schema": "./schema.json",
+  "name": "MacWave Color Tokens",
+  "version": "1.0.0",
+  "description": "Tokens de color oficiales extraídos de style.css :root",
+  "background": {
+    "primary": { "value": "#1A1A1C", "cssVar": "--primary-bg", "tailwind": "bg-primary" },
+    "secondary": { "value": "#2C2C2E", "cssVar": "--secondary-bg", "tailwind": "bg-secondary" },
+    "tertiary": { "value": "#3A3A3C", "cssVar": "--tertiary-bg", "tailwind": "bg-tertiary" },
+    "header": { "value": "#000101", "cssVar": null, "tailwind": null },
+    "footer": { "value": "#000000", "cssVar": null, "tailwind": null }
+  },
+  "text": {
+    "primary": { "value": "#FFFFFF", "cssVar": "--text-primary", "tailwind": "text-text-primary" },
+    "secondary": {
+      "value": "#E0E0E6",
+      "cssVar": "--text-secondary",
+      "tailwind": "text-text-secondary"
+    },
+    "muted": { "value": "#B0B0B5", "cssVar": "--text-muted", "tailwind": "text-text-muted" }
+  },
+  "accent": {
+    "orange": { "value": "#FF6600", "cssVar": "--accent-orange", "tailwind": "bg-accent-orange" },
+    "orangeHover": { "value": "#FF7B33", "cssVar": null, "tailwind": null },
+    "bronze": { "value": "#C87533", "cssVar": "--accent-bronze", "tailwind": "bg-accent-bronze" },
+    "blue": { "value": "#0A84FF", "cssVar": "--accent-blue", "tailwind": "bg-accent-blue" },
+    "green": { "value": "#30D158", "cssVar": "--accent-green", "tailwind": "bg-accent-green" },
+    "red": { "value": "#FF453A", "cssVar": "--accent-red", "tailwind": "bg-accent-red" }
+  },
+  "neon": {
+    "green": { "value": "#30D158", "background": "rgba(48, 209, 88, 0.15)" },
+    "yellow": { "value": "#FFCC00", "background": "rgba(255, 204, 0, 0.15)" },
+    "orange": { "value": "#FF6600", "background": "rgba(255, 102, 0, 0.15)" }
+  }
+}

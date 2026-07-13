@@ -1,0 +1,23 @@
+{
+  "$schema": "./schema.json",
+  "name": "MacWave Border Tokens",
+  "version": "1.0.0",
+  "radius": {
+    "sm": { "value": "6px", "cssVar": "--border-radius-sm", "tailwind": "rounded-sm" },
+    "md": { "value": "8px", "cssVar": "--border-radius-md", "tailwind": "rounded-md" },
+    "lg": { "value": "12px", "cssVar": "--border-radius-lg", "tailwind": "rounded-lg" },
+    "pill": { "value": "30px", "usage": ".header-cta" },
+    "full": { "value": "50%", "usage": ".footer-ops-dot" }
+  },
+  "width": {
+    "thin": { "value": "1px" },
+    "medium": { "value": "2px", "usage": ".cta-button.secondary" }
+  },
+  "colors": {
+    "section": { "value": "var(--secondary-bg)" },
+    "neonGreen": { "value": "rgba(48, 209, 88, 0.4)" },
+    "neonYellow": { "value": "rgba(255, 204, 0, 0.4)" },
+    "neonOrange": { "value": "rgba(255, 102, 0, 0.4)" },
+    "modal": { "value": "rgba(255, 255, 255, 0.08)" }
+  }
+}

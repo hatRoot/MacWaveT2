@@ -1,0 +1,19 @@
+{
+  "$schema": "./schema.json",
+  "name": "MacWave Breakpoint Tokens",
+  "version": "1.0.0",
+  "description": "Breakpoints alineados con media queries de style.css",
+  "screens": {
+    "sm": { "value": "480px", "tailwind": "sm", "usage": "Móvil pequeño" },
+    "md": { "value": "768px", "tailwind": "md", "usage": "Tablet / móvil landscape" },
+    "lg": { "value": "1024px", "tailwind": "lg", "usage": "Tablet landscape / desktop pequeño" },
+    "xl": { "value": "1280px", "tailwind": "xl", "usage": "Desktop estándar" },
+    "2xl": { "value": "1440px", "tailwind": "2xl", "usage": "Desktop grande" }
+  },
+  "legacyMediaQueries": {
+    "max1024": "@media screen and (max-width: 1024px)",
+    "max768": "@media screen and (max-width: 768px)",
+    "max480": "@media screen and (max-width: 480px)",
+    "landscape": "@media screen and (max-height: 500px) and (orientation: landscape)"
+  }
+}

@@ -1,0 +1,24 @@
+<!--
+  Componente: Select
+  Design System: MacWave México
+  Fuente CSS: cotizaciones/styles.css → .form-group select
+  Estado: Documentado — CSS en submódulo cotizaciones
+-->
+
+<div class="form-group">
+  <label for="service-type">Tipo de servicio</label>
+  <select id="service-type" name="serviceType" required>
+    <option value="">Seleccionar servicio...</option>
+    <option value="diagnostico">Diagnóstico</option>
+    <option value="reparacion">Reparación placa lógica</option>
+    <option value="bateria">Cambio de batería</option>
+    <option value="pantalla">Cambio de pantalla</option>
+    <option value="teclado">Cambio de teclado</option>
+  </select>
+</div>
+
+<!--
+  Nota: Select del sitio público usa CTAs.
+  Inputs/selects completos están en cotizaciones/index.html.
+  Ver también: quality/design-system/components/input.html
+-->

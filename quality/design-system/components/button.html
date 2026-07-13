@@ -1,0 +1,33 @@
+<!--
+  Componente: Button (CTA)
+  Design System: MacWave México
+  Fuente CSS: style.css → .cta-button
+  Estado: Documentado — CSS legado activo
+-->
+<!-- Primary CTA -->
+<a href="#" class="cta-button primary">Solicitar servicio</a>
+
+<!-- Secondary CTA -->
+<a href="#" class="cta-button secondary">Más información</a>
+
+<!-- Header CTA (neon variants) -->
+<a href="#" class="cta-button header-cta neon-green">WhatsApp</a>
+<a href="#" class="cta-button header-cta neon-yellow">Llamar</a>
+<a href="#" class="cta-button header-cta neon-orange">Cotizar</a>
+
+<!-- Large CTA -->
+<a href="#" class="cta-button primary large-cta">Comenzar ahora</a>
+
+<!--
+  Tokens:
+  - Primary bg: --accent-orange (#FF6600)
+  - Primary hover: #FF7B33
+  - Border radius: --border-radius-lg (12px)
+  - Font weight: --font-weight-semibold (600)
+  - Transition: all 0.3s ease
+
+  Tailwind equivalent (futuro):
+  @layer components {
+    .mw-btn-primary { @apply px-5 py-2 rounded-lg font-semibold ... }
+  }
+-->

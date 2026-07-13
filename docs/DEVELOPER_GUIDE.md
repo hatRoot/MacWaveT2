@@ -6,12 +6,14 @@
 ## Requisitos Previos
 
 ### Software Necesario
-- **Node.js:** v18+ 
+
+- **Node.js:** v18+
 - **npm:** v9+
 - **Git:** Última versión estable
 - **Editor de código:** VS Code (recomendado)
 
 ### Extensiones de VS Code Recomendadas
+
 - ESLint
 - Prettier
 - Tailwind CSS IntelliSense
@@ -21,22 +23,26 @@
 ## Setup Inicial
 
 ### 1. Clonar el Repositorio
+
 ```bash
 git clone https://github.com/hatRoot/MacWaveT2.git
 cd MacWaveT2
 ```
 
 ### 2. Instalar Dependencias
+
 ```bash
 npm install
 ```
 
 **Nota:** Si encuentras error de permisos en npm cache:
+
 ```bash
 sudo chown -R 501:20 "/Users/joelduran/.npm"
 ```
 
 ### 3. Configurar Git
+
 ```bash
 git config user.name "Tu Nombre"
 git config user.email "tu@email.com"
@@ -74,6 +80,7 @@ MacWaveT2/
 ### Desarrollo Local
 
 #### 1. Iniciar Servidor Local
+
 ```bash
 # Usando Live Server en VS Code
 # O usando Python
@@ -81,6 +88,7 @@ python3 -m http.server 8000
 ```
 
 #### 2. Compilar Tailwind CSS (Modo Watch)
+
 ```bash
 npm run watch:css
 ```
@@ -88,6 +96,7 @@ npm run watch:css
 Esto compila `tailwind.css` a `dist/output.css` automáticamente al guardar cambios.
 
 #### 3. Abrir en Navegador
+
 ```
 http://localhost:8000
 ```
@@ -95,17 +104,20 @@ http://localhost:8000
 ### Flujo de Trabajo con Git
 
 #### 1. Crear Branch para Feature
+
 ```bash
 git checkout -b feature/nombre-feature
 ```
 
 #### 2. Hacer Cambios y Commits
+
 ```bash
 git add .
 git commit -m "feat: descripción del cambio"
 ```
 
 #### 3. Push y Pull Request
+
 ```bash
 git push origin feature/nombre-feature
 ```
@@ -113,6 +125,7 @@ git push origin feature/nombre-feature
 Luego crear Pull Request en GitHub.
 
 #### 4. Merge a Main
+
 ```bash
 git checkout main
 git pull origin main
@@ -125,9 +138,11 @@ git push origin main
 ### JavaScript
 
 #### ESLint
+
 El proyecto usa ESLint para mantener calidad de código. Configuración en `.eslintrc.json`.
 
 **Reglas principales:**
+
 - Sin `console.log` en producción (usar `warn`)
 - Usar `const`/`let` en lugar de `var`
 - Arrow functions para callbacks
@@ -135,6 +150,7 @@ El proyecto usa ESLint para mantener calidad de código. Configuración en `.esl
 - Punto y coma obligatorio
 
 **Ejemplo correcto:**
+
 ```javascript
 const handleClick = (event) => {
   event.preventDefault();
@@ -146,6 +162,7 @@ const handleClick = (event) => {
 ```
 
 #### Nombres de Variables
+
 - **CamelCase** para variables y funciones
 - **PascalCase** para clases y constructores
 - **UPPER_SNAKE_CASE** para constantes
@@ -153,12 +170,13 @@ const handleClick = (event) => {
 ```javascript
 const userName = 'John';
 const MAX_RETRIES = 3;
-class UserService { }
+class UserService {}
 ```
 
 ### HTML
 
 #### Estructura
+
 - Usar HTML5 semántico
 - Indentación de 2 espacios
 - Cerrar todas las etiquetas
@@ -173,6 +191,7 @@ class UserService { }
 ```
 
 #### Accesibilidad
+
 - `alt` descriptivo en imágenes
 - `aria-label` en botones sin texto
 - Estructura semántica correcta
@@ -181,18 +200,21 @@ class UserService { }
 ### CSS/Tailwind
 
 #### Clases Utility
+
 Preferir clases de Tailwind sobre CSS custom:
 
 ```html
 <!-- ✅ Correcto -->
-<div class="bg-primary-bg text-white p-4 rounded-lg">
-
-<!-- ❌ Evitar -->
-<div style="background-color: #1A1A1C; color: white; padding: 1rem;">
+<div class="rounded-lg bg-primary-bg p-4 text-white">
+  <!-- ❌ Evitar -->
+  <div style="background-color: #1A1A1C; color: white; padding: 1rem;"></div>
+</div>
 ```
 
 #### Orden de Clases
+
 Mantener orden consistente:
+
 1. Layout (flex, grid)
 2. Spacing (p, m)
 3. Sizing (w, h)
@@ -203,18 +225,22 @@ Mantener orden consistente:
 8. Transitions (transition, duration)
 
 ```html
-<div class="flex items-center justify-between p-4 w-full text-lg bg-primary-bg rounded-lg shadow-lg transition-all">
+<div
+  class="flex w-full items-center justify-between rounded-lg bg-primary-bg p-4 text-lg shadow-lg transition-all"
+></div>
 ```
 
 ## Testing
 
 ### Testing Manual
+
 1. **Responsive:** Testear en mobile, tablet, desktop
 2. **Cross-browser:** Chrome, Firefox, Safari
 3. **Accesibilidad:** Verificar con screen reader
 4. **Performance:** Usar Lighthouse en Chrome DevTools
 
 ### Testing Automatizado (Futuro)
+
 El proyecto tiene Playwright instalado para E2E testing.
 
 ```bash
@@ -224,6 +250,7 @@ npm run test
 ## Despliegue
 
 ### Pre-despliegue Checklist
+
 - [ ] Compilar Tailwind CSS: `npm run build:css`
 - [ ] Verificar no hay `console.log` en producción
 - [ ] Testear en múltiples navegadores
@@ -233,18 +260,22 @@ npm run test
 - [ ] Commit y push a GitHub
 
 ### Despliegue en Producción
+
 El proyecto usa Hostgator con Apache.
 
 1. **Sincronizar con GitHub:**
+
 ```bash
 git push origin main
 ```
 
 2. **Upload via FTP/SFTP:**
+
 - Subir archivos modificados
 - No subir `node_modules/`, `docs/`, `scripts/`
 
 3. **Verificar en producción:**
+
 - Abrir https://macwave.com.mx
 - Testear funcionalidad principal
 - Verificar Google Analytics
@@ -252,9 +283,11 @@ git push origin main
 ## Solución de Problemas Comunes
 
 ### Tailwind CSS no compila
+
 **Problema:** `tailwindcss: command not found`
 
 **Solución:**
+
 ```bash
 # Reinstalar dependencias
 rm -rf node_modules package-lock.json
@@ -262,9 +295,11 @@ npm install
 ```
 
 ### Estilos no se aplican
+
 **Problema:** Cambios en Tailwind no se reflejan
 
 **Solución:**
+
 ```bash
 # Recompilar CSS
 npm run build:css
@@ -273,9 +308,11 @@ npm run build:css
 ```
 
 ### Git push falla
+
 **Problema:** Authentication failed
 
 **Solución:**
+
 ```bash
 # Verificar remote
 git remote -v
@@ -285,9 +322,11 @@ git config --global credential.helper osxkeychain
 ```
 
 ### Imágenes no cargan
+
 **Problema:** Rutas incorrectas
 
 **Solución:**
+
 - Usar rutas relativas: `./images/nombre.png`
 - Verificar mayúsculas/minúsculas (case-sensitive)
 - Verificar archivo existe en `images/`
@@ -295,7 +334,9 @@ git config --global credential.helper osxkeychain
 ## Buenas Prácticas
 
 ### Commits
+
 Usar conventional commits:
+
 - `feat:` nueva funcionalidad
 - `fix:` corrección de bug
 - `docs:` cambios en documentación
@@ -310,13 +351,16 @@ git commit -m "fix: corregir error en navegación móvil"
 ```
 
 ### Code Reviews
+
 Antes de hacer push:
+
 1. Revisar cambios con `git diff`
 2. Verificar no hay código muerto
 3. Confirmar que tests pasan
 4. Verificar formatting (Prettier)
 
 ### Documentación
+
 - Documentar funciones complejas
 - Actualizar README si hay cambios mayores
 - Agregar comentarios en código no obvio
@@ -325,6 +369,7 @@ Antes de hacer push:
 ## Recursos
 
 ### Documentación Interna
+
 - [Design System](./DESIGN_SYSTEM.md)
 - [Tailwind Guide](./TAILWIND_GUIDE.md)
 - [Quality Rules](./QUALITY_RULES.md)
@@ -332,6 +377,7 @@ Antes de hacer push:
 - [Audit Report](./AUDIT_REPORT.md)
 
 ### Recursos Externos
+
 - [Tailwind CSS Docs](https://tailwindcss.com/docs)
 - [MDN Web Docs](https://developer.mozilla.org/)
 - [Supabase Docs](https://supabase.com/docs)
@@ -340,6 +386,7 @@ Antes de hacer push:
 ## Soporte
 
 Para preguntas o problemas:
+
 1. Revisar documentación interna
 2. Buscar en issues de GitHub
 3. Contactar al equipo de desarrollo

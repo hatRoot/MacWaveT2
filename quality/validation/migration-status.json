@@ -1,0 +1,23 @@
+{
+  "date": "2026-07-13T12:52:46.730Z",
+  "css": {
+    "styleCssLines": 5807,
+    "tailwindCssLines": 114,
+    "distExists": true,
+    "migratedPct": 1
+  },
+  "html": {
+    "total": 28,
+    "styleCssRefs": 21,
+    "distCssRefs": 0,
+    "twClassCount": 3,
+    "migratedPct": 0
+  },
+  "quality": {
+    "dirs": 7,
+    "tokens": 9,
+    "components": 14,
+    "pct": 100
+  },
+  "overall": 50
+}

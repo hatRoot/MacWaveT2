@@ -1,0 +1,24 @@
+{
+  "$schema": "./schema.json",
+  "name": "MacWave Spacing Tokens",
+  "version": "1.0.0",
+  "container": {
+    "maxWidth": { "value": "1200px", "tailwind": "max-w-container" },
+    "paddingX": { "value": "20px", "tailwind": "px-5" }
+  },
+  "section": {
+    "padded": { "value": "120px 0", "class": "section-padded", "tailwind": "py-[120px]" },
+    "descriptionMaxWidth": { "value": "700px", "tailwind": "max-w-[700px]" }
+  },
+  "grid": {
+    "gap": {
+      "sm": { "value": "15px", "tailwind": "gap-[15px]" },
+      "md": { "value": "20px", "tailwind": "gap-5" },
+      "lg": { "value": "30px", "tailwind": "gap-[30px]" }
+    }
+  },
+  "header": {
+    "paddingY": { "value": "30px", "class": "main-header" },
+    "actionsGap": { "value": "20px", "tailwind": "gap-5" }
+  }
+}

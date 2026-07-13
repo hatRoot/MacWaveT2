@@ -1,0 +1,40 @@
+<!--
+  Componente: Modal
+  Design System: MacWave México
+  Fuente CSS: style.css → .modal-overlay, .modal-container
+  Estado: Documentado — CSS legado activo
+  JS: .active class toggle
+-->
+
+<div class="modal-overlay" id="example-modal">
+  <div class="modal-container">
+    <button class="close-modal-btn" aria-label="Cerrar modal">&times;</button>
+    <div class="modal-left-panel">
+      <div class="modal-profile">
+        <div class="profile-img-placeholder"></div>
+      </div>
+    </div>
+    <div class="modal-right-panel">
+      <h2>Contenido del modal</h2>
+      <p>Descripción del servicio o formulario.</p>
+    </div>
+  </div>
+</div>
+
+<!-- Services List Modal (variante imagen) -->
+<div class="modal-overlay" id="services-modal">
+  <div class="modal-container services-list-modal-container">
+    <button class="close-modal-btn" aria-label="Cerrar">&times;</button>
+    <div class="services-list-modal-body">
+      <img src="./images/servicios-lista.png" alt="Lista de servicios">
+    </div>
+  </div>
+</div>
+
+<!--
+  Estados:
+  - Default: display none, opacity 0
+  - .active: display flex, opacity 1
+  - z-index: 2000
+  - Transition: opacity 0.3s ease
+-->

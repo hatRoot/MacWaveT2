@@ -1,7 +1,19 @@
 # Design System - MacWave México
 
-**Versión:** 1.0  
-**Fecha:** 12 de julio de 2026
+**Versión:** 1.1  
+**Fecha:** 13 de julio de 2026
+
+## Fuentes de Verdad
+
+| Recurso | Ubicación | Estado |
+|---------|-----------|--------|
+| Tokens JSON | `quality/tokens/` | ✅ 9 archivos |
+| Tailwind config | `tailwind.config.js` | ✅ Sincronizado |
+| Componentes HTML | `quality/design-system/components/` | ✅ 14 snippets |
+| CSS activo | `style.css` | ⏳ 5,806 líneas (legado) |
+| Clases Tailwind nuevas | `tailwind.css` → `.mw-*` | ✅ 10 componentes |
+
+Ver también: `docs/COMPONENT_LIBRARY.md` y `docs/MIGRATION_REPORT.md`.
 
 ## Visión General
 
@@ -12,63 +24,70 @@ El Design System de MacWave México define los tokens de diseño, componentes y 
 ### Colores
 
 #### Colores de Fondo
+
 ```css
---primary-bg: #1A1A1C    /* Fondo principal - Gris oscuro */
---secondary-bg: #2C2C2E  /* Fondo secundario - Gris medio */
---tertiary-bg: #3A3A3C   /* Fondo terciario - Gris claro */
+--primary-bg: #1a1a1c /* Fondo principal - Gris oscuro */ --secondary-bg: #2c2c2e
+  /* Fondo secundario - Gris medio */ --tertiary-bg: #3a3a3c /* Fondo terciario - Gris claro */;
 ```
 
 #### Colores de Texto
+
 ```css
---text-primary: #FFFFFF    /* Texto principal - Blanco */
---text-secondary: #E0E0E6  /* Texto secundario - Gris muy claro */
---text-muted: #B0B0B5     /* Texto muted - Gris medio */
+--text-primary: #ffffff /* Texto principal - Blanco */ --text-secondary: #e0e0e6
+  /* Texto secundario - Gris muy claro */ --text-muted: #b0b0b5 /* Texto muted - Gris medio */;
 ```
 
 #### Colores de Acento (Marca)
+
 ```css
---accent-orange: #FF6600  /* Naranja principal - CTAs y hover */
---accent-bronze: #C87533  /* Bronce - Variante de marca */
---accent-blue: #0A84FF    /* Azul - Links y elementos interactivos */
---accent-green: #30D158   /* Verde - Éxito y WhatsApp */
---accent-red: #FF453A     /* Rojo - Errores y alertas */
+--accent-orange: #ff6600 /* Naranja principal - CTAs y hover */ --accent-bronze: #c87533
+  /* Bronce - Variante de marca */ --accent-blue: #0a84ff
+  /* Azul - Links y elementos interactivos */ --accent-green: #30d158 /* Verde - Éxito y WhatsApp */
+  --accent-red: #ff453a /* Rojo - Errores y alertas */;
 ```
 
 ### Tipografía
 
 #### Font Family
+
 ```css
-font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
 ```
 
 **Uso:** Tipografía del sistema Apple para consistencia con dispositivos del ecosistema.
 
 #### Font Weights
+
 ```css
---font-weight-light: 300      /* Light */
---font-weight-regular: 400    /* Regular */
---font-weight-medium: 500     /* Medium */
---font-weight-semibold: 600   /* Semibold */
---font-weight-bold: 700       /* Bold */
+--font-weight-light: 300 /* Light */ --font-weight-regular: 400 /* Regular */
+  --font-weight-medium: 500 /* Medium */ --font-weight-semibold: 600 /* Semibold */
+  --font-weight-bold: 700 /* Bold */;
 ```
 
 ### Espaciado
 
 #### Border Radius
+
 ```css
---border-radius-lg: 12px  /* Grande - Cards, contenedores */
---border-radius-md: 8px   /* Medio - Botones, inputs */
---border-radius-sm: 6px   /* Pequeño - Badges, tags */
+--border-radius-lg: 12px /* Grande - Cards, contenedores */ --border-radius-md: 8px
+  /* Medio - Botones, inputs */ --border-radius-sm: 6px /* Pequeño - Badges, tags */;
 ```
 
 ### Animaciones
 
 #### Pulse Animation
+
 ```css
 @keyframes pulse {
-  0% { opacity: 1; }
-  50% { opacity: 0.5; }
-  100% { opacity: 1; }
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 1;
+  }
 }
 ```
 
@@ -79,19 +98,17 @@ font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, A
 ### Botones
 
 #### Primary Button (CTA)
+
 ```html
-<button class="cta-button">
-  Solicitar servicio
-</button>
+<button class="cta-button">Solicitar servicio</button>
 ```
 
 **Estilo:** Fondo naranja (#FF6600), texto blanco, border radius 8px.
 
 #### Secondary Button
+
 ```html
-<button class="secondary-button">
-  Más información
-</button>
+<button class="secondary-button">Más información</button>
 ```
 
 **Estilo:** Borde naranja, texto naranja, fondo transparente.
@@ -99,12 +116,14 @@ font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, A
 ### Navegación
 
 #### Header Principal
+
 - **Fondo:** Gradiente oscuro
 - **Logo:** Imagen negro.png
 - **Links:** Blanco con hover naranja
 - **CTA:** Botón naranja
 
 #### Mobile Menu
+
 - **Animación:** Slide-in desde derecha
 - **Backdrop:** Oscuro con blur
 - **Links:** Stack vertical con animación stagger
@@ -112,9 +131,10 @@ font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, A
 ### Cards
 
 #### Service Card
+
 ```html
 <div class="service-card">
-  <img src="icon.png" alt="Icono">
+  <img src="icon.png" alt="Icono" />
   <h3>Título del servicio</h3>
   <p>Descripción breve</p>
   <a href="#">Más información</a>
@@ -124,11 +144,12 @@ font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, A
 **Estilo:** Fondo secundario (#2C2C2E), border radius 12px, hover effect.
 
 #### Testimonial Card
+
 ```html
 <div class="testimonial-card">
   <p>"Cita del cliente"</p>
   <div class="client-info">
-    <img src="avatar.png" alt="Cliente">
+    <img src="avatar.png" alt="Cliente" />
     <span>Nombre del cliente</span>
   </div>
 </div>
@@ -137,13 +158,15 @@ font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, A
 ### Formularios
 
 #### Input Fields
+
 ```html
-<input type="text" class="form-input" placeholder="Nombre">
+<input type="text" class="form-input" placeholder="Nombre" />
 ```
 
 **Estilo:** Fondo terciario (#3A3A3C), border radius 8px, focus border naranja.
 
 #### Textarea
+
 ```html
 <textarea class="form-textarea" placeholder="Mensaje"></textarea>
 ```
@@ -151,6 +174,7 @@ font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, A
 ## Patrones de Layout
 
 ### Container
+
 ```css
 .container {
   max-width: 1200px;
@@ -160,6 +184,7 @@ font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, A
 ```
 
 ### Grid System
+
 ```css
 .grid-2 {
   display: grid;
@@ -174,13 +199,15 @@ font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, A
 }
 
 @media (max-width: 768px) {
-  .grid-2, .grid-3 {
+  .grid-2,
+  .grid-3 {
     grid-template-columns: 1fr;
   }
 }
 ```
 
 ### Flex Patterns
+
 ```css
 .flex-center {
   display: flex;
@@ -199,32 +226,39 @@ font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, A
 
 ```css
 /* Mobile */
-@media (max-width: 640px) { }
+@media (max-width: 640px) {
+}
 
 /* Tablet */
-@media (min-width: 641px) and (max-width: 1024px) { }
+@media (min-width: 641px) and (max-width: 1024px) {
+}
 
 /* Desktop */
-@media (min-width: 1025px) { }
+@media (min-width: 1025px) {
+}
 ```
 
 ## Accesibilidad
 
 ### Contraste de Colores
+
 - **Texto sobre fondo oscuro:** WCAG AA (4.5:1)
 - **Texto grande sobre fondo oscuro:** WCAG AA (3:1)
 - **Componentes interactivos:** WCAG AA (3:1)
 
 ### Focus States
+
 Todos los elementos interactivos deben tener estado focus visible:
+
 ```css
 :focus-visible {
-  outline: 2px solid #FF6600;
+  outline: 2px solid #ff6600;
   outline-offset: 2px;
 }
 ```
 
 ### Screen Readers
+
 - Usar `.sr-only` para contenido solo para screen readers
 - Atributos `aria-label` en botones sin texto
 - `alt` descriptivo en todas las imágenes
@@ -232,14 +266,16 @@ Todos los elementos interactivos deben tener estado focus visible:
 ## Performance
 
 ### Optimizaciones CSS
+
 - **CSS Containment:** En contenedores grandes
 - **Will-change:** En elementos animados
 - **Transform:** Preferir sobre top/left para animaciones
 - **Opacity:** Preferir sobre visibility para transiciones
 
 ### Lazy Loading
+
 ```html
-<img class="lazy-load" data-src="image.jpg" alt="Descripción">
+<img class="lazy-load" data-src="image.jpg" alt="Descripción" />
 ```
 
 ## Uso con Tailwind CSS
@@ -289,18 +325,20 @@ bg-primary-bg
 <h2 class="text-3xl font-semibold">Subtítulo</h2>
 <h3 class="text-2xl font-medium">Sección</h3>
 <p class="text-base">Texto de párrafo</p>
-<span class="text-sm text-muted">Texto secundario</span>
+<span class="text-muted text-sm">Texto secundario</span>
 ```
 
 ## Mantenimiento
 
 ### Actualización de Tokens
+
 1. Actualizar valor en `docs/DESIGN_SYSTEM.md`
 2. Actualizar en `tailwind.config.js`
 3. Actualizar en `style.css` (si aún se usa)
 4. Documentar cambio en CHANGELOG
 
 ### Adición de Nuevos Componentes
+
 1. Definir en este documento
 2. Crear en HTML/Tailwind
 3. Agregar ejemplos de uso

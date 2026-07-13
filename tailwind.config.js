@@ -28,35 +28,38 @@ module.exports = {
     './ticket-badge.html',
     './partials/*.html',
     './cotizaciones/**/*.html',
+    './quality/design-system/components/*.html'
   ],
   theme: {
     extend: {
       colors: {
-        // Brand Colors based on existing CSS variables
         primary: {
           bg: '#1A1A1C',
-          DEFAULT: '#1A1A1C',
+          DEFAULT: '#1A1A1C'
         },
         secondary: {
           bg: '#2C2C2E',
-          DEFAULT: '#2C2C2E',
+          DEFAULT: '#2C2C2E'
         },
         tertiary: {
           bg: '#3A3A3C',
-          DEFAULT: '#3A3A3C',
+          DEFAULT: '#3A3A3C'
         },
         accent: {
           orange: '#FF6600',
+          'orange-hover': '#FF7B33',
           bronze: '#C87533',
           blue: '#0A84FF',
           green: '#30D158',
-          red: '#FF453A',
+          red: '#FF453A'
         },
         text: {
           primary: '#FFFFFF',
           secondary: '#E0E0E6',
-          muted: '#B0B0B5',
+          muted: '#B0B0B5'
         },
+        header: '#000101',
+        footer: '#000000'
       },
       fontFamily: {
         sans: [
@@ -69,22 +72,69 @@ module.exports = {
           'sans-serif',
           '"Apple Color Emoji"',
           '"Segoe UI Emoji"',
-          '"Segoe UI Symbol"',
+          '"Segoe UI Symbol"'
         ],
-      },
-      borderRadius: {
-        'lg': '12px',
-        'md': '8px',
-        'sm': '6px',
+        brand: ['"Caveat Brush"', 'cursive']
       },
       fontWeight: {
         light: '300',
         regular: '400',
         medium: '500',
         semibold: '600',
-        bold: '700',
+        bold: '700'
       },
-    },
+      borderRadius: {
+        sm: '6px',
+        md: '8px',
+        lg: '12px',
+        pill: '30px'
+      },
+      maxWidth: {
+        container: '1200px',
+        'section-desc': '700px'
+      },
+      spacing: {
+        section: '120px'
+      },
+      zIndex: {
+        dropdown: '100',
+        sticky: '500',
+        overlay: '1000',
+        modal: '2000',
+        floating: '3000',
+        tooltip: '4000'
+      },
+      boxShadow: {
+        'cta-hover': '0 6px 20px rgba(0, 0, 0, 0.3)',
+        modal: '0 25px 50px rgba(0, 0, 0, 0.5)',
+        'neon-green': '0 0 10px rgba(48, 209, 88, 0.2)',
+        'neon-yellow': '0 0 10px rgba(255, 204, 0, 0.2)',
+        'neon-orange': '0 0 10px rgba(255, 102, 0, 0.2)'
+      },
+      keyframes: {
+        pulse: {
+          '0%': { transform: 'scale(1)', boxShadow: '0 0 0 0 rgba(48, 209, 88, 0.7)' },
+          '70%': { transform: 'scale(1.05)', boxShadow: '0 0 0 15px rgba(48, 209, 88, 0)' },
+          '100%': { transform: 'scale(1)', boxShadow: '0 0 0 0 rgba(48, 209, 88, 0)' }
+        },
+        'tag-shimmer': {
+          '0%': { backgroundPosition: '-200% 0' },
+          '100%': { backgroundPosition: '200% 0' }
+        },
+        flash: {
+          '0%, 100%': { opacity: '1' },
+          '50%': { opacity: '0.7' }
+        }
+      },
+      animation: {
+        pulse: 'pulse 2s infinite',
+        'tag-shimmer': 'tag-shimmer 3s infinite',
+        flash: 'flash 1.5s infinite'
+      },
+      transitionDuration: {
+        DEFAULT: '300ms'
+      }
+    }
   },
-  plugins: [],
-}
+  plugins: []
+};

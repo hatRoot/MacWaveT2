@@ -2,20 +2,18 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Custom base styles */
-@layer base {
-  * {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-  }
+/*
+ * MacWave México — Tailwind CSS Entry Point
+ * Estrategia: coexistencia con style.css hasta validación visual completa.
+ * Tokens: quality/tokens/ + tailwind.config.js
+ * Componentes: @layer components (migración progresiva)
+ */
 
-  body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    background-color: #1A1A1C;
-    color: #FFFFFF;
-    line-height: 1.6;
-    overflow-x: hidden;
+@layer base {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
   }
 
   .sr-only {
@@ -31,14 +29,85 @@
   }
 }
 
-/* Custom components */
 @layer components {
+  /* ── Container ── */
+  .mw-container {
+    @apply mx-auto max-w-container px-5;
+  }
+
+  /* ── Section ── */
+  .mw-section {
+    @apply py-section;
+  }
+
+  .mw-section-desc {
+    @apply mx-auto mb-12 max-w-section-desc text-center text-lg text-text-muted;
+  }
+
+  /* ── Button: Primary CTA ── */
+  .mw-btn {
+    @apply cursor-pointer rounded-lg px-5 py-2 text-center font-semibold no-underline transition-all duration-300;
+  }
+
+  .mw-btn-primary {
+    @apply mw-btn border-none bg-accent-orange text-primary;
+  }
+
+  .mw-btn-primary:hover {
+    @apply -translate-y-0.5 bg-accent-orange-hover shadow-cta-hover;
+  }
+
+  .mw-btn-secondary {
+    @apply mw-btn border-2 border-text-muted bg-transparent text-text-primary;
+  }
+
+  .mw-btn-secondary:hover {
+    @apply bg-text-primary text-primary;
+  }
+
+  /* ── Card ── */
+  .mw-card {
+    @apply rounded-lg bg-secondary p-6 text-text-secondary;
+  }
+
+  /* ── Badge ── */
+  .mw-badge {
+    @apply inline-block rounded-sm px-3 py-1 text-sm font-medium;
+  }
+
+  .mw-badge-orange {
+    @apply mw-badge bg-accent-orange/15 text-accent-orange;
+  }
+
+  .mw-badge-green {
+    @apply mw-badge bg-accent-green/15 text-accent-green;
+  }
+
+  /* ── Grid utilities ── */
+  .mw-grid-2 {
+    @apply grid grid-cols-1 gap-5 md:grid-cols-2;
+  }
+
+  .mw-grid-3 {
+    @apply grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3;
+  }
+
+  .mw-grid-4 {
+    @apply grid grid-cols-1 gap-[15px] sm:grid-cols-2 lg:grid-cols-4;
+  }
+
+  /* ── Lazy load (JS-controlled) ── */
   .lazy-load {
-    opacity: 0;
-    transition: opacity 0.3s ease;
+    @apply opacity-0 transition-opacity duration-300;
   }
 
   .lazy-load.loaded {
-    opacity: 1;
+    @apply opacity-100;
   }
 }
+
+/*
+ * NOTA: style.css (5,806 líneas) sigue siendo la fuente CSS activa.
+ * Las clases .mw-* son equivalentes Tailwind para uso progresivo.
+ * NO eliminar style.css hasta validación visual con scripts/comparar.js.
+ */

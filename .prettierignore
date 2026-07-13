@@ -1,0 +1,27 @@
+# Legacy JS — indentación propia, no reformatear
+script.js
+logo_const.js
+cotizaciones/
+sw.js
+js/
+
+# Legacy CSS monolítico — no reformatear
+style.css
+sidebar-ods.css
+css/
+cotizaciones/styles.css
+
+# HTML legacy — riesgo de cambios visuales
+*.html
+
+# Archivos grandes / generados
+logo_const.js
+logo_const.js
+cotizaciones/logo_base64.txt
+dist/
+node_modules/
+screenshots/
+package-lock.json
+
+# Documentación con tablas alineadas manualmente
+docs/AUDIT_REPORT.md

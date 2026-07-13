@@ -12,28 +12,30 @@ Tailwind CSS es un framework de utility-first CSS que permite construir diseños
 ### Archivos de Configuración
 
 #### tailwind.config.js
+
 Define los tokens de diseño y paths de contenido:
 
 ```javascript
 module.exports = {
   content: [
     './index.html',
-    './reparaciones.html',
+    './reparaciones.html'
     // ... todos los HTML del proyecto
   ],
   theme: {
     extend: {
       colors: {
         primary: { bg: '#1A1A1C' },
-        accent: { orange: '#FF6600' },
+        accent: { orange: '#FF6600' }
         // ... más tokens
       }
     }
   }
-}
+};
 ```
 
 #### tailwind.css
+
 Archivo de entrada CSS:
 
 ```css
@@ -52,26 +54,29 @@ Archivo de entrada CSS:
 ```
 
 #### postcss.config.js
+
 Configuración de PostCSS:
 
 ```javascript
 module.exports = {
   plugins: {
     tailwindcss: {},
-    autoprefixer: {},
+    autoprefixer: {}
   }
-}
+};
 ```
 
 ## Comandos
 
 ### Desarrollo
+
 ```bash
 # Compilar con watch (hot reload)
 npm run watch:css
 ```
 
 ### Producción
+
 ```bash
 # Compilar y minificar
 npm run build:css
@@ -82,102 +87,144 @@ npm run build:css
 ### Colores
 
 #### Colores de Fondo
+
 ```html
-<div class="bg-primary-bg">      <!-- #1A1A1C -->
-<div class="bg-secondary-bg">    <!-- #2C2C2E -->
-<div class="bg-tertiary-bg">     <!-- #3A3A3C -->
+<div class="bg-primary-bg">
+  <!-- #1A1A1C -->
+  <div class="bg-secondary-bg">
+    <!-- #2C2C2E -->
+    <div class="bg-tertiary-bg"><!-- #3A3A3C --></div>
+  </div>
+</div>
 ```
 
 #### Colores de Texto
+
 ```html
-<p class="text-primary">      <!-- #FFFFFF -->
-<p class="text-secondary">    <!-- #E0E0E6 -->
-<p class="text-muted">       <!-- #B0B0B5 -->
+<p class="text-primary"><!-- #FFFFFF --></p>
+<p class="text-secondary"><!-- #E0E0E6 --></p>
+<p class="text-muted"><!-- #B0B0B5 --></p>
 ```
 
 #### Colores de Acento
+
 ```html
-<button class="bg-accent-orange">  <!-- #FF6600 -->
-<button class="bg-accent-bronze">  <!-- #C87533 -->
-<button class="bg-accent-blue">    <!-- #0A84FF -->
-<button class="bg-accent-green">   <!-- #30D158 -->
-<button class="bg-accent-red">     <!-- #FF453A -->
+<button class="bg-accent-orange">
+  <!-- #FF6600 -->
+  <button class="bg-accent-bronze">
+    <!-- #C87533 -->
+    <button class="bg-accent-blue">
+      <!-- #0A84FF -->
+      <button class="bg-accent-green">
+        <!-- #30D158 -->
+        <button class="bg-accent-red"><!-- #FF453A --></button>
+      </button>
+    </button>
+  </button>
+</button>
 ```
 
 ### Tipografía
 
 #### Font Family
+
 ```html
-<p class="font-sans">  <!-- Font del sistema Apple -->
+<p class="font-sans"><!-- Font del sistema Apple --></p>
 ```
 
 #### Font Weight
+
 ```html
-<p class="font-light">      <!-- 300 -->
-<p class="font-regular">    <!-- 400 -->
-<p class="font-medium">     <!-- 500 -->
-<p class="font-semibold">   <!-- 600 -->
-<p class="font-bold">       <!-- 700 -->
+<p class="font-light"><!-- 300 --></p>
+<p class="font-regular"><!-- 400 --></p>
+<p class="font-medium"><!-- 500 --></p>
+<p class="font-semibold"><!-- 600 --></p>
+<p class="font-bold"><!-- 700 --></p>
 ```
 
 #### Font Size
+
 ```html
-<p class="text-xs">   <!-- 0.75rem -->
-<p class="text-sm">   <!-- 0.875rem -->
-<p class="text-base"> <!-- 1rem -->
-<p class="text-lg">   <!-- 1.125rem -->
-<p class="text-xl">   <!-- 1.25rem -->
-<p class="text-2xl">  <!-- 1.5rem -->
-<p class="text-3xl">  <!-- 1.875rem -->
-<p class="text-4xl">  <!-- 2.25rem -->
+<p class="text-xs"><!-- 0.75rem --></p>
+<p class="text-sm"><!-- 0.875rem --></p>
+<p class="text-base"><!-- 1rem --></p>
+<p class="text-lg"><!-- 1.125rem --></p>
+<p class="text-xl"><!-- 1.25rem --></p>
+<p class="text-2xl"><!-- 1.5rem --></p>
+<p class="text-3xl"><!-- 1.875rem --></p>
+<p class="text-4xl"><!-- 2.25rem --></p>
 ```
 
 ### Espaciado
 
 #### Padding
+
 ```html
-<div class="p-0">   <!-- 0 -->
-<div class="p-4">   <!-- 1rem -->
-<div class="p-8">   <!-- 2rem -->
-<div class="px-4">  <!-- Horizontal -->
-<div class="py-4">  <!-- Vertical -->
+<div class="p-0">
+  <!-- 0 -->
+  <div class="p-4">
+    <!-- 1rem -->
+    <div class="p-8">
+      <!-- 2rem -->
+      <div class="px-4">
+        <!-- Horizontal -->
+        <div class="py-4"><!-- Vertical --></div>
+      </div>
+    </div>
+  </div>
+</div>
 ```
 
 #### Margin
+
 ```html
-<div class="m-4">   <!-- 1rem -->
-<div class="mx-auto"> <!-- Horizontal auto -->
-<div class="my-4">  <!-- Vertical -->
+<div class="m-4">
+  <!-- 1rem -->
+  <div class="mx-auto">
+    <!-- Horizontal auto -->
+    <div class="my-4"><!-- Vertical --></div>
+  </div>
+</div>
 ```
 
 ### Border Radius
+
 ```html
-<div class="rounded-sm">  <!-- 6px -->
-<div class="rounded-md">  <!-- 8px -->
-<div class="rounded-lg">  <!-- 12px -->
-<div class="rounded-full"> <!-- 50% -->
+<div class="rounded-sm">
+  <!-- 6px -->
+  <div class="rounded-md">
+    <!-- 8px -->
+    <div class="rounded-lg">
+      <!-- 12px -->
+      <div class="rounded-full"><!-- 50% --></div>
+    </div>
+  </div>
+</div>
 ```
 
 ## Patrones Comunes
 
 ### Contenedor Centrado
+
 ```html
-<div class="max-w-6xl mx-auto px-4">
+<div class="mx-auto max-w-6xl px-4">
   <!-- Contenido -->
 </div>
 ```
 
 ### Grid de 2 Columnas
+
 ```html
-<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div class="grid grid-cols-1 gap-6 md:grid-cols-2">
   <div>Columna 1</div>
   <div>Columna 2</div>
 </div>
 ```
 
 ### Grid de 3 Columnas
+
 ```html
-<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<div class="grid grid-cols-1 gap-6 md:grid-cols-3">
   <div>Columna 1</div>
   <div>Columna 2</div>
   <div>Columna 3</div>
@@ -185,6 +232,7 @@ npm run build:css
 ```
 
 ### Flex Center
+
 ```html
 <div class="flex items-center justify-center">
   <!-- Contenido centrado -->
@@ -192,6 +240,7 @@ npm run build:css
 ```
 
 ### Flex Between
+
 ```html
 <div class="flex items-center justify-between">
   <div>Izquierda</div>
@@ -200,28 +249,38 @@ npm run build:css
 ```
 
 ### Card Básica
+
 ```html
-<div class="bg-secondary-bg rounded-lg p-6 shadow-lg">
-  <h3 class="text-xl font-bold mb-4">Título</h3>
+<div class="rounded-lg bg-secondary-bg p-6 shadow-lg">
+  <h3 class="mb-4 text-xl font-bold">Título</h3>
   <p class="text-secondary">Descripción</p>
 </div>
 ```
 
 ### Botón CTA
+
 ```html
-<button class="bg-accent-orange text-white font-semibold py-3 px-6 rounded-lg hover:bg-opacity-90 transition-all">
+<button
+  class="rounded-lg bg-accent-orange px-6 py-3 font-semibold text-white transition-all hover:bg-opacity-90"
+>
   Solicitar servicio
 </button>
 ```
 
 ### Input Field
+
 ```html
-<input type="text" class="w-full bg-tertiary-bg text-white rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-accent-orange" placeholder="Nombre">
+<input
+  type="text"
+  class="w-full rounded-lg bg-tertiary-bg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-accent-orange"
+  placeholder="Nombre"
+/>
 ```
 
 ## Responsive Design
 
 ### Breakpoints
+
 ```css
 sm: 640px   /* Mobile grande */
 md: 768px   /* Tablet */
@@ -232,20 +291,21 @@ xl: 1280px  /* Desktop grande */
 ### Ejemplos Responsive
 
 #### Texto Responsive
+
 ```html
-<h1 class="text-2xl md:text-4xl lg:text-5xl">
-  Título responsive
-</h1>
+<h1 class="text-2xl md:text-4xl lg:text-5xl">Título responsive</h1>
 ```
 
 #### Grid Responsive
+
 ```html
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+<div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
   <!-- Columnas que cambian según breakpoint -->
 </div>
 ```
 
 #### Padding Responsive
+
 ```html
 <div class="px-4 md:px-8 lg:px-12">
   <!-- Padding que aumenta en pantallas grandes -->
@@ -253,6 +313,7 @@ xl: 1280px  /* Desktop grande */
 ```
 
 #### Ocultar/Mostrar Elementos
+
 ```html
 <div class="hidden md:block">
   <!-- Oculto en mobile, visible en desktop -->
@@ -266,42 +327,43 @@ xl: 1280px  /* Desktop grande */
 ## Estados Interactivos
 
 ### Hover
+
 ```html
-<button class="bg-accent-orange hover:bg-accent-bronze transition-colors">
-  Hover me
-</button>
+<button class="bg-accent-orange transition-colors hover:bg-accent-bronze">Hover me</button>
 ```
 
 ### Focus
+
 ```html
-<input class="focus:ring-2 focus:ring-accent-orange focus:outline-none">
+<input class="focus:outline-none focus:ring-2 focus:ring-accent-orange" />
 ```
 
 ### Active
+
 ```html
-<button class="active:scale-95 transition-transform">
-  Click me
-</button>
+<button class="transition-transform active:scale-95">Click me</button>
 ```
 
 ## Componentes Personalizados
 
 ### @layer Components
+
 Puedes crear componentes personalizados en `tailwind.css`:
 
 ```css
 @layer components {
   .btn-primary {
-    @apply bg-accent-orange text-white font-semibold py-3 px-6 rounded-lg hover:bg-opacity-90 transition-all;
+    @apply rounded-lg bg-accent-orange px-6 py-3 font-semibold text-white transition-all hover:bg-opacity-90;
   }
-  
+
   .card {
-    @apply bg-secondary-bg rounded-lg p-6 shadow-lg;
+    @apply rounded-lg bg-secondary-bg p-6 shadow-lg;
   }
 }
 ```
 
 ### Uso
+
 ```html
 <button class="btn-primary">Botón primario</button>
 <div class="card">Card personalizado</div>
@@ -310,13 +372,15 @@ Puedes crear componentes personalizados en `tailwind.css`:
 ## Pseudo-elementos
 
 ### Before/After
+
 ```html
-<div class="before:content-[''] before:block before:w-4 before:h-4">
+<div class="before:block before:h-4 before:w-4 before:content-['']">
   <!-- Con pseudo-elemento -->
 </div>
 ```
 
 ### First/Last Child
+
 ```html
 <div class="first:mt-0 last:mb-0">
   <!-- Primer hijo sin margin-top, último sin margin-bottom -->
@@ -326,6 +390,7 @@ Puedes crear componentes personalizados en `tailwind.css`:
 ## Animaciones
 
 ### Transiciones
+
 ```html
 <div class="transition-all duration-300 ease-in-out">
   <!-- Transición suave -->
@@ -333,15 +398,17 @@ Puedes crear componentes personalizados en `tailwind.css`:
 ```
 
 ### Transform
+
 ```html
-<div class="hover:scale-105 transition-transform">
+<div class="transition-transform hover:scale-105">
   <!-- Escala al hover -->
 </div>
 ```
 
 ### Opacity
+
 ```html
-<div class="hover:opacity-80 transition-opacity">
+<div class="transition-opacity hover:opacity-80">
   <!-- Opacidad al hover -->
 </div>
 ```
@@ -353,9 +420,9 @@ El proyecto usa un tema oscuro por defecto, pero puedes configurar dark mode:
 ```javascript
 // tailwind.config.js
 module.exports = {
-  darkMode: 'class',
+  darkMode: 'class'
   // ...
-}
+};
 ```
 
 ```html
@@ -367,17 +434,21 @@ module.exports = {
 ## Optimización
 
 ### Purging
+
 Tailwind automáticamente elimina CSS no usado en producción basado en los `content paths` en `tailwind.config.js`.
 
 ### Minificación
+
 ```bash
 npm run build:css
 ```
+
 Genera `dist/output.css` minificado.
 
 ## Integración con HTML Existente
 
 ### Estrategia de Migración
+
 1. **NO eliminar** `style.css` inmediatamente
 2. Agregar `dist/output.css` después de `style.css`
 3. Migrar componente por componente
@@ -385,39 +456,46 @@ Genera `dist/output.css` minificado.
 5. Eliminar `style.css` al final
 
 ### Ejemplo de Integración
+
 ```html
 <head>
   <!-- CSS existente -->
-  <link rel="stylesheet" href="style.css?v=26.5.1">
-  
+  <link rel="stylesheet" href="style.css?v=26.5.1" />
+
   <!-- Tailwind CSS (agregar después) -->
-  <link rel="stylesheet" href="dist/output.css">
+  <link rel="stylesheet" href="dist/output.css" />
 </head>
 ```
 
 ## Troubleshooting
 
 ### Clases no funcionan
+
 **Problema:** Clases de Tailwind no se aplican
 
 **Solución:**
+
 1. Verificar que `dist/output.css` existe
 2. Verificar que el HTML está en `content paths`
 3. Recompilar: `npm run build:css`
 4. Limpiar cache del navegador
 
 ### CSS no se actualiza
+
 **Problema:** Cambios no se reflejan
 
 **Solución:**
+
 1. Asegurarse de estar en modo watch: `npm run watch:css`
 2. Verificar que el archivo HTML esté guardado
 3. Recargar página con Ctrl+Shift+R (hard refresh)
 
 ### Build falla
+
 **Problema:** Error al compilar
 
 **Solución:**
+
 ```bash
 # Reinstalar dependencias
 rm -rf node_modules package-lock.json
@@ -430,10 +508,13 @@ npm run build:css
 ## Mejores Prácticas
 
 ### Orden de Clases
+
 Mantener orden consistente para legibilidad:
 
 ```html
-<div class="flex items-center justify-between p-4 w-full text-lg bg-primary-bg rounded-lg shadow-lg transition-all">
+<div
+  class="flex w-full items-center justify-between rounded-lg bg-primary-bg p-4 text-lg shadow-lg transition-all"
+>
   <!-- 1. Layout (flex)
        2. Spacing (p-4)
        3. Sizing (w-full)
@@ -446,26 +527,28 @@ Mantener orden consistente para legibilidad:
 ```
 
 ### Evitar Inline Styles
+
 ```html
 <!-- ✅ Correcto -->
-<div class="bg-primary-bg text-white p-4">
-
-<!-- ❌ Evitar -->
-<div style="background-color: #1A1A1C; color: white; padding: 1rem;">
+<div class="bg-primary-bg p-4 text-white">
+  <!-- ❌ Evitar -->
+  <div style="background-color: #1A1A1C; color: white; padding: 1rem;"></div>
+</div>
 ```
 
 ### Usar Semantic HTML con Tailwind
+
 ```html
 <!-- ✅ Correcto -->
 <header class="bg-primary-bg p-4">
-  <nav class="max-w-6xl mx-auto">
+  <nav class="mx-auto max-w-6xl">
     <!-- Navigation -->
   </nav>
 </header>
 
 <!-- ❌ Evitar -->
 <div class="bg-primary-bg p-4">
-  <div class="max-w-6xl mx-auto">
+  <div class="mx-auto max-w-6xl">
     <!-- Navigation -->
   </div>
 </div>
@@ -474,15 +557,18 @@ Mantener orden consistente para legibilidad:
 ## Recursos
 
 ### Documentación Oficial
+
 - [Tailwind CSS Docs](https://tailwindcss.com/docs)
 - [Tailwind UI](https://tailwindui.com/)
 - [Headless UI](https://headlessui.com/)
 
 ### Herramientas
+
 - [Tailwind CSS IntelliSense](https://marketplace.visualstudio.com/items?itemName=bradlc.vscode-tailwindcss)
 - [Tailwind CSS Cheat Sheet](https://tailwindcomponents.com/cheatsheet/)
 
 ### Comunidad
+
 - [Tailwind CSS Discord](https://tailwindcss.com/discord)
 - [Twitter @tailwindcss](https://twitter.com/tailwindcss)
 

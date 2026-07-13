@@ -1,0 +1,32 @@
+{
+  "$schema": "./schema.json",
+  "name": "MacWave Animation Tokens",
+  "version": "1.0.0",
+  "keyframes": {
+    "pulse": {
+      "duration": "2s",
+      "iteration": "infinite",
+      "cssVar": "--pulse-animation",
+      "usage": "Botón WhatsApp flotante"
+    },
+    "tag-shimmer": {
+      "duration": "3s",
+      "iteration": "infinite",
+      "usage": "Badges promocionales"
+    },
+    "flash": {
+      "duration": "1.5s",
+      "iteration": "infinite",
+      "usage": "Ticker de emergencia"
+    }
+  },
+  "transitions": {
+    "default": { "value": "all 0.3s ease", "usage": "Botones, links, modales" },
+    "opacity": { "value": "opacity 0.3s ease", "usage": ".lazy-load, .modal-overlay" },
+    "color": { "value": "color 0.3s ease", "usage": ".nav-link, links" }
+  },
+  "easing": {
+    "default": "ease",
+    "smooth": "cubic-bezier(0.4, 0, 0.2, 1)"
+  }
+}

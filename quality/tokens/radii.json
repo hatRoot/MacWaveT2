@@ -1,0 +1,15 @@
+{
+  "$schema": "./schema.json",
+  "name": "MacWave Border Radius Tokens",
+  "version": "1.0.0",
+  "note": "Alias de borders.json — mantener sincronizado",
+  "radii": {
+    "sm": "6px",
+    "md": "8px",
+    "lg": "12px",
+    "pill": "30px",
+    "modal": "8px",
+    "card": "12px",
+    "full": "50%"
+  }
+}

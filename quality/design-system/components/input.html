@@ -1,0 +1,27 @@
+<!--
+  Componente: Input / Select
+  Design System: MacWave México
+  Fuente CSS: cotizaciones/styles.css → .form-group
+  Estado: Documentado — CSS en submódulo cotizaciones
+-->
+
+<div class="form-group">
+  <label for="client-name">Nombre del cliente</label>
+  <input type="text" id="client-name" name="clientName" placeholder="Nombre completo" required>
+</div>
+
+<div class="form-group">
+  <label for="device-type">Tipo de dispositivo</label>
+  <select id="device-type" name="deviceType">
+    <option value="">Seleccionar...</option>
+    <option value="macbook">MacBook</option>
+    <option value="imac">iMac</option>
+    <option value="iphone">iPhone</option>
+  </select>
+</div>
+
+<!--
+  Nota: Inputs del sitio público son mínimos.
+  El sistema de cotizaciones tiene su propio design system en cotizaciones/styles.css.
+  No migrar cotizaciones/ en esta fase — alcance separado.
+-->

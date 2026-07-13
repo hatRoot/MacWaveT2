@@ -6,6 +6,10 @@
 # Dependencias de Node
 node_modules/
 package-lock.json
+
+# Build output (generado por npm run build:css)
+# dist/output.css se commitea para deploy sin Node en Hostgator
+# dist/output.css
 yarn.lock
 
 # Playwright: navegadores, reportes, capturas

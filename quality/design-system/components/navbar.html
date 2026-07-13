@@ -1,0 +1,62 @@
+<!--
+  Componente: Navbar
+  Design System: MacWave México
+  Fuente CSS: style.css → .main-header, .main-nav, .nav-link, .cloned-*
+  Estado: Documentado — CSS legado activo
+  JS: toggleMobileMenu(), clase menu-active en body
+-->
+
+<!-- Top Bar -->
+<div class="cloned-topbar">
+  <div class="container">
+    <div class="cloned-topbar-left">
+      <span>Servicio a domicilio en CDMX GRATIS!</span>
+    </div>
+    <div class="cloned-topbar-right">
+      <a href="tel:5535757364" class="cloned-topbar-item">55-3575-7364</a>
+    </div>
+  </div>
+</div>
+
+<!-- Main Header -->
+<header class="cloned-header">
+  <div class="container">
+    <button class="mobile-menu-toggle" id="mobile-menu-toggle" aria-label="Abrir menú"
+      onclick="toggleMobileMenu(event)">
+      <span></span><span></span><span></span>
+    </button>
+    <div class="cloned-logo-container logo">
+      <a href="/" class="logo-link">
+        <img src="./images/negro.png" alt="Logo Mac Wave T2" class="logo-img">
+        <div class="logo-text-container">
+          <span class="logo-brand"><strong>macWave</strong> México</span>
+          <span class="logo-subtext">Para tu dispositivo Apple fuera de garantía</span>
+        </div>
+      </a>
+    </div>
+    <nav class="cloned-nav">
+      <a href="/reparaciones.html" class="cloned-nav-link">Reparaciones</a>
+      <a href="/empresas.html" class="cloned-nav-link">Empresas</a>
+      <a href="/software.html" class="cloned-nav-link">Software</a>
+      <a href="/casos-reales.html" class="cloned-nav-link">Casos Reales</a>
+    </nav>
+  </div>
+</header>
+
+<!-- Mobile Nav Overlay -->
+<nav class="main-nav">
+  <button class="mobile-nav-close" onclick="toggleMobileMenu(event)" aria-label="Cerrar menú">✕</button>
+  <div class="mobile-menu-content">
+    <div class="mobile-nav-links">
+      <a href="/reparaciones.html" class="nav-link" style="--i:1">Reparaciones</a>
+      <a href="/empresas.html" class="nav-link" style="--i:2">Empresas</a>
+    </div>
+  </div>
+</nav>
+
+<!--
+  Breakpoints:
+  - Desktop: .cloned-nav visible, .mobile-menu-toggle hidden
+  - ≤1024px: menú hamburguesa, overlay slide-in
+  - body.menu-active: overlay visible
+-->

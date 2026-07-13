@@ -1,23 +1,36 @@
 {
   "name": "macwavet2-migration",
-  "version": "1.0.0",
-  "description": "",
-  "main": "fix_json.js",
+  "version": "1.1.0",
+  "description": "MacWave México — Migración profesional a Tailwind CSS",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "build:css": "tailwindcss -i ./tailwind.css -o ./dist/output.css --minify",
-    "watch:css": "tailwindcss -i ./tailwind.css -o ./dist/output.css --watch"
+    "watch:css": "tailwindcss -i ./tailwind.css -o ./dist/output.css --watch",
+    "lint": "eslint quality/scripts/*.js scripts/comparar.js",
+    "lint:fix": "eslint quality/scripts/*.js scripts/comparar.js --fix",
+    "format": "prettier --write \"**/*.{css,js,json,md}\" --ignore-path .prettierignore",
+    "format:check": "prettier --check \"**/*.{css,js,json,md}\" --ignore-path .prettierignore",
+    "validate": "bash quality/validation/run-all.sh",
+    "validate:build": "bash quality/validation/validate-build.sh",
+    "validate:html": "bash quality/validation/validate-html.sh",
+    "migration:status": "node quality/scripts/migration-status.js",
+    "test:visual": "node scripts/comparar.js",
+    "test": "npm run validate:build && npm run validate:html && npm run migration:status"
   },
   "repository": {
     "type": "git",
-    "url": "/Users/joelduran/Documents/GitHub/MacWaveT2"
+    "url": "https://github.com/hatRoot/MacWaveT2.git"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": [
+    "macwave",
+    "tailwind",
+    "migration"
+  ],
+  "author": "MacWave México",
   "license": "ISC",
   "type": "commonjs",
   "devDependencies": {
     "@playwright/test": "^1.61.1",
+    "eslint": "^8.57.0",
     "pixelmatch": "^7.2.0",
     "pngjs": "^7.0.0"
   },

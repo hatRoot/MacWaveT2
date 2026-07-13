@@ -31,19 +31,19 @@ const VIEWPORTS = [
     name: 'iphone14',
     label: '📱 iPhone 14',
     width: 390,
-    height: 844,
+    height: 844
   },
   {
     name: 'desktop',
     label: '🖥️  Escritorio (1280x800)',
     width: 1280,
-    height: 800,
-  },
+    height: 800
+  }
 ];
 
 const PAGES = [
   { file: 'index-original.html', key: 'original' },
-  { file: 'index.html',          key: 'nuevo'   },
+  { file: 'index.html', key: 'nuevo' }
 ];
 
 // ── Servidor HTTP local ───────────────────────────────────────────────────────
@@ -66,17 +66,17 @@ function startServer() {
         const ext = path.extname(filePath).toLowerCase();
         const mimeTypes = {
           '.html': 'text/html; charset=utf-8',
-          '.css':  'text/css',
-          '.js':   'application/javascript',
-          '.png':  'image/png',
-          '.jpg':  'image/jpeg',
+          '.css': 'text/css',
+          '.js': 'application/javascript',
+          '.png': 'image/png',
+          '.jpg': 'image/jpeg',
           '.jpeg': 'image/jpeg',
-          '.svg':  'image/svg+xml',
+          '.svg': 'image/svg+xml',
           '.webp': 'image/webp',
           '.woff2': 'font/woff2',
           '.woff': 'font/woff',
-          '.ico':  'image/x-icon',
-          '.pdf':  'application/pdf',
+          '.ico': 'image/x-icon',
+          '.pdf': 'application/pdf'
         };
         res.writeHead(200, { 'Content-Type': mimeTypes[ext] || 'application/octet-stream' });
         res.end(data);
@@ -98,7 +98,7 @@ function cropPNG(img, w, h) {
     for (let x = 0; x < w; x++) {
       const srcIdx = (y * img.width + x) * 4;
       const dstIdx = (y * w + x) * 4;
-      out.data[dstIdx]     = img.data[srcIdx];
+      out.data[dstIdx] = img.data[srcIdx];
       out.data[dstIdx + 1] = img.data[srcIdx + 1];
       out.data[dstIdx + 2] = img.data[srcIdx + 2];
       out.data[dstIdx + 3] = img.data[srcIdx + 3];
@@ -112,21 +112,17 @@ function compareImages(pathA, pathB, diffPath, pixelmatch) {
   const rawB = PNG.sync.read(fs.readFileSync(pathB));
 
   // Mínimo común — pixelmatch exige misma dimensión
-  const cmpW = Math.min(rawA.width,  rawB.width);
+  const cmpW = Math.min(rawA.width, rawB.width);
   const cmpH = Math.min(rawA.height, rawB.height);
 
   const imgA = cropPNG(rawA, cmpW, cmpH);
   const imgB = cropPNG(rawB, cmpW, cmpH);
   const diff = new PNG({ width: cmpW, height: cmpH });
 
-  const mismatch = pixelmatch(
-    imgA.data,
-    imgB.data,
-    diff.data,
-    cmpW,
-    cmpH,
-    { threshold: 0.15, includeAA: false }
-  );
+  const mismatch = pixelmatch(imgA.data, imgB.data, diff.data, cmpW, cmpH, {
+    threshold: 0.15,
+    includeAA: false
+  });
 
   fs.writeFileSync(diffPath, PNG.sync.write(diff));
 
@@ -134,7 +130,6 @@ function compareImages(pathA, pathB, diffPath, pixelmatch) {
   const pct = ((mismatch / totalPixels) * 100).toFixed(2);
   return { mismatch, totalPixels, pct };
 }
-
 
 // ── Main ──────────────────────────────────────────────────────────────────────
 (async () => {
@@ -150,7 +145,9 @@ function compareImages(pathA, pathB, diffPath, pixelmatch) {
   for (const p of PAGES) {
     if (!fs.existsSync(path.join(ROOT, p.file))) {
       console.error(`❌ No encontrado: ${p.file}`);
-      console.error('   Asegúrate de crear index-original.html como copia de respaldo del index.html original.');
+      console.error(
+        '   Asegúrate de crear index-original.html como copia de respaldo del index.html original.'
+      );
       process.exit(1);
     }
   }
@@ -172,7 +169,7 @@ function compareImages(pathA, pathB, diffPath, pixelmatch) {
 
     for (const pg of PAGES) {
       const context = await browser.newContext({
-        viewport: { width: vp.width, height: vp.height },
+        viewport: { width: vp.width, height: vp.height }
       });
       const page = await context.newPage();
 
@@ -200,16 +197,19 @@ function compareImages(pathA, pathB, diffPath, pixelmatch) {
       pixelmatch
     );
 
-    const status = parseFloat(pct) === 0
-      ? '✅ IDÉNTICO'
-      : parseFloat(pct) < 1
-      ? '🟡 Diferencia mínima'
-      : parseFloat(pct) < 5
-      ? '🟠 Diferencia moderada'
-      : '🔴 Diferencia significativa';
+    const status =
+      parseFloat(pct) === 0
+        ? '✅ IDÉNTICO'
+        : parseFloat(pct) < 1
+          ? '🟡 Diferencia mínima'
+          : parseFloat(pct) < 5
+            ? '🟠 Diferencia moderada'
+            : '🔴 Diferencia significativa';
 
     console.log(`\n  ${status}`);
-    console.log(`  Píxeles distintos: ${mismatch.toLocaleString()} / ${totalPixels.toLocaleString()}`);
+    console.log(
+      `  Píxeles distintos: ${mismatch.toLocaleString()} / ${totalPixels.toLocaleString()}`
+    );
     console.log(`  Desajuste: ${pct}%`);
     console.log(`  Imagen diff guardada en: screenshots/diff_${vp.name}.png`);
 

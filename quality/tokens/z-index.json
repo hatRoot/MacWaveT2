@@ -1,0 +1,14 @@
+{
+  "$schema": "./schema.json",
+  "name": "MacWave Z-Index Tokens",
+  "version": "1.0.0",
+  "layers": {
+    "base": { "value": 0, "usage": "Contenido normal" },
+    "dropdown": { "value": 100, "usage": "Menús desplegables" },
+    "sticky": { "value": 500, "usage": "Header sticky (.main-header)" },
+    "overlay": { "value": 1000, "usage": "Overlays de navegación móvil" },
+    "modal": { "value": 2000, "usage": ".modal-overlay" },
+    "floating": { "value": 3000, "usage": ".floating-wa-btn" },
+    "tooltip": { "value": 4000, "usage": "Tooltips y popovers" }
+  }
+}
