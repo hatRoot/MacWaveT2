@@ -12,58 +12,59 @@ Se completó la infraestructura profesional del Tailwind Quality Harness, Design
 
 ### ✅ Build Tailwind CSS
 
-| Check | Resultado |
-|-------|-----------|
-| `npm run build:css` | ✅ Compila sin errores |
+| Check                      | Resultado                   |
+| -------------------------- | --------------------------- |
+| `npm run build:css`        | ✅ Compila sin errores      |
 | `dist/output.css` generado | ✅ 9,248 bytes (minificado) |
-| Tiempo de build | ~314ms |
+| Tiempo de build            | ~314ms                      |
 
 ### ✅ ESLint
 
-| Check | Resultado |
-|-------|-----------|
-| Archivos linted | `quality/scripts/*.js`, `scripts/comparar.js` |
-| Errores | 0 |
-| Warnings | 0 |
+| Check           | Resultado                                             |
+| --------------- | ----------------------------------------------------- |
+| Archivos linted | `quality/scripts/*.js`, `scripts/comparar.js`         |
+| Errores         | 0                                                     |
+| Warnings        | 0                                                     |
 | Legacy excluido | `script.js`, `js/`, `cotizaciones/` (`.eslintignore`) |
 
 ### ✅ Prettier
 
-| Check | Resultado |
-|-------|-----------|
-| `npm run format:check` | ✅ Pasa |
-| Plugin Tailwind | `prettier-plugin-tailwindcss` configurado |
-| Legacy excluido | `*.html`, `style.css`, `js/` (`.prettierignore`) |
+| Check                  | Resultado                                        |
+| ---------------------- | ------------------------------------------------ |
+| `npm run format:check` | ✅ Pasa                                          |
+| Plugin Tailwind        | `prettier-plugin-tailwindcss` configurado        |
+| Legacy excluido        | `*.html`, `style.css`, `js/` (`.prettierignore`) |
 
 ### ✅ EditorConfig
 
-| Check | Resultado |
-|-------|-----------|
-| `.editorconfig` | ✅ Presente |
-| Indent: 2 espacios | ✅ |
-| EOL: LF | ✅ |
-| Charset: UTF-8 | ✅ |
+| Check              | Resultado   |
+| ------------------ | ----------- |
+| `.editorconfig`    | ✅ Presente |
+| Indent: 2 espacios | ✅          |
+| EOL: LF            | ✅          |
+| Charset: UTF-8     | ✅          |
 
 ### ✅ HTML Estructura
 
-| Página | DOCTYPE | lang | viewport | CSS | title |
-|--------|---------|------|----------|-----|-------|
-| index.html | ✅ | ✅ es-MX | ✅ | ✅ | ✅ |
-| reparaciones.html | ✅ | ✅ | ✅ | ✅ | ✅ |
-| empresas.html | ✅ | ✅ | ✅ | ✅ | ✅ |
-| software.html | ✅ | ✅ | ✅ | ✅ | ✅ |
-| casos-reales.html | ✅ | ✅ | ✅ | ✅ | ✅ |
-| terminos.html | ✅ | ✅ | ✅ | ✅ | ✅ |
-| upgrades.html | ✅ | ✅ | ✅ | ✅ | ✅ |
+| Página            | DOCTYPE | lang     | viewport | CSS | title |
+| ----------------- | ------- | -------- | -------- | --- | ----- |
+| index.html        | ✅      | ✅ es-MX | ✅       | ✅  | ✅    |
+| reparaciones.html | ✅      | ✅       | ✅       | ✅  | ✅    |
+| empresas.html     | ✅      | ✅       | ✅       | ✅  | ✅    |
+| software.html     | ✅      | ✅       | ✅       | ✅  | ✅    |
+| casos-reales.html | ✅      | ✅       | ✅       | ✅  | ✅    |
+| terminos.html     | ✅      | ✅       | ✅       | ✅  | ✅    |
+| upgrades.html     | ✅      | ✅       | ✅       | ✅  | ✅    |
 
 ### ⏳ Regresión Visual (Pendiente)
 
-| Check | Resultado |
-|-------|-----------|
+| Check                      | Resultado                         |
+| -------------------------- | --------------------------------- |
 | `node scripts/comparar.js` | ⏳ Requiere `index-original.html` |
-| Playwright chromium | Instalado via `@playwright/test` |
+| Playwright chromium        | Instalado via `@playwright/test`  |
 
 **Nota:** Crear respaldo antes de migrar HTML:
+
 ```bash
 cp index.html index-original.html
 node scripts/comparar.js
@@ -71,54 +72,54 @@ node scripts/comparar.js
 
 ### ✅ Quality Harness
 
-| Directorio | Estado |
-|------------|--------|
-| `quality/checklists/` | ✅ 4 checklists |
-| `quality/rules/` | ✅ 4 reglas |
-| `quality/tokens/` | ✅ 9 tokens JSON |
-| `quality/design-system/` | ✅ 14 componentes |
-| `quality/architecture/` | ✅ css-strategy.md |
-| `quality/validation/` | ✅ 3 scripts + JSON |
-| `quality/scripts/` | ✅ migration-status.js |
-| `quality/docs/` | ✅ README |
+| Directorio               | Estado                 |
+| ------------------------ | ---------------------- |
+| `quality/checklists/`    | ✅ 4 checklists        |
+| `quality/rules/`         | ✅ 4 reglas            |
+| `quality/tokens/`        | ✅ 9 tokens JSON       |
+| `quality/design-system/` | ✅ 14 componentes      |
+| `quality/architecture/`  | ✅ css-strategy.md     |
+| `quality/validation/`    | ✅ 3 scripts + JSON    |
+| `quality/scripts/`       | ✅ migration-status.js |
+| `quality/docs/`          | ✅ README              |
 
 **Quality Harness: ~100%**
 
 ### ⏳ Migración CSS/HTML
 
-| Métrica | Valor |
-|---------|-------|
-| `style.css` (activo) | 5,807 líneas |
-| `tailwind.css` (entrada) | 115 líneas |
-| `dist/output.css` (build) | 9,248 bytes |
-| HTML con `style.css` | 21 de 28 |
-| HTML con `dist/output.css` | 0 de 28 |
-| Clases `tw-*` en HTML | 3 (comentarios/config) |
-| CSS legado eliminado | 0% |
+| Métrica                    | Valor                  |
+| -------------------------- | ---------------------- |
+| `style.css` (activo)       | 5,807 líneas           |
+| `tailwind.css` (entrada)   | 115 líneas             |
+| `dist/output.css` (build)  | 9,248 bytes            |
+| HTML con `style.css`       | 21 de 28               |
+| HTML con `dist/output.css` | 0 de 28                |
+| Clases `tw-*` en HTML      | 3 (comentarios/config) |
+| CSS legado eliminado       | 0%                     |
 
 **Migración CSS real: ~1%**  
 **Migración HTML real: ~0%**
 
 ## Documentación
 
-| Documento | Estado | Refleja estado real |
-|-----------|--------|---------------------|
-| README.md | ✅ Actualizado | ✅ |
-| DEVELOPER_GUIDE.md | ✅ Existente | Parcial |
-| ARCHITECTURE.md | ✅ Existente | Parcial |
-| TAILWIND_GUIDE.md | ✅ Existente | Parcial |
-| QUALITY_HARNESS.md | ✅ Nuevo | ✅ |
-| DESIGN_SYSTEM.md | ✅ Existente | Parcial |
-| COMPONENT_LIBRARY.md | ✅ Nuevo | ✅ |
-| MIGRATION_REPORT.md | ✅ Nuevo | ✅ |
-| VALIDATION_REPORT.md | ✅ Este archivo | ✅ |
+| Documento            | Estado          | Refleja estado real |
+| -------------------- | --------------- | ------------------- |
+| README.md            | ✅ Actualizado  | ✅                  |
+| DEVELOPER_GUIDE.md   | ✅ Existente    | Parcial             |
+| ARCHITECTURE.md      | ✅ Existente    | Parcial             |
+| TAILWIND_GUIDE.md    | ✅ Existente    | Parcial             |
+| QUALITY_HARNESS.md   | ✅ Nuevo        | ✅                  |
+| DESIGN_SYSTEM.md     | ✅ Existente    | Parcial             |
+| COMPONENT_LIBRARY.md | ✅ Nuevo        | ✅                  |
+| MIGRATION_REPORT.md  | ✅ Nuevo        | ✅                  |
+| VALIDATION_REPORT.md | ✅ Este archivo | ✅                  |
 
 ## Git
 
-| Check | Resultado |
-|-------|-----------|
-| Repositorio Git | ✅ Activo |
-| Remote | `https://github.com/hatRoot/MacWaveT2.git` |
+| Check              | Resultado                                       |
+| ------------------ | ----------------------------------------------- |
+| Repositorio Git    | ✅ Activo                                       |
+| Remote             | `https://github.com/hatRoot/MacWaveT2.git`      |
 | Cambios pendientes | Archivos nuevos en `quality/`, `docs/`, configs |
 
 ## Riesgos Identificados
@@ -138,17 +139,17 @@ node scripts/comparar.js
 
 ## Criterios de Finalización
 
-| Criterio | Estado |
-|----------|--------|
-| Sitio visualmente idéntico | ✅ (sin cambios visuales realizados) |
-| Tailwind integrado (build) | ✅ |
-| CSS legado eliminado solo cuando necesario | ✅ (0% eliminado) |
-| Design System profesional | ✅ |
-| Quality Harness completo | ✅ |
-| Documentación técnica | ✅ |
-| Sin errores de compilación | ✅ |
-| Migración CSS completa | ❌ ~1% |
-| HTML migrado a Tailwind | ❌ ~0% |
+| Criterio                                   | Estado                               |
+| ------------------------------------------ | ------------------------------------ |
+| Sitio visualmente idéntico                 | ✅ (sin cambios visuales realizados) |
+| Tailwind integrado (build)                 | ✅                                   |
+| CSS legado eliminado solo cuando necesario | ✅ (0% eliminado)                    |
+| Design System profesional                  | ✅                                   |
+| Quality Harness completo                   | ✅                                   |
+| Documentación técnica                      | ✅                                   |
+| Sin errores de compilación                 | ✅                                   |
+| Migración CSS completa                     | ❌ ~1%                               |
+| HTML migrado a Tailwind                    | ❌ ~0%                               |
 
 ---
 

@@ -5,13 +5,13 @@
 
 ## Fuentes de Verdad
 
-| Recurso | Ubicación | Estado |
-|---------|-----------|--------|
-| Tokens JSON | `quality/tokens/` | ✅ 9 archivos |
-| Tailwind config | `tailwind.config.js` | ✅ Sincronizado |
-| Componentes HTML | `quality/design-system/components/` | ✅ 14 snippets |
-| CSS activo | `style.css` | ⏳ 5,806 líneas (legado) |
-| Clases Tailwind nuevas | `tailwind.css` → `.mw-*` | ✅ 10 componentes |
+| Recurso                | Ubicación                           | Estado                   |
+| ---------------------- | ----------------------------------- | ------------------------ |
+| Tokens JSON            | `quality/tokens/`                   | ✅ 9 archivos            |
+| Tailwind config        | `tailwind.config.js`                | ✅ Sincronizado          |
+| Componentes HTML       | `quality/design-system/components/` | ✅ 14 snippets           |
+| CSS activo             | `style.css`                         | ⏳ 5,806 líneas (legado) |
+| Clases Tailwind nuevas | `tailwind.css` → `.mw-*`            | ✅ 10 componentes        |
 
 Ver también: `docs/COMPONENT_LIBRARY.md` y `docs/MIGRATION_REPORT.md`.
 
